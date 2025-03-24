@@ -8,7 +8,8 @@ export default defineConfig({
         laravel({
             input: [
                 'resources/js/app.jsx',
-                'resources/css/app.css', // Garde juste un fichier CSS basique
+                'resources/css/app.css',
+                'public/css/app.css',
             ],
             refresh: true,
         }),

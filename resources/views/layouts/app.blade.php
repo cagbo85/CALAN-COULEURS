@@ -8,8 +8,22 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
 
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'urbanist': ['Urbanist', 'sans-serif'],
+                        'urbanist-bold': ['Urbanist Bold', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+
     @viteReactRefresh
     @vite('resources/js/app.jsx', 'resources/css/app.css')
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
     <title>CALAN-COULEURS</title>
 

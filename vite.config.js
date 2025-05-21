@@ -1,16 +1,20 @@
 import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
 import react from '@vitejs/plugin-react';
-import tailwindcss from '@tailwindcss/vite'
+import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
     plugins: [
         laravel({
             input: [
-                'resources/js/app.jsx',
                 'resources/css/app.css',
-                'public/css/app.css',
+                'resources/js/app.jsx',
+                'resources/js/navbar-loader.jsx',
+                'resources/js/timer-loader.jsx',
+                'resources/js/onsite-loader.jsx',
+                'resources/js/faq-loader.jsx',
             ],
+            publicDirectory: 'public',
             refresh: true,
         }),
         tailwindcss(),

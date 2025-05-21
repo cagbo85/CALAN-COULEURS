@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function Navbar() {
+export default function Navbar({ routes }) {
     const [isOpen, setIsOpen] = useState(false);
 
     return (
@@ -8,25 +8,89 @@ export default function Navbar() {
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-between items-center py-4">
                     {/* Logo */}
-                    <a href="/" className="text-3xl font-bold text-[#8F1E98]">
-                        CALAN <span className="text-[#FF0F63]">COULEURS</span>
+                    <a href={routes?.home || "/"} className="flex items-center">
+                        <img
+                            src="/img/logos/LOGO/Logo-Calan.png"
+                            alt="Logo CALAN COULEURS"
+                            className="h-12"
+                        />
                     </a>
 
                     {/* Menu Desktop */}
                     <nav className="hidden md:flex">
-                        <a href="#" className="block py-2 px-3 text-[#8F1E98] font-semibold hover:text-[#FF0F63] transition">Le Festival</a>
-                        <a href="#" className="block py-2 px-3 text-[#8F1E98] font-semibold hover:text-[#FF0F63] transition">Billetterie</a>
-                        <a href="#" className="block py-2 px-3 text-[#8F1E98] font-semibold hover:text-[#FF0F63] transition">À Propos</a>
+                        <a
+                            href={routes?.home || "/"}
+                            className="block py-2 px-3 text-[#8F1E98] font-semibold hover:text-[#FF0F63] transition"
+                        >
+                            Le festival
+                        </a>
+                        <a
+                            href={routes?.festival || "/notre-histoire"}
+                            className="block py-2 px-3 text-[#8F1E98] font-semibold hover:text-[#FF0F63] transition"
+                        >
+                            Notre histoire
+                        </a>
+                        <a
+                            href={routes?.programmation || "/programmation"}
+                            className="block py-2 px-3 text-[#8F1E98] font-semibold hover:text-[#FF0F63] transition"
+                        >
+                            Programmation
+                        </a>
+                        <a
+                            href={
+                                routes?.billetterie ||
+                                "https://www.helloasso.com/associations/calan-couleurs/evenements/festival-calan-couleurs"
+                            }
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="block py-2 px-3 text-[#8F1E98] font-semibold hover:text-[#FF0F63] transition"
+                        >
+                            Billetterie
+                        </a>
+                        <a
+                            href={routes?.contact || "/contact"}
+                            className="block py-2 px-3 text-[#8F1E98] font-semibold hover:text-[#FF0F63] transition"
+                        >
+                            Contact
+                        </a>
+                        {/* <a href="" className="block py-2 px-3 text-[#8F1E98] font-semibold hover:text-[#FF0F63] transition">À Propos</a> */}
                     </nav>
 
                     {/* CTA */}
-                    <a href="#" className="hidden md:inline-block bg-[#8F1E98] text-white font-semibold px-5 py-2 rounded-lg hover:bg-[#FF0F63] transition">
+                    <a
+                        href={
+                            routes?.billetterie ||
+                            "https://www.helloasso.com/associations/calan-couleurs/evenements/festival-calan-couleurs"
+                        }
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={(e) => {
+                            e.preventDefault();
+                            window.open(
+                                routes?.billetterie ||
+                                    "https://www.helloasso.com/associations/calan-couleurs/evenements/festival-calan-couleurs",
+                                "_blank"
+                            );
+                        }}
+                        className="hidden md:inline-block bg-[#8F1E98] text-white font-semibold px-5 py-2 rounded-lg hover:bg-[#FF0F63] transition"
+                    >
                         Acheter des billets →
                     </a>
 
                     {/* Menu Burger (Mobile) */}
-                    <button onClick={() => setIsOpen(!isOpen)} className="md:hidden text-[#8F1E98] focus:outline-none">
-                        <svg className="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <button
+                        onClick={() => setIsOpen(!isOpen)}
+                        className="md:hidden text-[#8F1E98] focus:outline-none"
+                    >
+                        <svg
+                            className="w-8 h-8"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                        >
                             {isOpen ? (
                                 <path d="M6 18L18 6M6 6l12 12" /> // Croix quand ouvert
                             ) : (
@@ -38,12 +102,61 @@ export default function Navbar() {
             </div>
 
             {/* ✅ Menu Mobile (juste en-dessous de la navbar) */}
-            <div className={`md:hidden transition-all duration-300 ${isOpen ? "max-h-screen opacity-100 visible" : "max-h-0 opacity-0 invisible"} overflow-hidden`}>
+            <div
+                className={`md:hidden transition-all duration-300 ${
+                    isOpen
+                        ? "max-h-screen opacity-100 visible"
+                        : "max-h-0 opacity-0 invisible"
+                } overflow-hidden`}
+            >
                 <nav className="bg-white shadow-md py-4">
-                    <a href="#" className="block text-center py-2 text-[#8F1E98] font-semibold hover:text-[#FF0F63] transition">Le Festival</a>
-                    <a href="#" className="block text-center py-2 text-[#8F1E98] font-semibold hover:text-[#FF0F63] transition">Billetterie</a>
-                    <a href="#" className="block text-center py-2 text-[#8F1E98] font-semibold hover:text-[#FF0F63] transition">À Propos</a>
-                    <a href="#" className="block text-center mt-2 bg-[#8F1E98] text-white font-semibold mx-6 py-2 rounded-lg hover:bg-[#FF0F63] transition">
+                    <a
+                        href={routes?.festival || "/notre-histoire"}
+                        className="block text-center py-2 text-[#8F1E98] font-semibold hover:text-[#FF0F63] transition"
+                    >
+                        Le Festival
+                    </a>
+                    <a
+                        href={routes?.programmation || "/programmation"}
+                        className="block text-center py-2 text-[#8F1E98] font-semibold hover:text-[#FF0F63] transition"
+                    >
+                        Programmation
+                    </a>
+                    <a
+                        href={
+                            routes?.billetterie ||
+                            "https://www.helloasso.com/associations/calan-couleurs/evenements/festival-calan-couleurs"
+                        }
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="block text-center py-2 text-[#8F1E98] font-semibold hover:text-[#FF0F63] transition"
+                    >
+                        Billetterie
+                    </a>
+                    <a
+                        href={routes?.contact || "/contact"}
+                        className="block text-center py-2 text-[#8F1E98] font-semibold hover:text-[#FF0F63] transition"
+                    >
+                        Contact
+                    </a>
+                    {/* <a href="#" className="block text-center py-2 text-[#8F1E98] font-semibold hover:text-[#FF0F63] transition">À Propos</a> */}
+                    <a
+                        href={
+                            routes?.billetterie ||
+                            "https://www.helloasso.com/associations/calan-couleurs/evenements/festival-calan-couleurs"
+                        }
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={(e) => {
+                            e.preventDefault();
+                            window.open(
+                                routes?.billetterie ||
+                                    "https://www.helloasso.com/associations/calan-couleurs/evenements/festival-calan-couleurs",
+                                "_blank"
+                            );
+                        }}
+                        className="block text-center mt-2 bg-[#8F1E98] text-white font-semibold mx-6 py-2 rounded-lg hover:bg-[#FF0F63] transition"
+                    >
                         Acheter des billets →
                     </a>
                 </nav>

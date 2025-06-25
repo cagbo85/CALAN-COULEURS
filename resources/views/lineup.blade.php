@@ -713,7 +713,7 @@
                                             style="background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);">
                                             <h3 class="text-white font-bold">Youth Collective</h3>
                                             <p class="text-white text-xs flex items-center justify-between">
-                                                <span>VEN 12</span>
+                                                <span>SAM 13</span>
                                                 <span class="font-medium">15h - 17h</span>
                                             </p>
                                         </div>
@@ -743,7 +743,7 @@
                                             style="background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);">
                                             <h3 class="text-white font-bold">Maklos</h3>
                                             <p class="text-white text-xs flex items-center justify-between">
-                                                <span>VEN 12</span>
+                                                <span>SAM 13</span>
                                                 <span class="font-medium">17h - 18h30</span>
                                             </p>
                                         </div>
@@ -773,7 +773,7 @@
                                             style="background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);">
                                             <h3 class="text-white font-bold">Klö</h3>
                                             <p class="text-white text-xs flex items-center justify-between">
-                                                <span>VEN 12</span>
+                                                <span>SAM 13</span>
                                                 <span class="font-medium">18h30 - 19h30</span>
                                             </p>
                                         </div>
@@ -816,7 +816,7 @@
                                             style="background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);">
                                             <h3 class="text-white font-bold">Kaboum</h3>
                                             <p class="text-white text-xs flex items-center justify-between">
-                                                <span>VEN 12</span>
+                                                <span>SAM 13</span>
                                                 <span class="font-medium">19h30 - 21h</span>
                                             </p>
                                         </div>
@@ -845,7 +845,7 @@
                                             style="background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);">
                                             <h3 class="text-white font-bold">TOM WORRF</h3>
                                             <p class="text-white text-xs flex items-center justify-between">
-                                                <span>VEN 12</span>
+                                                <span>SAM 13</span>
                                                 <span class="font-medium">20h30 - 22h</span>
                                             </p>
                                         </div>
@@ -888,7 +888,7 @@
                                             style="background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);">
                                             <h3 class="text-white font-bold">2TH</h3>
                                             <p class="text-white text-xs flex items-center justify-between">
-                                                <span>VEN 12</span>
+                                                <span>SAM 13</span>
                                                 <span class="font-medium">22h - 23h30</span>
                                             </p>
                                         </div>
@@ -918,7 +918,7 @@
                                             style="background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);">
                                             <h3 class="text-white font-bold">Mūne</h3>
                                             <p class="text-white text-xs flex items-center justify-between">
-                                                <span>VEN 12</span>
+                                                <span>SAM 13</span>
                                                 <span class="font-medium">23h30 - 02h</span>
                                             </p>
                                         </div>
@@ -947,7 +947,7 @@
                                             style="background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);">
                                             <h3 class="text-white font-bold">Yonex</h3>
                                             <p class="text-white text-xs flex items-center justify-between">
-                                                <span>VEN 12</span>
+                                                <span>SAM 13</span>
                                                 <span class="font-medium">00h30 - 02h</span>
                                             </p>
                                         </div>
@@ -990,7 +990,7 @@
                                             style="background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);">
                                             <h3 class="text-white font-bold">Leydon</h3>
                                             <p class="text-white text-xs flex items-center justify-between">
-                                                <span>VEN 12</span>
+                                                <span>SAM 13</span>
                                                 <span class="font-medium">02h - 04h</span>
                                             </p>
                                         </div>
@@ -1019,7 +1019,7 @@
                                             style="background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);">
                                             <h3 class="text-white font-bold">Tripidium</h3>
                                             <p class="text-white text-xs flex items-center justify-between">
-                                                <span>VEN 12</span>
+                                                <span>SAM 13</span>
                                                 <span class="font-medium">02h - 03h30</span>
                                             </p>
                                         </div>

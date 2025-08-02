@@ -74,11 +74,11 @@
                     <div class="flex flex-wrap justify-center gap-4 mt-4">
                         <div class="flex items-center bg-[#FF0F63]/10 px-4 py-2 rounded-full">
                             <span class="inline-block w-4 h-4 bg-[#FF0F63] rounded-full mr-2"></span>
-                            <span class="text-sm font-medium text-gray-800">Vendredi 12 juillet</span>
+                            <span class="text-sm font-medium text-gray-800">Vendredi 12 septembre</span>
                         </div>
                         <div class="flex items-center bg-[#8F1E98]/10 px-4 py-2 rounded-full">
                             <span class="inline-block w-4 h-4 bg-[#8F1E98] rounded-full mr-2"></span>
-                            <span class="text-sm font-medium text-gray-800">Samedi 13 juillet</span>
+                            <span class="text-sm font-medium text-gray-800">Samedi 13 septembre</span>
                         </div>
                     </div>
                 </div>
@@ -86,7 +86,7 @@
                 <!-- Description pour l'onglet "Vendredi 12" -->
                 <div id="description-tab2" class="description-panel">
                     <p class="text-lg text-gray-700 mb-4">Le festival Calan'Couleurs vous propose une soirée
-                        exceptionnelle vendredi 12 juillet, avec deux scènes pour une expérience musicale variée.</p>
+                        exceptionnelle vendredi 12 septembre, avec deux scènes pour une expérience musicale variée.</p>
                     <div class="flex flex-wrap justify-center gap-4 mt-4">
                         <div class="flex items-center bg-[#FF0F63]/10 px-4 py-2 rounded-full">
                             <span class="inline-block w-4 h-4 bg-[#FF0F63] rounded-full mr-2"></span>
@@ -102,7 +102,7 @@
                 <!-- Description pour l'onglet "Samedi 13" -->
                 <div id="description-tab3" class="description-panel hidden">
                     <p class="text-lg text-gray-700 mb-4">Le festival Calan'Couleurs vous propose une journée complète
-                        samedi 13 juillet, de l'après-midi jusqu'au bout de la nuit, avec deux scènes pour une
+                        samedi 13 septembre, de l'après-midi jusqu'au bout de la nuit, avec deux scènes pour une
                         expérience musicale variée.</p>
                     <div class="flex flex-wrap justify-center gap-4 mt-4">
                         <div class="flex items-center bg-[#FF0F63]/10 px-4 py-2 rounded-full">

@@ -439,7 +439,7 @@
                                                         d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z"
                                                         clip-rule="evenodd" />
                                                 </svg>
-                                                Extérieure
+                                                Extérieur
                                             </span>
                                         </div>
                                         <img src="{{ asset('img/artists/photos/Photos_artistes/ROCK 109.webp') }}"
@@ -468,7 +468,7 @@
                                                     <path
                                                         d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
                                                 </svg>
-                                                Intérieure
+                                                Intérieur
                                             </span>
                                         </div>
                                         <img src="{{ asset('img/artists/photos/Photos_artistes/LA RIF ET NOS MEN.webp') }}"
@@ -511,7 +511,7 @@
                                                         d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z"
                                                         clip-rule="evenodd" />
                                                 </svg>
-                                                Extérieure
+                                                Extérieur
                                             </span>
                                         </div>
                                         <img src="{{ asset('img/artists/photos/Photos_artistes/AN\'OM x VAYN.webp') }}"
@@ -554,7 +554,7 @@
                                                         d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z"
                                                         clip-rule="evenodd" />
                                                 </svg>
-                                                Extérieure
+                                                Extérieur
                                             </span>
                                         </div>
                                         <img src="{{ asset('img/artists/photos/Photos_artistes/WAZY.webp') }}"
@@ -583,7 +583,7 @@
                                                     <path
                                                         d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
                                                 </svg>
-                                                Intérieure
+                                                Intérieur
                                             </span>
                                         </div>
                                         <img src="{{ asset('img/artists/photos/Photos_artistes/AXLR.webp') }}"
@@ -626,7 +626,7 @@
                                                         d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z"
                                                         clip-rule="evenodd" />
                                                 </svg>
-                                                Extérieure
+                                                Extérieur
                                             </span>
                                         </div>
                                         <img src="{{ asset('img/artists/photos/Photos_artistes/DJ Hono.webp') }}"
@@ -655,7 +655,7 @@
                                                     <path
                                                         d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
                                                 </svg>
-                                                Intérieure
+                                                Intérieur
                                             </span>
                                         </div>
                                         <img src="{{ asset('img/artists/photos/Photos_artistes/DYMEISTER.webp') }}"
@@ -703,7 +703,7 @@
                                                         d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z"
                                                         clip-rule="evenodd" />
                                                 </svg>
-                                                Extérieure
+                                                Extérieur
                                             </span>
                                         </div>
                                         <img src="{{ asset('img/artists/photos/Photos_artistes/YOUTH COLLECTIVE.webp') }}"
@@ -733,7 +733,7 @@
                                                         d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z"
                                                         clip-rule="evenodd" />
                                                 </svg>
-                                                Extérieure
+                                                Extérieur
                                             </span>
                                         </div>
                                         <img src="{{ asset('img/artists/photos/Photos_artistes/MAKLOS.webp') }}"
@@ -763,7 +763,7 @@
                                                         d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z"
                                                         clip-rule="evenodd" />
                                                 </svg>
-                                                Extérieure
+                                                Extérieur
                                             </span>
                                         </div>
                                         <img src="{{ asset('img/artists/photos/Photos_artistes/KLÖ.webp') }}"
@@ -806,7 +806,7 @@
                                                         d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z"
                                                         clip-rule="evenodd" />
                                                 </svg>
-                                                Extérieure
+                                                Extérieur
                                             </span>
                                         </div>
                                         <img src="{{ asset('img/artists/photos/Photos_artistes/KABOUM.webp') }}"
@@ -835,7 +835,7 @@
                                                     <path
                                                         d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
                                                 </svg>
-                                                Intérieure
+                                                Intérieur
                                             </span>
                                         </div>
                                         <img src="{{ asset('img/artists/photos/Photos_artistes/TOM WORRF.webp') }}"
@@ -878,7 +878,7 @@
                                                         d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z"
                                                         clip-rule="evenodd" />
                                                 </svg>
-                                                Extérieure
+                                                Extérieur
                                             </span>
                                         </div>
                                         <img src="{{ asset('img/artists/photos/Photos_artistes/2TH.webp') }}"
@@ -908,7 +908,7 @@
                                                         d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z"
                                                         clip-rule="evenodd" />
                                                 </svg>
-                                                Extérieure
+                                                Extérieur
                                             </span>
                                         </div>
                                         <img src="{{ asset('img/artists/photos/Photos_artistes/MUNE.webp') }}"
@@ -937,7 +937,7 @@
                                                     <path
                                                         d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
                                                 </svg>
-                                                Intérieure
+                                                Intérieur
                                             </span>
                                         </div>
                                         <img src="{{ asset('img/artists/photos/Photos_artistes/YONEX.webp') }}"
@@ -980,7 +980,7 @@
                                                         d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z"
                                                         clip-rule="evenodd" />
                                                 </svg>
-                                                Extérieure
+                                                Extérieur
                                             </span>
                                         </div>
                                         <img src="{{ asset('img/artists/photos/Photos_artistes/LEYDON.webp') }}"
@@ -1009,7 +1009,7 @@
                                                     <path
                                                         d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
                                                 </svg>
-                                                Intérieure
+                                                Intérieur
                                             </span>
                                         </div>
                                         <img src="{{ asset('img/artists/photos/Photos_artistes/TRIPIDIUM.webp') }}"

@@ -1,48 +1,86 @@
 <?php
 
+/**
+ * Created by Reliese Model.
+ */
+
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 
-class User extends Authenticatable
+/**
+ * Class User
+ * 
+ * @property int $id
+ * @property string $firstname
+ * @property string $lastname
+ * @property string $login
+ * @property string $email
+ * @property Carbon|null $email_verified_at
+ * @property string $password
+ * @property string $role
+ * @property string $statut
+ * @property bool $actif
+ * @property string|null $remember_token
+ * @property int|null $updated_by
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * 
+ * @property User|null $user
+ * @property Collection|Artiste[] $artistes
+ * @property Collection|Faq[] $faqs
+ * @property Collection|User[] $users
+ *
+ * @package App\Models
+ */
+class User extends Model
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+	protected $table = 'users';
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-    ];
+	protected $casts = [
+		'email_verified_at' => 'datetime',
+		'actif' => 'bool',
+		'updated_by' => 'int'
+	];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
-     */
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
+	protected $hidden = [
+		'password',
+		'remember_token'
+	];
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    protected function casts(): array
-    {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
-    }
+	protected $fillable = [
+		'firstname',
+		'lastname',
+		'login',
+		'email',
+		'email_verified_at',
+		'password',
+		'role',
+		'statut',
+		'actif',
+		'remember_token',
+		'updated_by'
+	];
+
+	public function user()
+	{
+		return $this->belongsTo(User::class, 'updated_by');
+	}
+
+	public function artistes()
+	{
+		return $this->hasMany(Artiste::class, 'updated_by');
+	}
+
+	public function faqs()
+	{
+		return $this->hasMany(Faq::class, 'updated_by');
+	}
+
+	public function users()
+	{
+		return $this->hasMany(User::class, 'updated_by');
+	}
 }

@@ -2,12 +2,17 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
+    {{-- Meta tags dynamiques --}}
+    @yield('meta')
+
+    {{-- Scripts et styles communs --}}
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <link rel="icon" type="image/png" href="{{ asset('img/logos/TOUCAN.png') }}">
 
     <script>
         tailwind.config = {
@@ -23,26 +28,34 @@
     </script>
 
     @viteReactRefresh
-    @vite(['resources/css/app.css', 'resources/js/app.jsx', 'resources/js/navbar-loader.jsx', 'resources/js/timer-loader.jsx', 'resources/js/onsite-loader.jsx', 'resources/js/faq-loader.jsx', 'resources/js/program-loader.jsx', 'resources/js/app.js'])
+    {{-- @vite(['resources/css/app.css', 'resources/js/app.jsx', 'resources/js/navbar-loader.jsx', 'resources/js/timer-loader.jsx', 'resources/js/onsite-loader.jsx', 'resources/js/faq-loader.jsx']) --}}
+    @vite(['resources/css/app.css', 'resources/js/app.jsx', 'resources/js/navbar-loader.jsx'])
 
-    <!-- Fonts -->
-    {{-- <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" /> --}}
+    {{-- Scripts additionnels par page --}}
+    @stack('scripts')
 
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <title>CALAN-COULEURS</title>
 
+    {{-- Titre dynamique --}}
+    <title>@yield('title', 'Calan\'Couleurs Festival 2025')</title>
 </head>
 
-<body class="flex flex-col h-screen">
-    <div id="navbar-root" data-home-url="{{ url('/') }}" data-programmation-url="{{ url('/programmation') }}"
-        data-billetterie-url="https://www.helloasso.com/associations/calan-couleurs/evenements/festival-calan-couleurs">
-    </div>
-    {{-- @include('layouts.navigation') --}}
-    <div class="flex-grow overflow-auto">
+<body class="w-full">
+    {{-- Navbar commune --}}
+    <header class="sticky top-0 z-10 bg-white">
+        @include('partials.navbar')
+    </header>
+
+    {{-- Contenu principal --}}
+    <main class="w-full">
         @yield('content')
-    </div>
+    </main>
+
+    {{-- Footer commun --}}
     @include('partials.footer')
+
+    {{-- Scripts additionnels en fin de page --}}
+    @stack('scripts-footer')
 </body>
 
 </html>

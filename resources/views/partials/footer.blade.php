@@ -5,7 +5,7 @@
             {{-- Logo --}}
             <div class="mb-6 md:mb-0">
                 <img id="admin-logo" src="/img/logos/LOGO/Logo-Calan-blanc.png" alt="Logo Calan'Couleurs"
-                    class="h-16 cursor-pointer" title="Logo Calan'Couleurs">
+                    class="h-16" title="Logo Calan'Couleurs">
             </div>
 
             {{-- Navigation --}}
@@ -75,7 +75,7 @@
                 clearTimeout(clickTimer);
                 clickCount = 0;
                 // Redirection vers l'admin
-                window.location.href = '{{ route('login') }}';
+                window.open('{{ route("login") }}', '_blank', 'noopener,noreferrer');
             }
         });
     });

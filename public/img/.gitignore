@@ -1,0 +1,7 @@
+*
+
+!.gitignore
+
+public/img/artists/photos/Photos_artistes/*.webp
+public/img/artists/photos/Photos_artistes/*.jpg
+public/img/artists/photos/Photos_artistes/*.png

@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class Faq
- * 
+ *
  * @property int $id
  * @property string $question
  * @property string $answer
@@ -21,7 +21,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int|null $updated_by
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * 
+ *
  * @property User|null $user
  *
  * @package App\Models
@@ -46,8 +46,13 @@ class Faq extends Model
 		'updated_by'
 	];
 
-	public function user()
+	public function updatedBy()
 	{
 		return $this->belongsTo(User::class, 'updated_by');
 	}
+
+    public function createdBy()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
 }

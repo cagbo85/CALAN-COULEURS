@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS users (
     email VARCHAR(255) NOT NULL UNIQUE COMMENT 'Email unique',
     email_verified_at TIMESTAMP NULL,
     password VARCHAR(255) NOT NULL COMMENT 'Mot de passe',
-    role ENUM('admin', 'editor') NOT NULL DEFAULT 'editor' COMMENT 'Rôles différenciés',
+    role ENUM('super-admin', 'admin', 'editor') NOT NULL DEFAULT 'editor' COMMENT 'Rôles différenciés',
 	statut VARCHAR(255) NOT NULL COMMENT 'Statut de la personne au sein de l\'Association',
     actif BOOLEAN NOT NULL DEFAULT TRUE COMMENT 'Utilisateur actif/inactif',
     remember_token VARCHAR(100) NULL,
@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS users (
 ) COMMENT='Table des utilisateurs de l\'équipe';
 
 INSERT INTO users (firstname, lastname, login, email, password, role, statut, actif, updated_by) VALUES
-('Charles', 'Agbo', 'cagbo', 'agbo.charles85@gmail.com', 'P@ssw0rd', 'admin', 'Administrateur', TRUE, NULL);
+('Charles', 'Agbo', 'cagbo', 'agbo.charles85@gmail.com', 'P@ssw0rd', 'super-admin', 'Administrateur', TRUE, NULL);
 
 -- =================================================================
 -- TABLE ARTISTES - Gestion des artistes du festival

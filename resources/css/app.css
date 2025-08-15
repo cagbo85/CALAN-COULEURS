@@ -1,15 +1,20 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 /* Importation des polices */
 @font-face {
-    font-family: 'Urbanist';
-    src: url('/fonts/Urbanist/Urbanist-VariableFont_wght.ttf') format('truetype');
+    font-family: "Urbanist";
+    src: url("/fonts/Urbanist/Urbanist-VariableFont_wght.ttf")
+        format("truetype");
 }
 
 @font-face {
-    font-family: 'Urbanist Bold';
-    src: url('/fonts/Urbanist/Urbanist-Bold.ttf') format('truetype');
+    font-family: "Urbanist Bold";
+    src: url("/fonts/Urbanist/Urbanist-Bold.ttf") format("truetype");
 }
 
 /* Appliquer la police par défaut */
 body {
-    font-family: 'Urbanist', sans-serif;
+    font-family: "Urbanist", sans-serif;
 }

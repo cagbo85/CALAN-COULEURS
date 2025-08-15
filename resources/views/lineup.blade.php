@@ -158,7 +158,7 @@
                         <div class="artist-card group">
                             <div
                                 class="relative overflow-hidden rounded-lg aspect-[3/4] hover:shadow-lg transition-all duration-300">
-                                <img src="{{ asset('img/artists/photos/Photos_artistes/AXLR.webp') }}" alt="AXL R."
+                                <img src="{{ asset('img/artists/photos/Photos_artistes/AXL R..webp') }}" alt="AXL R."
                                     loading="lazy"
                                     class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
                                 <div class="absolute bottom-0 left-0 right-0 p-3"
@@ -175,7 +175,7 @@
                         <div class="artist-card group">
                             <div
                                 class="relative overflow-hidden rounded-lg aspect-[3/4] hover:shadow-lg transition-all duration-300">
-                                <img src="{{ asset('img/artists/photos/Photos_artistes/DJ Hono.webp') }}"
+                                <img src="{{ asset('img/artists/photos/Photos_artistes/HONO.webp') }}"
                                     alt="Hono" loading="lazy"
                                     class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
                                 <div class="absolute bottom-0 left-0 right-0 p-3"
@@ -294,7 +294,7 @@
                         <div class="artist-card group">
                             <div
                                 class="relative overflow-hidden rounded-lg aspect-[3/4] hover:shadow-lg transition-all duration-300">
-                                <img src="{{ asset('img/artists/photos/Photos_artistes/MUNE.webp') }}" alt="Mūne"
+                                <img src="{{ asset('img/artists/photos/Photos_artistes/MŪNE.webp') }}" alt="Mūne"
                                     loading="lazy"
                                     class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
                                 <div class="absolute bottom-0 left-0 right-0 p-3"
@@ -514,7 +514,7 @@
                                                 Extérieur
                                             </span>
                                         </div>
-                                        <img src="{{ asset('img/artists/photos/Photos_artistes/AN\'OM x VAYN.webp') }}"
+                                        <img src="{{ asset('img/artists/photos/Photos_artistes/AN\'OM X VAYN.webp') }}"
                                             alt="An'Om x Vayn" loading="lazy"
                                             class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
                                         <div class="absolute bottom-0 left-0 right-0 p-3"

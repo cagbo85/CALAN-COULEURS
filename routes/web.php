@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ProgrammationController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/welcome', function () {
@@ -22,9 +23,11 @@ Route::get('/', function () {
     return view('accueil');
 });
 
-Route::get('programmation', function () {
-    return view('lineup');
-})->name('programmation');
+Route::get('programmation', [ProgrammationController::class, 'index'])->name('programmation');
+
+Route::get('programmation2', function () {
+    return view('lineup2');
+})->name('programmation2');
 
 Route::get('notre-histoire', function () {
     return view('festival');

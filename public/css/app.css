@@ -12,3 +12,35 @@
 body {
     font-family: 'Urbanist', sans-serif;
 }
+
+.navbar {
+    z-index: 50 !important;
+}
+
+.tab-navigation {
+    z-index: 5 !important;
+}
+
+.artist-card .badge {
+    z-index: 1 !important;
+}
+
+/* Amélioration des transitions */
+.artist-card img {
+    transition: transform 0.3s ease;
+}
+
+.artist-card:hover img {
+    transform: scale(1.05);
+}
+
+/* Mobile optimizations */
+@media (max-width: 640px) {
+    .artist-card {
+        margin-bottom: 1rem;
+    }
+
+    .grid {
+        gap: 1rem;
+    }
+}

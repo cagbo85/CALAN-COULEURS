@@ -2,14 +2,14 @@ name: Calan'Couleurs CI/CD Pipeline
 
 on:
   push:
-    branches: [ main, master, production ]
+    branches: [main, master, production]
   pull_request:
-    branches: [ main, master ]
+    branches: [main, master]
 
 env:
-  PHP_VERSION: '8.2'
-  NODE_VERSION: '18'
-  MYSQL_VERSION: '8.0'
+  PHP_VERSION: "8.2"
+  NODE_VERSION: "18"
+  MYSQL_VERSION: "8.0"
 
 jobs:
   tests:
@@ -29,99 +29,110 @@ jobs:
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=5
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Setup PHP ${{ env.PHP_VERSION }}
-      uses: shivammathur/setup-php@v2
-      with:
-        php-version: ${{ env.PHP_VERSION }}
-        extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, pdo_mysql, gd, zip, bcmath
-        coverage: xdebug
-        tools: composer:v2
+      - name: Setup PHP ${{ env.PHP_VERSION }}
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ env.PHP_VERSION }}
+          extensions: mbstring, xml, ctype, iconv, intl, pdo_sqlite, pdo_mysql, gd, zip, bcmath
+          coverage: xdebug
+          tools: composer:v2
 
-    - name: Cache Composer dependencies
-      uses: actions/cache@v3
-      with:
-        path: vendor
-        key: composer-${{ runner.os }}-${{ hashFiles('composer.lock') }}
-        restore-keys: composer-${{ runner.os }}-
+      - name: Cache Composer dependencies
+        uses: actions/cache@v3
+        with:
+          path: vendor
+          key: composer-${{ runner.os }}-${{ hashFiles('composer.lock') }}
+          restore-keys: composer-${{ runner.os }}-
 
-    - name: Install PHP dependencies
-      run: |
-        composer install --no-progress --prefer-dist --optimize-autoloader --no-interaction
+      - name: 🔧 Create required directories
+        run: |
+          mkdir -p bootstrap/cache
+          mkdir -p storage/app
+          mkdir -p storage/framework/cache
+          mkdir -p storage/framework/sessions
+          mkdir -p storage/framework/views
+          mkdir -p storage/logs
+          chmod -R 755 storage
+          chmod -R 755 bootstrap/cache
 
-    - name: Setup Node.js ${{ env.NODE_VERSION }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ env.NODE_VERSION }}
-        cache: 'npm'
+      - name: Install PHP dependencies
+        run: |
+          composer install --no-progress --prefer-dist --optimize-autoloader --no-interaction
 
-    - name: Cache NPM dependencies
-      uses: actions/cache@v3
-      with:
-        path: ~/.npm
-        key: npm-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
-        restore-keys: npm-${{ runner.os }}-
+      - name: Setup Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "npm"
 
-    - name: Install NPM dependencies
-      run: npm ci --prefer-offline --no-audit
+      - name: Cache NPM dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: npm-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+          restore-keys: npm-${{ runner.os }}-
 
-    - name: Build Frontend Assets
-      run: npm run build
+      - name: Install NPM dependencies
+        run: npm ci --prefer-offline --no-audit
 
-    - name: Prepare Laravel Environment
-      run: |
-        cp .env.example .env
-        php artisan key:generate
-        chmod -R 755 storage
-        chmod -R 755 bootstrap/cache
+      - name: Build Frontend Assets
+        run: npm run build
 
-    - name: Run Database Migrations
-      run: php artisan migrate --force --no-interaction
-      env:
-        DB_CONNECTION: mysql
-        DB_HOST: 127.0.0.1
-        DB_PORT: 3306
-        DB_DATABASE: calan_test
-        DB_USERNAME: calan_user
-        DB_PASSWORD: password
+      - name: Prepare Laravel Environment
+        run: |
+          cp .env.example .env
+          php artisan key:generate
+          chmod -R 755 storage
+          chmod -R 755 bootstrap/cache
 
-    - name: Seed Database
-      run: php artisan db:seed --force --no-interaction
-      env:
-        DB_CONNECTION: mysql
-        DB_HOST: 127.0.0.1
-        DB_PORT: 3306
-        DB_DATABASE: calan_test
-        DB_USERNAME: calan_user
-        DB_PASSWORD: password
+      - name: Run Database Migrations
+        run: php artisan migrate --force --no-interaction
+        env:
+          DB_CONNECTION: mysql
+          DB_HOST: 127.0.0.1
+          DB_PORT: 3306
+          DB_DATABASE: calan_test
+          DB_USERNAME: calan_user
+          DB_PASSWORD: password
 
-    - name: Run PHPUnit Tests
-      run: |
-        vendor/bin/phpunit --coverage-text --coverage-clover=coverage.xml --log-junit=test-results.xml
-      env:
-        DB_CONNECTION: mysql
-        DB_HOST: 127.0.0.1
-        DB_PORT: 3306
-        DB_DATABASE: calan_test
-        DB_USERNAME: calan_user
-        DB_PASSWORD: password
+      - name: Seed Database
+        run: php artisan db:seed --force --no-interaction
+        env:
+          DB_CONNECTION: mysql
+          DB_HOST: 127.0.0.1
+          DB_PORT: 3306
+          DB_DATABASE: calan_test
+          DB_USERNAME: calan_user
+          DB_PASSWORD: password
 
-    - name: Upload Coverage to Codecov
-      uses: codecov/codecov-action@v3
-      with:
-        file: ./coverage.xml
-        flags: unittests
-        name: calan-couleurs-coverage
+      - name: Run PHPUnit Tests
+        run: |
+          vendor/bin/phpunit --coverage-text --coverage-clover=coverage.xml --log-junit=test-results.xml
+        env:
+          DB_CONNECTION: mysql
+          DB_HOST: 127.0.0.1
+          DB_PORT: 3306
+          DB_DATABASE: calan_test
+          DB_USERNAME: calan_user
+          DB_PASSWORD: password
 
-    - name: Publish Test Results
-      uses: dorny/test-reporter@v1
-      if: success() || failure()
-      with:
-        name: PHPUnit Tests
-        path: test-results.xml
-        reporter: java-junit
+      - name: Upload Coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          file: ./coverage.xml
+          flags: unittests
+          name: calan-couleurs-coverage
+
+      - name: Publish Test Results
+        uses: dorny/test-reporter@v1
+        if: success() || failure()
+        with:
+          name: PHPUnit Tests
+          path: test-results.xml
+          reporter: java-junit
 
   code-quality:
     name: Code Quality & Security
@@ -129,23 +140,28 @@ jobs:
     needs: tests
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Setup PHP
-      uses: shivammathur/setup-php@v2
-      with:
-        php-version: ${{ env.PHP_VERSION }}
-        tools: composer:v2
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ env.PHP_VERSION }}
+          tools: composer:v2
 
-    - name: Install dependencies
-      run: composer install --no-progress --prefer-dist --optimize-autoloader
+      - name: Create required directories
+        run: |
+          mkdir -p bootstrap/cache
+          chmod -R 755 bootstrap/cache
 
-    - name: Laravel Pint (Code Style)
-      run: ./vendor/bin/pint --test
+      - name: Install dependencies
+        run: composer install --no-progress --prefer-dist --optimize-autoloader
 
-    - name: Security Audit
-      run: composer audit
+      - name: Laravel Pint (Code Style)
+        run: ./vendor/bin/pint --test
+
+      - name: Security Audit
+        run: composer audit
 
   deploy:
     name: Deploy to Production
@@ -154,66 +170,71 @@ jobs:
     if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/production'
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Deploy via SSH
-      uses: appleboy/ssh-action@v0.1.7
-      with:
-        host: ${{ secrets.DEPLOY_HOST }}
-        username: ${{ secrets.DEPLOY_USER }}
-        password: ${{ secrets.DEPLOY_PASSWORD }}
-        port: ${{ secrets.DEPLOY_PORT || 22 }}
-        script: |
-          echo "Déploiement Calan'Couleurs démarré..."
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v0.1.7
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USER }}
+          password: ${{ secrets.DEPLOY_PASSWORD }}
+          port: ${{ secrets.DEPLOY_PORT || 22 }}
+          script: |
+            echo "Déploiement Calan'Couleurs démarré..."
 
-          # Aller dans le répertoire de l'app
-          cd ${{ secrets.DEPLOY_PATH || '/home/agch4404/public_html/laravel' }}
+            # Aller dans le répertoire de l'app
+            cd ${{ secrets.DEPLOY_PATH || '/home/agch4404/public_html/laravel' }}
 
-          # Mode maintenance
-          php artisan down --message="Mise à jour en cours..." --retry=60
+            # Mode maintenance
+            php artisan down --message="Mise à jour en cours..." --retry=60
 
-          # Mise à jour du code
-          git pull origin main
+            # Mise à jour du code
+            git pull origin main
 
-          # Dépendances PHP
-          composer install --no-dev --optimize-autoloader --no-interaction
+            # Créer les dossiers nécessaires
+            mkdir -p bootstrap/cache
+            mkdir -p storage/framework/{cache,sessions,views}
+            mkdir -p storage/logs
 
-          # Dépendances Node et build
-          npm ci --production
-          npm run build
+            # Permissions
+            chmod -R 755 storage
+            chmod -R 755 bootstrap/cache
 
-          # Base de données
-          php artisan migrate --force
+            # Dépendances PHP
+            composer install --no-dev --optimize-autoloader --no-interaction
 
-          # Cache Laravel
-          php artisan config:cache
-          php artisan route:cache
-          php artisan view:cache
+            # Dépendances Node et build
+            npm ci --production
+            npm run build
 
-          # Permissions
-          chmod -R 755 storage
-          chmod -R 755 bootstrap/cache
+            # Base de données
+            php artisan migrate --force
 
-          # Fin du mode maintenance
-          php artisan up
+            # Cache Laravel
+            php artisan config:cache
+            php artisan route:cache
+            php artisan view:cache
 
-          echo "Déploiement terminé avec succès!"
+            # Fin du mode maintenance
+            php artisan up
 
-    - name: Notify Deployment Success
-      if: success()
-      uses: 8398a7/action-slack@v3
-      with:
-        status: success
-        text: "Calan'Couleurs déployé avec succès sur production!"
-      env:
-        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+            echo "✅ Déploiement terminé avec succès!"
 
-    - name: Notify Deployment Failure
-      if: failure()
-      uses: 8398a7/action-slack@v3
-      with:
-        status: failure
-        text: "Échec du déploiement Calan'Couleurs"
-      env:
-        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+      - name: Notify Deployment Success
+        if: success()
+        uses: 8398a7/action-slack@v3
+        with:
+          status: success
+          text: "Calan'Couleurs déployé avec succès sur production!"
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+
+      - name: Notify Deployment Failure
+        if: failure()
+        uses: 8398a7/action-slack@v3
+        with:
+          status: failure
+          text: "Échec du déploiement Calan'Couleurs"
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}

@@ -7,11 +7,12 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class Artiste
- * 
+ *
  * @property int $id
  * @property string $name
  * @property string|null $style
@@ -30,13 +31,15 @@ use Illuminate\Database\Eloquent\Model;
  * @property int|null $updated_by
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * 
+ *
  * @property User|null $user
  *
  * @package App\Models
  */
 class Artiste extends Model
 {
+    use HasFactory;
+
 	protected $table = 'artistes';
 
 	protected $casts = [

@@ -101,8 +101,6 @@ jobs:
       - name: Prepare Laravel Application
         run: |
           php artisan key:generate
-          php artisan config:clear
-          php artisan cache:clear
 
       - name: Run Database Migrations
         run: php artisan migrate --force --no-interaction
@@ -110,7 +108,7 @@ jobs:
       - name: Seed Database
         run: php artisan db:seed --force --no-interaction
 
-      - name: 🧹 Clear caches (after migrations)
+      - name: Clear caches (after migrations)
         run: |
           php artisan config:clear
           php artisan cache:clear

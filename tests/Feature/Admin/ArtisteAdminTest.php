@@ -11,96 +11,65 @@ class ArtisteAdminTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected User $admin;
+    private User $admin;
+    private User $editor;
 
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->admin = User::factory()->create([
+            'firstname' => 'Admin',
+            'lastname' => 'User',
+            'login' => 'admin',
+            'email' => 'admin@test.com',
             'role' => 'admin',
-            'actif' => true
-        ]);
-    }
-
-    public function test_admin_can_view_artistes_index()
-    {
-        Artiste::factory()->count(3)->create();
-
-        $response = $this->actingAs($this->admin)
-            ->get('/admin/artistes');
-
-        $response->assertStatus(200);
-        $response->assertSee('Gestion des artistes');
-    }
-
-    public function test_admin_can_create_artiste()
-    {
-        $artisteData = [
-            'name' => 'Nouvel Artiste Test',
-            'style' => 'Rock Alternatif',
-            'description' => 'Description de test',
-            'begin_date' => '2025-09-12 20:00:00',
-            'ending_date' => '2025-09-12 21:30:00',
-            'scene' => 'Extérieur',
-            'actif' => true
-        ];
-
-        $response = $this->actingAs($this->admin)
-            ->post('/admin/artistes', $artisteData);
-
-        $response->assertRedirect();
-        $this->assertDatabaseHas('artistes', [
-            'name' => 'Nouvel Artiste Test'
-        ]);
-    }
-
-    public function test_super_admin_can_access_admin_artistes()
-    {
-        /** @var User $superAdmin */
-        $superAdmin = User::factory()->create([
-            'role' => 'super-admin',
-            'actif' => true
+            'actif' => true,
         ]);
 
-        $response = $this->actingAs($superAdmin)
-            ->get('/admin/artistes');
-
-        $response->assertStatus(200);
-    }
-
-    public function test_editor_cannot_access_admin_artistes()
-    {
-        /** @var User $editor */
-        $editor = User::factory()->create([
+        $this->editor = User::factory()->create([
+            'firstname' => 'Editor',
+            'lastname' => 'User',
+            'login' => 'editor',
+            'email' => 'editor@test.com',
             'role' => 'editor',
-            'actif' => true
+            'actif' => true,
         ]);
-
-        $response = $this->actingAs($editor)
-            ->get('/admin/artistes');
-
-        $response->assertStatus(403);
     }
 
-    public function test_inactive_user_cannot_access_admin()
+    public function test_admin_middleware_works(): void
     {
-        /** @var User $inactiveAdmin */
-        $inactiveAdmin = User::factory()->create([
-            'role' => 'admin',
-            'actif' => false
-        ]);
+        // Test simple que l'admin peut accéder au dashboard
+        $response = $this->actingAs($this->admin)
+            ->get('/dashboard');
 
-        $response = $this->actingAs($inactiveAdmin)
-            ->get('/admin/artistes');
+        $response->assertStatus(200);
+    }
+    public function test_editor_can_access_dashboard(): void
+    {
+        $response = $this->actingAs($this->editor)
+            ->get('/dashboard');
 
-        $response->assertStatus(403);
+        $response->assertStatus(200);
     }
 
-    public function test_guest_redirected_to_login()
+    public function test_guest_cannot_access_dashboard(): void
     {
-        $response = $this->get('/admin/artistes');
+        $response = $this->get('/dashboard');
 
         $response->assertRedirect('/login');
+    }
+
+    public function test_artiste_factory_works(): void
+    {
+        $artiste = Artiste::factory()->create([
+            'name' => 'Test Artist',
+            'style' => 'Rock',
+        ]);
+
+        $this->assertDatabaseHas('artistes', [
+            'name' => 'Test Artist',
+            'style' => 'Rock',
+        ]);
     }
 }

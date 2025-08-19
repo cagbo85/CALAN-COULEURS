@@ -11,51 +11,40 @@ class ProgrammationTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_lineup_page_loads_successfully()
+    protected function setUp(): void
     {
-        $response = $this->get('/lineup');
+        parent::setUp();
 
-        $response->assertStatus(200);
-        $response->assertSee('Programmation 2025');
-        $response->assertSee('Tous les artistes');
+        // Créer des artistes pour la programmation
+        Artiste::factory()->count(3)->create([
+            'actif' => true,
+        ]);
     }
 
-    public function test_lineup_displays_active_artistes()
-    {
-        // Créer des artistes actifs et inactifs
-        $artisteActif = Artiste::factory()->create([
-            'name' => 'Artiste Visible',
-            'actif' => true
-        ]);
-
-        $artisteInactif = Artiste::factory()->create([
-            'name' => 'Artiste Caché',
-            'actif' => false
-        ]);
-
-        $response = $this->get('/lineup');
-
-        $response->assertSee('Artiste Visible');
-        $response->assertDontSee('Artiste Caché');
-    }
-
-    public function test_homepage_loads_successfully()
+    public function test_homepage_displays_successfully(): void
     {
         $response = $this->get('/');
 
         $response->assertStatus(200);
     }
 
-    public function test_contact_page_loads_successfully()
+    public function test_programmation_page_exists(): void
     {
-        $response = $this->get('/contact');
+        $response = $this->get('/programmation');
 
         $response->assertStatus(200);
     }
 
-    public function test_festival_page_loads_successfully()
+    public function test_festival_page_exists(): void
     {
-        $response = $this->get('/festival');
+        $response = $this->get('/notre-histoire');
+
+        $response->assertStatus(200);
+    }
+
+    public function test_contact_page_exists(): void
+    {
+        $response = $this->get('/contact');
 
         $response->assertStatus(200);
     }

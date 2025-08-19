@@ -70,7 +70,6 @@ jobs:
           DB_PASSWORD=password
 
           MAIL_MAILER=array
-          CACHE_DRIVER=array
           QUEUE_CONNECTION=sync
           SESSION_DRIVER=array
 
@@ -112,13 +111,6 @@ jobs:
       - name: Clear caches (after migrations)
         run: |
           php artisan config:clear
-
-      - name: Verify tests exist
-        run: |
-          echo "Checking for test files:"
-          find tests/ -name "*.php" -type f | head -10
-          echo "PHPUnit configuration:"
-          cat phpunit.xml
       - name: Run PHPUnit Tests
         run: |
           vendor/bin/phpunit \

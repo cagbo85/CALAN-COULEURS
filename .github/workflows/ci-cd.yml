@@ -126,7 +126,6 @@ jobs:
             --coverage-text \
             --coverage-clover=coverage.xml \
             --testdox \
-            --verbose \
             --fail-on-empty-test-suite
       - name: Upload Coverage
         if: success()

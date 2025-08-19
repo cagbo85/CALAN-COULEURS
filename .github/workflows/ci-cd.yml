@@ -111,10 +111,22 @@ jobs:
       - name: Clear caches (after migrations)
         run: |
           php artisan config:clear
-          php artisan cache:clear
 
+      - name: Verify tests exist
+        run: |
+          echo "Checking for test files:"
+          find tests/ -name "*.php" -type f | head -10
+          echo "PHPUnit configuration:"
+          cat phpunit.xml
       - name: Run PHPUnit Tests
-        run: vendor/bin/phpunit --coverage-text --coverage-clover=coverage.xml
+        run: |
+          vendor/bin/phpunit \
+            --configuration=phpunit.xml \
+            --coverage-text \
+            --coverage-clover=coverage.xml \
+            --testdox \
+            --verbose \
+            --fail-on-empty-test-suite
       - name: Upload Coverage
         if: success()
         uses: codecov/codecov-action@v3

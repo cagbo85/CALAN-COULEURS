@@ -17,9 +17,14 @@ return new class extends Migration
             $table->string('style')->nullable();
             $table->text('description')->nullable();
             $table->string('photo')->nullable();
+            $table->enum('day', ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'])->default('Samedi');
             $table->dateTime('begin_date');
             $table->dateTime('ending_date');
             $table->enum('scene', ['Intérieur', 'Extérieur'])->default('Extérieur');
+            $table->string('soundcloud_url')->nullable();
+            $table->string('spotify_url')->nullable();
+            $table->string('youtube_url')->nullable();
+            $table->string('deezer_url')->nullable();
             $table->boolean('actif')->default(true);
             $table->unsignedBigInteger('created_by')->nullable();
             $table->unsignedBigInteger('updated_by')->nullable();

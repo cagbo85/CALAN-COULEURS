@@ -100,6 +100,8 @@ jobs:
       - name: Prepare Laravel Application
         run: |
           php artisan key:generate
+          php artisan migrate --env=testing --force
+          php artisan db:seed --env=testing --force
 
       - name: Run Database Migrations
         run: php artisan migrate --force --no-interaction

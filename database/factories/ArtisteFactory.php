@@ -11,20 +11,24 @@ class ArtisteFactory extends Factory
 
     public function definition()
     {
-        $beginDate = $this->faker->dateTimeBetween('2025-09-12 15:00:00', '2025-09-13 23:00:00');
-        $endDate = (clone $beginDate)->modify('+90 minutes');
-
         return [
             'name' => $this->faker->words(2, true),
             'style' => $this->faker->randomElement(['Rock', 'Electronic', 'Hip-hop', 'Jazz', 'Pop', 'Reggae']),
             'description' => $this->faker->paragraph(2),
             'photo' => 'img/artists/photos/Photos_artistes/ROCK 109.webp',
-            'begin_date' => $beginDate,
-            'ending_date' => $endDate,
+            'day' => 'Samedi',
+            'begin_date' => now(),
+            'ending_date' => now()->addHour(),
             'scene' => $this->faker->randomElement(['Intérieur', 'Extérieur']),
+            'soundcloud_url' => null,
+            'spotify_url' => null,
+            'youtube_url' => null,
+            'deezer_url' => null,
             'actif' => true,
             'created_by' => 1,
             'updated_by' => 1,
+            'created_at' => now(),
+            'updated_at' => now(),
         ];
     }
 

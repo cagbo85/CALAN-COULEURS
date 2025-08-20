@@ -2,9 +2,10 @@
 
 namespace Tests\Feature\Auth;
 
-use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class AuthenticationTest extends TestCase
 {
@@ -17,36 +18,67 @@ class AuthenticationTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function test_users_can_authenticate_using_the_login_screen(): void
+    public function test_users_can_authenticate_with_email(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->create([
+            'password' => Hash::make('password'),
+            'email_verified_at' => now(),
+        ]);
 
-        $response = $this->post('/login', [
-            'email' => $user->email,
+        $response = $this->from(route('login'))->postAsForm(route('login'), [
+            'login'    => $user->email,
             'password' => 'password',
         ]);
 
-        $this->assertAuthenticated();
-        $response->assertRedirect(route('dashboard', absolute: false));
+        $this->assertAuthenticatedAs($user);
+        $response->assertRedirect(route('dashboard'));
+    }
+
+    public function test_users_can_authenticate_with_login(): void
+    {
+        $user = User::factory()->create([
+            'password' => Hash::make('password'),
+            'email_verified_at' => now(),
+        ]);
+
+        $response = $this->from(route('login'))->postAsForm(route('login'), [
+            'login'    => $user->login,
+            'password' => 'password',
+        ]);
+
+        $this->assertAuthenticatedAs($user);
+        $response->assertRedirect(route('dashboard'));
     }
 
     public function test_users_can_not_authenticate_with_invalid_password(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->create([
+            'password' => Hash::make('password'),
+            'email_verified_at' => now(),
+        ]);
 
-        $this->post('/login', [
-            'email' => $user->email,
+        $response = $this->from(route('login'))->postAsForm(route('login'), [
+            'login'    => $user->login,
             'password' => 'wrong-password',
         ]);
 
+        $response->assertRedirect(route('login'));
+        $response->assertSessionHasErrors('login');
         $this->assertGuest();
     }
 
     public function test_users_can_logout(): void
     {
-        $user = User::factory()->create();
+        /** @var User $user */
 
-        $response = $this->actingAs($user)->post('/logout');
+        $user = User::factory()->create([
+            'email_verified_at' => now(),
+        ]);
+
+        $this->actingAs($user);
+
+        // Breeze utilise POST /logout
+        $response = $this->postAsForm(route('logout'));
 
         $this->assertGuest();
         $response->assertRedirect('/');

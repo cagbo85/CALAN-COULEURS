@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use App\Models\Artiste;
+use App\Models\Faq;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -23,6 +24,7 @@ class DatabaseSeeder extends Seeder
             'email' => 'superadmin@test.com',
             'role' => 'super-admin',
             'actif' => true,
+            'password' => bcrypt('superadmin_password'),
         ]);
 
         User::factory()->create([
@@ -32,6 +34,7 @@ class DatabaseSeeder extends Seeder
             'email' => 'admin@test.com',
             'role' => 'admin',
             'actif' => true,
+            'password' => bcrypt('admin_password'),
         ]);
 
         User::factory()->create([
@@ -41,7 +44,10 @@ class DatabaseSeeder extends Seeder
             'email' => 'editor@test.com',
             'role' => 'editor',
             'actif' => true,
+            'password' => bcrypt('editor_password'),
         ]);
+
+        Faq::factory()->count(5)->create();
 
         if (app()->environment(['testing', 'local'])) {
             Artiste::factory()->count(5)->create();

@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\Artiste;
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
+use App\Models\Artiste;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
@@ -38,7 +37,6 @@ class ArtisteController extends Controller
      */
     public function store(Request $request)
     {
-
         $user = Auth::user();
 
         $validator = Validator::make($request->all(), [
@@ -93,12 +91,12 @@ class ArtisteController extends Controller
             $errorSummary = implode(' | ', $errorMessages);
             notify()->error(
                 "Erreurs de validation détectées : {$errorSummary}",
-                "Validation échouée"
+                'Validation échouée'
             );
 
             Log::warning("Erreur de validation lors de la crétion de l'artiste", [
                 'errors' => $validator->errors(),
-                'user_id' => $user->id
+                'user_id' => $user->id,
             ]);
 
             return back()->withErrors($validator->errors())->withInput();
@@ -111,13 +109,13 @@ class ArtisteController extends Controller
                 $file = $request->file('photo');
 
                 // Nom de fichier personnalisé : NOM_ARTISTE en UPPERCASE
-                $filename = strtoupper($request->input('name')) . '.webp';
+                $filename = strtoupper($request->input('name')).'.webp';
 
                 // Dossier de destination personnalisé
                 $destinationPath = public_path('img/artists/photos/Photos_artistes');
 
                 // Créer le dossier s'il n'existe pas
-                if (!File::exists($destinationPath)) {
+                if (! File::exists($destinationPath)) {
                     File::makeDirectory($destinationPath, 0755, true);
                 }
 
@@ -125,7 +123,7 @@ class ArtisteController extends Controller
                 $file->move($destinationPath, $filename);
 
                 // Stocker le chemin relatif dans la DB
-                $updateData['photo'] = 'img/artists/photos/Photos_artistes/' . $filename;
+                $updateData['photo'] = 'img/artists/photos/Photos_artistes/'.$filename;
             }
 
             $artiste = Artiste::create([
@@ -148,7 +146,8 @@ class ArtisteController extends Controller
 
             DB::commit();
 
-            notify()->success("L'artiste " . $artiste->name . " a été créé avec succès.", "Création réussie !🎉");
+            notify()->success("L'artiste ".$artiste->name.' a été créé avec succès.', 'Création réussie !🎉');
+
             return redirect()->route('admin.artistes.show', ['artisteId' => $artiste->id]);
         } catch (\Illuminate\Database\QueryException $e) {
             DB::rollBack();
@@ -163,12 +162,12 @@ class ArtisteController extends Controller
             if (config('app.debug')) {
                 notify()->error(
                     "Erreur de base de données : {$e->getMessage()}",
-                    "Erreur technique détaillée"
+                    'Erreur technique détaillée'
                 );
             } else {
                 notify()->error(
                     'Une erreur de base de données s\'est produite lors de la création de l\'artiste. L\'équipe technique a été notifiée.',
-                    "Erreur de base de données"
+                    'Erreur de base de données'
                 );
             }
 
@@ -179,18 +178,18 @@ class ArtisteController extends Controller
             Log::error('Erreur générale lors de la création d\'un artiste', [
                 'message' => $e->getMessage(),
                 'name' => $request->input('name'),
-                'user_id' => $user->id
+                'user_id' => $user->id,
             ]);
 
             if (config('app.debug')) {
                 notify()->error(
                     "Erreur technique : {$e->getMessage()} (Ligne {$e->getLine()})",
-                    "Erreur technique détaillée"
+                    'Erreur technique détaillée'
                 );
             } else {
                 notify()->error(
                     'Une erreur inattendue s\'est produite lors de la création de l\'artiste. L\'équipe technique a été notifiée.',
-                    "Erreur technique"
+                    'Erreur technique'
                 );
             }
 
@@ -275,12 +274,12 @@ class ArtisteController extends Controller
             $errorSummary = implode(' | ', $errorMessages);
             notify()->error(
                 "Erreurs de validation détectées : {$errorSummary}",
-                "Validation échouée"
+                'Validation échouée'
             );
 
             Log::warning("Erreur de validation lors de la crétion de l'artiste", [
                 'errors' => $validator->errors(),
-                'user_id' => $user->id
+                'user_id' => $user->id,
             ]);
 
             return back()->withErrors($validator->errors())->withInput();
@@ -318,13 +317,13 @@ class ArtisteController extends Controller
                 $file = $request->file('photo');
 
                 // Nouveau nom basé sur le nom modifié
-                $filename = strtoupper($request->input('name')) . '.webp';
+                $filename = strtoupper($request->input('name')).'.webp';
 
                 // Dossier de destination
                 $destinationPath = public_path('img/artists/photos/Photos_artistes');
 
                 // Créer le dossier s'il n'existe pas
-                if (!File::exists($destinationPath)) {
+                if (! File::exists($destinationPath)) {
                     File::makeDirectory($destinationPath, 0755, true);
                 }
 
@@ -332,17 +331,17 @@ class ArtisteController extends Controller
                 $file->move($destinationPath, $filename);
 
                 // Mettre à jour le chemin
-                $updateData['photo'] = 'img/artists/photos/Photos_artistes/' . $filename;
+                $updateData['photo'] = 'img/artists/photos/Photos_artistes/'.$filename;
             }
             // Si le nom a changé mais pas de nouvelle photo, renommer l'ancienne
             elseif ($artiste->name !== $request->input('name') && $artiste->photo) {
                 $oldPhotoPath = public_path($artiste->photo);
-                $newFilename = strtoupper($request->input('name')) . '.webp';
-                $newPhotoPath = public_path('img/artists/photos/Photos_artistes/' . $newFilename);
+                $newFilename = strtoupper($request->input('name')).'.webp';
+                $newPhotoPath = public_path('img/artists/photos/Photos_artistes/'.$newFilename);
 
                 if (File::exists($oldPhotoPath)) {
                     File::move($oldPhotoPath, $newPhotoPath);
-                    $updateData['photo'] = 'img/artists/photos/Photos_artistes/' . $newFilename;
+                    $updateData['photo'] = 'img/artists/photos/Photos_artistes/'.$newFilename;
                 }
             }
 
@@ -350,7 +349,8 @@ class ArtisteController extends Controller
 
             DB::commit();
 
-            notify()->success("L'artiste {$artiste->name} a été modifié avec succès.", "Modification réussie ! 🎉");
+            notify()->success("L'artiste {$artiste->name} a été modifié avec succès.", 'Modification réussie ! 🎉');
+
             return redirect()->route('admin.artistes.show', $artiste->id);
         } catch (\Illuminate\Database\QueryException $e) {
             DB::rollBack();
@@ -365,12 +365,12 @@ class ArtisteController extends Controller
             if (config('app.debug')) {
                 notify()->error(
                     "Erreur de base de données : {$e->getMessage()}",
-                    "Erreur technique détaillée"
+                    'Erreur technique détaillée'
                 );
             } else {
                 notify()->error(
                     'Une erreur de base de données s\'est produite lors de la modification de l\'artiste. L\'équipe technique a été notifiée.',
-                    "Erreur de base de données"
+                    'Erreur de base de données'
                 );
             }
 
@@ -381,18 +381,18 @@ class ArtisteController extends Controller
             Log::error('Erreur générale lors de la modification d\'un artiste', [
                 'message' => $e->getMessage(),
                 'name' => $request->input('name'),
-                'user_id' => $user->id
+                'user_id' => $user->id,
             ]);
 
             if (config('app.debug')) {
                 notify()->error(
                     "Erreur technique : {$e->getMessage()} (Ligne {$e->getLine()})",
-                    "Erreur technique détaillée"
+                    'Erreur technique détaillée'
                 );
             } else {
                 notify()->error(
                     'Une erreur inattendue s\'est produite lors de la modification de l\'artiste. L\'équipe technique a été notifiée.',
-                    "Erreur technique"
+                    'Erreur technique'
                 );
             }
 
@@ -417,7 +417,7 @@ class ArtisteController extends Controller
 
             DB::commit();
 
-            notify()->success("L'artiste {$artiste->name} a été masqué avec succès.", "Masquage réussi ! 🎉");
+            notify()->success("L'artiste {$artiste->name} a été masqué avec succès.", 'Masquage réussi ! 🎉');
 
             return redirect()->route('admin.artistes.index');
         } catch (\Illuminate\Database\QueryException $e) {
@@ -433,12 +433,12 @@ class ArtisteController extends Controller
             if (config('app.debug')) {
                 notify()->error(
                     "Erreur de base de données : {$e->getMessage()}",
-                    "Erreur technique détaillée"
+                    'Erreur technique détaillée'
                 );
             } else {
                 notify()->error(
                     'Une erreur de base de données s\'est produite lors de la modification du statut de l\'artiste. L\'équipe technique a été notifiée.',
-                    "Erreur de base de données"
+                    'Erreur de base de données'
                 );
             }
 
@@ -449,18 +449,18 @@ class ArtisteController extends Controller
             Log::error('Erreur générale lors de la modification du statut de l\'artiste', [
                 'message' => $e->getMessage(),
                 'name' => $artiste->name,
-                'user_id' => $user->id
+                'user_id' => $user->id,
             ]);
 
             if (config('app.debug')) {
                 notify()->error(
                     "Erreur technique : {$e->getMessage()} (Ligne {$e->getLine()})",
-                    "Erreur technique détaillée"
+                    'Erreur technique détaillée'
                 );
             } else {
                 notify()->error(
                     'Une erreur inattendue s\'est produite lors de la modification du statut de l\'artiste. L\'équipe technique a été notifiée.',
-                    "Erreur technique"
+                    'Erreur technique'
                 );
             }
 

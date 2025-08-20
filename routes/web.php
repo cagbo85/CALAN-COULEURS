@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProgrammationController;
 use Illuminate\Support\Facades\Route;
 
@@ -37,6 +37,6 @@ Route::get('contact', function () {
     return view('contact');
 })->name('contact');
 
-require __DIR__ . '/auth.php';
-require __DIR__ . '/artistes.php';
-require __DIR__ . '/faqs.php';
+require __DIR__.'/auth.php';
+require __DIR__.'/artistes.php';
+require __DIR__.'/faqs.php';

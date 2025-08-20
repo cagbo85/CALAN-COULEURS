@@ -23,7 +23,6 @@ class EmailVerificationPromptController extends Controller
      * Show mail verification waiting page
      */
     public function waiting(): View
-
     {
         return view('auth.email-verification-waiting');
     }

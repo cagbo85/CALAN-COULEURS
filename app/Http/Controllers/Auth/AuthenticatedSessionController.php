@@ -4,11 +4,11 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
-use App\Models\User;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -32,14 +32,15 @@ class AuthenticatedSessionController extends Controller
         /** @var User $user */
         $user = Auth::user();
 
-        if (!$user->isActive()) {
+        if (! $user->isActive()) {
             Auth::logout();
+
             return back()->withErrors([
                 'login' => 'Votre compte a été désactivé. Contactez un administrateur.',
             ]);
         }
 
-        notify()->success('Connexion réussie !🎉', 'Bienvenue ' . $user->firstname);
+        notify()->success('Connexion réussie !🎉', 'Bienvenue '.$user->firstname);
 
         return redirect()->intended(route('dashboard', absolute: false));
     }

@@ -6,16 +6,14 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Laravel\Sanctum\HasApiTokens;
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use App\Notifications\VerifyEmail;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Notifications\VerifyEmailNotification;
+use Carbon\Carbon;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
 /**
  * Class User
@@ -34,17 +32,13 @@ use App\Notifications\VerifyEmailNotification;
  * @property int|null $updated_by
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- *
  * @property User|null $user
  * @property Collection|Artiste[] $artistes
  * @property Collection|Faq[] $faqs
  * @property Collection|User[] $users
- *
- * @package App\Models
  */
 class User extends Authenticatable implements MustVerifyEmail
 {
-
     use HasApiTokens, HasFactory, Notifiable;
 
     protected $table = 'users';
@@ -52,12 +46,12 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $casts = [
         'email_verified_at' => 'datetime',
         'actif' => 'bool',
-        'updated_by' => 'int'
+        'updated_by' => 'int',
     ];
 
     protected $hidden = [
         'password',
-        'remember_token'
+        'remember_token',
     ];
 
     protected $fillable = [
@@ -71,7 +65,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'statut',
         'actif',
         'remember_token',
-        'updated_by'
+        'updated_by',
     ];
 
     public function user()
@@ -162,6 +156,6 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function sendEmailVerificationNotification()
     {
-        $this->notify(new VerifyEmailNotification);
+        $this->notify(new VerifyEmailNotification());
     }
 }

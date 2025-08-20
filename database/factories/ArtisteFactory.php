@@ -37,7 +37,7 @@ class ArtisteFactory extends Factory
      */
     public function inactive(): static
     {
-        return $this->state(fn(array $attributes) => [
+        return $this->state(fn (array $attributes) => [
             'actif' => false,
         ]);
     }
@@ -47,7 +47,7 @@ class ArtisteFactory extends Factory
      */
     public function scene(string $scene): static
     {
-        return $this->state(fn(array $attributes) => [
+        return $this->state(fn (array $attributes) => [
             'scene' => $scene,
         ]);
     }

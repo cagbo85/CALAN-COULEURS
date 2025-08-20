@@ -3,14 +3,13 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\View\View;
 use App\Models\User;
-use Illuminate\Validation\ValidationException;
-use Illuminate\Validation\Rules;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Auth\Events\Registered;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rules;
+use Illuminate\Validation\ValidationException;
+use Illuminate\View\View;
 
 class AuthController extends Controller
 {
@@ -42,7 +41,7 @@ class AuthController extends Controller
         // 2. Vérifier que l'utilisateur existe en BDD avec ce login
         $user = User::where('login', $validated['login'])->first();
 
-        if (!$user) {
+        if (! $user) {
             throw ValidationException::withMessages([
                 'login' => 'Les informations d\'identification ne sont pas valides ou l\'initialisation de votre compte a déjà été effectuée.',
             ]);

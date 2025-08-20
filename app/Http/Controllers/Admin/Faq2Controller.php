@@ -2,14 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Models\Faq;
-use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
@@ -76,7 +74,7 @@ class Faq2Controller extends Controller
             $errorSummary = implode(' | ', $errorMessages);
             notify()->error(
                 "Erreurs de validation détectées : {$errorSummary}",
-                "Validation échouée"
+                'Validation échouée'
             );
 
             return back()->withErrors($validator->errors())->withInput();
@@ -98,7 +96,7 @@ class Faq2Controller extends Controller
                     Log::info('Décalage des ordres lors de création FAQ', [
                         'requested_order' => $requestedOrder,
                         'user_id' => $user->id,
-                        'affected_faqs' => Faq::where('ordre', '>', $requestedOrder)->count()
+                        'affected_faqs' => Faq::where('ordre', '>', $requestedOrder)->count(),
                     ]);
                 }
 
@@ -121,18 +119,18 @@ class Faq2Controller extends Controller
             if ($requestedOrder && $existingFaq) {
                 notify()->success(
                     "La FAQ #{$faq->id} a été créée à l'ordre {$ordre}. Les autres FAQs ont été automatiquement décalées.",
-                    $actif ? "Publication avec réorganisation ! 🎉" : "Brouillon avec réorganisation ! 📝"
+                    $actif ? 'Publication avec réorganisation ! 🎉' : 'Brouillon avec réorganisation ! 📝'
                 );
             } else {
                 if ($actif) {
                     notify()->success(
                         "La FAQ #{$faq->id} a été créée et publiée avec succès à l'ordre {$ordre}!",
-                        "Publication réussie ! 🎉"
+                        'Publication réussie ! 🎉'
                     );
                 } else {
                     notify()->success(
                         "La FAQ #{$faq->id} a été enregistrée en brouillon à l'ordre {$ordre}.",
-                        "Brouillon sauvegardé ! 📝"
+                        'Brouillon sauvegardé ! 📝'
                     );
                 }
             }
@@ -143,7 +141,7 @@ class Faq2Controller extends Controller
                 'ordre' => $faq->ordre,
                 'actif' => $faq->actif,
                 'user_id' => $user->id,
-                'user_name' => $user->firstname . ' ' . $user->lastname
+                'user_name' => $user->firstname.' '.$user->lastname,
             ]);
 
             return redirect()->route('admin.faqs.show', $faq->id);
@@ -160,12 +158,12 @@ class Faq2Controller extends Controller
             if (config('app.debug')) {
                 notify()->error(
                     "Erreur de base de données : {$e->getMessage()}",
-                    "Erreur technique détaillée"
+                    'Erreur technique détaillée'
                 );
             } else {
                 notify()->error(
                     'Une erreur de base de données s\'est produite lors de la création d\'une FAQ. L\'équipe technique a été notifiée.',
-                    "Erreur de base de données"
+                    'Erreur de base de données'
                 );
             }
 
@@ -176,18 +174,18 @@ class Faq2Controller extends Controller
             Log::error('Erreur générale lors de la création d\'une FAQ', [
                 'message' => $e->getMessage(),
                 'question' => $request->input('question'),
-                'user_id' => $user->id
+                'user_id' => $user->id,
             ]);
 
             if (config('app.debug')) {
                 notify()->error(
                     "Erreur technique : {$e->getMessage()} (Ligne {$e->getLine()})",
-                    "Erreur technique détaillée"
+                    'Erreur technique détaillée'
                 );
             } else {
                 notify()->error(
                     'Une erreur inattendue s\'est produite lors de la création d\'une FAQ. L\'équipe technique a été notifiée.',
-                    "Erreur technique"
+                    'Erreur technique'
                 );
             }
 
@@ -257,12 +255,12 @@ class Faq2Controller extends Controller
             $errorSummary = implode(' | ', $errorMessages);
             notify()->error(
                 "Erreurs de validation détectées : {$errorSummary}",
-                "Validation échouée"
+                'Validation échouée'
             );
 
-            Log::warning("Erreur de validation lors de la création de la question fréquente", [
+            Log::warning('Erreur de validation lors de la création de la question fréquente', [
                 'errors' => $validator->errors(),
-                'user_id' => $user->id
+                'user_id' => $user->id,
             ]);
 
             return back()->withErrors($validator->errors())->withInput();
@@ -283,7 +281,8 @@ class Faq2Controller extends Controller
 
             DB::commit();
 
-            notify()->success("La FAQ #{$faq->id} a été modifiée avec succès.", "Modification réussie ! 🎉");
+            notify()->success("La FAQ #{$faq->id} a été modifiée avec succès.", 'Modification réussie ! 🎉');
+
             return redirect()->route('admin.faqs.show', $faq->id);
         } catch (\Illuminate\Database\QueryException $e) {
             DB::rollBack();
@@ -298,12 +297,12 @@ class Faq2Controller extends Controller
             if (config('app.debug')) {
                 notify()->error(
                     "Erreur de base de données : {$e->getMessage()}",
-                    "Erreur technique détaillée"
+                    'Erreur technique détaillée'
                 );
             } else {
                 notify()->error(
                     'Une erreur de base de données s\'est produite lors de la modification de la FAQ. L\'équipe technique a été notifiée.',
-                    "Erreur de base de données"
+                    'Erreur de base de données'
                 );
             }
 
@@ -314,18 +313,18 @@ class Faq2Controller extends Controller
             Log::error('Erreur générale lors de la modification de la FAQ', [
                 'message' => $e->getMessage(),
                 'question' => $request->input('question'),
-                'user_id' => $user->id
+                'user_id' => $user->id,
             ]);
 
             if (config('app.debug')) {
                 notify()->error(
                     "Erreur technique : {$e->getMessage()} (Ligne {$e->getLine()})",
-                    "Erreur technique détaillée"
+                    'Erreur technique détaillée'
                 );
             } else {
                 notify()->error(
                     'Une erreur inattendue s\'est produite lors de la modification de la FAQ. L\'équipe technique a été notifiée.',
-                    "Erreur technique"
+                    'Erreur technique'
                 );
             }
 
@@ -350,7 +349,7 @@ class Faq2Controller extends Controller
 
             DB::commit();
 
-            notify()->success("La FAQ #{$faq->id} a été masquée avec succès.", "Masquage réussi ! 🎉");
+            notify()->success("La FAQ #{$faq->id} a été masquée avec succès.", 'Masquage réussi ! 🎉');
 
             return redirect()->route('admin.faqs.index');
         } catch (\Illuminate\Database\QueryException $e) {
@@ -366,12 +365,12 @@ class Faq2Controller extends Controller
             if (config('app.debug')) {
                 notify()->error(
                     "Erreur de base de données : {$e->getMessage()}",
-                    "Erreur technique détaillée"
+                    'Erreur technique détaillée'
                 );
             } else {
                 notify()->error(
                     'Une erreur de base de données s\'est produite lors de la modification du statut de la FAQ. L\'équipe technique a été notifiée.',
-                    "Erreur de base de données"
+                    'Erreur de base de données'
                 );
             }
 
@@ -382,18 +381,18 @@ class Faq2Controller extends Controller
             Log::error('Erreur générale lors de la modification du statut de la FAQ', [
                 'message' => $e->getMessage(),
                 'question' => $faq->question,
-                'user_id' => $user->id
+                'user_id' => $user->id,
             ]);
 
             if (config('app.debug')) {
                 notify()->error(
                     "Erreur technique : {$e->getMessage()} (Ligne {$e->getLine()})",
-                    "Erreur technique détaillée"
+                    'Erreur technique détaillée'
                 );
             } else {
                 notify()->error(
                     'Une erreur inattendue s\'est produite lors de la modification du statut de la FAQ. L\'équipe technique a été notifiée.',
-                    "Erreur technique"
+                    'Erreur technique'
                 );
             }
 
@@ -408,7 +407,7 @@ class Faq2Controller extends Controller
     {
         $validator = Validator::make($request->all(), [
             'ids' => 'required|array',
-            'ids.*' => 'integer|exists:faqs,id'
+            'ids.*' => 'integer|exists:faqs,id',
         ], [
             'ids.required' => 'Aucune FAQ sélectionnée.',
             'ids.array' => 'Format de données invalide.',
@@ -418,9 +417,10 @@ class Faq2Controller extends Controller
 
         if ($validator->fails()) {
             notify()->error(
-                'Erreur de validation : ' . $validator->errors()->first(),
+                'Erreur de validation : '.$validator->errors()->first(),
                 'Données invalides'
             );
+
             return back()->withErrors($validator)->withInput();
         }
 
@@ -443,17 +443,17 @@ class Faq2Controller extends Controller
             // Log de l'action
             Log::info('Masquage en lot de FAQs', [
                 'user_id' => $user->id,
-                'user_name' => $user->firstname . ' ' . $user->lastname,
+                'user_name' => $user->firstname.' '.$user->lastname,
                 'masked_count' => $maskedCount,
                 'faq_ids' => $ids,
-                'faq_questions' => $faqsToMask->pluck('question')->toArray()
+                'faq_questions' => $faqsToMask->pluck('question')->toArray(),
             ]);
 
             DB::commit();
 
             notify()->success(
                 "{$maskedCount} FAQ(s) ont été masquées avec succès.",
-                "Modification réussie ! 🎉"
+                'Modification réussie ! 🎉'
             );
 
             return redirect()->route('admin.faqs.index');
@@ -470,12 +470,12 @@ class Faq2Controller extends Controller
             if (config('app.debug')) {
                 notify()->error(
                     "Erreur de base de données : {$e->getMessage()}",
-                    "Erreur technique détaillée"
+                    'Erreur technique détaillée'
                 );
             } else {
                 notify()->error(
                     'Une erreur de base de données s\'est produite lors de la modification des FAQs. L\'équipe technique a été notifiée.',
-                    "Erreur de base de données"
+                    'Erreur de base de données'
                 );
             }
 
@@ -486,18 +486,18 @@ class Faq2Controller extends Controller
             Log::error('Erreur générale lors de la modification des FAQs', [
                 'message' => $e->getMessage(),
                 'faq_ids' => $ids,
-                'user_id' => $user->id
+                'user_id' => $user->id,
             ]);
 
             if (config('app.debug')) {
                 notify()->error(
                     "Erreur technique : {$e->getMessage()} (Ligne {$e->getLine()})",
-                    "Erreur technique détaillée"
+                    'Erreur technique détaillée'
                 );
             } else {
                 notify()->error(
                     'Une erreur inattendue s\'est produite lors de la modification des FAQs. L\'équipe technique a été notifiée.',
-                    "Erreur technique"
+                    'Erreur technique'
                 );
             }
 
@@ -512,7 +512,7 @@ class Faq2Controller extends Controller
     {
         $validator = Validator::make($request->all(), [
             'ids' => 'required|array',
-            'ids.*' => 'integer|exists:faqs,id'
+            'ids.*' => 'integer|exists:faqs,id',
         ], [
             'ids.required' => 'Aucune FAQ sélectionnée.',
             'ids.array' => 'Format de données invalide.',
@@ -522,9 +522,10 @@ class Faq2Controller extends Controller
 
         if ($validator->fails()) {
             notify()->error(
-                'Erreur de validation : ' . $validator->errors()->first(),
+                'Erreur de validation : '.$validator->errors()->first(),
                 'Données invalides'
             );
+
             return back()->withErrors($validator)->withInput();
         }
 
@@ -547,17 +548,17 @@ class Faq2Controller extends Controller
             // Log de l'action
             Log::info('Activation en lot de FAQs', [
                 'user_id' => $user->id,
-                'user_name' => $user->firstname . ' ' . $user->lastname,
+                'user_name' => $user->firstname.' '.$user->lastname,
                 'activated_count' => $activatedCount,
                 'faq_ids' => $ids,
-                'faq_questions' => $faqsToActivate->pluck('question')->toArray()
+                'faq_questions' => $faqsToActivate->pluck('question')->toArray(),
             ]);
 
             DB::commit();
 
             notify()->success(
                 "{$activatedCount} FAQ(s) ont été activées avec succès.",
-                "Modification réussie ! 🎉"
+                'Modification réussie ! 🎉'
             );
 
             return redirect()->route('admin.faqs.index');
@@ -574,12 +575,12 @@ class Faq2Controller extends Controller
             if (config('app.debug')) {
                 notify()->error(
                     "Erreur de base de données : {$e->getMessage()}",
-                    "Erreur technique détaillée"
+                    'Erreur technique détaillée'
                 );
             } else {
                 notify()->error(
                     'Une erreur de base de données s\'est produite lors de la modification des FAQs. L\'équipe technique a été notifiée.',
-                    "Erreur de base de données"
+                    'Erreur de base de données'
                 );
             }
 
@@ -590,18 +591,18 @@ class Faq2Controller extends Controller
             Log::error('Erreur générale lors de la modification des FAQs', [
                 'message' => $e->getMessage(),
                 'faq_ids' => $ids,
-                'user_id' => $user->id
+                'user_id' => $user->id,
             ]);
 
             if (config('app.debug')) {
                 notify()->error(
                     "Erreur technique : {$e->getMessage()} (Ligne {$e->getLine()})",
-                    "Erreur technique détaillée"
+                    'Erreur technique détaillée'
                 );
             } else {
                 notify()->error(
                     'Une erreur inattendue s\'est produite lors de la modification des FAQs. L\'équipe technique a été notifiée.',
-                    "Erreur technique"
+                    'Erreur technique'
                 );
             }
 
@@ -640,12 +641,12 @@ class Faq2Controller extends Controller
             $errorSummary = implode(' | ', $errorMessages);
             notify()->error(
                 "Erreurs de validation détectées : {$errorSummary}",
-                "Validation échouée"
+                'Validation échouée'
             );
 
-            Log::warning("Erreur de validation lors de la création de la question fréquente", [
+            Log::warning('Erreur de validation lors de la création de la question fréquente', [
                 'errors' => $validator->errors(),
-                'user_id' => $user->id
+                'user_id' => $user->id,
             ]);
 
             return back()->withErrors($validator->errors())->withInput();
@@ -688,7 +689,7 @@ class Faq2Controller extends Controller
             // Mettre à jour la FAQ actuelle
             $faq->update([
                 'ordre' => $newOrder,
-                'updated_by' => $user->id
+                'updated_by' => $user->id,
             ]);
 
             DB::commit();
@@ -699,10 +700,10 @@ class Faq2Controller extends Controller
                 'faq_id' => $faq->id,
                 'old_order' => $currentOrder,
                 'new_order' => $newOrder,
-                'direction' => $direction
+                'direction' => $direction,
             ]);
 
-            notify()->success("L'ordre de la FAQ #{$faq->id} a été modifié avec succès.", "Modification réussie ! 🎉");
+            notify()->success("L'ordre de la FAQ #{$faq->id} a été modifié avec succès.", 'Modification réussie ! 🎉');
 
             return back()->withInput();
         } catch (\Illuminate\Database\QueryException $e) {
@@ -721,12 +722,12 @@ class Faq2Controller extends Controller
             if (config('app.debug')) {
                 notify()->error(
                     "Erreur de base de données : {$e->getMessage()}",
-                    "Erreur technique détaillée"
+                    'Erreur technique détaillée'
                 );
             } else {
                 notify()->error(
                     'Une erreur de base de données s\'est produite lors de la modification de l\'ordre de la FAQ. L\'équipe technique a été notifiée.',
-                    "Erreur de base de données"
+                    'Erreur de base de données'
                 );
             }
 
@@ -740,18 +741,18 @@ class Faq2Controller extends Controller
                 'new_order' => $newOrder,
                 'faq_id' => $faq->id,
                 'direction' => $direction,
-                'user_id' => $user->id
+                'user_id' => $user->id,
             ]);
 
             if (config('app.debug')) {
                 notify()->error(
                     "Erreur technique : {$e->getMessage()} (Ligne {$e->getLine()})",
-                    "Erreur technique détaillée"
+                    'Erreur technique détaillée'
                 );
             } else {
                 notify()->error(
                     'Une erreur inattendue s\'est produite lors de la modification de l\'ordre de la FAQ. L\'équipe technique a été notifiée.',
-                    "Erreur technique"
+                    'Erreur technique'
                 );
             }
 

@@ -2,14 +2,13 @@
 
 namespace App\Notifications;
 
+use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\URL;
-use Illuminate\Auth\Notifications\VerifyEmail;
 
 class VerifyEmailNotification extends VerifyEmail
 {
@@ -55,9 +54,9 @@ class VerifyEmailNotification extends VerifyEmail
     {
         $verificationUrl = $this->verificationUrl($notifiable);
 
-        return (new MailMessage)
+        return (new MailMessage())
             ->subject('Vérifiez votre adresse email - Calan\'Couleurs')
-            ->greeting('Bonjour ' . $notifiable->firstname . ' !')
+            ->greeting('Bonjour '.$notifiable->firstname.' !')
             ->line('Bienvenue dans l\'espace d\'administration de Calan\'Couleurs ! 🎭')
             ->line('Pour finaliser l\'activation de votre compte, veuillez cliquer sur le bouton ci-dessous pour vérifier votre adresse email.')
             ->action('Vérifier mon email', $verificationUrl)
@@ -66,7 +65,7 @@ class VerifyEmailNotification extends VerifyEmail
             ->salutation('L\'équipe Calan\'Couleurs')
             ->view('emails.verify-email', [
                 'user' => $notifiable,
-                'verificationUrl' => $verificationUrl
+                'verificationUrl' => $verificationUrl,
             ]);
     }
 

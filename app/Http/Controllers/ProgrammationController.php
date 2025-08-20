@@ -21,7 +21,7 @@ class ProgrammationController extends Controller
         $stats = [
             'total_artistes' => $allArtistes->count(),
             'total_jours' => count($programmation),
-            'scenes' => $allArtistes->pluck('scene')->filter()->unique()->values()
+            'scenes' => $allArtistes->pluck('scene')->filter()->unique()->values(),
         ];
 
         return view('lineup', compact('programmation', 'stats', 'allArtistes'));
@@ -40,11 +40,11 @@ class ProgrammationController extends Controller
             // Créer la clé du jour
             $dayKey = $this->getFestivalDayKey($beginDate);
 
-            if (!isset($grouped[$dayKey])) {
+            if (! isset($grouped[$dayKey])) {
                 $grouped[$dayKey] = [
                     'label' => $this->getFestivalDayLabel($beginDate),
                     'date' => $beginDate->format('Y-m-d'),
-                    'periods' => []
+                    'periods' => [],
                 ];
             }
 
@@ -52,12 +52,12 @@ class ProgrammationController extends Controller
             $periodKey = $this->getPeriodKey($beginDate);
             $periodLabel = $this->getPeriodLabel($beginDate);
 
-            if (!isset($grouped[$dayKey]['periods'][$periodKey])) {
+            if (! isset($grouped[$dayKey]['periods'][$periodKey])) {
                 $grouped[$dayKey]['periods'][$periodKey] = [
                     'label' => $periodLabel,
                     'time_range' => $this->getPeriodTimeRange($periodLabel),
                     'sort_order' => $this->getPeriodSortOrder($periodLabel),
-                    'artistes' => []
+                    'artistes' => [],
                 ];
             }
 
@@ -90,12 +90,20 @@ class ProgrammationController extends Controller
         $hour = $carbon->hour;
 
         // Créer une clé unique qui préserve l'ordre chronologique
-        if ($hour >= 15 && $hour < 20) return '01_afternoon';
-        if ($hour >= 20 && $hour < 23) return '02_evening';
-        if ($hour >= 23 || $hour < 2) return '03_night';
-        if ($hour >= 2 && $hour < 5) return '04_late_night';
+        if ($hour >= 15 && $hour < 20) {
+            return '01_afternoon';
+        }
+        if ($hour >= 20 && $hour < 23) {
+            return '02_evening';
+        }
+        if ($hour >= 23 || $hour < 2) {
+            return '03_night';
+        }
+        if ($hour >= 2 && $hour < 5) {
+            return '04_late_night';
+        }
 
-        return '05_other_' . $hour;
+        return '05_other_'.$hour;
     }
 
     /**
@@ -126,12 +134,12 @@ class ProgrammationController extends Controller
         $dayNames = [
             'Friday' => 'Vendredi',
             'Saturday' => 'Samedi',
-            'Sunday' => 'Dimanche'
+            'Sunday' => 'Dimanche',
         ];
 
         $dayName = $dayNames[$carbon->format('l')] ?? $carbon->format('l');
 
-        return $dayName . ' ' . $carbon->format('j') . ' septembre';
+        return $dayName.' '.$carbon->format('j').' septembre';
     }
 
     /**
@@ -141,10 +149,18 @@ class ProgrammationController extends Controller
     {
         $hour = Carbon::parse($date)->hour;
 
-        if ($hour >= 15 && $hour < 20) return 'afternoon';
-        if ($hour >= 20 && $hour < 23) return 'evening';
-        if ($hour >= 23 || $hour < 2) return 'night';
-        if ($hour >= 2 && $hour < 5) return 'late_night';
+        if ($hour >= 15 && $hour < 20) {
+            return 'afternoon';
+        }
+        if ($hour >= 20 && $hour < 23) {
+            return 'evening';
+        }
+        if ($hour >= 23 || $hour < 2) {
+            return 'night';
+        }
+        if ($hour >= 2 && $hour < 5) {
+            return 'late_night';
+        }
 
         return 'other';
     }
@@ -159,7 +175,7 @@ class ProgrammationController extends Controller
             'evening' => 2,
             'night' => 3,
             'late_night' => 4,
-            'other' => 5
+            'other' => 5,
         ];
 
         return $orders[$period] ?? 99;
@@ -175,7 +191,7 @@ class ProgrammationController extends Controller
             'evening' => '20h - 23h',
             'night' => '23h - 02h',
             'late_night' => '02h - 05h',
-            'other' => 'Autres créneaux'
+            'other' => 'Autres créneaux',
         ];
 
         return $ranges[$period] ?? 'Horaires variables';

@@ -1,12 +1,12 @@
 <?php
+
 // filepath: app/Http/Controllers/DashboardController.php
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use App\Models\Artiste;
 use App\Models\Faq;
-use Illuminate\Http\Request;
+use App\Models\User;
 
 class DashboardController extends Controller
 {
@@ -30,7 +30,7 @@ class DashboardController extends Controller
                 'total' => Faq::count(),
                 'actives' => Faq::where('actif', true)->count(),
                 'masquees' => Faq::where('actif', false)->count(),
-            ]
+            ],
         ];
 
         return view('dashboard', compact('stats'));

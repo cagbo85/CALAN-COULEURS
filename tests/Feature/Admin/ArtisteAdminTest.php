@@ -12,6 +12,7 @@ class ArtisteAdminTest extends TestCase
     use RefreshDatabase;
 
     private User $admin;
+
     private User $editor;
 
     protected function setUp(): void
@@ -45,6 +46,7 @@ class ArtisteAdminTest extends TestCase
 
         $response->assertStatus(200);
     }
+
     public function test_editor_can_access_dashboard(): void
     {
         $response = $this->actingAs($this->editor)

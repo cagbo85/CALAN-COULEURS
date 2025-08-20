@@ -1,9 +1,9 @@
 <?php
+
 // filepath: app/Http/Controllers/FaqController.php
+
 namespace App\Http\Controllers;
 
-use App\Models\Faq;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class FaqController extends Controller

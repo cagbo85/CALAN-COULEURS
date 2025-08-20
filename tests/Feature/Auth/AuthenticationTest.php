@@ -2,10 +2,10 @@
 
 namespace Tests\Feature\Auth;
 
-use Tests\TestCase;
 use App\Models\User;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Hash;
+use Tests\TestCase;
 
 class AuthenticationTest extends TestCase
 {
@@ -26,7 +26,7 @@ class AuthenticationTest extends TestCase
         ]);
 
         $response = $this->from(route('login'))->postAsForm(route('login'), [
-            'login'    => $user->email,
+            'login' => $user->email,
             'password' => 'password',
         ]);
 
@@ -42,7 +42,7 @@ class AuthenticationTest extends TestCase
         ]);
 
         $response = $this->from(route('login'))->postAsForm(route('login'), [
-            'login'    => $user->login,
+            'login' => $user->login,
             'password' => 'password',
         ]);
 
@@ -58,7 +58,7 @@ class AuthenticationTest extends TestCase
         ]);
 
         $response = $this->from(route('login'))->postAsForm(route('login'), [
-            'login'    => $user->login,
+            'login' => $user->login,
             'password' => 'wrong-password',
         ]);
 
@@ -70,7 +70,6 @@ class AuthenticationTest extends TestCase
     public function test_users_can_logout(): void
     {
         /** @var User $user */
-
         $user = User::factory()->create([
             'email_verified_at' => now(),
         ]);

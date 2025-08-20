@@ -13,7 +13,7 @@ class FaqFactory extends Factory
     {
         return [
             'question' => $this->faker->sentence,
-            'answer' => $this->faker->paragraph,
+            'answer' => $this->faker->text(30),
             'actif' => true,
             'ordre' => $this->faker->numberBetween(1, 10),
             'created_by' => $this->faker->randomElement([1, 2, 3]),

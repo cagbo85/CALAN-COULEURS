@@ -25,7 +25,6 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
-
       - name: Install & build
         run: |
           npm ci
@@ -44,7 +43,7 @@ jobs:
           git config user.name "github-actions"
           git config user.email "actions@github.com"
           git commit -m "build: frontend assets for $GITHUB_SHA" || echo "No asset changes"
-          git push origin release
+          git push --force-with-lease origin release
   tests:
     name: Tests & Quality
     runs-on: ubuntu-latest

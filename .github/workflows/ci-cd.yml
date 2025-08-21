@@ -1,16 +1,47 @@
-name: 🎵 Calan'Couleurs CI/CD Pipeline
+name: Calan'Couleurs CI/CD Pipeline
 
+permissions:
+  contents: write
 on:
   push:
-    branches: [main, master, production]
+    branches: [main]
   pull_request:
-    branches: [main, master]
+    branches: [main]
 
 env:
   PHP_VERSION: "8.2"
   NODE_VERSION: "18"
 
 jobs:
+  build-and-release:
+    name: Build frontend & push relaese
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: action/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install & build
+        run: |
+          npm run build
+          mkdir -p /tmp/build
+          cp -r public/build /tmp/build/build
+
+      - name: Prepare release branch
+        run: |
+          git fetch origin
+          git checkout -B release origin/main
+          rm -rf public/build
+          mkdir -p public
+          cp -r /tmp/build/build public/
+          git add -f public/build
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git commit -m "build: frontend assets for $GITHUB_SHA" || echo "No asset changes"
+          git push origin release
   tests:
     name: Tests & Quality
     runs-on: ubuntu-latest
@@ -106,7 +137,6 @@ jobs:
       - name: Run Database Migrations
         run: php artisan migrate --force --no-interaction
 
-
       - name: Seed Database
         run: php artisan db:seed --force --no-interaction
 
@@ -166,35 +196,14 @@ jobs:
 
   deploy:
     name: Deploy to Production
+    needs: [tests, code-quality, build-and-release]
     runs-on: ubuntu-latest
-    needs: [tests, code-quality]
-    if: github.ref == 'refs/heads/main'
-
     steps:
-      - name: Deploy via SSH
-        uses: appleboy/ssh-action@v0.1.7
-        with:
-          host: ${{ secrets.DEPLOY_HOST }}
-          username: ${{ secrets.DEPLOY_USER }}
-          password: ${{ secrets.DEPLOY_PASSWORD }}
-          port: ${{ secrets.DEPLOY_PORT || 22 }}
-          script: |
-            echo "🎵 Déploiement Calan'Couleurs..."
-            cd ${{ secrets.DEPLOY_PATH || '/home/agch4404/public_html/laravel' }}
-
-            php artisan down --message="Mise à jour..." --retry=60
-            git pull origin main
-
-            mkdir -p bootstrap/cache storage/framework/{cache,sessions,views} storage/logs
-            chmod -R 755 storage bootstrap/cache
-
-            composer install --no-dev --optimize-autoloader --no-interaction
-            npm ci --production && npm run build
-
-            php artisan migrate --force
-            php artisan config:cache
-            php artisan route:cache
-            php artisan view:cache
-            php artisan up
-
-            echo "Déploiement terminé!"
+      - name: Deploy via WebHook
+        env:
+          DEPLOY_URL: ${{ secrets.DEPLOY_URL }}
+          DEPLOY_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
+        run: |
+          curl -fsS -X POST \
+            -H "X-Deploy-Token: $DEPLOY_TOKEN" \
+            "$DEPLOY_URL"

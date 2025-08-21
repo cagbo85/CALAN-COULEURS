@@ -10,22 +10,25 @@ on:
 
 env:
   PHP_VERSION: "8.2"
-  NODE_VERSION: "18"
+  NODE_VERSION: "20"
 
 jobs:
   build-and-release:
-    name: Build frontend & push relaese
+    name: Build frontend & push release
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - uses: action/setup-node@v4
+
+      - uses: actions/setup-node@v4
         with:
-          node-version: "22"
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
 
       - name: Install & build
         run: |
+          npm ci
           npm run build
           mkdir -p /tmp/build
           cp -r public/build /tmp/build/build
@@ -107,8 +110,7 @@ jobs:
           BCRYPT_ROUNDS=4
           EOF
 
-      - name: Cache Composer dependencies
-        uses: actions/cache@v3
+      - uses: actions/cache@v3
         with:
           path: vendor
           key: composer-${{ runner.os }}-${{ hashFiles('composer.lock') }}
@@ -117,11 +119,10 @@ jobs:
       - name: Install PHP dependencies
         run: composer install --no-progress --prefer-dist --optimize-autoloader --no-interaction
 
-      - name: Setup Node.js ${{ env.NODE_VERSION }}
-        uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: "npm"
+          cache: npm
 
       - name: Install NPM dependencies and build
         run: |

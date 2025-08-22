@@ -1,6 +1,8 @@
 import React from "react";
 import OnSiteFeature from "./OnSiteFeature";
 
+const toAccessibleTitle = (title) => title.replace(/^[^\p{L}\p{N}]+/u, '').trim();
+
 export default function OnSiteSection() {
     // Stands
     const stands = [

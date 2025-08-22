@@ -2,6 +2,25 @@ import { useEffect, useRef, useState } from "react";
 
 export default function Navbar({ routes }) {
     const [isOpen, setIsOpen] = useState(false);
+    const btnRef = useRef(null);
+    const firstMobileLinkRef = useRef(null);
+
+    useEffect(() => {
+        function onKeyDown(e) {
+            if (e.key === "Escape" && isOpen) {
+                setIsOpen(false);
+                btnRef.current?.focus();
+            }
+        }
+        window.addEventListener("keydown", onKeyDown);
+        return () => window.removeEventListener("keydown", onKeyDown);
+    }, [isOpen]);
+
+    useEffect(() => {
+        if (isOpen) {
+            firstMobileLinkRef.current?.focus();
+        }
+    }, [isOpen]);
 
     return (
         <header className="bg-white shadow-md">

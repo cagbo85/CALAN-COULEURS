@@ -13,6 +13,8 @@ env:
   NODE_VERSION: "20"
 
 jobs:
+
+  # 1. Build des assets frontend (Vite) et push sur la branche release pour publication.
   build-and-release:
     name: Build frontend & push release
     runs-on: ubuntu-latest
@@ -44,6 +46,8 @@ jobs:
           git config user.email "actions@github.com"
           git commit -m "build: frontend assets for $GITHUB_SHA" || echo "No asset changes"
           git push --force-with-lease origin release
+
+  # 2. Lancement des tests unitaires et fonctionnels Laravel (PHPUnit) + vérification de la couverture.
   tests:
     name: Tests & Quality
     runs-on: ubuntu-latest
@@ -157,6 +161,7 @@ jobs:
         with:
           file: ./coverage.xml
 
+  # 3. Vérification du style de code (Laravel Pint) et audit de sécurité des dépendances PHP.
   code-quality:
     name: Code Quality & Security
     runs-on: ubuntu-latest
@@ -185,15 +190,13 @@ jobs:
       - name: Install dependencies
         run: composer install --no-progress --prefer-dist --optimize-autoloader
 
-      # - name: Generate app key
-      #   run: php artisan key:generate --force
-
       - name: Laravel Pint (Code Style)
         run: ./vendor/bin/pint --test
 
       - name: Security Audit
         run: composer audit --no-interaction --no-ansi
 
+  # 4. Déploiement automatique sur le serveur de production via webhook sécurisé.
   deploy:
     name: Deploy to Production
     needs: [tests, code-quality, build-and-release]

@@ -37,7 +37,7 @@
         <!-- Logo -->
         <div class="mb-8">
             <a href="/">
-                <img src="/img/logos/LOGO/Logo-Calan-blanc.png" alt="Logo Calan'Couleurs"
+                <img src="/img/logos/LOGO/Logo-Calan-blanc.png" alt="" aria-hidden="true"
                     class="h-20 sm:h-24 drop-shadow-lg">
             </a>
         </div>

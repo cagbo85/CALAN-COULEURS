@@ -41,13 +41,17 @@
 </head>
 
 <body class="w-full">
+    <a href="#contenu-principal"
+        class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 bg-white text-[#8F1E98] px-3 py-2 rounded">
+        Aller au contenu
+    </a>
     {{-- Navbar commune --}}
     <header class="sticky top-0 z-10 bg-white">
         @include('partials.navbar')
     </header>
 
     {{-- Contenu principal --}}
-    <main class="w-full">
+    <main id="contenu-principal" class="w-full" tabindex="-1">
         @yield('content')
     </main>
 

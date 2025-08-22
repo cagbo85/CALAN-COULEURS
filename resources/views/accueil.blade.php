@@ -41,7 +41,10 @@
         </div>
 
         <!-- Timer -->
-        <div id="timer-root" class="w-full max-w-xs sm:max-w-md md:max-w-lg mx-auto mb-4 sm:mb-6"></div>
+        <div class="w-full max-w-xs sm:max-w-md md:max-w-lg mx-auto mb-4 sm:mb-6" role="region"
+            aria-label="Compte à rebours avant le festival">
+            <div id="timer-root"></div>
+        </div>
 
         <!-- Edition et lieu -->
         <div class="mt-1 sm:mt-2 mb-4 sm:mb-6 backdrop-blur-md px-4 sm:px-6 py-2 sm:py-3 rounded-xl shadow-lg border border-white/30"
@@ -88,60 +91,66 @@
     <main>
         {{-- Section programme --}}
         <section class="py-16 px-6"
-            style="background: linear-gradient(180deg, rgba(255,15,99,0.9) 0%, rgba(143,30,152,0.9) 35%, rgba(39,42,199,0.9) 100%)">
+            style="background: linear-gradient(180deg, rgba(255,15,99,0.9) 0%, rgba(143,30,152,0.9) 35%, rgba(39,42,199,0.9) 100%)"
+            aria-labelledby="programmation-heading">
             <div class="container mx-auto">
-                <h2 class="text-3xl text-white font-bold uppercase mb-10 text-center sm:text-left">La programmation</h2>
+                <h2 id="programmation-heading"
+                    class="text-3xl text-white font-bold uppercase mb-10 text-center sm:text-left">La programmation</h2>
 
                 <div class="flex flex-wrap justify-center gap-8 max-w-6xl mx-auto">
                     <!-- Jour 1 - Vendredi -->
-                    <div class="w-[20rem] h-[35rem] min-h-[24rem] bg-cover bg-center text-white p-6 flex flex-col justify-between border-2 border-white shadow-lg"
-                        style="background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.1))">
-
-                        <div class="space-y-3">
-                            <!-- Artistes dans l'ordre de passage -->
-                            <p class="text-lg font-bold uppercase tracking-wide">Rock 109</p>
-                            <p class="text-lg font-bold uppercase tracking-wide">La Rif et Nos Men</p>
-                            <p class="text-lg font-bold uppercase tracking-wide">An'Om x Vayn</p>
-                            <p class="text-lg font-bold uppercase tracking-wide">Wazy</p>
-                            <p class="text-lg font-bold uppercase tracking-wide">AXL R.</p>
-                            <p class="text-lg font-bold uppercase tracking-wide">Hono</p>
-                            <p class="text-lg font-bold uppercase tracking-wide">Dymeister</p>
-                        </div>
-
+                    <section
+                        class="w-[20rem] h-[35rem] min-h-[24rem] bg-cover bg-center text-white p-6 flex flex-col justify-between border-2 border-white shadow-lg"
+                        style="background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.1))"
+                        aria-labelledby="vendredi-title">
                         <div>
-                            <p class="text-xl font-bold text-white mt-4">Vendredi 12 septembre</p>
-                            <p class="text-sm font-bold text-white opacity-80">20h à 4h</p>
+                            <h3 id="vendredi-title" class="text-xl font-bold">Vendredi 12 septembre</h3>
+                            <p class="text-sm font-bold text-white/80">
+                                <time datetime="2025-09-12T20:00">20h</time> – <time datetime="2025-09-13T04:00">4h</time>
+                            </p>
                         </div>
-                    </div>
+
+                        <ul class="space-y-3 mt-4" aria-label="Ordre de passage">
+                            <li class="text-lg font-bold uppercase tracking-wide">Rock 109</li>
+                            <li class="text-lg font-bold uppercase tracking-wide">La Rif et Nos Men</li>
+                            <li class="text-lg font-bold uppercase tracking-wide">An'Om x Vayn</li>
+                            <li class="text-lg font-bold uppercase tracking-wide">Wazy</li>
+                            <li class="text-lg font-bold uppercase tracking-wide">AXL R.</li>
+                            <li class="text-lg font-bold uppercase tracking-wide">Hono</li>
+                            <li class="text-lg font-bold uppercase tracking-wide">Dymeister</li>
+                        </ul>
+                    </section>
 
                     <!-- Jour 2 - Samedi -->
-                    <div class="w-[20rem] h-[35rem] min-h-[24rem] bg-cover bg-center text-white p-6 flex flex-col justify-between border-2 border-white shadow-lg"
-                        style="background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.1))">
-
-                        <div class="space-y-3">
-                            <!-- Artistes dans l'ordre de passage -->
-                            <p class="text-lg font-bold uppercase tracking-wide">Youth Collective</p>
-                            <p class="text-lg font-bold uppercase tracking-wide">Maklos</p>
-                            <p class="text-lg font-bold uppercase tracking-wide">Klö</p>
-                            <p class="text-lg font-bold uppercase tracking-wide">Kaboum</p>
-                            <p class="text-lg font-bold uppercase tracking-wide">TOM WORRF</p>
-                            <p class="text-lg font-bold uppercase tracking-wide">2TH</p>
-                            <p class="text-lg font-bold uppercase tracking-wide">Mūne</p>
-                            <p class="text-lg font-bold uppercase tracking-wide">Yonex</p>
-                            <p class="text-lg font-bold uppercase tracking-wide">Leydon</p>
-                            <p class="text-lg font-bold uppercase tracking-wide">Tripidium</p>
-                        </div>
-
+                    <section
+                        class="w-[20rem] h-[35rem] min-h-[24rem] bg-cover bg-center text-white p-6 flex flex-col justify-between border-2 border-white shadow-lg"
+                        style="background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.1))"
+                        aria-labelledby="samedi-title">
                         <div>
-                            <p class="text-xl font-bold text-white mt-4">Samedi 13 septembre</p>
-                            <p class="text-sm font-bold text-white opacity-80">15h à 4h</p>
+                            <h3 id="samedi-title" class="text-xl font-bold">Samedi 13 septembre</h3>
+                            <p class="text-sm font-bold text-white/80">
+                                <time datetime="2025-09-13T15:00">15h</time> – <time datetime="2025-09-14T04:00">4h</time>
+                            </p>
                         </div>
-                    </div>
+
+                        <ul class="space-y-3 mt-4" aria-label="Ordre de passage">
+                            <li class="text-lg font-bold uppercase tracking-wide">Youth Collective</li>
+                            <li class="text-lg font-bold uppercase tracking-wide">Maklos</li>
+                            <li class="text-lg font-bold uppercase tracking-wide">Klö</li>
+                            <li class="text-lg font-bold uppercase tracking-wide">Kaboum</li>
+                            <li class="text-lg font-bold uppercase tracking-wide">TOM WORRF</li>
+                            <li class="text-lg font-bold uppercase tracking-wide">2TH</li>
+                            <li class="text-lg font-bold uppercase tracking-wide">Mūne</li>
+                            <li class="text-lg font-bold uppercase tracking-wide">Yonex</li>
+                            <li class="text-lg font-bold uppercase tracking-wide">Leydon</li>
+                            <li class="text-lg font-bold uppercase tracking-wide">Tripidium</li>
+                        </ul>
+                    </section>
                 </div>
 
                 <div class="text-center mt-12">
                     <a href="{{ route('programmation') }}"
-                        class="inline-block px-8 py-3 text-center mt-2 bg-[#8F1E98] text-white font-semibold rounded-lg hover:bg-[#FF0F63] transition">
+                        class="inline-block px-8 py-3 text-center mt-2 bg-[#8F1E98] text-white font-semibold rounded-lg hover:bg-[#FF0F63] transition focus:outline-none focus-visible:ring">
                         Voir les horaires détaillés
                     </a>
                 </div>
@@ -163,13 +172,13 @@
         </section> --}}
 
         {{-- Section Onsite --}}
-        <section class="">
-            <div id="onsite-root"></div>
+        <section aria-labelledby="onsite-heading" class="">
+            <div id="onsite-root" aria-live="polite"></div>
         </section>
 
         {{-- Section FAQ --}}
-        <section class="">
-            <div id="faq-root"></div>
+        <section aria-labelledby="faq-heading" class="">
+            <div id="faq-root" aria-live="polite"></div>
         </section>
     </main>
 @endsection

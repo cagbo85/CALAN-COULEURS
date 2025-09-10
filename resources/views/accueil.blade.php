@@ -25,7 +25,7 @@
 @endsection
 
 @push('scripts')
-    @vite(['resources/js/timer-loader.jsx', 'resources/js/onsite-loader.jsx', 'resources/js/faq-loader.jsx'])
+    @vite(['resources/js/timer-loader.jsx', 'resources/js/stands-loader.jsx', 'resources/js/faq-loader.jsx'])
 @endpush
 
 @section('content')
@@ -172,8 +172,8 @@
         </section> --}}
 
         {{-- Section Onsite --}}
-        <section aria-labelledby="onsite-heading" class="">
-            <div id="onsite-root" aria-live="polite"></div>
+        <section aria-labelledby="stands-heading" class="">
+            <div id="stands-root" aria-live="polite"></div>
         </section>
 
         {{-- Section FAQ --}}

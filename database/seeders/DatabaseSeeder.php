@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Artiste;
 use App\Models\Faq;
 use App\Models\User;
+use App\Models\Stand;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -48,6 +49,8 @@ class DatabaseSeeder extends Seeder
         ]);
 
         Faq::factory()->count(5)->create();
+
+        Stand::factory()->count(10)->create();
 
         if (app()->environment(['testing', 'local'])) {
             Artiste::factory()->count(5)->create();

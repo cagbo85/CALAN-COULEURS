@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS users (
     statut VARCHAR(255) NOT NULL COMMENT 'Statut de la personne au sein de l\'Association',
     actif BOOLEAN NOT NULL DEFAULT 1 COMMENT 'Utilisateur actif/inactif',
     remember_token VARCHAR(100) DEFAULT NULL,
-    updated_by INT DEFAULT NULL COMMENT 'ID de lutilisateur qui a modifié',
+    updated_by INT DEFAULT NULL COMMENT 'ID de l\'utilisateur qui a modifié',
     created_at TIMESTAMP NULL DEFAULT current_timestamp() COMMENT 'Date de création',
     updated_at TIMESTAMP NULL DEFAULT current_timestamp() ON UPDATE current_timestamp() COMMENT 'Date de modification',
     UNIQUE KEY login (login),
@@ -48,7 +48,7 @@ CREATE TABLE IF NOT EXISTS artistes (
     deezer_url VARCHAR(500) DEFAULT NULL COMMENT 'Lien Deezer',
     actif BOOLEAN NOT NULL DEFAULT 1 COMMENT 'Artiste actif/masqué',
     created_by INT DEFAULT NULL COMMENT 'ID utilisateur créateur',
-    updated_by INT DEFAULT NULL COMMENT 'ID de lutilisateur qui a modifié',
+    updated_by INT DEFAULT NULL COMMENT 'ID de l\'utilisateur qui a modifié',
     created_at TIMESTAMP NULL DEFAULT current_timestamp() COMMENT 'Date de création',
     updated_at TIMESTAMP NULL DEFAULT current_timestamp() ON UPDATE current_timestamp() COMMENT 'Date de modification',
     KEY created_by (created_by),
@@ -88,7 +88,7 @@ CREATE TABLE IF NOT EXISTS faqs (
     actif BOOLEAN NOT NULL DEFAULT 1 COMMENT 'FAQ active/masquée',
     ordre INT NOT NULL DEFAULT 0 COMMENT 'Ordre d\'affichage',
     created_by INT DEFAULT NULL COMMENT 'ID utilisateur créateur',
-    updated_by INT DEFAULT NULL COMMENT 'ID de lutilisateur qui a modifié',
+    updated_by INT DEFAULT NULL COMMENT 'ID de l\'utilisateur qui a modifié',
     created_at TIMESTAMP NULL DEFAULT current_timestamp() COMMENT 'Date de création',
     updated_at TIMESTAMP NULL DEFAULT current_timestamp() ON UPDATE current_timestamp() COMMENT 'Date de modification',
     KEY created_by (created_by),
@@ -104,3 +104,36 @@ INSERT INTO faqs (question, answer, actif, ordre, created_by, updated_by) VALUES
 ('Y a-t-il une billetterie sur place ?', 'Oui, mais sans garantie 😬. Le mieux, c’est de choper ta place en ligne avant que ça parte !', TRUE, 4, 1, 1),
 ('Y aura-t-il des espaces de restauration ?', 'Évidemment ! Foodtrucks, buvette, de quoi manger, boire et recharger les batteries 🍔🍻', TRUE, 5, 1, 1),
 ('Pourra-t-on dormir sur place ?', 'Oui carrément ! Le camping est prévu, ramène juste ton matériel et ta bonne humeur 🌙🎪🔥', TRUE, 6, 1, 1);
+
+CREATE TABLE IF NOT EXISTS stands (
+    id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    name VARCHAR(255) NOT NULL COMMENT 'Nom du stand ou de la boutique',
+    description TEXT DEFAULT NULL COMMENT 'Description courte',
+    photo VARCHAR(255) DEFAULT NULL COMMENT 'Chemin vers l\'image',
+    type ENUM('boutique', 'foodtruck', 'tatouage', 'autre') NOT NULL COMMENT 'Catégorie du stand',
+    instagram_url VARCHAR(255) DEFAULT NULL COMMENT 'Lien Instagram',
+    facebook_url VARCHAR(255) DEFAULT NULL COMMENT 'Lien Facebook',
+    website_url VARCHAR(255) DEFAULT NULL COMMENT 'Site web officiel',
+    other_link VARCHAR(255) DEFAULT NULL COMMENT 'Autre lien (TikTok, etc.)',
+    actif BOOLEAN NOT NULL DEFAULT 1 COMMENT 'Stand affiché ou non',
+    ordre INT NOT NULL DEFAULT 0 COMMENT 'Ordre d\'affichage',
+    year YEAR DEFAULT NULL COMMENT 'Année du festival (pour gérer les éditions)',
+    created_by INT DEFAULT NULL COMMENT 'ID utilisateur créateur',
+    updated_by INT DEFAULT NULL COMMENT 'ID de l\'utilisateur qui a modifié',
+    created_at TIMESTAMP NULL DEFAULT current_timestamp() COMMENT 'Date de création',
+    updated_at TIMESTAMP NULL DEFAULT current_timestamp() ON UPDATE current_timestamp() COMMENT 'Date de modification',
+    KEY created_by (created_by),
+    KEY updated_by (updated_by),
+    CONSTRAINT stands_ibfk_1 FOREIGN KEY (created_by) REFERENCES users(id),
+    CONSTRAINT stands_ibfk_2 FOREIGN KEY (updated_by) REFERENCES users(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Stands et exposants du festival';
+
+INSERT INTO stands (name, description, photo, type, instagram_url, website_url, actif, ordre, year)
+VALUES
+('Calan\'Boutique', 'Collection officielle Calan’Couleurs : t-shirts, sweats et accessoires exclusifs.', 'img/surplace/Calan\'Boutique.webp', 'boutique', NULL, NULL, 1, 1, 2025),
+('Atelier Solle', 'Créatrice de vêtements et accessoires en upcycling, uniques et stylés.', 'img/surplace/Atelier Solle.webp', 'boutique', 'https://www.instagram.com/atelier_solle/', NULL, 1, 2, 2025),
+('So\'Galettes', 'Je vous propose des galettes et crêpes garnies traditionnelles ou originales, pour un goût authentique de la Bretagne.', 'img/surplace/So\'Galettes.webp', 'foodtruck', 'https://www.instagram.com/sogalettes/', NULL, 1, 3, 2025),
+('Sylvain Tacos et Burgers', 'Tacos garnis de viandes juteuses, burgers généreux, paninis grillés, une sélection de snacks et de petites bouchées pour les petites faims.', 'img/surplace/Sylvain Tacos et Burgers.webp', 'foodtruck', 'https://www.instagram.com/sylvain_cart_/', NULL, 1, 4, 2025),
+('Ocelypse tattoo', 'Propose des flashs exclusifs ou des tatouages éphémères pour tester l\'expérience.', 'img/surplace/Ocelypse tattoo.webp', 'tatouage', 'https://www.instagram.com/ocelypse_tattoo/', NULL, 1, 5, 2025),
+('Les Dauphinelles Tattoo', 'Proposent des flashs exclusifs ou des tatouages éphémères pour tester l\'expérience.', 'img/surplace/Les Dauphinelles Tattoo.webp', 'tatouage', 'https://www.instagram.com/lesdauphinelles_tattoo/', NULL, 1, 6, 2025),
+('Stand Prévention & Sécurité', 'Sensibiliser tout en s\'amusant ! Infos, jeux et conseils pour faire la fête en toute sécurité, avec le sourire et les bons réflexes.', 'img/surplace/Stand Prévention & Sécurité.webp', 'autre', NULL, NULL, 1, 7, 2025);

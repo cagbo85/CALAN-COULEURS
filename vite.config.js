@@ -11,7 +11,7 @@ export default defineConfig({
                 "resources/js/app.jsx",
                 "resources/js/navbar-loader.jsx",
                 "resources/js/timer-loader.jsx",
-                "resources/js/onsite-loader.jsx",
+                "resources/js/stands-loader.jsx",
                 "resources/js/faq-loader.jsx",
                 "resources/js/app.js",
             ],

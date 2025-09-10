@@ -23,7 +23,7 @@
     </script>
 
     @viteReactRefresh
-    @vite(['resources/css/app.css', 'resources/js/app.jsx', 'resources/js/navbar-loader.jsx', 'resources/js/timer-loader.jsx', 'resources/js/onsite-loader.jsx', 'resources/js/faq-loader.jsx', 'resources/js/program-loader.jsx', 'resources/js/app.js'])
+    @vite(['resources/css/app.css', 'resources/js/app.jsx', 'resources/js/navbar-loader.jsx', 'resources/js/timer-loader.jsx', 'resources/js/stands-loader.jsx', 'resources/js/faq-loader.jsx', 'resources/js/program-loader.jsx', 'resources/js/app.js'])
 
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <title>CALAN-COULEURS - Administration</title>

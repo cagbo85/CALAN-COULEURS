@@ -105,7 +105,7 @@ export default function OnSiteSection() {
                     {/* Liste sémantique */}
                     <ul
                         role="list"
-                        className="grid grid-cols-1 md:grid-cols-2 gap-8 justify-items-center"
+                        className="flex flex-wrap justify-center gap-54"
                         aria-label="Liste des food trucks disponibles sur le site"
                     >
                         {foodTrucks.map((item, index) => {
@@ -116,7 +116,7 @@ export default function OnSiteSection() {
                                 <li
                                     key={index}
                                     role="listitem"
-                                    className="w-full md:w-[36rem]"
+                                    className="w-full sm:w-80"
                                 >
                                     <OnSiteFeature
                                         title={item.title}

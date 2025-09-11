@@ -45,6 +45,10 @@ Route::get('/partenaires', function () {
     return view('partenaires');
 })->name('partenaires');
 
+Route::get('camping', function () {
+    return view('camping');
+})->name('camping');
+
 require __DIR__.'/auth.php';
 require __DIR__.'/artistes.php';
 require __DIR__.'/faqs.php';

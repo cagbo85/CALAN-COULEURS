@@ -66,6 +66,13 @@ export default function Navbar({ routes }) {
                         className="hidden lg:flex items-center space-x-1"
                         aria-label="Navigation principale"
                     >
+                        <a
+                            href={routes?.accueil || "/"}
+                            className="block py-2 px-3 text-[#8F1E98] font-semibold hover:text-[#FF0F63] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8F1E98] rounded"
+                        >
+                            Accueil
+                        </a>
+
                         {/* Infos Dropdown */}
                         <div className="dropdown-container relative">
                             <button
@@ -246,6 +253,15 @@ export default function Navbar({ routes }) {
                 aria-label="Navigation principale mobile"
             >
                 <nav className="bg-white border-t border-gray-100 py-4 px-4">
+                    {/* Accueil Mobile */}
+                    <a
+                        href={routes?.accueil || "/"}
+                        ref={firstMobileLinkRef}
+                        className="block py-3 text-[#8F1E98] font-semibold hover:text-[#FF0F63] transition border-b border-gray-100"
+                    >
+                        Accueil
+                    </a>
+
                     {/* Infos Mobile */}
                     <div className="mb-4">
                         <h3 className="text-[#8F1E98] font-bold text-sm uppercase tracking-wide mb-2">

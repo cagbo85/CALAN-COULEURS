@@ -128,9 +128,7 @@ export default function StandsSection() {
 
                             <ul
                                 role="list"
-                                className={`flex flex-wrap justify-center ${
-                                    type === 'foodtruck' ? 'gap-54' : 'gap-8'
-                                }`}
+                                className={`flex flex-wrap justify-center gap-54`}
                                 aria-label={`Liste des ${typeLabels[type].toLowerCase()} présents au festival`}
                             >
                                 {typeStands.map((stand) => {

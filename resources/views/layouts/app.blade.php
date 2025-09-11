@@ -38,9 +38,33 @@
 
     {{-- Titre dynamique --}}
     <title>@yield('title', 'Calan\'Couleurs Festival 2025')</title>
+
+    <!-- Google Tag Manager -->
+    <script>
+        (function(w, d, s, l, i) {
+            w[l] = w[l] || [];
+            w[l].push({
+                'gtm.start': new Date().getTime(),
+                event: 'gtm.js'
+            });
+            var f = d.getElementsByTagName(s)[0],
+                j = d.createElement(s),
+                dl = l != 'dataLayer' ? '&l=' + l : '';
+            j.async = true;
+            j.src =
+                'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+            f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', 'GTM-TBMDHRBX');
+    </script>
+    <!-- End Google Tag Manager -->
 </head>
 
 <body class="w-full min-h-screen flex flex-col">
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TBMDHRBX" height="0" width="0"
+            style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
     <a href="#contenu-principal"
         class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 bg-white text-[#8F1E98] px-3 py-2 rounded">
         Aller au contenu

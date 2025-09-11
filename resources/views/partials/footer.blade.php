@@ -23,36 +23,34 @@
             <nav aria-label="Liens de pied de page">
                 <ul class="flex flex-col sm:flex-row gap-3 sm:gap-8 text-center sm:text-left">
                     <li>
-                        <a href="/"
-                            class="text-white hover:text-[#FF0F63] font-medium transition duration-300 focus:outline-none focus-visible:ring focus-visible:ring-offset-2 focus-visible:ring-white/60 rounded">
-                            Accueil
-                        </a>
+                        <a href="/" class="text-white hover:text-[#FF0F63] font-medium transition">Accueil</a>
                     </li>
                     <li>
                         <a href="{{ route('festival') }}"
-                            class="text-white hover:text-[#FF0F63] font-medium transition duration-300 focus:outline-none focus-visible:ring focus-visible:ring-offset-2 focus-visible:ring-white/60 rounded">
-                            Le Festival
-                        </a>
+                            class="text-white hover:text-[#FF0F63] font-medium transition">Le Festival</a>
                     </li>
                     <li>
                         <a href="{{ route('programmation') }}"
-                            class="text-white hover:text-[#FF0F63] font-medium transition duration-300 focus:outline-none focus-visible:ring focus-visible:ring-offset-2 focus-visible:ring-white/60 rounded">
-                            Programmation
-                        </a>
+                            class="text-white hover:text-[#FF0F63] font-medium transition">Programmation</a>
                     </li>
                     <li>
                         <a href="https://www.helloasso.com/associations/calan-couleurs/evenements/festival-calan-couleurs"
                             target="_blank" rel="noopener noreferrer"
-                            aria-label="Billetterie (ouvre une nouvelle fenêtre)"
-                            class="text-white hover:text-[#FF0F63] font-medium transition duration-300 focus:outline-none focus-visible:ring focus-visible:ring-offset-2 focus-visible:ring-white/60 rounded">
+                            class="text-white hover:text-[#FF0F63] font-medium transition">
                             Billetterie <span class="sr-only">(nouvelle fenêtre)</span>
                         </a>
                     </li>
                     <li>
+                        <a href="{{ route('partenaires') }}"
+                            class="text-white hover:text-[#FF0F63] font-medium transition">Partenaires</a>
+                    </li>
+                    <li>
+                        <a href="{{ route('charte') }}"
+                            class="text-white hover:text-[#FF0F63] font-medium transition">Charte</a>
+                    </li>
+                    <li>
                         <a href="{{ route('contact') }}"
-                            class="text-white hover:text-[#FF0F63] font-medium transition duration-300 focus:outline-none focus-visible:ring focus-visible:ring-offset-2 focus-visible:ring-white/60 rounded">
-                            Contact
-                        </a>
+                            class="text-white hover:text-[#FF0F63] font-medium transition">Contact</a>
                     </li>
                 </ul>
             </nav>

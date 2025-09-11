@@ -41,6 +41,10 @@ Route::get('charte', function () {
     return view('charte');
 })->name('charte');
 
+Route::get('/partenaires', function () {
+    return view('partenaires');
+})->name('partenaires');
+
 require __DIR__.'/auth.php';
 require __DIR__.'/artistes.php';
 require __DIR__.'/faqs.php';

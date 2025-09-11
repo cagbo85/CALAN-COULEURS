@@ -138,6 +138,51 @@ VALUES
 ('Les Dauphinelles Tattoo', 'Proposent des flashs exclusifs ou des tatouages éphémères pour tester l\'expérience.', 'img/surplace/Les Dauphinelles Tattoo.webp', 'tatouage', 'https://www.instagram.com/lesdauphinelles_tattoo/', NULL, 1, 6, 2025),
 ('Stand Prévention & Sécurité', 'Sensibiliser tout en s\'amusant ! Infos, jeux et conseils pour faire la fête en toute sécurité, avec le sourire et les bons réflexes.', 'img/surplace/Stand Prévention & Sécurité.webp', 'autre', NULL, NULL, 1, 7, 2025);
 
+CREATE TABLE IF NOT EXISTS partenaires (
+    id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    name VARCHAR(255) NOT NULL COMMENT 'Nom du partenaire',
+    description TEXT DEFAULT NULL COMMENT 'Description du partenaire',
+    logo VARCHAR(255) DEFAULT NULL COMMENT 'Chemin vers l\'image',
+    photo VARCHAR(255) DEFAULT NULL COMMENT 'Photo du partenaire',
+    site_url VARCHAR(255) DEFAULT NULL COMMENT 'Lien vers le site du partenaire',
+    instagram_url VARCHAR(255) DEFAULT NULL COMMENT 'Lien Instagram',
+    facebook_url VARCHAR(255) DEFAULT NULL COMMENT 'Lien Facebook',
+    linkedin_url VARCHAR(255) DEFAULT NULL COMMENT 'Lien LinkedIn',
+    autre_url VARCHAR(255) DEFAULT NULL COMMENT 'Autre lien',
+    phone VARCHAR(20) DEFAULT NULL COMMENT 'Numéro de téléphone',
+    adresse VARCHAR(255) DEFAULT NULL COMMENT 'Adresse complète (numéro et rue)',
+    ville VARCHAR(100) DEFAULT NULL COMMENT 'Ville',
+    departement VARCHAR(100) DEFAULT NULL COMMENT 'Département ou région',
+    code_postal VARCHAR(20) DEFAULT NULL COMMENT 'Code postal',
+    pays VARCHAR(100) DEFAULT NULL COMMENT 'Pays',
+    latitude DECIMAL(10,8) DEFAULT NULL COMMENT 'Latitude',
+    longitude DECIMAL(11,8) DEFAULT NULL COMMENT 'Longitude',
+    actif BOOLEAN NOT NULL DEFAULT 1 COMMENT 'Partenaire actif',
+    ordre INT NOT NULL DEFAULT 0 COMMENT 'Ordre d\'affichage',
+    annee YEAR DEFAULT NULL COMMENT 'Année de partenariat',
+    created_by INT DEFAULT NULL COMMENT 'ID utilisateur créateur',
+    updated_by INT DEFAULT NULL COMMENT 'ID de l\'utilisateur qui a modifié',
+    created_at TIMESTAMP NULL DEFAULT current_timestamp() COMMENT 'Date de création',
+    updated_at TIMESTAMP NULL DEFAULT current_timestamp() ON UPDATE current_timestamp() COMMENT 'Date de modification',
+    KEY created_by (created_by),
+    KEY updated_by (updated_by),
+    CONSTRAINT partenaires_ibfk_1 FOREIGN KEY (created_by) REFERENCES users(id),
+    CONSTRAINT partenaires_ibfk_2 FOREIGN KEY (updated_by) REFERENCES users(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Partenaires du festival';
+
+INSERT INTO partenaires (name, description, adresse, ville, code_postal, pays, latitude, longitude, phone, instagram_url, facebook_url, linkedin_url, site_url, actif, ordre, annee)
+VALUES
+('Le Grand Lunetier', 'Magasin de lunettes et lunettes de soleil', '1 Rue de Nantes', 'Pontchâteau', '44160', 'France', 47.437198, -2.089572, '02 40 88 14 66', 'https://www.instagram.com/legrandlunetier/?hl=fr', 'https://www.facebook.com/LGLPontchateau/?locale=fr_FR', NULL, NULL, 1, 1, 2025),
+('Merzhin Production', 'Prestataire évènementiel', '68 Rue de la Gare', 'Saint-Gildas-des-Bois', '44530', 'France', 47.516899, -2.043508, '07 81 63 00 64', NULL, 'https://m.facebook.com/p/Merzhin-Production-61554676089339/', NULL, NULL, 1, 2, 2025),
+('Paul & Joseph', 'Cave & Bar', 'ZAC de la Colleraye', 'Savenay', '44260', 'France', 47.374066, -1.935305, '02 40 69 09 56', NULL, 'https://www.facebook.com/photo.php?fbid=1587669938053267&id=226807257472882&set=a.248854148601526&locale=fr_FR', 'https://fr.linkedin.com/company/paul-et-joseph', 'https://www.pauletjoseph.fr/', 1, 3, 2025),
+('Judic Mécanique Automobiles', 'Mécanique automobile', '29 La Mercerie', 'Campbon', '44750', 'France', 47.429946, -1.997097, '02 40 33 57 31', NULL, NULL, NULL, NULL, 1, 4, 2025),
+('Aimantik', 'Bijoux Switchables Pour Homme', NULL, 'La Baule', NULL, 'France', NULL, NULL, NULL, 'https://www.instagram.com/aimantik/', NULL, NULL, NULL, 1, 5, 2025),
+('JGM Evenements', 'Prestataire technique : son, régie, logistique & distribution électrique', '68 rue de la gare, La Croix Daniel ZA', 'Saint-Gildas-des-Bois', '44530', 'France', NULL, NULL, '02 40 13 85 85', 'https://www.instagram.com/jgmevent/', 'https://www.facebook.com/JGMEvenements/', 'https://fr.linkedin.com/company/jgmevent', NULL, 1, 6, 2025),
+('Entreprise Violin Peinture', 'Peintre', '2 Rue de Saint-Nazaire', 'Campbon', '44750', 'France', 47.413889, -1.972212, '02 40 56 51 51', 'https://www.instagram.com/entviolinsarl/', 'https://www.facebook.com/EntrepriseVIOLINSarl/', NULL, NULL, 1, 7, 2025),
+('NH multiservices', 'Plomberies & Electricité', NULL, 'Blain', NULL, 'France', NULL, NULL, '06 86 47 71 65', NULL, NULL, NULL, NULL, 1, 8, 2025),
+('Utile', 'Supermarché', 'Rue des Musiciens', 'Malville', '44260', 'France', 47.35917, -1.861754, '02 40 56 08 96', NULL, 'https://www.facebook.com/utilemalvile44/?locale=fr_FR', NULL, NULL, 1, 9, 2025),
+('Thélem Assurance (PontChâteau)', 'Assurances', '26 Rue Sainte-Catherine', 'Pontchâteau', '44160', 'France', 47.435649, -2.09018, '02 51 10 78 39', NULL, 'https://www.facebook.com/thelem.assurances/?locale=fr_FR', 'https://fr.linkedin.com/company/thelem-assurances', NULL, 1, 10, 2025);
+
 -- CREATE TABLE IF NOT EXISTS benevoles (
 --     id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
 --     firstname VARCHAR(255) NOT NULL COMMENT 'Prénom de la personne',

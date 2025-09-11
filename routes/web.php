@@ -21,7 +21,7 @@ Route::middleware('auth')->group(function () {
 
 Route::get('/', function () {
     return view('accueil');
-});
+})->name('accueil');
 
 Route::get('programmation', [ProgrammationController::class, 'index'])->name('programmation');
 

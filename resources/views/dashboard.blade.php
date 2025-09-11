@@ -48,6 +48,10 @@
                                 @if ($stats['users']['unverified'] > 0)
                                     • <span class="text-orange-600">{{ $stats['users']['unverified'] }} non vérifiés</span>
                                 @endif
+                                • <span class="text-green-600">{{ $stats['users']['actifs'] }} actifs</span>
+                                {{-- @if ($stats['users']['desactives'] > 0)
+                                    • <span class="text-red-600">{{ $stats['users']['desactives'] }} désactivés</span>
+                                @endif --}}
                             </p>
                         </div>
                     </div>

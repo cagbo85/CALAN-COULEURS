@@ -66,6 +66,16 @@ class LoginRequest extends FormRequest
             ]);
         }
 
+        if ($this->hasTemporaryPassword($user)) {
+            // Rediriger vers la page d'initialisation avec un message
+            session()->flash('reactivation_notice', true);
+            session()->flash('login_for_init', $this->input('login'));
+
+            throw ValidationException::withMessages([
+                'login' => 'Votre compte a été réactivé. Vous devez réinitialiser votre mot de passe.',
+            ])->redirectTo(route('password.initialize'));
+        }
+
         if (! Auth::attempt($credentials, $this->boolean('remember'))) {
             RateLimiter::hit($this->throttleKey());
             throw ValidationException::withMessages([
@@ -92,7 +102,7 @@ class LoginRequest extends FormRequest
         $seconds = RateLimiter::availableIn($this->throttleKey());
 
         throw ValidationException::withMessages([
-            'login' => 'Trop de tentatives de connexion. Réessayez dans '.ceil($seconds / 60).' minutes.',
+            'login' => 'Trop de tentatives de connexion. Réessayez dans ' . ceil($seconds / 60) . ' minutes.',
         ]);
     }
 
@@ -101,6 +111,28 @@ class LoginRequest extends FormRequest
      */
     public function throttleKey(): string
     {
-        return Str::transliterate(Str::lower($this->string('login')).'|'.$this->ip());
+        return Str::transliterate(Str::lower($this->string('login')) . '|' . $this->ip());
+    }
+
+    /**
+     * Vérifier si l'utilisateur a un mot de passe temporaire
+     */
+    private function hasTemporaryPassword($user): bool
+    {
+        // Si password est null, c'est un compte pas encore initialisé
+        if (is_null($user->password)) {
+            return false;
+        }
+
+        // Si le compte a été réactivé récemment (dans les dernières 24h)
+        // et que reactivation_approved_at existe
+        if (
+            $user->reactivation_approved_at &&
+            $user->reactivation_approved_at->gt(now()->subDay())
+        ) {
+            return true;
+        }
+
+        return false;
     }
 }

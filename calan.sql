@@ -19,6 +19,10 @@ CREATE TABLE IF NOT EXISTS users (
     role ENUM('super-admin','admin','editor') NOT NULL DEFAULT 'editor' COMMENT 'Rôles différenciés',
     statut VARCHAR(255) NOT NULL COMMENT 'Statut de la personne au sein de l\'Association',
     actif BOOLEAN NOT NULL DEFAULT 1 COMMENT 'Utilisateur actif/inactif',
+    reactivation_requested_at TIMESTAMP NULL DEFAULT NULL COMMENT 'Date de demande de réactivation',
+    reactivation_requested_by INT DEFAULT NULL COMMENT 'ID de l\'utilisateur qui a demandé la réactivation',
+    reactivation_approved_at TIMESTAMP NULL DEFAULT NULL COMMENT 'Date d\'approbation de la réactivation',
+    reactivation_approved_by INT DEFAULT NULL COMMENT 'ID de l\'utilisateur qui a approuvé la réactivation',
     remember_token VARCHAR(100) DEFAULT NULL,
     updated_by INT DEFAULT NULL COMMENT 'ID de l\'utilisateur qui a modifié',
     created_at TIMESTAMP NULL DEFAULT current_timestamp() COMMENT 'Date de création',
@@ -26,7 +30,11 @@ CREATE TABLE IF NOT EXISTS users (
     UNIQUE KEY login (login),
     UNIQUE KEY email (email),
     KEY updated_by (updated_by),
-    CONSTRAINT users_ibfk_1 FOREIGN KEY (updated_by) REFERENCES users(id)
+    KEY reactivation_requested_by (reactivation_requested_by),
+    KEY reactivation_approved_by (reactivation_approved_by),
+    CONSTRAINT users_ibfk_1 FOREIGN KEY (updated_by) REFERENCES users(id),
+    CONSTRAINT users_ibfk_2 FOREIGN KEY (reactivation_requested_by) REFERENCES users(id),
+    CONSTRAINT users_ibfk_3 FOREIGN KEY (reactivation_approved_by) REFERENCES users(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Table des utilisateurs de l\'équipe';
 
 -- =================================================================

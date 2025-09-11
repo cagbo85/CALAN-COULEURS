@@ -93,7 +93,7 @@
                 </a> --}}
 
                 <!-- Utilisateurs -->
-                <a href="#"
+                <a href="{{ route('admin.users.index') }}"
                     class="flex items-center px-6 py-3 {{ request()->routeIs('admin.users.*') ? 'text-gray-700 bg-purple-50 border-r-4 border-purple-500' : 'text-gray-600 hover:bg-gray-50 hover:text-purple-600 transition-colors' }}">
                     <i
                         class="fas fa-users mr-3 {{ request()->routeIs('admin.users.*') ? 'text-purple-500' : '' }}"></i>
@@ -217,6 +217,9 @@
                             @elseif (request()->routeIs('admin.faqs.create'))
                                 <h1 class="text-2xl font-bold text-gray-900">Gestion des FAQs</h1>
                                 <p class="text-sm text-gray-500">Ajoutez une nouvelle question fréquente</p>
+                            @elseif(request()->routeIs('admin.users.index'))
+                                <h1 class="text-2xl font-bold text-gray-900">Gestion des Utilisateurs</h1>
+                                <p class="text-sm text-gray-500">Gérez les utilisateurs</p>
                             @else
                                 Dashboard
                             @endif

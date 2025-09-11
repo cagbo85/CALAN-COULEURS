@@ -38,16 +38,46 @@ class AuthController extends Controller
             'password.confirmed' => 'La confirmation du mot de passe ne correspond pas.',
         ]);
 
-        // 2. Vérifier que l'utilisateur existe en BDD avec ce login
+        // 2. Vérifier que l'utilisateur existe
         $user = User::where('login', $validated['login'])->first();
 
         if (! $user) {
             throw ValidationException::withMessages([
-                'login' => 'Les informations d\'identification ne sont pas valides ou l\'initialisation de votre compte a déjà été effectuée.',
+                'login' => 'Les informations d\'identification ne sont pas valides.',
             ]);
         }
 
-        // 3. Vérifier que l'email n'est pas déjà utilisé par un autre utilisateur
+        // 3. Vérifier que le compte est actif
+        if (!$user->actif) {
+            throw ValidationException::withMessages([
+                'login' => 'Votre compte est désactivé. Contactez un administrateur.',
+            ]);
+        }
+
+        // 4. Vérifier les conditions d'initialisation
+        $canInitialize = false;
+        $isReactivation = false;
+
+        // Compte jamais initialisé (password = null)
+        if (is_null($user->password)) {
+            $canInitialize = true;
+        }
+        // Compte réactivé récemment
+        elseif (
+            $user->reactivation_approved_at &&
+            $user->reactivation_approved_at->gt(now()->subDay())
+        ) {
+            $canInitialize = true;
+            $isReactivation = true;
+        }
+
+        if (!$canInitialize) {
+            throw ValidationException::withMessages([
+                'login' => 'L\'initialisation de votre compte a déjà été effectuée. Utilisez la page de connexion normale.',
+            ]);
+        }
+
+        // 5. Vérifier que l'email n'est pas déjà utilisé par un autre utilisateur
         $existingEmailUser = User::where('email', $validated['email'])
             ->where('id', '!=', $user->id)
             ->first();
@@ -58,22 +88,30 @@ class AuthController extends Controller
             ]);
         }
 
-        // 4. Mettre à jour les informations de l'utilisateur
+        // 6. Mettre à jour les informations de l'utilisateur
         $user->update([
             'email' => $validated['email'],
             'statut' => $validated['statut'],
             'password' => Hash::make($validated['password']),
-            'actif' => true, // Activer le compte
+            'email_verified_at' => null,  // Force la vérification email
         ]);
+
+        // 7. Si c'était une réactivation, nettoyer les champs de réactivation
+        if ($isReactivation) {
+            $user->update([
+                'reactivation_requested_at' => null,
+                'reactivation_requested_by' => null,
+                'reactivation_approved_at' => null,
+                'reactivation_approved_by' => null,
+            ]);
+        }
 
         event(new Registered($user));
 
-        // 5. Rediriger vers la page de vérification d'email
-        // return redirect()->route('verification.notice')->with(
-        //     'status',
-        //     'Votre compte a été initialisé avec succès ! Veuillez vérifier votre adresse e-mail pour finaliser l\'activation.'
-        // );
+        $message = $isReactivation
+            ? 'Votre compte a été réinitialisé avec succès ! Un e-mail de vérification vous a été envoyé.'
+            : 'Le compte a bien été initialisé. Un e-mail de vérification vous a été envoyé.';
 
-        return redirect()->route('email.verification.waiting')->with('status', 'Le compte a bien été initialisé. Un e-mail de vérification vous a été envoyé.');
+        return redirect()->route('email.verification.waiting')->with('status', $message);
     }
 }

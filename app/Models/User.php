@@ -28,14 +28,23 @@ use Laravel\Sanctum\HasApiTokens;
  * @property string $role
  * @property string $statut
  * @property bool $actif
+ * @property Carbon|null $reactivation_requested_at
+ * @property int|null $reactivation_requested_by
+ * @property Carbon|null $reactivation_approved_at
+ * @property int|null $reactivation_approved_by
  * @property string|null $remember_token
  * @property int|null $updated_by
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
+ *
  * @property User|null $user
  * @property Collection|Artiste[] $artistes
  * @property Collection|Faq[] $faqs
+ * @property Collection|Partenaire[] $partenaires
+ * @property Collection|Stand[] $stands
  * @property Collection|User[] $users
+ *
+ * @package App\Models
  */
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -46,12 +55,16 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $casts = [
         'email_verified_at' => 'datetime',
         'actif' => 'bool',
-        'updated_by' => 'int',
+        'reactivation_requested_at' => 'datetime',
+        'reactivation_requested_by' => 'int',
+        'reactivation_approved_at' => 'datetime',
+        'reactivation_approved_by' => 'int',
+        'updated_by' => 'int'
     ];
 
     protected $hidden = [
         'password',
-        'remember_token',
+        'remember_token'
     ];
 
     protected $fillable = [
@@ -64,11 +77,15 @@ class User extends Authenticatable implements MustVerifyEmail
         'role',
         'statut',
         'actif',
+        'reactivation_requested_at',
+        'reactivation_requested_by',
+        'reactivation_approved_at',
+        'reactivation_approved_by',
         'remember_token',
-        'updated_by',
+        'updated_by'
     ];
 
-    public function user()
+    public function updatedBy()
     {
         return $this->belongsTo(User::class, 'updated_by');
     }
@@ -83,9 +100,24 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Faq::class, 'updated_by');
     }
 
-    public function users()
+    public function partenaires()
     {
-        return $this->hasMany(User::class, 'updated_by');
+        return $this->hasMany(Partenaire::class, 'updated_by');
+    }
+
+    public function stands()
+    {
+        return $this->hasMany(Stand::class, 'updated_by');
+    }
+
+    public function reactivationRequestedBy()
+    {
+        return $this->belongsTo(User::class, 'reactivation_requested_by');
+    }
+
+    public function reactivationApprovedBy()
+    {
+        return $this->belongsTo(User::class, 'reactivation_approved_by');
     }
 
     public function isSuperAdmin(): bool

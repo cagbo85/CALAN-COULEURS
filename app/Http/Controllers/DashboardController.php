@@ -25,6 +25,8 @@ class DashboardController extends Controller
                 'total' => User::count(),
                 'verified' => User::whereNotNull('email_verified_at')->count(),
                 'unverified' => User::whereNull('email_verified_at')->count(),
+                'actifs' => User::where('actif', 1)->count(),
+                'desactives' => User::where('actif', 0)->count(),
             ],
             'faqs' => [
                 'total' => Faq::count(),

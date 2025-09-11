@@ -40,7 +40,7 @@
     <title>@yield('title', 'Calan\'Couleurs Festival 2025')</title>
 </head>
 
-<body class="w-full">
+<body class="w-full min-h-screen flex flex-col">
     <a href="#contenu-principal"
         class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 bg-white text-[#8F1E98] px-3 py-2 rounded">
         Aller au contenu
@@ -51,7 +51,7 @@
     </header>
 
     {{-- Contenu principal --}}
-    <main id="contenu-principal" class="w-full" tabindex="-1">
+    <main id="contenu-principal" class="w-full flex-1" tabindex="-1">
         @yield('content')
     </main>
 

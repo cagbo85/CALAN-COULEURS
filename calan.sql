@@ -137,3 +137,18 @@ VALUES
 ('Ocelypse tattoo', 'Propose des flashs exclusifs ou des tatouages éphémères pour tester l\'expérience.', 'img/surplace/Ocelypse tattoo.webp', 'tatouage', 'https://www.instagram.com/ocelypse_tattoo/', NULL, 1, 5, 2025),
 ('Les Dauphinelles Tattoo', 'Proposent des flashs exclusifs ou des tatouages éphémères pour tester l\'expérience.', 'img/surplace/Les Dauphinelles Tattoo.webp', 'tatouage', 'https://www.instagram.com/lesdauphinelles_tattoo/', NULL, 1, 6, 2025),
 ('Stand Prévention & Sécurité', 'Sensibiliser tout en s\'amusant ! Infos, jeux et conseils pour faire la fête en toute sécurité, avec le sourire et les bons réflexes.', 'img/surplace/Stand Prévention & Sécurité.webp', 'autre', NULL, NULL, 1, 7, 2025);
+
+-- CREATE TABLE IF NOT EXISTS benevoles (
+--     id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+--     firstname VARCHAR(255) NOT NULL COMMENT 'Prénom de la personne',
+--     lastname VARCHAR(255) NOT NULL COMMENT 'Nom de famille de la personne',
+--     email VARCHAR(255) NOT NULL COMMENT 'Email unique',
+--     mobile VARCHAR(20) DEFAULT NULL COMMENT 'Numéro de téléphone',
+--     age INT DEFAULT NULL COMMENT 'Âge de la personne',
+--     motivation TEXT DEFAULT NULL COMMENT 'Motivation pour devenir bénévole',
+--     disponibilites VARCHAR(255) DEFAULT NULL COMMENT 'Disponibilités (dates et créneaux horaires)',
+--     experience TEXT DEFAULT NULL COMMENT 'Expérience antérieure',
+--     statut ENUM('nouveau', 'contacte', 'valide', 'refuse') DEFAULT 'nouveau',
+--     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT 'Date de création',
+--     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Date de modification',
+-- ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Table des demandes de bénévolat du festival';

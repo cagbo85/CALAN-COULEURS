@@ -94,12 +94,12 @@ export default function Navbar({ routes }) {
 
                             {activeDropdown === "infos" && (
                                 <div className="absolute top-full left-0 mt-1 w-48 bg-white rounded-lg shadow-lg border border-gray-100 py-2">
-                                    <a
+                                    {/* <a
                                         href="/camping"
                                         className="block px-4 py-2 text-gray-700 hover:bg-gray-50 hover:text-[#8F1E98] transition"
                                     >
                                         Camping & Hébergement
-                                    </a>
+                                    </a> */}
                                     <a
                                         href="/benevoles"
                                         className="block px-4 py-2 text-gray-700 hover:bg-gray-50 hover:text-[#8F1E98] transition"
@@ -251,12 +251,12 @@ export default function Navbar({ routes }) {
                         <h3 className="text-[#8F1E98] font-bold text-sm uppercase tracking-wide mb-2">
                             Infos
                         </h3>
-                        <a
+                        {/* <a
                             href="/camping"
                             className="block py-2 pl-4 text-gray-700 hover:text-[#8F1E98] transition"
                         >
                             Camping & Hébergement
-                        </a>
+                        </a> */}
                         <a
                             href="/benevoles"
                             className="block py-2 pl-4 text-gray-700 hover:text-[#8F1E98] transition"

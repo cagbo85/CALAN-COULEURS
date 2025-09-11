@@ -25,10 +25,6 @@ Route::get('/', function () {
 
 Route::get('programmation', [ProgrammationController::class, 'index'])->name('programmation');
 
-Route::get('programmation2', function () {
-    return view('lineup2');
-})->name('programmation2');
-
 Route::get('notre-histoire', function () {
     return view('festival');
 })->name('festival');
@@ -36,6 +32,10 @@ Route::get('notre-histoire', function () {
 Route::get('contact', function () {
     return view('contact');
 })->name('contact');
+
+Route::get('benevoles', function () {
+    return view('benevoles');
+})->name('benevoles');
 
 require __DIR__.'/auth.php';
 require __DIR__.'/artistes.php';

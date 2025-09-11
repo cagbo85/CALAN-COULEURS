@@ -37,6 +37,10 @@ Route::get('benevoles', function () {
     return view('benevoles');
 })->name('benevoles');
 
+Route::get('charte', function () {
+    return view('charte');
+})->name('charte');
+
 require __DIR__.'/auth.php';
 require __DIR__.'/artistes.php';
 require __DIR__.'/faqs.php';

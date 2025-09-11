@@ -7,7 +7,7 @@
     data-billetterie-url="https://www.helloasso.com/associations/calan-couleurs/evenements/festival-calan-couleurs"
     {{-- data-camping-url="{{ url('/camping') }}" --}}
     data-benevoles-url="{{ url('/benevoles') }}"
-    data-news-url="{{ url('/news') }}"
+    {{-- data-news-url="{{ url('/news') }}" --}}
     data-charte-url="{{ url('/charte') }}"
     data-partenaires-url="{{ url('/partenaires') }}"
     data-current-path="{{ request()->path() }}">

@@ -12,7 +12,7 @@ if (navbarRoot) {
         contact: navbarRoot.getAttribute("data-contact-url") || "/contact",
         // camping: navbarRoot.getAttribute("data-camping-url") || "/camping",
         benevoles: navbarRoot.getAttribute("data-benevoles-url") || "/benevoles",
-        news: navbarRoot.getAttribute("data-news-url") || "/news",
+        // news: navbarRoot.getAttribute("data-news-url") || "/news",
         charte: navbarRoot.getAttribute("data-charte-url") || "/charte",
         partenaires: navbarRoot.getAttribute("data-partenaires-url") || "/partenaires",
     };

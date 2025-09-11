@@ -1,9 +1,9 @@
-<!-- filepath: resources/views/charte.blade.php -->
 @extends('layouts.app')
+
+@section('title', 'Charte du festivalier - Calan\'Couleurs Festival 2025')
 
 @section('content')
     <main class="w-full">
-        {{-- Hero Section --}}
         <section class="text-white py-16 px-6" style="background: linear-gradient(135deg, #8F1E98 0%, #FF0F63 100%);">
             <div class="container mx-auto text-center">
                 <h1 class="text-4xl md:text-5xl font-bold mb-4">
@@ -184,7 +184,6 @@
             </div>
         </section>
 
-        {{-- Call to action final --}}
         <section class="py-16 px-6 text-white" style="background: linear-gradient(135deg, #8F1E98 0%, #FF0F63 100%);">
             <div class="container mx-auto text-center">
                 <h2 class="text-3xl font-bold mb-6">Prêt·e à vivre Calan'Couleurs ? 🎪</h2>

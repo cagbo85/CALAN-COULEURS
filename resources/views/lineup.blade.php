@@ -1,5 +1,3 @@
-{{-- filepath: resources/views/lineup.blade.php --}}
-
 @extends('layouts.app')
 
 @section('title', 'Programmation - Calan\'Couleurs Festival 2025')
@@ -101,7 +99,6 @@
                                     <div class="bg-gradient-to-r from-[#8F1E98] to-[#FF0F63] rounded-full w-12 h-12 flex items-center justify-center shadow-lg -ml-6">
                                         <span class="text-white font-bold text-sm">
                                             @php
-                                                // ✅ EXTRAIRE LE LABEL DE LA PÉRIODE
                                                 $periodLabel = $periodData['label'];
                                                 $icons = [
                                                     'afternoon' => '☀️',

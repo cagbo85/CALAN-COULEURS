@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'Bénévoles - Calan\'Couleurs Festival 2025')
+
 @section('content')
     <div class="max-w-2xl mx-auto py-12 px-4 h-full">
         <h1 class="text-3xl font-bold text-[#8F1E98] mb-6">Devenir bénévole</h1>

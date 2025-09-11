@@ -1,8 +1,9 @@
 @extends('layouts.app')
 
+@section('title', 'Partenaires - Calan\'Couleurs Festival 2025')
+
 @section('content')
 <main class="w-full">
-    {{-- Section partenaires dynamique --}}
     <div id="partners-root" aria-live="polite"></div>
 </main>
 @endsection

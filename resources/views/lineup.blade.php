@@ -119,9 +119,9 @@
                                             @php
                                                 $labels = [
                                                     'afternoon' => 'Après-midi festif',
-                                                    'evening' => 'Début de soirée',
+                                                    'evening' => ' Montée du son',
                                                     'night' => 'Cœur de nuit',
-                                                    'late_night' => 'Fin de nuit',
+                                                    'late_night' => ' Les derniers kiffeurs',
                                                     'other' => 'Autres moments',
                                                 ];
                                                 echo $labels[$periodLabel] ?? 'Moment musical';

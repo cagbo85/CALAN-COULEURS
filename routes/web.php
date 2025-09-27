@@ -53,3 +53,4 @@ require __DIR__.'/auth.php';
 require __DIR__.'/artistes.php';
 require __DIR__.'/faqs.php';
 require __DIR__.'/users.php';
+require __DIR__.'/boutique.php';

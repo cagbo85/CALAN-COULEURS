@@ -1,0 +1,82 @@
+<?php
+
+/**
+ * Created by Reliese Model.
+ */
+
+namespace App\Models;
+
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+/**
+ * Class Product
+ *
+ * @property int $id
+ * @property string $title
+ * @property string $slug
+ * @property string|null $description
+ * @property string|null $detailed_description
+ * @property float $price
+ * @property int $stock_quantity
+ * @property bool $is_featured
+ * @property string|null $image
+ * @property string $category
+ * @property bool $actif
+ * @property int|null $created_by
+ * @property int|null $updated_by
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ *
+ * @property User|null $user
+ * @property Collection|OrderItem[] $order_items
+ * @property Collection|ProductsVariant[] $products_variants
+ *
+ * @package App\Models
+ */
+class Product extends Model
+{
+    use HasFactory;
+	protected $table = 'products';
+
+	protected $casts = [
+		'price' => 'float',
+		'stock_quantity' => 'int',
+		'is_featured' => 'bool',
+		'actif' => 'bool',
+		'created_by' => 'int',
+		'updated_by' => 'int'
+	];
+
+	protected $fillable = [
+		'title',
+		'slug',
+		'description',
+		'detailed_description',
+		'price',
+		'stock_quantity',
+		'is_featured',
+		'image',
+		'category',
+		'actif',
+		'created_by',
+		'updated_by'
+	];
+
+    public function variants()
+    {
+        return $this->hasMany(ProductsVariant::class, 'product_id');
+    }
+
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
+
+    public function updater()
+    {
+        return $this->belongsTo(User::class, 'updated_by');
+    }
+}

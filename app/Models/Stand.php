@@ -37,7 +37,6 @@ use Illuminate\Database\Eloquent\Model;
 class Stand extends Model
 {
     use HasFactory;
-
 	protected $table = 'stands';
 
 	protected $casts = [

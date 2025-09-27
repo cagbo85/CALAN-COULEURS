@@ -21,7 +21,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $day
  * @property Carbon $begin_date
  * @property Carbon $ending_date
- * @property string $scene
+ * @property string|null $scene
  * @property string|null $soundcloud_url
  * @property string|null $spotify_url
  * @property string|null $youtube_url
@@ -31,42 +31,44 @@ use Illuminate\Database\Eloquent\Model;
  * @property int|null $updated_by
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
+ *
  * @property User|null $user
+ *
+ * @package App\Models
  */
 class Artiste extends Model
 {
     use HasFactory;
+	protected $table = 'artistes';
 
-    protected $table = 'artistes';
+	protected $casts = [
+		'begin_date' => 'datetime',
+		'ending_date' => 'datetime',
+		'actif' => 'bool',
+		'created_by' => 'int',
+		'updated_by' => 'int'
+	];
 
-    protected $casts = [
-        'begin_date' => 'datetime',
-        'ending_date' => 'datetime',
-        'actif' => 'bool',
-        'created_by' => 'int',
-        'updated_by' => 'int',
-    ];
+	protected $fillable = [
+		'name',
+		'style',
+		'description',
+		'photo',
+		'day',
+		'begin_date',
+		'ending_date',
+		'scene',
+		'soundcloud_url',
+		'spotify_url',
+		'youtube_url',
+		'deezer_url',
+		'actif',
+		'created_by',
+		'updated_by'
+	];
 
-    protected $fillable = [
-        'name',
-        'style',
-        'description',
-        'photo',
-        'day',
-        'begin_date',
-        'ending_date',
-        'scene',
-        'soundcloud_url',
-        'spotify_url',
-        'youtube_url',
-        'deezer_url',
-        'actif',
-        'created_by',
-        'updated_by',
-    ];
-
-    public function user()
-    {
-        return $this->belongsTo(User::class, 'updated_by');
-    }
+	public function user()
+	{
+		return $this->belongsTo(User::class, 'updated_by');
+	}
 }

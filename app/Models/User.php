@@ -40,7 +40,11 @@ use Laravel\Sanctum\HasApiTokens;
  * @property User|null $user
  * @property Collection|Artiste[] $artistes
  * @property Collection|Faq[] $faqs
+ * @property Collection|OrderItem[] $order_items
+ * @property Collection|Order[] $orders
  * @property Collection|Partenaire[] $partenaires
+ * @property Collection|Product[] $products
+ * @property Collection|ProductsVariant[] $products_variants
  * @property Collection|Stand[] $stands
  * @property Collection|User[] $users
  *
@@ -50,74 +54,119 @@ class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable;
 
-    protected $table = 'users';
+	protected $table = 'users';
 
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-        'actif' => 'bool',
-        'reactivation_requested_at' => 'datetime',
-        'reactivation_requested_by' => 'int',
-        'reactivation_approved_at' => 'datetime',
-        'reactivation_approved_by' => 'int',
-        'updated_by' => 'int'
-    ];
+	protected $casts = [
+		'email_verified_at' => 'datetime',
+		'actif' => 'bool',
+		'reactivation_requested_at' => 'datetime',
+		'reactivation_requested_by' => 'int',
+		'reactivation_approved_at' => 'datetime',
+		'reactivation_approved_by' => 'int',
+		'updated_by' => 'int'
+	];
 
-    protected $hidden = [
-        'password',
-        'remember_token'
-    ];
+	protected $hidden = [
+		'password',
+		'remember_token'
+	];
 
-    protected $fillable = [
-        'firstname',
-        'lastname',
-        'login',
-        'email',
-        'email_verified_at',
-        'password',
-        'role',
-        'statut',
-        'actif',
-        'reactivation_requested_at',
-        'reactivation_requested_by',
-        'reactivation_approved_at',
-        'reactivation_approved_by',
-        'remember_token',
-        'updated_by'
-    ];
+	protected $fillable = [
+		'firstname',
+		'lastname',
+		'login',
+		'email',
+		'email_verified_at',
+		'password',
+		'role',
+		'statut',
+		'actif',
+		'reactivation_requested_at',
+		'reactivation_requested_by',
+		'reactivation_approved_at',
+		'reactivation_approved_by',
+		'remember_token',
+		'updated_by'
+	];
 
-    public function updatedBy()
-    {
-        return $this->belongsTo(User::class, 'updated_by');
-    }
+    public function user()
+	{
+		return $this->belongsTo(User::class, 'reactivation_requested_by');
+	}
 
-    public function artistes()
-    {
-        return $this->hasMany(Artiste::class, 'updated_by');
-    }
-
-    public function faqs()
-    {
-        return $this->hasMany(Faq::class, 'updated_by');
-    }
-
-    public function partenaires()
-    {
-        return $this->hasMany(Partenaire::class, 'updated_by');
-    }
-
-    public function stands()
-    {
-        return $this->hasMany(Stand::class, 'updated_by');
-    }
-
-    public function reactivationRequestedBy()
+    public function reactivationrequestedby()
     {
         return $this->belongsTo(User::class, 'reactivation_requested_by');
     }
 
-    public function reactivationApprovedBy()
+    public function reactivationapprovedby()
     {
         return $this->belongsTo(User::class, 'reactivation_approved_by');
+    }
+
+    public function updatedByUser()
+    {
+        return $this->belongsTo(User::class, 'updated_by');
+    }
+
+	public function updatedbyArtistes()
+	{
+		return $this->hasMany(Artiste::class, 'updated_by');
+	}
+	public function createdbyArtistes()
+	{
+		return $this->hasMany(Artiste::class, 'created_by');
+	}
+
+	public function updatedbyFaqs()
+	{
+		return $this->hasMany(Faq::class, 'updated_by');
+	}
+	public function createdbyFaqs()
+	{
+		return $this->hasMany(Faq::class, 'created_by');
+	}
+
+	public function updatedbyStands()
+	{
+		return $this->hasMany(Stand::class, 'updated_by');
+	}
+	public function createdbyStands()
+	{
+		return $this->hasMany(Stand::class, 'created_by');
+	}
+
+    public function updatedbyorderItems()
+	{
+        return $this->hasMany(OrderItem::class, 'updated_by');
+	}
+
+    public function updatedbyproductsVariants()
+	{
+        return $this->hasMany(ProductsVariant::class, 'updated_by');
+	}
+
+    public function updatedbypartenaires()
+    {
+        return $this->hasMany(Partenaire::class, 'updated_by');
+    }
+    public function createdbypartenaires()
+    {
+        return $this->hasMany(Partenaire::class, 'created_by');
+    }
+
+    public function updatedbyorders()
+	{
+        return $this->hasMany(Order::class, 'updated_by');
+	}
+
+    public function updatedbyproducts()
+    {
+        return $this->hasMany(Product::class, 'updated_by');
+    }
+    public function createdbyproducts()
+    {
+        return $this->hasMany(Product::class, 'created_by');
     }
 
     public function isSuperAdmin(): bool

@@ -22,34 +22,36 @@ use Illuminate\Database\Eloquent\Model;
  * @property int|null $updated_by
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
+ *
  * @property User|null $user
+ *
+ * @package App\Models
  */
 class Faq extends Model
 {
     use HasFactory;
+	protected $table = 'faqs';
 
-    protected $table = 'faqs';
+	protected $casts = [
+		'actif' => 'bool',
+		'ordre' => 'int',
+		'created_by' => 'int',
+		'updated_by' => 'int'
+	];
 
-    protected $casts = [
-        'actif' => 'bool',
-        'ordre' => 'int',
-        'created_by' => 'int',
-        'updated_by' => 'int',
-    ];
+	protected $fillable = [
+		'question',
+		'answer',
+		'actif',
+		'ordre',
+		'created_by',
+		'updated_by'
+	];
 
-    protected $fillable = [
-        'question',
-        'answer',
-        'actif',
-        'ordre',
-        'created_by',
-        'updated_by',
-    ];
-
-    public function updatedBy()
-    {
-        return $this->belongsTo(User::class, 'updated_by');
-    }
+	public function updatedBy()
+	{
+		return $this->belongsTo(User::class, 'updated_by');
+	}
 
     public function createdBy()
     {

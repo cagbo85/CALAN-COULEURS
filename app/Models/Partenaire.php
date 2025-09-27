@@ -7,8 +7,8 @@
 namespace App\Models;
 
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class Partenaire
@@ -46,7 +46,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Partenaire extends Model
 {
     use HasFactory;
-
 	protected $table = 'partenaires';
 
 	protected $casts = [

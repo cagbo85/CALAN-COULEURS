@@ -190,6 +190,16 @@ export default function Navbar({ routes }) {
                         >
                             Contact
                         </a>
+
+                        {/* Nouveau lien Boutique */}
+                        <a
+                            href={routes?.boutique || "/boutique"}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="block py-2 px-3 text-[#8F1E98] font-semibold hover:text-[#FF0F63] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8F1E98] rounded"
+                        >
+                            Boutique 🛒
+                        </a>
                     </nav>
 
                     {/* CTA Desktop */}
@@ -324,6 +334,15 @@ export default function Navbar({ routes }) {
                         className="block py-3 text-[#8F1E98] font-semibold hover:text-[#FF0F63] transition"
                     >
                         Contact
+                    </a>
+                    {/* Boutique Mobile */}
+                    <a
+                        href={routes?.boutique || "/boutique"}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="block py-3 text-[#8F1E98] font-semibold hover:text-[#FF0F63] transition"
+                    >
+                        Boutique 🛒
                     </a>
 
                     {/* CTA Mobile */}

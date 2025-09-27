@@ -1,6 +1,7 @@
 {{-- filepath: resources/views/partials/artistes/artiste-card-detailed.blade.php --}}
 
-<div class="artiste-card-detailed group bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300">
+<div
+    class="artiste-card-detailed group bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300">
     <div class="relative aspect-[4/3]">
         <!-- ✅ BADGE SCÈNE AVEC LE STYLE PRÉFÉRÉ -->
         <div class="absolute top-2 right-2" style="z-index: 1;">
@@ -18,7 +19,8 @@
             class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
 
         <!-- Overlay avec horaires -->
-        <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 to-transparent p-4">
+        <div class="absolute bottom-0 left-0 right-0 p-4"
+            style="background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 100%);">
             <h3 class="text-white font-bold text-lg mb-1">{{ $artiste->name }}</h3>
 
             <div class="flex items-center justify-between text-white text-sm">

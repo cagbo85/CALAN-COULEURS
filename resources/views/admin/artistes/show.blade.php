@@ -8,7 +8,7 @@
     <main class="flex-1 overflow-y-auto bg-gray-50">
         <div class="p-6">
             <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden mb-6">
-                <div class="relative h-48 bg-gradient-to-r from-purple-600 to-pink-500">
+                <div class="relative h-48" style="background: linear-gradient(135deg, rgba(147,51,234,1) 0%, rgba(236,72,153,1) 100%);">
                     <div class="absolute top-4 left-4">
                         <a href="{{ route('admin.artistes.index') }}"
                             class="bg-black bg-opacity-30 text-white px-4 py-2 rounded-lg hover:bg-opacity-50 transition-all flex items-center">

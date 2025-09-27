@@ -205,3 +205,85 @@ VALUES
 --     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT 'Date de création',
 --     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Date de modification',
 -- ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Table des demandes de bénévolat du festival';
+
+CREATE TABLE IF NOT EXISTS products (
+    id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    title VARCHAR(255) NOT NULL COMMENT 'Titre du produit',
+    slug VARCHAR(255) NOT NULL COMMENT 'Slug URL du produit',
+    description TEXT DEFAULT NULL COMMENT 'Description détaillée du produit',
+    detailed_description MEDIUMTEXT DEFAULT NULL COMMENT 'Description longue du produit',
+    price DECIMAL(10,2) NOT NULL COMMENT 'Prix du produit en euros',
+    stock_quantity INT NOT NULL DEFAULT 0 COMMENT 'Quantité en stock',
+    is_featured BOOLEAN NOT NULL DEFAULT 0 COMMENT 'Produit mis en avant sur la page d\'accueil',
+    image VARCHAR(255) DEFAULT NULL COMMENT 'Chemin vers l\'image principale du produit',
+    category ENUM('vetements', 'accessoires', 'goodies') NOT NULL COMMENT 'Catégorie du produit',
+    actif BOOLEAN NOT NULL DEFAULT 1 COMMENT 'Produit actif ou non',
+    created_by INT DEFAULT NULL COMMENT 'ID utilisateur créateur',
+    updated_by INT DEFAULT NULL COMMENT 'ID de l\'utilisateur qui a modifié',
+    created_at TIMESTAMP NULL DEFAULT current_timestamp() COMMENT 'Date de création',
+    updated_at TIMESTAMP NULL DEFAULT current_timestamp() ON UPDATE current_timestamp() COMMENT 'Date de modification',
+    KEY created_by (created_by),
+    KEY updated_by (updated_by),
+    CONSTRAINT produits_ibfk_1 FOREIGN KEY (created_by) REFERENCES users(id),
+    CONSTRAINT produits_ibfk_2 FOREIGN KEY (updated_by) REFERENCES users(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Produits du de la boutique en ligne';
+
+CREATE TABLE IF NOT EXISTS products_variants (
+    id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    product_id INT NOT NULL COMMENT 'ID du produit parent',
+    size ENUM('XS', 'S', 'M', 'L', 'XL', 'XXL') DEFAULT NULL COMMENT 'Taille du produit',
+    color VARCHAR(100) DEFAULT NULL COMMENT 'Couleur du produit',
+    quantity INT NOT NULL DEFAULT 0 COMMENT 'Quantité en stock pour cette variante',
+    image VARCHAR(255) DEFAULT NULL COMMENT 'Chemin vers l\'image spécifique à cette variante (ex: couleur)',
+    created_by INT DEFAULT NULL COMMENT 'ID utilisateur créateur',
+    updated_by INT DEFAULT NULL COMMENT 'ID de l\'utilisateur qui a modifié',
+    created_at TIMESTAMP NULL DEFAULT current_timestamp() COMMENT 'Date de création',
+    updated_at TIMESTAMP NULL DEFAULT current_timestamp() ON UPDATE current_timestamp() COMMENT 'Date de modification',
+    KEY created_by (created_by),
+    KEY updated_by (updated_by),
+    CONSTRAINT produits_ibfk_1 FOREIGN KEY (created_by) REFERENCES users(id),
+    CONSTRAINT produits_ibfk_2 FOREIGN KEY (updated_by) REFERENCES users(id),
+    CONSTRAINT produits_ibfk_3 FOREIGN KEY (product_id) REFERENCES products(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Variantes des produits (taille, couleur, etc.)';
+
+CREATE TABLE IF NOT EXISTS orders (
+    id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    email VARCHAR(255) NOT NULL COMMENT 'Email du client',
+    firstname VARCHAR(255) NOT NULL COMMENT 'Prénom du client',
+    lastname VARCHAR(255) NOT NULL COMMENT 'Nom de famille du client',
+    adresse VARCHAR(255) DEFAULT NULL COMMENT 'Adresse complète (numéro et rue)',
+    ville VARCHAR(100) DEFAULT NULL COMMENT 'Ville',
+    departement VARCHAR(100) DEFAULT NULL COMMENT 'Département ou région',
+    code_postal VARCHAR(20) DEFAULT NULL COMMENT 'Code postal',
+    pays VARCHAR(100) DEFAULT NULL COMMENT 'Pays',
+    total_amount DECIMAL(10,2) NOT NULL COMMENT 'Montant total de la commande en euros',
+    helloasso_id VARCHAR(100) NOT NULL COMMENT 'ID de la commande HelloAsso',
+    shipping_tracking_number VARCHAR(255) DEFAULT NULL COMMENT 'Numéro de suivi du colis',
+    shipping_carrier VARCHAR(100) DEFAULT NULL COMMENT 'Transporteur',
+    shipping_date DATE DEFAULT NULL COMMENT 'Date d\'expédition',
+    delivered_date DATE DEFAULT NULL COMMENT 'Date de livraison',
+    shipping_status ENUM('in preparation', 'shipped', 'delivered', 'returned') DEFAULT 'in preparation' COMMENT 'Statut d\'expédition',
+    status ENUM('pending', 'paid', 'shipped', 'cancelled', 'refunded') NOT NULL DEFAULT 'pending' COMMENT 'Statut de la commande',
+    updated_by INT DEFAULT NULL COMMENT 'ID de l\'utilisateur qui a modifié',
+    created_at TIMESTAMP NULL DEFAULT current_timestamp() COMMENT 'Date de création',
+    updated_at TIMESTAMP NULL DEFAULT current_timestamp() ON UPDATE current_timestamp() COMMENT 'Date de modification',
+    KEY updated_by (updated_by),
+    CONSTRAINT orders_ibfk_1 FOREIGN KEY (updated_by) REFERENCES users(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Commandes passées sur la boutique en ligne';
+CREATE TABLE IF NOT EXISTS order_items (
+    id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    order_id INT NOT NULL COMMENT 'ID de la commande',
+    product_id INT NOT NULL COMMENT 'ID du produit',
+    variant_id INT DEFAULT NULL COMMENT 'ID de la variante du produit (taille, couleur, etc.)',
+    quantity INT NOT NULL DEFAULT 1 COMMENT 'Quantité commandée',
+    unit_price DECIMAL(10,2) NOT NULL COMMENT 'Prix unitaire au moment de la commande',
+    updated_by INT DEFAULT NULL COMMENT 'ID de l\'utilisateur qui a modifié',
+    created_at TIMESTAMP NULL DEFAULT current_timestamp() COMMENT 'Date de création',
+    updated_at TIMESTAMP NULL DEFAULT current_timestamp() ON UPDATE current_timestamp() COMMENT 'Date de modification',
+    KEY updated_by (updated_by),
+    CONSTRAINT order_items_ibfk_1 FOREIGN KEY (order_id) REFERENCES orders(id),
+    CONSTRAINT order_items_ibfk_2 FOREIGN KEY (product_id) REFERENCES products(id),
+    CONSTRAINT order_items_ibfk_3 FOREIGN KEY (variant_id) REFERENCES products_variants(id),
+    CONSTRAINT order_items_ibfk_4 FOREIGN KEY (updated_by) REFERENCES users(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Articles dans les commandes';
+

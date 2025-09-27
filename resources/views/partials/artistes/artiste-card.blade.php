@@ -1,6 +1,7 @@
 {{-- filepath: resources/views/partials/artistes/artiste-card.blade.php --}}
 
-<div class="artiste-card group bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300">
+<div
+    class="artiste-card group bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300">
     <div class="relative aspect-[3/4]">
         <!-- Badge jour (si demandé) -->
         @if ($show_day ?? false)
@@ -20,7 +21,8 @@
             class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
 
         <!-- Overlay avec infos -->
-        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+        <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+            style="background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 50%, transparent 100%);">
             <div class="absolute bottom-0 left-0 right-0 p-3">
                 <h3 class="text-white font-bold text-sm mb-1">{{ $artiste->name }}</h3>
                 @if ($artiste->style)

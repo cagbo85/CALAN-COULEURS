@@ -17,3 +17,47 @@ Route::get('/commande', [BoutiqueController::class, 'checkout'])->name('boutique
 Route::post('/commande/process', [BoutiqueController::class, 'processCheckout'])->name('boutique.process-checkout');
 Route::get('/commande/success', [BoutiqueController::class, 'orderSuccess'])->name('boutique.order-success');
 Route::get('/commande/cancel', [BoutiqueController::class, 'orderCancel'])->name('boutique.order-cancel');
+
+// Test HelloAsso Service
+Route::get('/test-helloasso', function (App\Services\HelloAssoService $helloAsso) {
+    return response()->json($helloAsso->testConnection());
+});
+
+Route::get('/test-helloasso-complete', function (App\Services\HelloAssoService $helloAsso) {
+    try {
+        $results = [];
+
+        // 1. Info organisation
+        $org = $helloAsso->apiCall("organizations/Charlzouu-Asso");
+        $results['organization'] = [
+            'name' => $org['name'],
+            'url' => $org['url'] ?? 'N/A',
+            'description' => $org['description'] ?? 'N/A'
+        ];
+
+        // 2. Formulaires existants
+        $forms = $helloAsso->apiCall("organizations/Charlzouu-Asso/forms");
+        $results['forms'] = [
+            'total' => count($forms['data'] ?? []),
+            'types' => array_column($forms['data'] ?? [], 'formType')
+        ];
+
+        // 3. Commandes
+        $orders = $helloAsso->apiCall("organizations/Charlzouu-Asso/orders");
+        $results['orders'] = [
+            'total' => count($orders['data'] ?? [])
+        ];
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Tests HelloAsso complets réussis !',
+            'data' => $results
+        ]);
+
+    } catch (Exception $e) {
+        return response()->json([
+            'success' => false,
+            'error' => $e->getMessage()
+        ]);
+    }
+});

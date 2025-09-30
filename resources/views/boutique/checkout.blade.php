@@ -11,7 +11,7 @@
             <div class="bg-white rounded-lg shadow-md p-6">
                 <h2 class="text-xl font-bold mb-6">Informations de livraison</h2>
 
-                <form method="POST" action="{{ route('boutique.process-checkout') }}" class="space-y-4">
+                <form method="POST" action="{{ route('boutique.process-checkout') }}" class="space-y-4" novalidate>
                     @csrf
 
                     <!-- Email -->
@@ -90,19 +90,24 @@
 
                     <!-- Pays -->
                     <div>
-                        <label for="pays" class="block text-sm font-medium text-gray-700 mb-1">
-                            Pays *
-                        </label>
-                        <select id="pays" name="pays" required
-                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500">
+                        <label for="pays" class="block text-sm font-medium text-gray-700 mb-2">Pays *</label>
+                        <select name="pays" id="pays"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                            required>
                             <option value="">Sélectionner un pays</option>
-                            <option value="France" {{ old('pays') == 'France' ? 'selected' : '' }}>France</option>
-                            <option value="Belgique" {{ old('pays') == 'Belgique' ? 'selected' : '' }}>Belgique</option>
-                            <option value="Suisse" {{ old('pays') == 'Suisse' ? 'selected' : '' }}>Suisse</option>
-                            <option value="Canada" {{ old('pays') == 'Canada' ? 'selected' : '' }}>Canada</option>
+                            <option value="FRA" {{ old('pays') == 'FRA' ? 'selected' : '' }}>France</option>
+                            <option value="BEL" {{ old('pays') == 'BEL' ? 'selected' : '' }}>Belgique</option>
+                            <option value="CHE" {{ old('pays') == 'CHE' ? 'selected' : '' }}>Suisse</option>
+                            <option value="LUX" {{ old('pays') == 'LUX' ? 'selected' : '' }}>Luxembourg</option>
+                            <option value="CAN" {{ old('pays') == 'CAN' ? 'selected' : '' }}>Canada</option>
+                            <option value="DEU" {{ old('pays') == 'DEU' ? 'selected' : '' }}>Allemagne</option>
+                            <option value="ESP" {{ old('pays') == 'ESP' ? 'selected' : '' }}>Espagne</option>
+                            <option value="ITA" {{ old('pays') == 'ITA' ? 'selected' : '' }}>Italie</option>
+                            <option value="GBR" {{ old('pays') == 'GBR' ? 'selected' : '' }}>Royaume-Uni</option>
+                            <option value="USA" {{ old('pays') == 'USA' ? 'selected' : '' }}>États-Unis</option>
                         </select>
                         @error('pays')
-                            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                            <span class="text-red-500 text-xs">{{ $message }}</span>
                         @enderror
                     </div>
 

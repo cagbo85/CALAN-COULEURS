@@ -17,6 +17,7 @@
     <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
     <link rel="icon" type="image/png" href="{{ asset('img/logos/TOUCAN.png') }}">
 
+    @notifyCss
     <style>
         /* Couleurs Calan'Couleurs */
         :root {
@@ -24,10 +25,35 @@
             --calan-pink: #FF0F63;
             --calan-blue: #272AC7;
         }
+
+        .notify {
+            z-index: 999999 !important;
+        }
+
+        .connect {
+            z-index: 999999 !important;
+        }
+
+        .emotify {
+            z-index: 999999 !important;
+        }
+
+        .smiley {
+            z-index: 999999 !important;
+        }
+
+        .toast {
+            z-index: 999999 !important;
+        }
+
+        .relative [x-show="profileOpen"] {
+            z-index: 50 !important;
+        }
     </style>
 </head>
 
 <body class="bg-gray-50 min-h-screen">
+    <x-notify::notify />
     <!-- Header Boutique -->
     <header class="bg-white shadow-lg border-b-4" style="border-color: var(--calan-purple);">
         <div class="container mx-auto px-4 py-6">
@@ -109,7 +135,23 @@
         </div>
     </footer>
 
+    @include('notify::components.notify')
+
     @stack('scripts')
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Forcer la fermeture de toutes les notifications après 3 secondes
+            setTimeout(function() {
+                // Cacher toutes les notifications visibles
+                document.querySelectorAll('.notify, .connect, .toast').forEach(function(notification) {
+                    if (notification.style.display !== 'none') {
+                        notification.style.display = 'none';
+                    }
+                });
+            }, 5000);
+        });
+    </script>
+    @notifyJs
 </body>
 
 </html>

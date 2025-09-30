@@ -8,7 +8,9 @@ use App\Models\OrderItem;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\ProductsVariant;
+use App\Services\HelloAssoService;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 
@@ -172,19 +174,77 @@ class BoutiqueController extends Controller
         $cart = session()->get('cart', []);
 
         if (empty($cart)) {
-            return redirect()->route('boutique.cart')->with('error', 'Votre panier est vide');
+            notify()->error("Votre panier est vide", "Erreur");
+            return redirect()->route('boutique.cart');
         }
 
         // Validation du formulaire
-        $validated = $request->validate([
-            'email' => 'required|email|max:255',
-            'firstname' => 'required|string|max:255',
-            'lastname' => 'required|string|max:255',
-            'adresse' => 'required|string|max:255',
-            'ville' => 'required|string|max:100',
-            'code_postal' => 'required|string|max:20',
-            'pays' => 'required|string|max:100'
-        ]);
+        // $validated = $request->validate([
+        //     'email' => 'required|email|max:255',
+        //     'firstname' => 'required|string|max:255',
+        //     'lastname' => 'required|string|max:255',
+        //     'adresse' => 'required|string|max:255',
+        //     'ville' => 'required|string|max:100',
+        //     'code_postal' => 'required|string|max:20',
+        //     'pays' => 'required|string|max:100'
+        // ]);
+
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'email' => 'required|email|max:255',
+                'firstname' => 'required|string|max:255',
+                'lastname' => 'required|string|max:255',
+                'adresse' => 'required|string|max:255',
+                'ville' => 'required|string|max:100',
+                'code_postal' => 'required|string|max:20',
+                'pays' => 'required|string|max:100'
+            ],
+            [
+                'email.required' => 'L\'adresse email est obligatoire.',
+                'email.email' => 'L\'adresse email doit être valide.',
+                'firstname.required' => 'Le prénom est obligatoire.',
+                'lastname.required' => 'Le nom est obligatoire.',
+                'adresse.required' => 'L\'adresse est obligatoire.',
+                'ville.required' => 'La ville est obligatoire.',
+                'code_postal.required' => 'Le code postal est obligatoire.',
+                'pays.required' => 'Le pays est obligatoire.'
+            ]
+        );
+
+        if ($validator->fails()) {
+            $errorMessages = [];
+            foreach ($validator->errors()->messages() as $field => $messages) {
+                $fieldNames = [
+                    'email' => 'Email',
+                    'firstname' => 'Prénom',
+                    'lastname' => 'Nom',
+                    'adresse' => 'Adresse',
+                    'ville' => 'Ville',
+                    'code_postal' => 'Code Postal',
+                    'pays' => 'Pays'
+                ];
+
+                $fieldName = $fieldNames[$field] ?? $field;
+                foreach ($messages as $message) {
+                    $errorMessages[] = "$fieldName : $message";
+                }
+            }
+
+            $errorSummary = implode(' | ', $errorMessages);
+            notify()->error(
+                "Erreurs de validation détectées : {$errorSummary}",
+                'Validation échouée'
+            );
+
+            Log::warning("Erreur de validation lors de la crétion de l'artiste", [
+                'errors' => $validator->errors(),
+            ]);
+
+            return back()->withErrors($validator->errors())->withInput();
+        }
+
+        $validated = $validator->validated();
 
         // Calculer le total
         $total = 0;
@@ -192,21 +252,89 @@ class BoutiqueController extends Controller
             $total += $item['quantity'] * $item['unit_price'];
         }
 
-        // Stocker les données de commande en session pour HelloAsso
-        session()->put('order_data', [
-            'cart' => $cart,
-            'customer' => $validated,
-            'total' => $total,
-            'order_id' => 'ORDER_' . Str::upper(Str::random(10)) // ID temporaire
-        ]);
+        try {
+            $helloAssoService = app(HelloAssoService::class);
 
-        // Redirection vers HelloAsso (on implémentera ça après)
-        // Pour l'instant, on simule juste
-        return view('boutique.helloasso-redirect', [
-            'cart' => $cart,
-            'customer' => $validated,
-            'total' => $total
-        ]);
+            $checkoutData = $this->buildHelloAssoCheckoutData($cart, $validated, $total);
+
+            $checkoutResponse = $helloAssoService->createOrder($checkoutData);
+
+            session()->put('order_data', [
+                'cart' => $cart,
+                'customer' => $validated,
+                'total' => $total,
+                'helloasso_order_id' => $checkoutResponse['order']['id'] ?? null,
+                'checkout_intent_id' => $checkoutResponse['id'] ?? null
+            ]);
+
+            // Rediriger vers HelloAsso
+            return redirect($checkoutResponse['redirectUrl']);
+        } catch (\Illuminate\Database\QueryException $e) {
+            Log::error("Erreur lors de la création de la commande HelloAsso", [
+                'error' => $e->getMessage(),
+                'stack' => $e->getTraceAsString()
+            ]);
+            notify()->error("Une erreur est survenue lors du traitement de votre commande. Veuillez réessayer plus tard.", "Erreur");
+            return redirect()->route('boutique.checkout')->withInput();
+        } catch (\Exception $e) {
+            Log::error("Erreur inattendue lors de la création de la commande HelloAsso", [
+                'error' => $e->getMessage(),
+                'stack' => $e->getTraceAsString()
+            ]);
+            notify()->error("Une erreur inattendue est survenue. Veuillez réessayer plus tard.", "Erreur");
+            return redirect()->route('boutique.checkout')->withInput();
+        }
+    }
+
+    /**
+     * Construire les données pour HelloAsso Checkout
+     */
+    private function buildHelloAssoCheckoutData(array $cart, array $customer, float $total): array
+    {
+        $items = [];
+
+        foreach ($cart as $cartItem) {
+            $name = $cartItem['title'];
+            if ($cartItem['size'] || $cartItem['color']) {
+                $name .= ' (';
+                if ($cartItem['size']) $name .= $cartItem['size'];
+                if ($cartItem['color']) $name .= ' - ' . ucfirst($cartItem['color']);
+                $name .= ')';
+            }
+
+            $items[] = [
+                'name' => $name,
+                'priceCategory' => 'Fixed',
+                'price' => (int)($cartItem['unit_price'] * 100), // Prix en centimes
+                'quantity' => $cartItem['quantity']
+            ];
+        }
+
+        $ngrokUrl = 'https://6061093d25d1.ngrok-free.app';
+
+        return [
+            'totalAmount' => (int)($total * 100), // Montant total en centimes
+            'initialAmount' => (int)($total * 100),
+            'itemName' => 'Commande Boutique Calan\'Couleurs',
+            'backUrl' => $ngrokUrl . '/panier',
+            'errorUrl' => $ngrokUrl . '/commande/cancel',
+            'returnUrl' => $ngrokUrl . '/commande/success',
+            'containsDonation' => false,
+            'payer' => [
+                'firstName' => $customer['firstname'],
+                'lastName' => $customer['lastname'],
+                'email' => $customer['email'],
+                'address' => $customer['adresse'],
+                'city' => $customer['ville'],
+                'zipCode' => $customer['code_postal'],
+                'country' => $customer['pays']
+            ],
+            'items' => $items,
+            'metadata' => [
+                'order_type' => 'boutique',
+                'customer_address' => json_encode($customer)
+            ]
+        ];
     }
 
     public function orderSuccess(Request $request)
@@ -219,6 +347,31 @@ class BoutiqueController extends Controller
 
         DB::beginTransaction();
         try {
+            $helloAssoService = app(HelloAssoService::class);
+            $helloAssoOrderId = $request->get('orderId') ?: $orderData['helloasso_order_id'];
+
+            $paymentStatus = 'pending';
+            $helloAssoData = null;
+
+            if ($helloAssoOrderId) {
+                try {
+                    $helloAssoData = $helloAssoService->getOrder($helloAssoOrderId);
+                    $paymentStatus = strtolower($helloAssoData['state'] ?? 'pending');
+                } catch (\Illuminate\Database\QueryException $e) {
+                    Log::error("Erreur lors de la récupération de la commande HelloAsso", [
+                        'error' => $e->getMessage(),
+                        'stack' => $e->getTraceAsString(),
+                        'helloasso_order_id' => $helloAssoOrderId
+                    ]);
+                } catch (\Exception $e) {
+                    Log::error("Erreur inattendue lors de la récupération de la commande HelloAsso", [
+                        'error' => $e->getMessage(),
+                        'stack' => $e->getTraceAsString(),
+                        'helloasso_order_id' => $helloAssoOrderId
+                    ]);
+                }
+            }
+
             // Créer la commande en BDD
             $order = Order::create([
                 'email' => $orderData['customer']['email'],
@@ -229,8 +382,8 @@ class BoutiqueController extends Controller
                 'code_postal' => $orderData['customer']['code_postal'],
                 'pays' => $orderData['customer']['pays'],
                 'total_amount' => $orderData['total'],
-                'helloasso_id' => $request->get('payment_id', 'TEST_' . Str::random(10)), // ID HelloAsso
-                'status' => 'paid'
+                'helloasso_id' => $helloAssoOrderId,
+                'status' => $paymentStatus === 'authorized' ? 'paid' : 'pending'
             ]);
 
             // Créer les articles de commande
@@ -243,16 +396,18 @@ class BoutiqueController extends Controller
                     'unit_price' => $item['unit_price']
                 ]);
 
-                // Décrémenter le stock
-                if ($item['variant_id']) {
-                    $variant = ProductsVariant::find($item['variant_id']);
-                    if ($variant) {
-                        $variant->decrement('quantity', $item['quantity']);
-                    }
-                } else {
-                    $product = Product::find($item['product_id']);
-                    if ($product) {
-                        $product->decrement('stock_quantity', $item['quantity']);
+                // Décrémenter le stock seulement si payé
+                if ($paymentStatus === 'authorized') {
+                    if ($item['variant_id']) {
+                        $variant = ProductsVariant::find($item['variant_id']);
+                        if ($variant) {
+                            $variant->decrement('quantity', $item['quantity']);
+                        }
+                    } else {
+                        $product = Product::find($item['product_id']);
+                        if ($product) {
+                            $product->decrement('stock_quantity', $item['quantity']);
+                        }
                     }
                 }
             }
@@ -262,12 +417,18 @@ class BoutiqueController extends Controller
             // Vider le panier et les données de commande
             session()->forget(['cart', 'order_data']);
 
-            // TODO: Envoyer email de confirmation
+            // TODO: Envoyer email de confirmation si payé
 
-            return view('boutique.order-success', ['order' => $order]);
-
+            return view('boutique.order-success', [
+                'order' => $order,
+                'helloasso_data' => $helloAssoData
+            ]);
         } catch (\Exception $e) {
             DB::rollBack();
+            Log::error('Erreur création commande après HelloAsso', [
+                'error' => $e->getMessage(),
+                'order_data' => $orderData
+            ]);
             return redirect()->route('boutique.cart')->with('error', 'Erreur lors du traitement de la commande');
         }
     }

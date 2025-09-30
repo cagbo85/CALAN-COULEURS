@@ -11,21 +11,43 @@
                 </svg>
             </div>
 
-            <h1 class="text-3xl font-bold text-green-800 mb-4">Commande confirmée !</h1>
+            <h1 class="text-3xl font-bold text-green-800 mb-4">
+                @if($order->status === 'paid')
+                    Commande confirmée !
+                @else
+                    Commande en cours de traitement
+                @endif
+            </h1>
 
             <p class="text-lg text-green-700 mb-6">
-                Merci pour votre achat ! Votre commande #{{ $order->id }} a été enregistrée avec succès.
+                @if($order->status === 'paid')
+                    Merci pour votre achat ! Votre commande #{{ $order->id }} a été payée avec succès.
+                @else
+                    Votre commande #{{ $order->id }} a été enregistrée et est en cours de validation du paiement.
+                @endif
             </p>
 
             <div class="bg-white rounded-lg p-6 mb-6">
                 <h2 class="font-semibold mb-2">Détails de la commande :</h2>
                 <p><strong>Email :</strong> {{ $order->email }}</p>
                 <p><strong>Total :</strong> {{ number_format($order->total_amount, 2) }}€</p>
-                <p><strong>Statut :</strong> <span class="text-green-600">Payée</span></p>
+                <p><strong>Statut :</strong>
+                    @if($order->status === 'paid')
+                        <span class="text-green-600">✅ Payée</span>
+                    @else
+                        <span class="text-orange-600">⏳ En attente</span>
+                    @endif
+                </p>
+
+                @if(isset($helloasso_data) && $helloasso_data)
+                    <p class="text-xs text-gray-500 mt-2">
+                        HelloAsso ID: {{ $order->helloasso_id }}
+                    </p>
+                @endif
             </div>
 
             <p class="text-sm text-gray-600 mb-6">
-                Un email de confirmation vous a été envoyé à {{ $order->email }}
+                Un email de confirmation vous sera envoyé à {{ $order->email }} une fois le paiement validé.
             </p>
 
             <a href="{{ route('boutique.index') }}"

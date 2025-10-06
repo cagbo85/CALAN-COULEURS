@@ -46,45 +46,56 @@ use Illuminate\Database\Eloquent\Model;
 class Partenaire extends Model
 {
     use HasFactory;
-	protected $table = 'partenaires';
+    protected $table = 'partenaires';
 
-	protected $casts = [
-		'latitude' => 'float',
-		'longitude' => 'float',
-		'actif' => 'bool',
-		'ordre' => 'int',
-		'annee' => 'datetime',
-		'created_by' => 'int',
-		'updated_by' => 'int'
-	];
+    protected $casts = [
+        'latitude' => 'float',
+        'longitude' => 'float',
+        'actif' => 'bool',
+        'ordre' => 'int',
+        'annee' => 'datetime',
+        'created_by' => 'int',
+        'updated_by' => 'int'
+    ];
 
-	protected $fillable = [
-		'name',
-		'description',
-		'logo',
-		'photo',
-		'site_url',
-		'instagram_url',
-		'facebook_url',
-		'linkedin_url',
-		'autre_url',
-		'phone',
-		'adresse',
-		'ville',
-		'departement',
-		'code_postal',
-		'pays',
-		'latitude',
-		'longitude',
-		'actif',
-		'ordre',
-		'annee',
-		'created_by',
-		'updated_by'
-	];
+    protected $fillable = [
+        'name',
+        'description',
+        'logo',
+        'photo',
+        'site_url',
+        'instagram_url',
+        'facebook_url',
+        'linkedin_url',
+        'autre_url',
+        'phone',
+        'adresse',
+        'ville',
+        'departement',
+        'code_postal',
+        'pays',
+        'latitude',
+        'longitude',
+        'actif',
+        'ordre',
+        'annee',
+        'created_by',
+        'updated_by'
+    ];
 
-	public function user()
-	{
-		return $this->belongsTo(User::class, 'updated_by');
-	}
+    /**
+     * Utilisateur ayant créé ce partenaire.
+     */
+    public function createdBy()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
+
+    /**
+     * Utilisateur ayant mis à jour ce partenaire.
+     */
+    public function updatedBy()
+    {
+        return $this->belongsTo(User::class, 'updated_by');
+    }
 }

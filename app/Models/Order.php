@@ -43,42 +43,48 @@ use Illuminate\Database\Eloquent\Model;
 class Order extends Model
 {
     use HasFactory;
-	protected $table = 'orders';
+    protected $table = 'orders';
 
-	protected $casts = [
-		'total_amount' => 'float',
-		'shipping_date' => 'datetime',
-		'delivered_date' => 'datetime',
-		'updated_by' => 'int'
-	];
+    protected $casts = [
+        'total_amount' => 'float',
+        'shipping_date' => 'datetime',
+        'delivered_date' => 'datetime',
+        'updated_by' => 'int'
+    ];
 
-	protected $fillable = [
-		'email',
-		'firstname',
-		'lastname',
-		'adresse',
-		'ville',
-		'departement',
-		'code_postal',
-		'pays',
-		'total_amount',
-		'helloasso_id',
-		'shipping_tracking_number',
-		'shipping_carrier',
-		'shipping_date',
-		'delivered_date',
-		'shipping_status',
-		'status',
-		'updated_by'
-	];
+    protected $fillable = [
+        'email',
+        'firstname',
+        'lastname',
+        'adresse',
+        'ville',
+        'departement',
+        'code_postal',
+        'pays',
+        'total_amount',
+        'helloasso_id',
+        'shipping_tracking_number',
+        'shipping_carrier',
+        'shipping_date',
+        'delivered_date',
+        'shipping_status',
+        'status',
+        'updated_by'
+    ];
 
-	public function user()
-	{
-		return $this->belongsTo(User::class, 'updated_by');
-	}
+    /**
+     * Utilisateur ayant mis à jour cette commande.
+     */
+    public function updatedBy()
+    {
+        return $this->belongsTo(User::class, 'updated_by');
+    }
 
-	public function order_items()
-	{
-		return $this->hasMany(OrderItem::class);
-	}
+    /**
+     * Items associés à cette commande.
+     */
+    public function orderItems()
+    {
+        return $this->hasMany(OrderItem::class, 'order_id');
+    }
 }

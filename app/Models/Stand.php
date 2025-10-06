@@ -37,34 +37,45 @@ use Illuminate\Database\Eloquent\Model;
 class Stand extends Model
 {
     use HasFactory;
-	protected $table = 'stands';
+    protected $table = 'stands';
 
-	protected $casts = [
-		'actif' => 'bool',
-		'ordre' => 'int',
-		'year' => 'datetime',
-		'created_by' => 'int',
-		'updated_by' => 'int'
-	];
+    protected $casts = [
+        'actif' => 'bool',
+        'ordre' => 'int',
+        'year' => 'datetime',
+        'created_by' => 'int',
+        'updated_by' => 'int'
+    ];
 
-	protected $fillable = [
-		'name',
-		'description',
-		'photo',
-		'type',
-		'instagram_url',
-		'facebook_url',
-		'website_url',
-		'other_link',
-		'actif',
-		'ordre',
-		'year',
-		'created_by',
-		'updated_by'
-	];
+    protected $fillable = [
+        'name',
+        'description',
+        'photo',
+        'type',
+        'instagram_url',
+        'facebook_url',
+        'website_url',
+        'other_link',
+        'actif',
+        'ordre',
+        'year',
+        'created_by',
+        'updated_by'
+    ];
 
-	public function user()
-	{
-		return $this->belongsTo(User::class, 'updated_by');
-	}
+    /**
+     * Utilisateur ayant créé ce stand.
+     */
+    public function createdBy()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
+
+    /**
+     * Utilisateur ayant mis à jour ce stand.
+     */
+    public function updatedBy()
+    {
+        return $this->belongsTo(User::class, 'updated_by');
+    }
 }

@@ -48,13 +48,19 @@ class Faq extends Model
 		'updated_by'
 	];
 
-	public function updatedBy()
-	{
-		return $this->belongsTo(User::class, 'updated_by');
-	}
-
+	/**
+     * Utilisateur ayant créé cette FAQ.
+     */
     public function createdBy()
     {
         return $this->belongsTo(User::class, 'created_by');
+    }
+
+    /**
+     * Utilisateur ayant mis à jour cette FAQ.
+     */
+    public function updatedBy()
+    {
+        return $this->belongsTo(User::class, 'updated_by');
     }
 }

@@ -53,18 +53,35 @@ class ProductsVariant extends Model
 		'updated_by'
 	];
 
+    /**
+     * Produit associé à cette variante.
+     */
     public function product()
     {
         return $this->belongsTo(Product::class, 'product_id');
     }
 
-    public function creator()
+    /**
+     * Utilisateur ayant créé cette variante.
+     */
+    public function createdBy()
     {
         return $this->belongsTo(User::class, 'created_by');
     }
 
-    public function updater()
+    /**
+     * Utilisateur ayant mis à jour cette variante.
+     */
+    public function updatedBy()
     {
         return $this->belongsTo(User::class, 'updated_by');
+    }
+
+    /**
+     * OrderItems associés à cette variante.
+     */
+    public function orderItems()
+    {
+        return $this->hasMany(OrderItem::class, 'variant_id');
     }
 }

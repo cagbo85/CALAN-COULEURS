@@ -33,43 +33,55 @@ use Illuminate\Database\Eloquent\Model;
 class OrderItem extends Model
 {
     use HasFactory;
-	protected $table = 'order_items';
+    protected $table = 'order_items';
 
-	protected $casts = [
-		'order_id' => 'int',
-		'product_id' => 'int',
-		'variant_id' => 'int',
-		'quantity' => 'int',
-		'unit_price' => 'float',
-		'updated_by' => 'int'
-	];
+    protected $casts = [
+        'order_id' => 'int',
+        'product_id' => 'int',
+        'variant_id' => 'int',
+        'quantity' => 'int',
+        'unit_price' => 'float',
+        'updated_by' => 'int'
+    ];
 
-	protected $fillable = [
-		'order_id',
-		'product_id',
-		'variant_id',
-		'quantity',
-		'unit_price',
-		'updated_by'
-	];
+    protected $fillable = [
+        'order_id',
+        'product_id',
+        'variant_id',
+        'quantity',
+        'unit_price',
+        'updated_by'
+    ];
 
-	public function order()
-	{
-		return $this->belongsTo(Order::class);
-	}
+    /**
+     * Commande associée à cet item.
+     */
+    public function order()
+    {
+        return $this->belongsTo(Order::class, 'order_id');
+    }
 
-	public function product()
-	{
-		return $this->belongsTo(Product::class);
-	}
+    /**
+     * Produit associé à cet item.
+     */
+    public function product()
+    {
+        return $this->belongsTo(Product::class, 'product_id');
+    }
 
-	public function products_variant()
-	{
-		return $this->belongsTo(ProductsVariant::class, 'variant_id');
-	}
+    /**
+     * Variante associée à cet item.
+     */
+    public function productsVariant()
+    {
+        return $this->belongsTo(ProductsVariant::class, 'variant_id');
+    }
 
-	public function user()
-	{
-		return $this->belongsTo(User::class, 'updated_by');
-	}
+    /**
+     * Utilisateur ayant mis à jour cet item.
+     */
+    public function updatedBy()
+    {
+        return $this->belongsTo(User::class, 'updated_by');
+    }
 }

@@ -67,8 +67,19 @@ class Artiste extends Model
 		'updated_by'
 	];
 
-	public function user()
-	{
-		return $this->belongsTo(User::class, 'updated_by');
-	}
+	/**
+     * Utilisateur ayant créé cet artiste.
+     */
+    public function createdBy()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
+
+    /**
+     * Utilisateur ayant mis à jour cet artiste.
+     */
+    public function updatedBy()
+    {
+        return $this->belongsTo(User::class, 'updated_by');
+    }
 }

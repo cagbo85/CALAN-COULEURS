@@ -1,4 +1,3 @@
-{{-- filepath: c:\Users\cagbo\Documents\GitHub\calan-app\resources\views\layouts\boutique.blade.php --}}
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
@@ -7,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>@yield('title', 'Boutique - Calan\'Couleurs')</title>
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
 
     {{-- Meta tags dynamiques --}}
     @yield('meta')
@@ -15,9 +14,10 @@
     {{-- Scripts et styles communs --}}
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
-    <link rel="icon" type="image/png" href="{{ asset('img/logos/TOUCAN.png') }}">
+    <link rel="icon" type="image/png" href="{{ secure_asset('img/logos/TOUCAN.png') }}">
 
-    @notifyCss
+    {{-- @notifyCss --}}
+    {{-- <script src="{{ secure_asset('vendor/mckenziearts/laravel-notify/js/notify.js') }}"></script> --}}
     <style>
         /* Couleurs Calan'Couleurs */
         :root {
@@ -50,96 +50,117 @@
             z-index: 50 !important;
         }
     </style>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'urbanist': ['Urbanist', 'sans-serif'],
+                        'urbanist-bold': ['Urbanist Bold', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+
+    {{-- @viteReactRefresh --}}
+    {{-- @vite(['resources/css/app.css', 'resources/js/app.jsx', 'resources/js/navbar-loader.jsx', 'resources/js/timer-loader.jsx', 'resources/js/stands-loader.jsx', 'resources/js/faq-loader.jsx']) --}}
+    {{-- @vite(['resources/css/app.css', 'resources/js/app.jsx', 'resources/js/navbar-loader.jsx']) --}}
+
+    {{-- Scripts additionnels par page --}}
+    @stack('scripts')
+
+    <link href="{{ secure_asset('css/app.css') }}" rel="stylesheet">
+
+    {{-- Titre dynamique --}}
+    <title>@yield('title', 'Boutique - Calan\'Couleurs')</title>
 </head>
 
-<body class="bg-gray-50 min-h-screen">
-    <x-notify::notify />
-    <!-- Header Boutique -->
-    <header class="bg-white shadow-lg border-b-4" style="border-color: var(--calan-purple);">
-        <div class="container mx-auto px-4 py-6">
-            <div class="flex justify-between items-center">
-                <!-- Logo -->
-                <div class="flex items-center space-x-4">
-                    <a href="{{ route('boutique.index') }}">
-                        <img src="{{ asset('img/logos/LOGO/Logo-Calan.png') }}" alt="Calan'Couleurs" class="h-16">
-                    </a>
-                    <div>
-                        <h1 class="text-2xl font-bold" style="color: var(--calan-purple);">
-                            Calan'Boutique
-                        </h1>
-                        <p class="text-gray-600 text-sm">Boutique officielle du festival</p>
-                    </div>
-                </div>
-
-                <!-- Navigation boutique -->
-                <nav class="hidden md:flex items-center space-x-6">
-                    <a href="{{ route('boutique.index') }}" class="text-gray-700 hover:text-purple-600 font-medium">
-                        Tous les produits
-                    </a>
-                    <a href="{{ route('boutique.index') }}?category=vetements"
-                        class="text-gray-700 hover:text-purple-600 font-medium">
-                        Vêtements
-                    </a>
-                    <a href="{{ route('boutique.index') }}?category=accessoires"
-                        class="text-gray-700 hover:text-purple-600 font-medium">
-                        Accessoires
-                    </a>
-                    <a href="{{ route('boutique.index') }}?category=goodies"
-                        class="text-gray-700 hover:text-purple-600 font-medium">
-                        Goodies
-                    </a>
-                </nav>
-
-                <!-- Panier -->
-                <div class="flex items-center space-x-4">
-                    @php
-                        $cartCount = session('cart') ? array_sum(array_column(session('cart'), 'quantity')) : 0;
-                    @endphp
-                    <a href="{{ route('boutique.cart') }}"
-                        class="flex items-center space-x-2 bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5 5M7 13l2.5 5m6-5v6a2 2 0 11-4 0v-6m4 0V9a2 2 0 00-2-2H9a2 2 0 00-2 2v4.01">
-                            </path>
-                        </svg>
-                        <span>Panier</span>
-                        @if ($cartCount > 0)
-                            <span
-                                class="bg-pink-500 text-white rounded-full px-2 py-1 text-xs">{{ $cartCount }}</span>
-                        @endif
-                    </a>
-
-                    <!-- Lien retour site principal -->
-                    <a href="{{ url('/') }}" class="text-gray-600 hover:text-gray-800 text-sm">
-                        ← Retour au site
-                    </a>
-                </div>
-            </div>
-        </div>
+<body class="w-full min-h-screen flex flex-col">
+    {{-- <x-notify::notify /> --}}
+    <a href="#contenu-principal"
+        class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 bg-white text-[#8F1E98] px-3 py-2 rounded">
+        Aller au contenu
+    </a>
+    {{-- Navbar boutique --}}
+    <header class="sticky top-0 z-10 bg-white items-center">
+        @include('partials.boutique.navbar')
     </header>
 
     <!-- Contenu principal -->
-    <main class="container mx-auto px-4 py-8">
+    <main id="contenu-principal" class="w-full flex-1 bg-gray-50" tabindex="-1">
         @yield('content')
     </main>
 
-    <!-- Footer boutique -->
-    <footer class="bg-gray-800 text-white py-8 mt-16">
-        <div class="container mx-auto px-4 text-center">
-            <p>&copy; {{ date('Y') }} Calan'Couleurs - Boutique officielle</p>
-            <div class="mt-4 space-x-4">
-                <a href="{{ url('/contact') }}" class="text-gray-300 hover:text-white">Contact</a>
-                <a href="{{ url('/charte') }}" class="text-gray-300 hover:text-white">CGV</a>
-                <a href="{{ url('/') }}" class="text-gray-300 hover:text-white">Site principal</a>
-            </div>
-        </div>
-    </footer>
+    {{-- Footer boutique --}}
+    @include('partials.boutique.footer')
 
-    @include('notify::components.notify')
+    {{-- Panneau latéral Drawers du panier --}}
+    <div id="cart-panel"
+        class="fixed top-0 right-0 w-1/3 max-w-full h-full bg-white shadow-2xl z-50 transform translate-x-full transition-transform duration-300 ease-in-out flex flex-col"
+        style="display: none;">
+        <div class="flex justify-between items-center p-4 border-b">
+            <h2 class="text-xl font-bold">Votre panier</h2>
+            <button id="close-cart-panel" class="text-gray-500 hover:text-[#FF0F63] text-2xl">&times;</button>
+        </div>
+        <div id="cart-panel-content" class="flex-1 overflow-y-auto p-4">
+            <!-- Les articles du panier seront injectés ici en JS -->
+            <div class="text-center text-gray-400">Chargement...</div>
+        </div>
+        <div class="p-4 border-t">
+            <a href="{{ route('boutique.cart') }}"
+                class="w-full block text-center bg-[#8F1E98] hover:bg-[#FF0F63] text-white font-bold py-3 rounded-lg transition">
+                Passer commande
+            </a>
+        </div>
+    </div>
+
+    {{-- Overlay du panneau du panier --}}
+    <div id="cart-panel-overlay" class="fixed inset-0 bg-black bg-opacity-40 z-40" style="display: none;"></div>
+
+    {{-- @include('notify::components.notify') --}}
 
     @stack('scripts')
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            const trigger = document.getElementById('admin-trigger');
+            let clicks = 0;
+            let timer = null;
+
+            function goAdmin() {
+                window.open('{{ route('login') }}', '_blank', 'noopener,noreferrer');
+            }
+
+            trigger.addEventListener('click', () => {
+                clicks++;
+                if (clicks === 1) {
+                    timer = setTimeout(() => {
+                        clicks = 0;
+                    }, 500);
+                } else if (clicks === 2) {
+                    clearTimeout(timer);
+                    clicks = 0;
+                    goAdmin();
+                }
+            });
+
+            trigger.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    clicks++;
+                    if (clicks === 1) {
+                        timer = setTimeout(() => {
+                            clicks = 0;
+                        }, 500);
+                    } else if (clicks === 2) {
+                        clearTimeout(timer);
+                        clicks = 0;
+                        goAdmin();
+                    }
+                }
+            });
+
             // Forcer la fermeture de toutes les notifications après 3 secondes
             setTimeout(function() {
                 // Cacher toutes les notifications visibles
@@ -149,9 +170,81 @@
                     }
                 });
             }, 5000);
+
+            // Gestion de l'affichage du panneau du panier
+            const openBtn = document.getElementById('open-cart-panel');
+            const closeBtn = document.getElementById('close-cart-panel');
+            const cartPanel = document.getElementById('cart-panel');
+            const cartOverlay = document.getElementById('cart-panel-overlay');
+
+            if (openBtn && cartPanel && cartOverlay && closeBtn) {
+                openBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    cartPanel.style.display = 'flex';
+                    cartOverlay.style.display = 'block';
+                    setTimeout(() => {
+                        cartPanel.classList.remove('translate-x-full');
+                    }, 10);
+                    loadCartPanelContent();
+                });
+
+                closeBtn.addEventListener('click', closePanel);
+                cartOverlay.addEventListener('click', closePanel);
+
+                function closePanel() {
+                    cartPanel.classList.add('translate-x-full');
+                    setTimeout(() => {
+                        cartPanel.style.display = 'none';
+                        cartOverlay.style.display = 'none';
+                    }, 300);
+                }
+            }
+
+            window.openCartPanel = function() {
+                if (cartPanel && cartOverlay) {
+                    cartPanel.style.display = 'flex';
+                    cartOverlay.style.display = 'block';
+                    setTimeout(() => {
+                        cartPanel.classList.remove('translate-x-full');
+                    }, 10);
+                    loadCartPanelContent();
+                }
+            }
+
+            window.loadCartPanelContent = function() {
+                fetch('{{ route('boutique.cart') }}?ajax=1')
+                    .then(response => response.text())
+                    .then(html => {
+                        document.getElementById('cart-panel-content').innerHTML = html;
+                    })
+                    .catch(() => {
+                        document.getElementById('cart-panel-content').innerHTML =
+                            '<div class="text-center text-red-500">Erreur de chargement du panier.</div>';
+                    });
+            }
+
+            window.updateCartCounter = function(count) {
+                const cartButton = document.getElementById('open-cart-panel');
+                if (cartButton) {
+                    let countBadge = cartButton.querySelector('.bg-pink-500');
+
+                    if (count > 0) {
+                        if (!countBadge) {
+                            countBadge = document.createElement('span');
+                            countBadge.className = 'bg-pink-500 text-white rounded-full px-2 py-1 text-xs ml-1';
+                            cartButton.appendChild(countBadge);
+                        }
+                        countBadge.textContent = count;
+                    } else {
+                        if (countBadge) {
+                            countBadge.remove();
+                        }
+                    }
+                }
+            }
         });
     </script>
-    @notifyJs
+    {{-- @notifyJs --}}
 </body>
 
 </html>

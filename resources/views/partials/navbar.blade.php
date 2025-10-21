@@ -1,4 +1,3 @@
-<!-- filepath: c:\Users\cagbo\Documents\GitHub\calan-app\resources\views\partials\navbar.blade.php -->
 <div id="navbar-root"
     data-home-url="{{ url('/') }}"
     data-programmation-url="{{ url('/programmation') }}"

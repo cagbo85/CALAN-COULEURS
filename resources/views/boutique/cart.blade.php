@@ -21,7 +21,7 @@
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Produit</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Variante</th>
+                                    Caractéristiques</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Prix unitaire</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -100,7 +100,7 @@
                 <div class="bg-gray-50 px-6 py-4">
                     <div class="flex justify-between items-center">
                         <div class="flex space-x-4">
-                            <a href="{{ route('boutique.index') }}" class="text-blue-600 hover:text-blue-900">
+                            <a href="{{ route('boutique.products') }}" class="text-blue-600 hover:text-blue-900">
                                 ← Continuer les achats
                             </a>
                             <form method="POST" action="{{ route('boutique.clear-cart') }}" class="inline">
@@ -127,8 +127,8 @@
         @else
             <div class="text-center py-12">
                 <p class="text-gray-500 text-lg mb-4">Votre panier est vide</p>
-                <a href="{{ route('boutique.index') }}"
-                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                <a href="{{ route('boutique.products') }}"
+                    class="text-center bg-[#8F1E98] hover:bg-[#FF0F63] text-white font-bold rounded-lg transition py-2 px-4">
                     Voir nos produits
                 </a>
             </div>

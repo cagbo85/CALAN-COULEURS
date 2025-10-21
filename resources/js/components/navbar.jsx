@@ -198,7 +198,7 @@ export default function Navbar({ routes }) {
                             rel="noopener noreferrer"
                             className="block py-2 px-3 text-[#8F1E98] font-semibold hover:text-[#FF0F63] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8F1E98] rounded"
                         >
-                            Boutique 🛒
+                            Calan'Boutique
                         </a>
                     </nav>
 
@@ -342,7 +342,7 @@ export default function Navbar({ routes }) {
                         rel="noopener noreferrer"
                         className="block py-3 text-[#8F1E98] font-semibold hover:text-[#FF0F63] transition"
                     >
-                        Boutique 🛒
+                        Calan'Boutique
                     </a>
 
                     {/* CTA Mobile */}

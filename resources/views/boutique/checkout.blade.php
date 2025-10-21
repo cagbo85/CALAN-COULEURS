@@ -3,7 +3,7 @@
 @section('title', 'Commande - Calan\'Couleurs')
 
 @section('content')
-    <div class="max-w-4xl mx-auto">
+    <div class="max-w-4xl my-8 mx-auto">
         <h1 class="text-3xl font-bold text-center mb-8">Finaliser votre commande</h1>
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -96,15 +96,6 @@
                             required>
                             <option value="">Sélectionner un pays</option>
                             <option value="FRA" {{ old('pays') == 'FRA' ? 'selected' : '' }}>France</option>
-                            <option value="BEL" {{ old('pays') == 'BEL' ? 'selected' : '' }}>Belgique</option>
-                            <option value="CHE" {{ old('pays') == 'CHE' ? 'selected' : '' }}>Suisse</option>
-                            <option value="LUX" {{ old('pays') == 'LUX' ? 'selected' : '' }}>Luxembourg</option>
-                            <option value="CAN" {{ old('pays') == 'CAN' ? 'selected' : '' }}>Canada</option>
-                            <option value="DEU" {{ old('pays') == 'DEU' ? 'selected' : '' }}>Allemagne</option>
-                            <option value="ESP" {{ old('pays') == 'ESP' ? 'selected' : '' }}>Espagne</option>
-                            <option value="ITA" {{ old('pays') == 'ITA' ? 'selected' : '' }}>Italie</option>
-                            <option value="GBR" {{ old('pays') == 'GBR' ? 'selected' : '' }}>Royaume-Uni</option>
-                            <option value="USA" {{ old('pays') == 'USA' ? 'selected' : '' }}>États-Unis</option>
                         </select>
                         @error('pays')
                             <span class="text-red-500 text-xs">{{ $message }}</span>

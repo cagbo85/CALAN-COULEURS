@@ -6,28 +6,28 @@ CREATE TABLE IF NOT EXISTS cache (
     value mediumtext NOT NULL,
     expiration INT NOT NULL,
     PRIMARY KEY (key)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Cache table';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS cache_locks (
-    key varchar(255) COLLATE NOT NULL,
-    owner varchar(255) COLLATE NOT NULL,
+    `key` VARCHAR(255) NOT NULL,
+    owner VARCHAR(255) NOT NULL,
     expiration INT NOT NULL,
-    PRIMARY KEY (key)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Cache locks table';
+    PRIMARY KEY (`key`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS migrations (
     id INT NOT NULL AUTO_INCREMENT,
     migration VARCHAR(255) NOT NULL,
     batch INT NOT NULL,
     PRIMARY KEY (id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Migrations table';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS password_reset_tokens (
     email VARCHAR(255) NOT NULL,
     token VARCHAR(255) NOT NULL,
     created_at TIMESTAMP DEFAULT current_timestamp(),
     PRIMARY KEY (email)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Password reset tokens table';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS sessions (
     id VARCHAR(255) NOT NULL,
@@ -39,7 +39,7 @@ CREATE TABLE IF NOT EXISTS sessions (
     PRIMARY KEY (id),
     KEY sessions_user_id_index (user_id),
     KEY sessions_last_activity_index (last_activity)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Sessions table';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS failed_jobs (
     id BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -51,7 +51,7 @@ CREATE TABLE IF NOT EXISTS failed_jobs (
     failed_at TIMESTAMP NOT NULL DEFAULT current_timestamp(),
     PRIMARY KEY (id),
     UNIQUE KEY failed_jobs_uuid_unique (uuid)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Failed jobs table';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ;
 
 CREATE TABLE IF NOT EXISTS jobs (
     id BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -62,8 +62,8 @@ CREATE TABLE IF NOT EXISTS jobs (
     available_at INT NOT NULL,
     created_at INT NOT NULL,
     PRIMARY KEY (id),
-    KEY jobs_queue_index (queue),
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Jobs table';
+    KEY jobs_queue_index (queue)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS job_batches (
     id VARCHAR(255) NOT NULL,
@@ -77,7 +77,7 @@ CREATE TABLE IF NOT EXISTS job_batches (
     created_at INT NOT NULL,
     finished_at INT DEFAULT NULL,
     PRIMARY KEY (id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Job batches table';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Suppression des tables si elles existent (ordre important à cause des contraintes)
 DROP TABLE IF EXISTS faqs;
@@ -148,25 +148,25 @@ CREATE TABLE IF NOT EXISTS artistes (
 -- Insertion des artistes pour le vendredi
 INSERT INTO artistes (name, style, description, photo, day, begin_date, ending_date, scene, soundcloud_url, spotify_url, youtube_url, deezer_url, actif, created_by, updated_by) VALUES
 ('Rock 109', 'Reprises rock des années 70 à aujourd’hui', 'Rock 109, c’est un trio étonnant et détonnant qui revisite avec fougue les grands classiques du rock, des années 70 jusqu’à nos jours.\nUn show plein d’énergie pour ouvrir le festival en beauté et faire vibrer le public dès les premiers riffs. Prépare-toi à secouer la tête !', 'img/artists/photos/Photos_artistes/ROCK 109.webp', 'Vendredi', '2025-09-12 20:00:00', '2025-09-12 21:30:00', 'Extérieur', NULL, NULL, NULL, NULL, TRUE, 1, 1),
-('La Rif et Nos Men', 'Rap-Rock festif et engagé', 'La Rif et Nos Men, c’est une histoire de famille et de musique. Deux frères, Léo et Tonio, bercés par le hip-hop, rejoints par leurs parents musiciens à l’accordéon et à la guitare, pour un cocktail unique de rap-rock festif.\nLeur son mêle des messages engagés (écologie, inégalités) à des textes plus poétiques, portés par une énergie communicative et une complicité sincère.\nUn vrai moment de partage, entre groove, conscience et chaleur humaine.', 'img/artists/photos/Photos_artistes/LA RIF ET NOS MEN.webp', 'Vendredi', '2025-09-12 21:00:00', '2025-09-12 22:30:00', 'Intérieur', NULL, NULL, NULL, NULL, TRUE, 1, 1),
-('An\'Om x Vayn', 'Rap & électro mélodique', 'Entre flow précis et ambiance électronique puissante, An’Om x Vayn font exploser les frontières musicales. An’Om livre ses émotions avec justesse pendant que Vayn sublime le tout avec ses productions.\nLe duo, révélé par leur hit "Astronaute", enchaîne les titres forts comme "À mes démons", introspectif et percutant.\nSur scène, leur complicité est palpable : un vrai show énergique et sensible, entre kick, partage et frissons.', 'img/artists/photos/Photos_artistes/AN\'OM X VAYN.webp', 'Vendredi', '2025-09-12 22:30:00', '2025-09-13 00:00:00', 'Extérieur', NULL, NULL, NULL, NULL, TRUE, 1, 1),
-('Wazy', 'DJ set – hip-hop, afro, house, rap', 'Wazy, artiste plurielle et passionnée, fait vibrer les platines comme les cœurs. Passée par le chant, la batterie, la guitare et le piano, elle propose aujourd’hui un DJ set éclectique mêlant hip-hop, afro, house et rap avec une fluidité rare.\nSon objectif : créer un voyage sonore intense et joyeux, célébrant la diversité et l’unité par la musique.\nUne fin de soirée haute en couleurs, pour danser, sourire et s’élever ensemble jusqu’au bout de la nuit.', 'img/artists/photos/Photos_artistes/WAZY.webp', 'Vendredi', '2025-09-13 00:00:00', '2025-09-13 02:00:00', 'Extérieur', NULL, NULL, NULL, NULL, TRUE, 1, 1),
-('AXL R.', 'House, Afro house, Disco house, Techno, Hard techno', 'Figure bien connue de la scène nantaise, AXL R. fait vibrer les platines depuis plus de 12 ans. Des clubs aux festivals, il distille un mix percutant et polyvalent, toujours en phase avec l’ambiance du moment.\nNourri par une passion née sur les dancefloors, il enchaîne aujourd’hui les dates dans les meilleurs spots de la région, avec une signature sonore qui va de la house solaire à la techno brute.\nSur scène, AXL R. transforme la nuit en terrain de jeu électrisant, entre rythmes envoûtants et montées d’adrénaline. Prépare-toi à danser sans pause, jusqu’au dernier battement.', 'img/artists/photos/Photos_artistes/AXL R..webp', 'Vendredi', '2025-09-13 00:30:00', '2025-09-13 02:00:00', 'Intérieur', NULL, NULL, NULL, NULL, TRUE, 1, 1),
+('La Rif et Nos Men', 'Rap-Rock festif et engagé', 'La Rif et Nos Men, c’est une histoire de famille et de musique. Deux frères, Léo et Tonio, bercés par le hip-hop, rejoints par leurs parents musiciens à l’accordéon et à la guitare, pour un cocktail unique de rap-rock festif.\nLeur son mêle des messages engagés (écologie, inégalités) à des textes plus poétiques, portés par une énergie communicative et une complicité sincère.\nUn vrai moment de partage, entre groove, conscience et chaleur humaine.', 'img/artists/photos/Photos_artistes/LA RIF ET NOS MEN.webp', 'Vendredi', '2025-09-12 21:00:00', '2025-09-12 22:30:00', 'Intérieur', 'https://soundcloud.com/toniorina', NULL, 'https://music.youtube.com/channel/UCqyjRgA71R8A0jCuopYEbhA', 'https://www.deezer.com/fr/artist/75987212?host=6419575083&deferredFl=1&fbclid=IwY2xjawKbv1RleHRuA2FlbQIxMABicmlkETFnQ3Z2bGw4Y01qUHZkR0pqAR4748kQhqzZGgjReEhijP9rprGnHfCOnd8X85oZrCj1cUmGD0Vm8DDo8Er-3Q_aem_8FPs1pQIei2j88XaZOqOKw&host=6419575083&deferredFl=1&fbclid=IwY2xjawKbv1RleHRuA2FlbQIxMABicmlkETFnQ3Z2bGw4Y01qUHZkR0pqAR4748kQhqzZGgjReEhijP9rprGnHfCOnd8X85oZrCj1cUmGD0Vm8DDo8Er-3Q_aem_8FPs1pQIei2j88XaZOqOKw', TRUE, 1, 1),
+('An\'Om x Vayn', 'Rap & électro mélodique', 'Entre flow précis et ambiance électronique puissante, An’Om x Vayn font exploser les frontières musicales. An’Om livre ses émotions avec justesse pendant que Vayn sublime le tout avec ses productions.\nLe duo, révélé par leur hit "Astronaute", enchaîne les titres forts comme "À mes démons", introspectif et percutant.\nSur scène, leur complicité est palpable : un vrai show énergique et sensible, entre kick, partage et frissons.', 'img/artists/photos/Photos_artistes/AN\'OM X VAYN.webp', 'Vendredi', '2025-09-12 22:30:00', '2025-09-13 00:00:00', 'Extérieur', 'https://soundcloud.com/anomxvayn ', NULL, NULL, NULL, TRUE, 1, 1),
+('Wazy', 'DJ set – hip-hop, afro, house, rap', 'Wazy, artiste plurielle et passionnée, fait vibrer les platines comme les cœurs. Passée par le chant, la batterie, la guitare et le piano, elle propose aujourd’hui un DJ set éclectique mêlant hip-hop, afro, house et rap avec une fluidité rare.\nSon objectif : créer un voyage sonore intense et joyeux, célébrant la diversité et l’unité par la musique.\nUne fin de soirée haute en couleurs, pour danser, sourire et s’élever ensemble jusqu’au bout de la nuit.', 'img/artists/photos/Photos_artistes/WAZY.webp', 'Vendredi', '2025-09-13 00:00:00', '2025-09-13 02:00:00', 'Extérieur', 'https://soundcloud.com/user-630239260', NULL, NULL, NULL, TRUE, 1, 1),
+('AXL R.', 'House, Afro house, Disco house, Techno, Hard techno', 'Figure bien connue de la scène nantaise, AXL R. fait vibrer les platines depuis plus de 12 ans. Des clubs aux festivals, il distille un mix percutant et polyvalent, toujours en phase avec l’ambiance du moment.\nNourri par une passion née sur les dancefloors, il enchaîne aujourd’hui les dates dans les meilleurs spots de la région, avec une signature sonore qui va de la house solaire à la techno brute.\nSur scène, AXL R. transforme la nuit en terrain de jeu électrisant, entre rythmes envoûtants et montées d’adrénaline. Prépare-toi à danser sans pause, jusqu’au dernier battement.', 'img/artists/photos/Photos_artistes/AXL R..webp', 'Vendredi', '2025-09-13 00:30:00', '2025-09-13 02:00:00', 'Intérieur', 'https://soundcloud.com/dj-axl-r', NULL, NULL, NULL, TRUE, 1, 1),
 ('Hono', 'Electro House / Généraliste', 'HONO, c’est l’assurance d’un set fédérateur et explosif. À l’aise aussi bien dans l’électro house que dans un registre plus généraliste, il enchaîne les sons qui font danser tous les publics, sans jamais baisser l’intensité.\nEntre gros drops, refrains cultes et beats puissants, HONO transforme la piste en un espace de fête totale, où tout le monde trouve son moment.\nUne closing party XXL, pleine d’énergie, de lights et de good vibes pour finir la nuit en apothéose.', 'img/artists/photos/Photos_artistes/HONO.webp', 'Vendredi', '2025-09-13 02:00:00', '2025-09-13 04:00:00', 'Extérieur', NULL, NULL, NULL, NULL, TRUE, 1, 1),
-('Dymeister', 'Techno – Acid – Hard Trance', 'Place aux vibrations brutes et sans compromis avec DYMEISTER, architecte sonore des nuits les plus intenses.\nSes sets oscillent entre techno nerveuse, acid hypnotique et hard trance survoltée, propulsant le public dans un univers aussi percutant que transcendant.\nAvec un sens du rythme chirurgical et une énergie sans relâche, DYMEISTER promet un final sous haute tension, taillé pour les noctambules en quête de lâcher-prise total.', 'img/artists/photos/Photos_artistes/DYMEISTER.webp', 'Vendredi', '2025-09-13 02:00:00', '2025-09-13 03:30:00', 'Intérieur', NULL, NULL, NULL, NULL, TRUE, 1, 1);
+('Dymeister', 'Techno – Acid – Hard Trance', 'Place aux vibrations brutes et sans compromis avec DYMEISTER, architecte sonore des nuits les plus intenses.\nSes sets oscillent entre techno nerveuse, acid hypnotique et hard trance survoltée, propulsant le public dans un univers aussi percutant que transcendant.\nAvec un sens du rythme chirurgical et une énergie sans relâche, DYMEISTER promet un final sous haute tension, taillé pour les noctambules en quête de lâcher-prise total.', 'img/artists/photos/Photos_artistes/DYMEISTER.webp', 'Vendredi', '2025-09-13 02:00:00', '2025-09-13 03:30:00', 'Intérieur', 'https://soundcloud.com/dylan-chevalier-56586261', NULL, NULL, NULL, TRUE, 1, 1);
 
 -- Insertion des artistes pour le samedi
 INSERT INTO artistes (name, style, description, photo, day, begin_date, ending_date, scene, soundcloud_url, spotify_url, youtube_url, deezer_url, actif, created_by, updated_by) VALUES
 ('Youth Collective', 'Reggae Roots & Dub UK – Sound System', 'Né en 2015 autour de la culture sound system nantaise, Youth Collective rassemble six passionnés qui font vibrer les murs avec leur sono artisanale.\nLeur mission : transmettre un message d’unité et de partage, dans la plus pure tradition des sound systems anglais.\nLeur sélection navigue entre reggae roots chaleureux et dub UK dynamique, agrémentée de quelques pépites maison issues de leur propre studio.\nUn moment convivial, puissant et solaire pour bien démarrer la journée.', 'img/artists/photos/Photos_artistes/YOUTH COLLECTIVE.webp', 'Samedi', '2025-09-13 15:00:00', '2025-09-13 17:00:00', 'Extérieur', NULL, NULL, NULL, NULL, TRUE, 1, 1),
-('Maklos', 'House / Techno – Old School & Underground', 'Maklos est un DJ et producteur qui fait le lien entre house old school et techno underground.\nSon univers mêle rythmes percussifs, énergie brute et progressions hypnotiques, pour des sets qui montent en tension et captivent les corps comme les esprits.\nUn moment taillé pour les puristes comme pour les curieux, à savourer les yeux fermés ou les bras levés.', 'img/artists/photos/Photos_artistes/MAKLOS.webp', 'Samedi', '2025-09-13 17:00:00', '2025-09-13 18:30:00', 'Extérieur', NULL, NULL, NULL, NULL, TRUE, 1, 1),
+('Maklos', 'House / Techno – Old School & Underground', 'Maklos est un DJ et producteur qui fait le lien entre house old school et techno underground.\nSon univers mêle rythmes percussifs, énergie brute et progressions hypnotiques, pour des sets qui montent en tension et captivent les corps comme les esprits.\nUn moment taillé pour les puristes comme pour les curieux, à savourer les yeux fermés ou les bras levés.', 'img/artists/photos/Photos_artistes/MAKLOS.webp', 'Samedi', '2025-09-13 17:00:00', '2025-09-13 18:30:00', 'Extérieur', 'https://soundcloud.com/maklosmusic', NULL, 'https://music.youtube.com/channel/UC3oi2p8BmFFb4k3YhkgOdNA', NULL, TRUE, 1, 1),
 ('Klö', 'Electro', 'Klö, DJ émergente de la scène locale, fait partie de cette nouvelle génération qui électrise les platines avec style et audace.\nAvec ses mix envoûtants et ses sélections percutantes, elle promet un set qui fait bouger les corps et monte en intensité à mesure que le soleil décline.\nUne vague électro pleine de fraîcheur, à ne pas manquer !', 'img/artists/photos/Photos_artistes/KLÖ.webp', 'Samedi', '2025-09-13 18:30:00', '2025-09-13 19:30:00', 'Extérieur', NULL, NULL, NULL, NULL, TRUE, 1, 1),
 ('Kaboum', NULL, NULL, 'img/artists/photos/Photos_artistes/KABOUM.webp', 'Samedi', '2025-09-13 19:30:00', '2025-09-13 21:00:00', 'Extérieur', NULL, NULL, NULL, NULL, TRUE, 1, 1),
-('TOM WORRF', NULL, NULL, 'img/artists/photos/Photos_artistes/TOM WORRF.webp', 'Samedi', '2025-09-13 20:30:00', '2025-09-13 22:00:00', 'Intérieur', NULL, NULL, NULL, NULL, TRUE, 1, 1),
-('2TH', NULL, NULL, 'img/artists/photos/Photos_artistes/2TH.webp', 'Samedi', '2025-09-13 22:00:00', '2025-09-13 23:30:00', 'Extérieur', NULL, NULL, NULL, NULL, TRUE, 1, 1),
-('Mūne', NULL, NULL, 'img/artists/photos/Photos_artistes/MŪNE.webp', 'Samedi', '2025-09-13 23:30:00', '2025-09-14 02:00:00', 'Extérieur', NULL, NULL, NULL, NULL, TRUE, 1, 1),
+('TOM WORRF', NULL, NULL, 'img/artists/photos/Photos_artistes/TOM WORRF.webp', 'Samedi', '2025-09-13 20:30:00', '2025-09-13 22:00:00', 'Intérieur', 'https://music.youtube.com/channel/UCdJep-VuS_wqB_aNXEO9VPw', NULL, 'https://music.youtube.com/channel/UCdJep-VuS_wqB_aNXEO9VPw', 'https://www.deezer.com/fr/artist/250327002?host=6419575083&deferredFl=1&fbclid=IwY2xjawKbv1RleHRuA2FlbQIxMABicmlkETFnQ3Z2bGw4Y01qUHZkR0pqAR4748kQhqzZGgjReEhijP9rprGnHfCOnd8X85oZrCj1cUmGD0Vm8DDo8Er-3Q_aem_8FPs1pQIei2j88XaZOqOKw&host=6419575083&deferredFl=1&fbclid=IwY2xjawKbv1RleHRuA2FlbQIxMABicmlkETFnQ3Z2bGw4Y01qUHZkR0pqAR4748kQhqzZGgjReEhijP9rprGnHfCOnd8X85oZrCj1cUmGD0Vm8DDo8Er-3Q_aem_8FPs1pQIei2j88XaZOqOKw', TRUE, 1, 1),
+('2TH', NULL, NULL, 'img/artists/photos/Photos_artistes/2TH.webp', 'Samedi', '2025-09-13 22:00:00', '2025-09-13 23:30:00', 'Extérieur', 'https://soundcloud.com/user-86681471', NULL, 'https://music.youtube.com/channel/UCLP2wR6chac-0YlUPRJmb5A', 'https://www.deezer.com/fr/artist/278029?host=6419575083&deferredFl=1&fbclid=IwY2xjawKbv1RleHRuA2FlbQIxMABicmlkETFnQ3Z2bGw4Y01qUHZkR0pqAR4748kQhqzZGgjReEhijP9rprGnHfCOnd8X85oZrCj1cUmGD0Vm8DDo8Er-3Q_aem_8FPs1pQIei2j88XaZOqOKw&host=6419575083&deferredFl=1&fbclid=IwY2xjawKbv1RleHRuA2FlbQIxMABicmlkETFnQ3Z2bGw4Y01qUHZkR0pqAR4748kQhqzZGgjReEhijP9rprGnHfCOnd8X85oZrCj1cUmGD0Vm8DDo8Er-3Q_aem_8FPs1pQIei2j88XaZOqOKw', TRUE, 1, 1),
+('Mūne', NULL, NULL, 'img/artists/photos/Photos_artistes/MŪNE.webp', 'Samedi', '2025-09-13 23:30:00', '2025-09-14 02:00:00', 'Extérieur', 'https://soundcloud.com/user-951350425-867779404', NULL, NULL, NULL, TRUE, 1, 1),
 ('Yonex', NULL, NULL, 'img/artists/photos/Photos_artistes/YONEX.webp', 'Samedi', '2025-09-14 00:30:00', '2025-09-14 02:00:00', 'Intérieur', NULL, NULL, NULL, NULL, TRUE, 1, 1),
-('Leydon', NULL, NULL, 'img/artists/photos/Photos_artistes/LEYDON.webp', 'Samedi', '2025-09-14 02:00:00', '2025-09-14 04:00:00', 'Extérieur', NULL, NULL, NULL, NULL, TRUE, 1, 1),
-('Tripidium', NULL, NULL, 'img/artists/photos/Photos_artistes/TRIPIDIUM.webp', 'Samedi', '2025-09-14 02:00:00', '2025-09-14 03:30:00', 'Intérieur', NULL, NULL, NULL, NULL, TRUE, 1, 1);
+('Leydon', NULL, NULL, 'img/artists/photos/Photos_artistes/LEYDON.webp', 'Samedi', '2025-09-14 02:00:00', '2025-09-14 04:00:00', 'Extérieur', NULL, NULL, NULL, 'https://www.deezer.com/fr/artist/9308144?host=6419575083&deferredFl=1&fbclid=IwY2xjawKbv1RleHRuA2FlbQIxMABicmlkETFnQ3Z2bGw4Y01qUHZkR0pqAR4748kQhqzZGgjReEhijP9rprGnHfCOnd8X85oZrCj1cUmGD0Vm8DDo8Er-3Q_aem_8FPs1pQIei2j88XaZOqOKw&host=6419575083&deferredFl=1&fbclid=IwY2xjawKbv1RleHRuA2FlbQIxMABicmlkETFnQ3Z2bGw4Y01qUHZkR0pqAR4748kQhqzZGgjReEhijP9rprGnHfCOnd8X85oZrCj1cUmGD0Vm8DDo8Er-3Q_aem_8FPs1pQIei2j88XaZOqOKw', TRUE, 1, 1),
+('Tripidium', NULL, NULL, 'img/artists/photos/Photos_artistes/TRIPIDIUM.webp', 'Samedi', '2025-09-14 02:00:00', '2025-09-14 03:30:00', 'Intérieur', 'https://soundcloud.com/iav-498336354', NULL, NULL, NULL, TRUE, 1, 1);
 
 CREATE TABLE IF NOT EXISTS faqs (
     id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
@@ -291,11 +291,12 @@ CREATE TABLE IF NOT EXISTS products (
     slug VARCHAR(255) NOT NULL COMMENT 'Slug URL du produit',
     description TEXT DEFAULT NULL COMMENT 'Description détaillée du produit',
     detailed_description MEDIUMTEXT DEFAULT NULL COMMENT 'Description longue du produit',
-    price DECIMAL(10,2) NOT NULL COMMENT 'Prix du produit en euros',
-    stock_quantity INT NOT NULL DEFAULT 0 COMMENT 'Quantité en stock',
+    price DECIMAL(10,2) NOT NULL COMMENT 'Prix en euros',
+    old_price DECIMAL(10,2) DEFAULT NULL COMMENT 'Ancien prix pour les promotions',
     is_featured BOOLEAN NOT NULL DEFAULT 0 COMMENT 'Produit mis en avant sur la page d\'accueil',
     image VARCHAR(255) DEFAULT NULL COMMENT 'Chemin vers l\'image principale du produit',
     category ENUM('vetements', 'accessoires', 'goodies') NOT NULL COMMENT 'Catégorie du produit',
+    badge ENUM('t-shirt', 'pull', 'accessoire') DEFAULT NULL COMMENT 'Badge du produit',
     actif BOOLEAN NOT NULL DEFAULT 1 COMMENT 'Produit actif ou non',
     created_by INT DEFAULT NULL COMMENT 'ID utilisateur créateur',
     updated_by INT DEFAULT NULL COMMENT 'ID de l\'utilisateur qui a modifié',
@@ -310,8 +311,9 @@ CREATE TABLE IF NOT EXISTS products (
 CREATE TABLE IF NOT EXISTS products_variants (
     id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     product_id INT NOT NULL COMMENT 'ID du produit parent',
-    size ENUM('XS', 'S', 'M', 'L', 'XL', 'XXL') DEFAULT NULL COMMENT 'Taille du produit',
-    color VARCHAR(100) DEFAULT NULL COMMENT 'Couleur du produit',
+    sku VARCHAR(100) DEFAULT NULL COMMENT 'Référence SKU unique pour cette variante',
+    size_id INT DEFAULT NULL COMMENT 'ID de la taille',
+    color_id INT DEFAULT NULL COMMENT 'ID de la couleur',
     quantity INT NOT NULL DEFAULT 0 COMMENT 'Quantité en stock pour cette variante',
     image VARCHAR(255) DEFAULT NULL COMMENT 'Chemin vers l\'image spécifique à cette variante (ex: couleur)',
     created_by INT DEFAULT NULL COMMENT 'ID utilisateur créateur',
@@ -322,8 +324,40 @@ CREATE TABLE IF NOT EXISTS products_variants (
     KEY updated_by (updated_by),
     CONSTRAINT products_variants_ibfk_1 FOREIGN KEY (created_by) REFERENCES users(id),
     CONSTRAINT products_variants_ibfk_2 FOREIGN KEY (updated_by) REFERENCES users(id),
-    CONSTRAINT products_variants_ibfk_3 FOREIGN KEY (product_id) REFERENCES products(id)
+    CONSTRAINT products_variants_ibfk_3 FOREIGN KEY (product_id) REFERENCES products(id),
+    CONSTRAINT products_variants_ibfk_4 FOREIGN KEY (size_id) REFERENCES sizes(id),
+    CONSTRAINT products_variants_ibfk_5 FOREIGN KEY (color_id) REFERENCES colors(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Variantes des produits (taille, couleur, etc.)';
+
+CREATE TABLE IF NOT EXISTS sizes (
+    id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    label VARCHAR(10) NOT NULL UNIQUE COMMENT 'Libellé de la taille (XS, S, M, L, XL, XXL)',
+    description VARCHAR(255) DEFAULT NULL COMMENT 'Description optionnelle de la taille',
+    ordre INT NOT NULL DEFAULT 0 COMMENT 'Ordre d\'affichage',
+    created_by INT DEFAULT NULL COMMENT 'ID utilisateur créateur',
+    updated_by INT DEFAULT NULL COMMENT 'ID de l\'utilisateur qui a modifié',
+    created_at TIMESTAMP NULL DEFAULT current_timestamp() COMMENT 'Date de création',
+    updated_at TIMESTAMP NULL DEFAULT current_timestamp() ON UPDATE current_timestamp() COMMENT 'Date de modification',
+    KEY created_by (created_by),
+    KEY updated_by (updated_by),
+    CONSTRAINT sizes_ibfk_1 FOREIGN KEY (created_by) REFERENCES users(id),
+    CONSTRAINT sizes_ibfk_2 FOREIGN KEY (updated_by) REFERENCES users(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Tailles disponibles pour les produits';
+
+CREATE TABLE IF NOT EXISTS colors (
+    id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    name VARCHAR(100) NOT NULL UNIQUE COMMENT 'Nom de la couleur (ex: Rouge, Bleu, Vert)',
+    hex_code VARCHAR(7) DEFAULT NULL COMMENT 'Code hexadécimal de la couleur (ex: #FF5733)',
+    ordre INT NOT NULL DEFAULT 0 COMMENT 'Ordre d\'affichage',
+    created_by INT DEFAULT NULL COMMENT 'ID utilisateur créateur',
+    updated_by INT DEFAULT NULL COMMENT 'ID de l\'utilisateur qui a modifié',
+    created_at TIMESTAMP NULL DEFAULT current_timestamp() COMMENT 'Date de création',
+    updated_at TIMESTAMP NULL DEFAULT current_timestamp() ON UPDATE current_timestamp() COMMENT 'Date de modification',
+    KEY created_by (created_by),
+    KEY updated_by (updated_by),
+    CONSTRAINT colors_ibfk_1 FOREIGN KEY (created_by) REFERENCES users(id),
+    CONSTRAINT colors_ibfk_2 FOREIGN KEY (updated_by) REFERENCES users(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Couleurs disponibles pour les produits';
 
 CREATE TABLE IF NOT EXISTS orders (
     id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
@@ -336,13 +370,15 @@ CREATE TABLE IF NOT EXISTS orders (
     code_postal VARCHAR(20) DEFAULT NULL COMMENT 'Code postal',
     pays VARCHAR(100) DEFAULT NULL COMMENT 'Pays',
     total_amount DECIMAL(10,2) NOT NULL COMMENT 'Montant total de la commande en euros',
-    helloasso_id VARCHAR(100) NOT NULL COMMENT 'ID de la commande HelloAsso',
-    shipping_tracking_number VARCHAR(255) DEFAULT NULL COMMENT 'Numéro de suivi du colis',
-    shipping_carrier VARCHAR(100) DEFAULT NULL COMMENT 'Transporteur',
-    shipping_date DATE DEFAULT NULL COMMENT 'Date d\'expédition',
-    delivered_date DATE DEFAULT NULL COMMENT 'Date de livraison',
-    shipping_status ENUM('in preparation', 'shipped', 'delivered', 'returned') DEFAULT 'in preparation' COMMENT 'Statut d\'expédition',
-    status ENUM('pending', 'paid', 'shipped', 'cancelled', 'refunded') NOT NULL DEFAULT 'pending' COMMENT 'Statut de la commande',
+    helloasso_id VARCHAR(100) DEFAULT NULL COMMENT 'ID de la commande HelloAsso',
+    payment_status VARCHAR(255) DEFAULT NULL COMMENT 'Statut du paiement',
+    cashout_state VARCHAR(255) DEFAULT NULL COMMENT 'État du versement',
+    helloasso_payment_id VARCHAR(100) DEFAULT NULL COMMENT 'ID du paiement HelloAsso',
+    paid_at TIMESTAMP NULL DEFAULT NULL COMMENT 'Date et heure du paiement',
+    payment_metadata JSON DEFAULT NULL COMMENT 'Métadonnées du paiement (stockées en JSON)',
+    token VARCHAR(255) NOT NULL COMMENT 'Token unique pour accéder à la commande',
+    stock_decremented BOOLEAN NOT NULL DEFAULT 0 COMMENT 'Indique si le stock a été décrémenté pour cette commande',
+    status ENUM('pending', 'paid', 'shipped', 'delivered', 'cancelled', 'refunded') NOT NULL DEFAULT 'pending' COMMENT 'Statut de la commande',
     updated_by INT DEFAULT NULL COMMENT 'ID de l\'utilisateur qui a modifié',
     created_at TIMESTAMP NULL DEFAULT current_timestamp() COMMENT 'Date de création',
     updated_at TIMESTAMP NULL DEFAULT current_timestamp() ON UPDATE current_timestamp() COMMENT 'Date de modification',
@@ -367,3 +403,21 @@ CREATE TABLE IF NOT EXISTS order_items (
     CONSTRAINT order_items_ibfk_4 FOREIGN KEY (updated_by) REFERENCES users(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Articles dans les commandes';
 
+CREATE TABLE IF NOT EXISTS shipments (
+    id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    order_id INT NOT NULL COMMENT 'ID de la commande',
+    tracking_number VARCHAR(255) DEFAULT NULL COMMENT 'Numéro de suivi du colis',
+    carrier VARCHAR(100) DEFAULT NULL COMMENT 'Transporteur',
+    shipped_at TIMESTAMP NULL DEFAULT NULL COMMENT 'Date et heure d\'expédition',
+    delivered_at TIMESTAMP NULL DEFAULT NULL COMMENT 'Date et heure de livraison',
+    status ENUM('in preparation', 'shipped', 'delivered', 'returned') NOT NULL DEFAULT 'in preparation' COMMENT 'Statut d\'expédition',
+    created_by INT DEFAULT NULL COMMENT 'ID utilisateur créateur',
+    updated_by INT DEFAULT NULL COMMENT 'ID de l\'utilisateur qui a modifié',
+    created_at TIMESTAMP NULL DEFAULT current_timestamp() COMMENT 'Date de création',
+    updated_at TIMESTAMP NULL DEFAULT current_timestamp() ON UPDATE current_timestamp() COMMENT 'Date de modification',
+    KEY created_by (created_by),
+    KEY updated_by (updated_by),
+    CONSTRAINT shipments_ibfk_1 FOREIGN KEY (order_id) REFERENCES orders(id),
+    CONSTRAINT shipments_ibfk_2 FOREIGN KEY (created_by) REFERENCES users(id),
+    CONSTRAINT shipments_ibfk_3 FOREIGN KEY (updated_by) REFERENCES users(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Expéditions des commandes';

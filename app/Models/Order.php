@@ -25,11 +25,13 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $pays
  * @property float $total_amount
  * @property string $helloasso_id
- * @property string|null $shipping_tracking_number
- * @property string|null $shipping_carrier
- * @property Carbon|null $shipping_date
- * @property Carbon|null $delivered_date
- * @property string|null $shipping_status
+ * @property string|null $payment_status
+ * @property string|null $cashout_state
+ * @property string|null $helloasso_payment_id
+ * @property Carbon|null $paid_at
+ * @property array|null $payment_metadata
+ * @property string $token
+ * @property bool $stock_decremented
  * @property string $status
  * @property int|null $updated_by
  * @property Carbon|null $created_at
@@ -37,42 +39,50 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @property User|null $user
  * @property Collection|OrderItem[] $order_items
+ * @property Collection|Shipment[] $shipments
  *
  * @package App\Models
  */
 class Order extends Model
 {
     use HasFactory;
-    protected $table = 'orders';
+	protected $table = 'orders';
 
-    protected $casts = [
-        'total_amount' => 'float',
-        'shipping_date' => 'datetime',
-        'delivered_date' => 'datetime',
-        'updated_by' => 'int'
-    ];
+	protected $casts = [
+		'total_amount' => 'float',
+		'paid_at' => 'datetime',
+		'payment_metadata' => 'json',
+		'stock_decremented' => 'bool',
+		'updated_by' => 'int'
+	];
 
-    protected $fillable = [
-        'email',
-        'firstname',
-        'lastname',
-        'adresse',
-        'ville',
-        'departement',
-        'code_postal',
-        'pays',
-        'total_amount',
-        'helloasso_id',
-        'shipping_tracking_number',
-        'shipping_carrier',
-        'shipping_date',
-        'delivered_date',
-        'shipping_status',
-        'status',
-        'updated_by'
-    ];
+	protected $hidden = [
+		'token'
+	];
 
-    /**
+	protected $fillable = [
+		'email',
+		'firstname',
+		'lastname',
+		'adresse',
+		'ville',
+		'departement',
+		'code_postal',
+		'pays',
+		'total_amount',
+		'helloasso_id',
+		'payment_status',
+		'cashout_state',
+		'helloasso_payment_id',
+		'paid_at',
+		'payment_metadata',
+		'token',
+		'stock_decremented',
+		'status',
+		'updated_by'
+	];
+
+	/**
      * Utilisateur ayant mis à jour cette commande.
      */
     public function updatedBy()
@@ -87,4 +97,9 @@ class Order extends Model
     {
         return $this->hasMany(OrderItem::class, 'order_id');
     }
+
+	public function shipments()
+	{
+		return $this->hasMany(Shipment::class, 'order_id');
+	}
 }

@@ -1,9 +1,11 @@
 <?php
 
-use App\Http\Controllers\BoutiqueController;
+use App\Services\HelloAssoService;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\BoutiqueController;
 
 Route::get('/boutique', [BoutiqueController::class, 'index'])->name('boutique.index');
+Route::get('/boutique/produits', [BoutiqueController::class, 'products'])->name('boutique.products');
 Route::get('/boutique/{product:slug}', [BoutiqueController::class, 'show'])->name('boutique.show');
 
 // Routes du panier
@@ -19,11 +21,14 @@ Route::get('/commande/success', [BoutiqueController::class, 'orderSuccess'])->na
 Route::get('/commande/cancel', [BoutiqueController::class, 'orderCancel'])->name('boutique.order-cancel');
 
 // Test HelloAsso Service
-Route::get('/test-helloasso', function (App\Services\HelloAssoService $helloAsso) {
+Route::get('/test-helloasso', function (HelloAssoService $helloAsso) {
     return response()->json($helloAsso->testConnection());
 });
 
-Route::get('/test-helloasso-complete', function (App\Services\HelloAssoService $helloAsso) {
+// Webhook HelloAsso (public URL - configure via HelloAsso dashboard)
+Route::post('/webhook/helloasso', [BoutiqueController::class, 'helloassoWebhook'])->name('helloasso.webhook');
+
+Route::get('/test-helloasso-complete', function (HelloAssoService $helloAsso) {
     try {
         $results = [];
 
@@ -53,7 +58,6 @@ Route::get('/test-helloasso-complete', function (App\Services\HelloAssoService $
             'message' => 'Tests HelloAsso complets réussis !',
             'data' => $results
         ]);
-
     } catch (Exception $e) {
         return response()->json([
             'success' => false,

@@ -20,10 +20,11 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $description
  * @property string|null $detailed_description
  * @property float $price
- * @property int $stock_quantity
+ * @property float|null $old_price
  * @property bool $is_featured
  * @property string|null $image
  * @property string $category
+ * @property string|null $badge
  * @property bool $actif
  * @property int|null $created_by
  * @property int|null $updated_by
@@ -43,7 +44,7 @@ class Product extends Model
 
 	protected $casts = [
 		'price' => 'float',
-		'stock_quantity' => 'int',
+		'old_price' => 'float',
 		'is_featured' => 'bool',
 		'actif' => 'bool',
 		'created_by' => 'int',
@@ -56,10 +57,11 @@ class Product extends Model
 		'description',
 		'detailed_description',
 		'price',
-		'stock_quantity',
+		'old_price',
 		'is_featured',
 		'image',
 		'category',
+		'badge',
 		'actif',
 		'created_by',
 		'updated_by'
@@ -77,23 +79,23 @@ class Product extends Model
      * Utilisateur ayant mis à jour ce produit.
      */
     public function updatedBy()
-    {
-        return $this->belongsTo(User::class, 'updated_by');
-    }
+	{
+		return $this->belongsTo(User::class, 'updated_by');
+	}
 
     /**
      * OrderItems associés à ce produit.
      */
     public function orderItems()
-    {
+	{
         return $this->hasMany(OrderItem::class, 'product_id');
-    }
+	}
 
     /**
      * Variantes associées à ce produit.
      */
     public function productsVariants()
-    {
+	{
         return $this->hasMany(ProductsVariant::class, 'product_id');
-    }
+	}
 }

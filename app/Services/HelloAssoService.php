@@ -2,11 +2,12 @@
 
 namespace App\Services;
 
+use Exception;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Cache;
 use League\OAuth2\Client\Provider\GenericProvider;
 use League\OAuth2\Client\Provider\Exception\IdentityProviderException;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Http;
-use Exception;
 
 class HelloAssoService
 {
@@ -158,5 +159,66 @@ class HelloAssoService
         });
 
         return array_values($checkoutForms);
+    }
+
+    /**
+     * Tenter de retrouver une commande HelloAsso à partir du checkoutIntentId (fallback).
+     * Retourne null si introuvable.
+     */
+    public function getOrderByCheckoutIntent(string|int $checkoutIntentId): ?array
+    {
+        try {
+            // 1) tenter endpoint direct (si l'API expose /orders/{id})
+            try {
+                $resp = $this->apiCall("orders/{$checkoutIntentId}");
+                if (!empty($resp)) {
+                    Log::debug('HelloAsso getOrderByCheckoutIntent via orders/{id}', ['id' => $checkoutIntentId, 'resp' => $resp]);
+                    return $resp;
+                }
+            } catch (\Exception $e) {
+                // ignore, essayer la suite
+            }
+
+            // 2) tenter requête avec paramètre (orders?checkoutIntentId=...)
+            try {
+                $resp = $this->apiCall("orders?checkoutIntentId={$checkoutIntentId}");
+                if (!empty($resp['data'])) {
+                    // si data est une liste, retourner le premier match
+                    foreach ($resp['data'] as $order) {
+                        if (
+                            (isset($order['checkoutIntentId']) && $order['checkoutIntentId'] == $checkoutIntentId)
+                            || (isset($order['id']) && $order['id'] == $checkoutIntentId)
+                        ) {
+                            Log::debug('HelloAsso getOrderByCheckoutIntent via orders?checkoutIntentId', ['id' => $checkoutIntentId, 'order' => $order]);
+                            return $order;
+                        }
+                    }
+                }
+            } catch (\Exception $e) {
+                // ignore, essayer la suite
+            }
+
+            // 3) fallback: récupérer les orders récents et chercher (attention volumétrie en prod)
+            try {
+                $resp = $this->apiCall("orders");
+                if (!empty($resp['data'])) {
+                    foreach ($resp['data'] as $order) {
+                        if ((isset($order['checkoutIntentId']) && $order['checkoutIntentId'] == $checkoutIntentId)
+                            || (isset($order['id']) && $order['id'] == $checkoutIntentId)
+                        ) {
+                            Log::debug('HelloAsso getOrderByCheckoutIntent via orders (fallback)', ['id' => $checkoutIntentId, 'order' => $order]);
+                            return $order;
+                        }
+                    }
+                }
+            } catch (\Exception $e) {
+                // nothing
+            }
+        } catch (\Throwable $e) {
+            Log::warning('HelloAsso getOrderByCheckoutIntent error', ['id' => $checkoutIntentId, 'error' => $e->getMessage()]);
+        }
+
+        Log::debug('HelloAsso getOrderByCheckoutIntent not found', ['id' => $checkoutIntentId]);
+        return null;
     }
 }

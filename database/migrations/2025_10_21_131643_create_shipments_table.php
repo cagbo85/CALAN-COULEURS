@@ -11,14 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('products_variants', function (Blueprint $table) {
-            $table->comment('Variantes des produits (taille, couleur, etc.)');
+        Schema::create('shipments', function (Blueprint $table) {
+            $table->comment('Expéditions des commandes');
             $table->integer('id', true);
-            $table->integer('product_id')->index('products_variants_ibfk_3')->comment('ID du produit parent');
-            $table->enum('size', ['XS', 'S', 'M', 'L', 'XL', 'XXL'])->nullable()->comment('Taille du produit');
-            $table->string('color', 100)->nullable()->comment('Couleur du produit');
-            $table->integer('quantity')->default(0)->comment('Quantité en stock pour cette variante');
-            $table->string('image')->nullable()->comment('Chemin vers l\'image spécifique à cette variante (ex: couleur)');
+            $table->integer('order_id')->index('shipments_ibfk_1')->comment('ID de la commande');
+            $table->string('tracking_number')->nullable()->comment('Numéro de suivi du colis');
+            $table->string('carrier', 100)->nullable()->comment('Transporteur');
+            $table->timestamp('shipped_at')->nullable()->comment('Date et heure d\'expédition');
+            $table->timestamp('delivered_at')->nullable()->comment('Date et heure de livraison');
+            $table->enum('status', ['in preparation', 'shipped', 'delivered', 'returned'])->default('in preparation')->comment('Statut d\'expédition');
             $table->integer('created_by')->nullable()->index('created_by')->comment('ID utilisateur créateur');
             $table->integer('updated_by')->nullable()->index('updated_by')->comment('ID de l\'utilisateur qui a modifié');
             $table->timestamp('created_at')->nullable()->useCurrent()->comment('Date de création');
@@ -31,6 +32,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('products_variants');
+        Schema::dropIfExists('shipments');
     }
 };

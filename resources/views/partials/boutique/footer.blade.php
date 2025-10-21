@@ -1,3 +1,4 @@
+<!-- Footer boutique -->
 <footer class="bg-[#8F1E98] text-white py-12" role="contentinfo" aria-labelledby="footer-heading">
     <div class="container mx-auto px-6">
         {{-- Section supérieure avec logo et navigation --}}
@@ -23,34 +24,27 @@
             <nav aria-label="Liens de pied de page">
                 <ul class="flex flex-col sm:flex-row gap-3 sm:gap-8 text-center sm:text-left">
                     <li>
-                        <a href="/" class="text-white hover:text-[#FF0F63] font-medium transition">Accueil</a>
+                        <a href="/" class="text-white hover:text-[#FF0F63] font-medium transition">Notre Calan'Site</a>
                     </li>
                     <li>
-                        <a href="{{ route('festival') }}"
-                            class="text-white hover:text-[#FF0F63] font-medium transition">Le Festival</a>
+                        <a href="{{ route('boutique.products') }}"
+                            class="text-white hover:text-[#FF0F63] font-medium transition">La Calan'Boutique</a>
                     </li>
                     <li>
-                        <a href="{{ route('programmation') }}"
-                            class="text-white hover:text-[#FF0F63] font-medium transition">Programmation</a>
+                        <a href="{{ route('boutique.products') }}?badge=pull"
+                            class="text-white hover:text-[#FF0F63] font-medium transition">Pulls</a>
                     </li>
                     <li>
-                        <a href="https://www.helloasso.com/associations/calan-couleurs/evenements/festival-calan-couleurs"
-                            target="_blank" rel="noopener noreferrer"
-                            class="text-white hover:text-[#FF0F63] font-medium transition">
-                            Billetterie <span class="sr-only">(nouvelle fenêtre)</span>
-                        </a>
+                        <a href="{{ route('boutique.products') }}?badge=t-shirt"
+                            class="text-white hover:text-[#FF0F63] font-medium transition">T-shirts</a>
                     </li>
                     <li>
-                        <a href="{{ route('partenaires') }}"
-                            class="text-white hover:text-[#FF0F63] font-medium transition">Partenaires</a>
+                        <a href="{{ route('boutique.products') }}?badge=accessoire"
+                            class="text-white hover:text-[#FF0F63] font-medium transition">Accessoires</a>
                     </li>
                     <li>
                         <a href="{{ route('charte') }}"
-                            class="text-white hover:text-[#FF0F63] font-medium transition">Charte</a>
-                    </li>
-                    <li>
-                        <a href="{{ route('boutique.index') }}"
-                            class="text-white hover:text-[#FF0F63] font-medium transition">Calan'Boutique</a>
+                            class="text-white hover:text-[#FF0F63] font-medium transition">CGV</a>
                     </li>
                     <li>
                         <a href="{{ route('contact') }}"
@@ -101,43 +95,3 @@
         </div>
     </div>
 </footer>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const trigger = document.getElementById('admin-trigger');
-        let clicks = 0;
-        let timer = null;
-
-        function goAdmin() {
-            window.open('{{ route('login') }}', '_blank', 'noopener,noreferrer');
-        }
-
-        trigger.addEventListener('click', () => {
-            clicks++;
-            if (clicks === 1) {
-                timer = setTimeout(() => {
-                    clicks = 0;
-                }, 500);
-            } else if (clicks === 2) {
-                clearTimeout(timer);
-                clicks = 0;
-                goAdmin();
-            }
-        });
-
-        trigger.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                clicks++;
-                if (clicks === 1) {
-                    timer = setTimeout(() => {
-                        clicks = 0;
-                    }, 500);
-                } else if (clicks === 2) {
-                    clearTimeout(timer);
-                    clicks = 0;
-                    goAdmin();
-                }
-            }
-        });
-    });
-</script>

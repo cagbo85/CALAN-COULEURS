@@ -19,10 +19,11 @@ return new class extends Migration
             $table->text('description')->nullable()->comment('Description détaillée du produit');
             $table->mediumText('detailed_description')->nullable()->comment('Description longue du produit');
             $table->decimal('price', 10)->comment('Prix du produit en euros');
-            $table->integer('stock_quantity')->default(0)->comment('Quantité en stock');
+            $table->decimal('old_price', 10)->nullable()->comment('Ancien prix pour les promotions');
             $table->boolean('is_featured')->default(false)->comment('Produit mis en avant sur la page d\'accueil');
             $table->string('image')->nullable()->comment('Chemin vers l\'image principale du produit');
             $table->enum('category', ['vetements', 'accessoires', 'goodies'])->comment('Catégorie du produit');
+            $table->enum('badge', ['t-shirt', 'pull', 'accessoire'])->nullable()->comment('Badge du produit');
             $table->boolean('actif')->default(true)->comment('Produit actif ou non');
             $table->integer('created_by')->nullable()->index('created_by')->comment('ID utilisateur créateur');
             $table->integer('updated_by')->nullable()->index('updated_by')->comment('ID de l\'utilisateur qui a modifié');

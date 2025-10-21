@@ -3,7 +3,7 @@
 @section('title', 'Commande confirmée - Calan\'Couleurs')
 
 @section('content')
-    <div class="max-w-2xl mx-auto text-center">
+    <div class="max-w-2xl mt-4 mx-auto text-center">
         <div class="bg-green-50 rounded-lg p-8">
             <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
                 <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -47,7 +47,8 @@
             </div>
 
             <p class="text-sm text-gray-600 mb-6">
-                Un email de confirmation vous sera envoyé à {{ $order->email }} une fois le paiement validé.
+                Un email concernant le récapitulatif de votre commande vous sera envoyé à {{ $order->email }} une fois le paiement validé. Merci de vérifier votre boîte de réception (et vos spams).
+                Nous vous enverrons également des informations sur la livraison.
             </p>
 
             <a href="{{ route('boutique.index') }}"

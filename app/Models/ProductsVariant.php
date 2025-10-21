@@ -16,8 +16,9 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @property int $id
  * @property int $product_id
- * @property string|null $size
- * @property string|null $color
+ * @property string|null $sku
+ * @property int|null $color_id
+ * @property int|null $size_id
  * @property int $quantity
  * @property string|null $image
  * @property int|null $created_by
@@ -27,6 +28,8 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @property User|null $user
  * @property Product $product
+ * @property Size|null $size
+ * @property Color|null $color
  * @property Collection|OrderItem[] $order_items
  *
  * @package App\Models
@@ -34,32 +37,27 @@ use Illuminate\Database\Eloquent\Model;
 class ProductsVariant extends Model
 {
     use HasFactory;
-	protected $table = 'products_variants';
+    protected $table = 'products_variants';
 
-	protected $casts = [
-		'product_id' => 'int',
-		'quantity' => 'int',
-		'created_by' => 'int',
-		'updated_by' => 'int'
-	];
+    protected $casts = [
+        'product_id' => 'int',
+        'color_id' => 'int',
+        'size_id' => 'int',
+        'quantity' => 'int',
+        'created_by' => 'int',
+        'updated_by' => 'int'
+    ];
 
-	protected $fillable = [
-		'product_id',
-		'size',
-		'color',
-		'quantity',
-		'image',
-		'created_by',
-		'updated_by'
-	];
-
-    /**
-     * Produit associé à cette variante.
-     */
-    public function product()
-    {
-        return $this->belongsTo(Product::class, 'product_id');
-    }
+    protected $fillable = [
+        'product_id',
+        'sku',
+        'color_id',
+        'size_id',
+        'quantity',
+        'image',
+        'created_by',
+        'updated_by'
+    ];
 
     /**
      * Utilisateur ayant créé cette variante.
@@ -78,9 +76,33 @@ class ProductsVariant extends Model
     }
 
     /**
-     * OrderItems associés à cette variante.
+     * Produit parent de cette variante.
      */
-    public function orderItems()
+    public function product()
+    {
+        return $this->belongsTo(Product::class, 'product_id');
+    }
+
+    /**
+     * Taille associée à cette variante.
+     */
+    public function size()
+    {
+        return $this->belongsTo(Size::class, 'size_id');
+    }
+
+    /**
+     * Couleur associée à cette variante.
+     */
+    public function color()
+    {
+        return $this->belongsTo(Color::class, 'color_id');
+    }
+
+    /**
+     * Items de commande associés à cette variante.
+     */
+    public function OrderItem()
     {
         return $this->hasMany(OrderItem::class, 'variant_id');
     }

@@ -31,9 +31,7 @@ return new class extends Migration
             $table->string('pays', 100)->nullable()->comment('Pays');
             $table->decimal('latitude', 10, 8)->nullable()->comment('Latitude');
             $table->decimal('longitude', 11, 8)->nullable()->comment('Longitude');
-            $table->boolean('actif')->default(true)->comment('Partenaire actif');
             $table->integer('ordre')->default(0)->comment('Ordre d\'affichage');
-            $table->year('annee')->nullable()->comment('Année de partenariat');
             $table->integer('created_by')->nullable()->index('created_by')->comment('ID utilisateur créateur');
             $table->integer('updated_by')->nullable()->index('updated_by')->comment('ID de l\'utilisateur qui a modifié');
             $table->timestamp('created_at')->nullable()->useCurrent()->comment('Date de création');

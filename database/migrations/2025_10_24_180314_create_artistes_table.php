@@ -26,7 +26,6 @@ return new class extends Migration
             $table->string('spotify_url', 500)->nullable()->comment('Lien Spotify');
             $table->string('youtube_url', 500)->nullable()->comment('Lien YouTube Music');
             $table->string('deezer_url', 500)->nullable()->comment('Lien Deezer');
-            $table->boolean('actif')->default(true)->comment('Artiste actif/masqué');
             $table->integer('created_by')->nullable()->index('created_by')->comment('ID utilisateur créateur');
             $table->integer('updated_by')->nullable()->index('updated_by')->comment('ID de l\'utilisateur qui a modifié');
             $table->timestamp('created_at')->nullable()->useCurrent()->comment('Date de création');

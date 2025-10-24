@@ -133,7 +133,7 @@ CREATE TABLE IF NOT EXISTS artistes (
     spotify_url VARCHAR(500) DEFAULT NULL COMMENT 'Lien Spotify',
     youtube_url VARCHAR(500) DEFAULT NULL COMMENT 'Lien YouTube Music',
     deezer_url VARCHAR(500) DEFAULT NULL COMMENT 'Lien Deezer',
-    actif BOOLEAN NOT NULL DEFAULT 1 COMMENT 'Artiste actif/masqué',
+    -- actif BOOLEAN NOT NULL DEFAULT 1 COMMENT 'Artiste actif/masqué',
     created_by INT DEFAULT NULL COMMENT 'ID utilisateur créateur',
     updated_by INT DEFAULT NULL COMMENT 'ID de l\'utilisateur qui a modifié',
     created_at TIMESTAMP NULL DEFAULT current_timestamp() COMMENT 'Date de création',
@@ -202,9 +202,9 @@ CREATE TABLE IF NOT EXISTS stands (
     facebook_url VARCHAR(255) DEFAULT NULL COMMENT 'Lien Facebook',
     website_url VARCHAR(255) DEFAULT NULL COMMENT 'Site web officiel',
     other_link VARCHAR(255) DEFAULT NULL COMMENT 'Autre lien (TikTok, etc.)',
-    actif BOOLEAN NOT NULL DEFAULT 1 COMMENT 'Stand affiché ou non',
+    -- actif BOOLEAN NOT NULL DEFAULT 1 COMMENT 'Stand affiché ou non',
     ordre INT NOT NULL DEFAULT 0 COMMENT 'Ordre d\'affichage',
-    year YEAR DEFAULT NULL COMMENT 'Année du festival (pour gérer les éditions)',
+    -- year YEAR DEFAULT NULL COMMENT 'Année du festival (pour gérer les éditions)',
     created_by INT DEFAULT NULL COMMENT 'ID utilisateur créateur',
     updated_by INT DEFAULT NULL COMMENT 'ID de l\'utilisateur qui a modifié',
     created_at TIMESTAMP NULL DEFAULT current_timestamp() COMMENT 'Date de création',
@@ -244,9 +244,9 @@ CREATE TABLE IF NOT EXISTS partenaires (
     pays VARCHAR(100) DEFAULT NULL COMMENT 'Pays',
     latitude DECIMAL(10,8) DEFAULT NULL COMMENT 'Latitude',
     longitude DECIMAL(11,8) DEFAULT NULL COMMENT 'Longitude',
-    actif BOOLEAN NOT NULL DEFAULT 1 COMMENT 'Partenaire actif',
+    -- actif BOOLEAN NOT NULL DEFAULT 1 COMMENT 'Partenaire actif',
     ordre INT NOT NULL DEFAULT 0 COMMENT 'Ordre d\'affichage',
-    annee YEAR DEFAULT NULL COMMENT 'Année de partenariat',
+    -- annee YEAR DEFAULT NULL COMMENT 'Année de partenariat',
     created_by INT DEFAULT NULL COMMENT 'ID utilisateur créateur',
     updated_by INT DEFAULT NULL COMMENT 'ID de l\'utilisateur qui a modifié',
     created_at TIMESTAMP NULL DEFAULT current_timestamp() COMMENT 'Date de création',
@@ -421,3 +421,50 @@ CREATE TABLE IF NOT EXISTS shipments (
     CONSTRAINT shipments_ibfk_2 FOREIGN KEY (created_by) REFERENCES users(id),
     CONSTRAINT shipments_ibfk_3 FOREIGN KEY (updated_by) REFERENCES users(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Expéditions des commandes';
+
+CREATE TABLE IF NOT EXISTS editions (
+    id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    year YEAR NOT NULL UNIQUE COMMENT 'Année de l\'édition',
+    name VARCHAR(255) DEFAULT NULL COMMENT 'Nom de l\'édition',
+    begin_date DATETIME NOT NULL COMMENT 'Date et heure exacte de l\'ouverture des portes de l\'édition',
+    ending_date DATETIME NOT NULL COMMENT 'Date et heure exacte de la fermeture des portes de l\'édition',
+    actif BOOLEAN NOT NULL DEFAULT 1 COMMENT 'Édition actif/inactif',
+    created_by INT DEFAULT NULL COMMENT 'ID utilisateur créateur',
+    updated_by INT DEFAULT NULL COMMENT 'ID de l\'utilisateur qui a modifié',
+    created_at TIMESTAMP NULL DEFAULT current_timestamp() COMMENT 'Date de création',
+    updated_at TIMESTAMP NULL DEFAULT current_timestamp() ON UPDATE current_timestamp() COMMENT 'Date de modification',
+    KEY created_by (created_by),
+    KEY updated_by (updated_by),
+    CONSTRAINT editions_ibfk_1 FOREIGN KEY (created_by) REFERENCES users(id),
+    CONSTRAINT editions_ibfk_2 FOREIGN KEY (updated_by) REFERENCES users(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Éditions du festival';
+
+CREATE TABLE IF NOT EXISTS edition_artistes (
+    edition_id INT NOT NULL,
+    artiste_id INT NOT NULL,
+    created_at TIMESTAMP NULL DEFAULT current_timestamp() COMMENT 'Date de création',
+    PRIMARY KEY (edition_id, artiste_id),
+    CONSTRAINT edition_artistes_ibfk_1 FOREIGN KEY (edition_id) REFERENCES editions(id),
+    CONSTRAINT edition_artistes_ibfk_2 FOREIGN KEY (artiste_id) REFERENCES artistes(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Association entre les éditions et les artistes';
+
+CREATE TABLE IF NOT EXISTS edition_stands (
+    edition_id INT NOT NULL,
+    stand_id INT NOT NULL,
+    created_at TIMESTAMP NULL DEFAULT current_timestamp() COMMENT 'Date de création',
+    PRIMARY KEY (edition_id, stand_id),
+    CONSTRAINT edition_stands_ibfk_1 FOREIGN KEY (edition_id) REFERENCES editions(id),
+    CONSTRAINT edition_stands_ibfk_2 FOREIGN KEY (stand_id) REFERENCES stands(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Association entre les éditions et les stands';
+
+CREATE TABLE IF NOT EXISTS edition_partenaires (
+    edition_id INT NOT NULL,
+    partenaire_id INT NOT NULL,
+    created_at TIMESTAMP NULL DEFAULT current_timestamp() COMMENT 'Date de création',
+    PRIMARY KEY (edition_id, partenaire_id),
+    CONSTRAINT edition_partenaires_ibfk_1 FOREIGN KEY (edition_id) REFERENCES editions(id),
+    CONSTRAINT edition_partenaires_ibfk_2 FOREIGN KEY (partenaire_id) REFERENCES partenaires(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Association entre les éditions et les partenaires';
+
+INSERT INTO editions (year, name, begin_date, ending_date, created_by, updated_by)
+VALUES (2025, 'Calan\'Couleurs 2K25', '2025-09-12 19:00:00', '2025-09-14 05:00:00', 1, 1);

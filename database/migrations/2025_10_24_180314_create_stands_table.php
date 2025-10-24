@@ -22,9 +22,7 @@ return new class extends Migration
             $table->string('facebook_url')->nullable()->comment('Lien Facebook');
             $table->string('website_url')->nullable()->comment('Site web officiel');
             $table->string('other_link')->nullable()->comment('Autre lien (TikTok, etc.)');
-            $table->boolean('actif')->default(true)->comment('Stand affiché ou non');
             $table->integer('ordre')->default(0)->comment('Ordre d\'affichage');
-            $table->year('year')->nullable()->comment('Année du festival (pour gérer les éditions)');
             $table->integer('created_by')->nullable()->index('created_by')->comment('ID utilisateur créateur');
             $table->integer('updated_by')->nullable()->index('updated_by')->comment('ID de l\'utilisateur qui a modifié');
             $table->timestamp('created_at')->nullable()->useCurrent()->comment('Date de création');

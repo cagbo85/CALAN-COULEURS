@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('artistes', function (Blueprint $table) {
-            $table->foreign(['created_by'], 'artistes_ibfk_1')->references(['id'])->on('users')->onUpdate('no action')->onDelete('no action');
-            $table->foreign(['updated_by'], 'artistes_ibfk_2')->references(['id'])->on('users')->onUpdate('no action')->onDelete('no action');
+        Schema::table('editions', function (Blueprint $table) {
+            $table->foreign(['created_by'], 'editions_ibfk_1')->references(['id'])->on('users')->onUpdate('no action')->onDelete('no action');
+            $table->foreign(['updated_by'], 'editions_ibfk_2')->references(['id'])->on('users')->onUpdate('no action')->onDelete('no action');
         });
     }
 

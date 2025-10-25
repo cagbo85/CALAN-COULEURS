@@ -2,16 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Artiste;
 use Carbon\Carbon;
+use App\Models\Artiste;
+use Illuminate\Support\Facades\DB;
 
 class ProgrammationController extends Controller
 {
     public function index()
     {
         // Récupérer tous les artistes actifs triés par date de début
-        $allArtistes = Artiste::where('actif', true)
-            ->orderBy('begin_date')
+        $allArtistes = DB::table('artistes as a')
+            ->join('edition_artistes as ea', 'a.id', '=', 'ea.artiste_id')
+            ->join('editions as e', 'ea.edition_id', '=', 'e.id')
+            ->select('a.*', 'e.year')
+            ->where('ea.actif', 1)
+            ->where('e.actif', 1)
+            ->orderBy('a.begin_date')
             ->get();
 
         // Grouper par jour réel (basé sur les dates)

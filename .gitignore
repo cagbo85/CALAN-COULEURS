@@ -7,10 +7,10 @@
 /storage/pail
 /vendor
 .env
-.env.example
+.env*
+!.env.example
 .env.backup
 .env.production
-.env*
 .phpactor.json
 .phpunit.result.cache
 Homestead.json

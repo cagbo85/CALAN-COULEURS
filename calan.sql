@@ -442,6 +442,7 @@ CREATE TABLE IF NOT EXISTS editions (
 CREATE TABLE IF NOT EXISTS edition_artistes (
     edition_id INT NOT NULL,
     artiste_id INT NOT NULL,
+    actif BOOLEAN NOT NULL DEFAULT 1 COMMENT 'Artiste actif/masqué',
     created_at TIMESTAMP NULL DEFAULT current_timestamp() COMMENT 'Date de création',
     PRIMARY KEY (edition_id, artiste_id),
     CONSTRAINT edition_artistes_ibfk_1 FOREIGN KEY (edition_id) REFERENCES editions(id),
@@ -451,6 +452,7 @@ CREATE TABLE IF NOT EXISTS edition_artistes (
 CREATE TABLE IF NOT EXISTS edition_stands (
     edition_id INT NOT NULL,
     stand_id INT NOT NULL,
+    actif BOOLEAN NOT NULL DEFAULT 1 COMMENT 'Stand actif/masqué',
     created_at TIMESTAMP NULL DEFAULT current_timestamp() COMMENT 'Date de création',
     PRIMARY KEY (edition_id, stand_id),
     CONSTRAINT edition_stands_ibfk_1 FOREIGN KEY (edition_id) REFERENCES editions(id),
@@ -460,6 +462,7 @@ CREATE TABLE IF NOT EXISTS edition_stands (
 CREATE TABLE IF NOT EXISTS edition_partenaires (
     edition_id INT NOT NULL,
     partenaire_id INT NOT NULL,
+    actif BOOLEAN NOT NULL DEFAULT 1 COMMENT 'Partenaire actif/masqué',
     created_at TIMESTAMP NULL DEFAULT current_timestamp() COMMENT 'Date de création',
     PRIMARY KEY (edition_id, partenaire_id),
     CONSTRAINT edition_partenaires_ibfk_1 FOREIGN KEY (edition_id) REFERENCES editions(id),

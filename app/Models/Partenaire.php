@@ -94,8 +94,12 @@ class Partenaire extends Model
         return $this->belongsTo(User::class, 'updated_by');
     }
 
+    /**
+     * Éditions associées à ce partenaire.
+     */
 	public function editions()
 	{
-		return $this->belongsToMany(Edition::class, 'edition_partenaires');
+		return $this->belongsToMany(Edition::class, 'edition_partenaires')
+					->withPivot('actif');
 	}
 }

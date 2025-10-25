@@ -11,13 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('edition_partenaires', function (Blueprint $table) {
-            $table->comment('Association entre les éditions et les partenaires');
+        Schema::create('edition_stands', function (Blueprint $table) {
+            $table->comment('Association entre les éditions et les stands');
             $table->integer('edition_id');
-            $table->integer('partenaire_id')->index('edition_partenaires_ibfk_2');
+            $table->integer('stand_id')->index('edition_stands_ibfk_2');
+            $table->boolean('actif')->default(true)->comment('Stand actif/masqué');
             $table->timestamp('created_at')->nullable()->useCurrent()->comment('Date de création');
 
-            $table->primary(['edition_id', 'partenaire_id']);
+            $table->primary(['edition_id', 'stand_id']);
         });
     }
 
@@ -26,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('edition_partenaires');
+        Schema::dropIfExists('edition_stands');
     }
 };

@@ -81,8 +81,12 @@ class Artiste extends Model
         return $this->belongsTo(User::class, 'updated_by');
     }
 
+    /**
+     * Les éditions associées à cet artiste.
+     */
 	public function editions()
 	{
-		return $this->belongsToMany(Edition::class, 'edition_artistes');
+		return $this->belongsToMany(Edition::class, 'edition_artistes')
+					->withPivot('actif');
 	}
 }

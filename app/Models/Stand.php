@@ -74,8 +74,12 @@ class Stand extends Model
         return $this->belongsTo(User::class, 'updated_by');
     }
 
+    /**
+     * Éditions associées à ce stand.
+     */
 	public function editions()
 	{
-		return $this->belongsToMany(Edition::class, 'edition_stands');
+		return $this->belongsToMany(Edition::class, 'edition_stands')
+					->withPivot('actif');
 	}
 }

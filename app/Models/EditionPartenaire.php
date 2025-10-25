@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @property int $edition_id
  * @property int $partenaire_id
+ * @property bool $actif
  * @property Carbon|null $created_at
  *
  * @property Edition $edition
@@ -31,7 +32,12 @@ class EditionPartenaire extends Model
 
 	protected $casts = [
 		'edition_id' => 'int',
-		'partenaire_id' => 'int'
+		'partenaire_id' => 'int',
+		'actif' => 'bool'
+	];
+
+	protected $fillable = [
+		'actif'
 	];
 
 	/**

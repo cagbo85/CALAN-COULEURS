@@ -6,13 +6,18 @@ use Illuminate\Support\Facades\DB;
 
 class StandController extends Controller
 {
+    /**
+     * Récupérer tous les stands actifs pour l'édition active.
+     */
     public function getAllStands()
     {
-        $stands = DB::table('stands')
-            ->select('id', 'name', 'description', 'photo', 'type', 'instagram_url', 'facebook_url', 'website_url', 'other_link', 'actif', 'ordre', 'created_by', 'updated_by', 'created_at', 'updated_at')
-            ->where('actif', 1)
-            ->where('year', 2025)
-            ->orderBy('ordre')
+        $stands = DB::table('stands as s')
+            ->join('edition_stands as es', 's.id', '=', 'es.stand_id')
+            ->join('editions as e', 'es.edition_id', '=', 'e.id')
+            ->select('s.*', 'e.year')
+            ->where('es.actif', 1)
+            ->where('e.actif', 1)
+            ->orderBy('s.ordre')
             ->get();
 
         return response()->json($stands);

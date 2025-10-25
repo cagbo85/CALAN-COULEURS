@@ -59,17 +59,17 @@ export default function StandsSection() {
 
     // Fonction pour formater le titre avec l'icône
     const formatTitle = (stand, typeIcon) => {
-        // Pour les stands de type "autre", on garde le nom tel quel
-        if (stand.type === 'autre') {
-            return `${typeIcon} ${stand.name}`;
+        // Gérer certains cas particuliers
+        if (stand.name === "Calan'Boutique") {
+            return `${typeIcon} Friperie & Boutique Calan'Couleurs`;
+        } else if (stand.name === "So'Galettes") {
+            return `🥞 So'Galettes`;
+        } else if (stand.name === "Sylvain Tacos et Burgers") {
+            return `${typeIcon}🌮 Sylvain Tacos et Burgers`;
         }
-        // Pour les autres types, on peut personnaliser
-        if (stand.type === 'boutique') {
-            return stand.name === "Calan'Boutique"
-                ? `${typeIcon} Friperie & Boutique Calan'Couleurs`
-                : stand.name;
-        }
-        return stand.name;
+
+        // Pour tous les autres, on met toujours l'emoji devant le nom
+        return `${typeIcon} ${stand.name}`;
     };
 
     if (loading) {
@@ -148,7 +148,11 @@ export default function StandsSection() {
                                                 imageSrc={stand.photo || '/img/default-stand.jpg'}
                                                 imageAlt={`${accessibleTitle} — ${typeLabels[type].toLowerCase()}`}
                                                 website={primaryLink}
-                                                websiteLabel={primaryLink ? `${accessibleTitle} — voir plus (nouvelle fenêtre)` : null}
+                                                websiteLabel={
+                                                    stand.name === "Calan'Boutique"
+                                                    ? "Visiter notre boutique →"
+                                                    : "Visiter leur site →"
+                                                }
                                             />
                                         </li>
                                     );

@@ -25,6 +25,24 @@ class ArtisteController extends Controller
     }
 
     /**
+     * Récupérer tous les artistes actifs pour l'édition active.
+     */
+    public function getActiveArtistes()
+    {
+        $artists = DB::table('artistes as a')
+            ->join('edition_artistes as ea', 'a.id', '=', 'ea.artiste_id')
+            ->join('editions as e', 'ea.edition_id', '=', 'e.id')
+            ->select('a.*')
+            ->where('ea.actif', 1)
+            ->where('e.actif', 1)
+            ->orderBy('a.begin_date')
+            ->get()
+            ->groupBy('day');
+
+        return $artists;
+    }
+
+    /**
      * Show the form for creating a new resource.
      */
     public function create()
@@ -109,7 +127,7 @@ class ArtisteController extends Controller
                 $file = $request->file('photo');
 
                 // Nom de fichier personnalisé : NOM_ARTISTE en UPPERCASE
-                $filename = strtoupper($request->input('name')).'.webp';
+                $filename = strtoupper($request->input('name')) . '.webp';
 
                 // Dossier de destination personnalisé
                 $destinationPath = public_path('img/artists/photos/Photos_artistes');
@@ -123,7 +141,7 @@ class ArtisteController extends Controller
                 $file->move($destinationPath, $filename);
 
                 // Stocker le chemin relatif dans la DB
-                $updateData['photo'] = 'img/artists/photos/Photos_artistes/'.$filename;
+                $updateData['photo'] = 'img/artists/photos/Photos_artistes/' . $filename;
             }
 
             $artiste = Artiste::create([
@@ -146,7 +164,7 @@ class ArtisteController extends Controller
 
             DB::commit();
 
-            notify()->success("L'artiste ".$artiste->name.' a été créé avec succès.', 'Création réussie !🎉');
+            notify()->success("L'artiste " . $artiste->name . ' a été créé avec succès.', 'Création réussie !🎉');
 
             return redirect()->route('admin.artistes.show', ['artisteId' => $artiste->id]);
         } catch (\Illuminate\Database\QueryException $e) {
@@ -317,7 +335,7 @@ class ArtisteController extends Controller
                 $file = $request->file('photo');
 
                 // Nouveau nom basé sur le nom modifié
-                $filename = strtoupper($request->input('name')).'.webp';
+                $filename = strtoupper($request->input('name')) . '.webp';
 
                 // Dossier de destination
                 $destinationPath = public_path('img/artists/photos/Photos_artistes');
@@ -331,17 +349,17 @@ class ArtisteController extends Controller
                 $file->move($destinationPath, $filename);
 
                 // Mettre à jour le chemin
-                $updateData['photo'] = 'img/artists/photos/Photos_artistes/'.$filename;
+                $updateData['photo'] = 'img/artists/photos/Photos_artistes/' . $filename;
             }
             // Si le nom a changé mais pas de nouvelle photo, renommer l'ancienne
             elseif ($artiste->name !== $request->input('name') && $artiste->photo) {
                 $oldPhotoPath = public_path($artiste->photo);
-                $newFilename = strtoupper($request->input('name')).'.webp';
-                $newPhotoPath = public_path('img/artists/photos/Photos_artistes/'.$newFilename);
+                $newFilename = strtoupper($request->input('name')) . '.webp';
+                $newPhotoPath = public_path('img/artists/photos/Photos_artistes/' . $newFilename);
 
                 if (File::exists($oldPhotoPath)) {
                     File::move($oldPhotoPath, $newPhotoPath);
-                    $updateData['photo'] = 'img/artists/photos/Photos_artistes/'.$newFilename;
+                    $updateData['photo'] = 'img/artists/photos/Photos_artistes/' . $newFilename;
                 }
             }
 

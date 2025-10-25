@@ -32,13 +32,35 @@
     <section
         class="min-h-[500px] sm:h-[calc(100vh-64px)] w-full px-2 sm:px-4 py-8 flex flex-col justify-center items-center bg-[url('/img/logos/accueil_public.png')] bg-no-repeat bg-center bg-cover text-center">
 
+        @php
+            use Carbon\Carbon;
+
+            $begin = Carbon::parse($edition->begin_date);
+            $end = Carbon::parse($edition->ending_date);
+
+            // Si la fin dépasse minuit, on prend le jour précédent pour l’affichage
+            if ($end->hour < 6) {
+                $end->subDay();
+            }
+        @endphp
+
         <!-- Dates du festival -->
-        <div class="mb-3 sm:mb-4 backdrop-blur-md shadow-lg px-4 sm:px-8 py-2 sm:py-3 rounded-xl border border-white/50"
+        @if ($edition)
+            <div class="mb-3 sm:mb-4 backdrop-blur-md shadow-lg px-4 sm:px-8 py-2 sm:py-3 rounded-xl border border-white/50"
+                style="background: linear-gradient(180deg, rgba(255,15,99,0.2), rgba(143,30,152,0.2), rgba(39,42,199,0.2));">
+                <h2 class="text-white text-lg sm:text-xl md:text-2xl font-bold tracking-wider drop-shadow-md">
+                    {{ strtoupper($begin->translatedFormat('l d')) }}
+                    &
+                    {{ strtoupper($end->translatedFormat('l d F Y')) }}
+                </h2>
+            </div>
+        @endif
+        {{-- <div class="mb-3 sm:mb-4 backdrop-blur-md shadow-lg px-4 sm:px-8 py-2 sm:py-3 rounded-xl border border-white/50"
             style="background: linear-gradient(180deg, rgba(255,15,99,0.2), rgba(143,30,152,0.2), rgba(39,42,199,0.2));">
             <h2 class="text-white text-lg sm:text-xl md:text-2xl font-bold tracking-wider drop-shadow-md">
                 VENDREDI 12 & SAMEDI 13 SEPTEMBRE 2025
             </h2>
-        </div>
+        </div> --}}
 
         <!-- Timer -->
         <div class="w-full max-w-xs sm:max-w-md md:max-w-lg mx-auto mb-4 sm:mb-6" role="region"
@@ -47,11 +69,19 @@
         </div>
 
         <!-- Edition et lieu -->
-        <div class="mt-1 sm:mt-2 mb-4 sm:mb-6 backdrop-blur-md px-4 sm:px-6 py-2 sm:py-3 rounded-xl shadow-lg border border-white/30"
+        @if ($edition)
+            <div class="mt-1 sm:mt-2 mb-4 sm:mb-6 backdrop-blur-md px-4 sm:px-6 py-2 sm:py-3 rounded-xl shadow-lg border border-white/30"
+                style="background: linear-gradient(180deg, rgba(255,15,99,0.2), rgba(143,30,152,0.2), rgba(39,42,199,0.2));">
+                <p class="text-white font-bold text-base sm:text-xl tracking-wide drop-shadow-sm">
+                    {{ strtoupper($edition->name) }} — CAMPBON
+                </p>
+            </div>
+        @endif
+        {{-- <div class="mt-1 sm:mt-2 mb-4 sm:mb-6 backdrop-blur-md px-4 sm:px-6 py-2 sm:py-3 rounded-xl shadow-lg border border-white/30"
             style="background: linear-gradient(180deg, rgba(255,15,99,0.2), rgba(143,30,152,0.2), rgba(39,42,199,0.2));">
             <p class="text-white font-bold text-base sm:text-xl tracking-wide drop-shadow-sm">1<sup>ère</sup> ÉDITION À
                 CAMPBON</p>
-        </div>
+        </div> --}}
 
         <!-- Boutons -->
         <div
@@ -93,59 +123,81 @@
         <section class="py-16 px-6"
             style="background: linear-gradient(180deg, rgba(255,15,99,0.9) 0%, rgba(143,30,152,0.9) 35%, rgba(39,42,199,0.9) 100%)"
             aria-labelledby="programmation-heading">
+
             <div class="container mx-auto">
                 <h2 id="programmation-heading"
-                    class="text-3xl text-white font-bold uppercase mb-10 text-center sm:text-left">La programmation</h2>
+                    class="text-3xl text-white font-bold uppercase mb-10 text-center sm:text-left">
+                    La programmation
+                </h2>
 
                 <div class="flex flex-wrap justify-center gap-8 max-w-6xl mx-auto">
-                    <!-- Jour 1 - Vendredi -->
-                    <section
-                        class="w-[20rem] h-[35rem] min-h-[24rem] bg-cover bg-center text-white p-6 flex flex-col justify-between border-2 border-white shadow-lg"
-                        style="background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.1))"
-                        aria-labelledby="vendredi-title">
-                        <div>
-                            <h3 id="vendredi-title" class="text-xl font-bold">Vendredi 12 septembre</h3>
-                            <p class="text-sm font-bold text-white/80">
-                                <time datetime="2025-09-12T20:00">20h</time> – <time datetime="2025-09-13T04:00">4h</time>
-                            </p>
-                        </div>
 
-                        <ul class="space-y-3 mt-4" aria-label="Ordre de passage">
-                            <li class="text-lg font-bold uppercase tracking-wide">Rock 109</li>
-                            <li class="text-lg font-bold uppercase tracking-wide">La Rif et Nos Men</li>
-                            <li class="text-lg font-bold uppercase tracking-wide">An'Om x Vayn</li>
-                            <li class="text-lg font-bold uppercase tracking-wide">Wazy</li>
-                            <li class="text-lg font-bold uppercase tracking-wide">AXL R.</li>
-                            <li class="text-lg font-bold uppercase tracking-wide">Hono</li>
-                            <li class="text-lg font-bold uppercase tracking-wide">Dymeister</li>
-                        </ul>
-                    </section>
+                    {{-- JOUR 1 : VENDREDI --}}
+                    @if (isset($artistsByDay['Vendredi']))
+                        @php
+                            $artists = $artistsByDay['Vendredi'];
+                            $first = $artists->first();
+                            $last = $artists->last();
+                        @endphp
+                        <section
+                            class="w-[20rem] h-[35rem] min-h-[24rem] bg-cover bg-center text-white p-6 flex flex-col justify-between border-2 border-white shadow-lg"
+                            style="background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.1))"
+                            aria-labelledby="vendredi-title">
 
-                    <!-- Jour 2 - Samedi -->
-                    <section
-                        class="w-[20rem] h-[35rem] min-h-[24rem] bg-cover bg-center text-white p-6 flex flex-col justify-between border-2 border-white shadow-lg"
-                        style="background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.1))"
-                        aria-labelledby="samedi-title">
-                        <div>
-                            <h3 id="samedi-title" class="text-xl font-bold">Samedi 13 septembre</h3>
-                            <p class="text-sm font-bold text-white/80">
-                                <time datetime="2025-09-13T15:00">15h</time> – <time datetime="2025-09-14T04:00">4h</time>
-                            </p>
-                        </div>
+                            <div>
+                                <h3 id="vendredi-title" class="text-xl font-bold">
+                                    Vendredi {{ Carbon::parse($first->begin_date)->translatedFormat('d F') }}
+                                </h3>
+                                <p class="text-sm font-bold text-white/80">
+                                    <time
+                                        datetime="{{ $first->begin_date }}">{{ Carbon::parse($first->begin_date)->format('H\h') }}</time>
+                                    –
+                                    <time
+                                        datetime="{{ $last->ending_date }}">{{ Carbon::parse($last->ending_date)->format('H\h') }}</time>
+                                </p>
+                            </div>
 
-                        <ul class="space-y-3 mt-4" aria-label="Ordre de passage">
-                            <li class="text-lg font-bold uppercase tracking-wide">Youth Collective</li>
-                            <li class="text-lg font-bold uppercase tracking-wide">Maklos</li>
-                            <li class="text-lg font-bold uppercase tracking-wide">Klö</li>
-                            <li class="text-lg font-bold uppercase tracking-wide">Kaboum</li>
-                            <li class="text-lg font-bold uppercase tracking-wide">TOM WORRF</li>
-                            <li class="text-lg font-bold uppercase tracking-wide">2TH</li>
-                            <li class="text-lg font-bold uppercase tracking-wide">Mūne</li>
-                            <li class="text-lg font-bold uppercase tracking-wide">Yonex</li>
-                            <li class="text-lg font-bold uppercase tracking-wide">Leydon</li>
-                            <li class="text-lg font-bold uppercase tracking-wide">Tripidium</li>
-                        </ul>
-                    </section>
+                            <ul class="space-y-3 mt-4" aria-label="Ordre de passage">
+                                @foreach ($artists as $artist)
+                                    <li class="text-lg font-bold uppercase tracking-wide">{{ $artist->name }}</li>
+                                @endforeach
+                            </ul>
+                        </section>
+                    @endif
+
+                    {{-- JOUR 2 : SAMEDI --}}
+                    @if (isset($artistsByDay['Samedi']))
+                        @php
+                            $artists = $artistsByDay['Samedi'];
+                            $first = $artists->first();
+                            $last = $artists->last();
+                        @endphp
+                        <section
+                            class="w-[20rem] h-[35rem] min-h-[24rem] bg-cover bg-center text-white p-6 flex flex-col justify-between border-2 border-white shadow-lg"
+                            style="background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.1))"
+                            aria-labelledby="samedi-title">
+
+                            <div>
+                                <h3 id="samedi-title" class="text-xl font-bold">
+                                    Samedi {{ Carbon::parse($first->begin_date)->translatedFormat('d F') }}
+                                </h3>
+                                <p class="text-sm font-bold text-white/80">
+                                    <time
+                                        datetime="{{ $first->begin_date }}">{{ Carbon::parse($first->begin_date)->format('H\h') }}</time>
+                                    –
+                                    <time
+                                        datetime="{{ $last->ending_date }}">{{ Carbon::parse($last->ending_date)->format('H\h') }}</time>
+                                </p>
+                            </div>
+
+                            <ul class="space-y-3 mt-4" aria-label="Ordre de passage">
+                                @foreach ($artists as $artist)
+                                    <li class="text-lg font-bold uppercase tracking-wide">{{ $artist->name }}</li>
+                                @endforeach
+                            </ul>
+                        </section>
+                    @endif
+
                 </div>
 
                 <div class="text-center mt-12">

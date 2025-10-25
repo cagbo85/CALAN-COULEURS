@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProgrammationController;
@@ -19,9 +20,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('/', function () {
-    return view('accueil');
-})->name('accueil');
+Route::get('/', [HomeController::class, 'accueil'])->name('accueil');
 
 Route::get('programmation', [ProgrammationController::class, 'index'])->name('programmation');
 

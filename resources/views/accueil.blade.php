@@ -131,73 +131,30 @@
                 </h2>
 
                 <div class="flex flex-wrap justify-center gap-8 max-w-6xl mx-auto">
-
-                    {{-- JOUR 1 : VENDREDI --}}
-                    @if (isset($artistsByDay['Vendredi']))
-                        @php
-                            $artists = $artistsByDay['Vendredi'];
-                            $first = $artists->first();
-                            $last = $artists->last();
-                        @endphp
+                    @foreach ($artistsByDay as $group)
                         <section
                             class="w-[20rem] h-[35rem] min-h-[24rem] bg-cover bg-center text-white p-6 flex flex-col justify-between border-2 border-white shadow-lg"
                             style="background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.1))"
-                            aria-labelledby="vendredi-title">
+                            aria-labelledby="{{ strtolower($group->day) }}-title">
 
                             <div>
-                                <h3 id="vendredi-title" class="text-xl font-bold">
-                                    Vendredi {{ Carbon::parse($first->begin_date)->translatedFormat('d F') }}
+                                <h3 id="{{ strtolower($group->day) }}-title" class="text-xl font-bold capitalize">
+                                    {{ $group->jour_rep }}
                                 </h3>
                                 <p class="text-sm font-bold text-white/80">
-                                    <time
-                                        datetime="{{ $first->begin_date }}">{{ Carbon::parse($first->begin_date)->format('H\h') }}</time>
+                                    <time>{{ $group->heu_min }}</time>
                                     –
-                                    <time
-                                        datetime="{{ $last->ending_date }}">{{ Carbon::parse($last->ending_date)->format('H\h') }}</time>
+                                    <time>{{ $group->heu_max }}</time>
                                 </p>
                             </div>
 
                             <ul class="space-y-3 mt-4" aria-label="Ordre de passage">
-                                @foreach ($artists as $artist)
-                                    <li class="text-lg font-bold uppercase tracking-wide">{{ $artist->name }}</li>
+                                @foreach (explode(', ', $group->artistes) as $artist)
+                                    <li class="text-lg font-bold uppercase tracking-wide">{{ $artist }}</li>
                                 @endforeach
                             </ul>
                         </section>
-                    @endif
-
-                    {{-- JOUR 2 : SAMEDI --}}
-                    @if (isset($artistsByDay['Samedi']))
-                        @php
-                            $artists = $artistsByDay['Samedi'];
-                            $first = $artists->first();
-                            $last = $artists->last();
-                        @endphp
-                        <section
-                            class="w-[20rem] h-[35rem] min-h-[24rem] bg-cover bg-center text-white p-6 flex flex-col justify-between border-2 border-white shadow-lg"
-                            style="background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.1))"
-                            aria-labelledby="samedi-title">
-
-                            <div>
-                                <h3 id="samedi-title" class="text-xl font-bold">
-                                    Samedi {{ Carbon::parse($first->begin_date)->translatedFormat('d F') }}
-                                </h3>
-                                <p class="text-sm font-bold text-white/80">
-                                    <time
-                                        datetime="{{ $first->begin_date }}">{{ Carbon::parse($first->begin_date)->format('H\h') }}</time>
-                                    –
-                                    <time
-                                        datetime="{{ $last->ending_date }}">{{ Carbon::parse($last->ending_date)->format('H\h') }}</time>
-                                </p>
-                            </div>
-
-                            <ul class="space-y-3 mt-4" aria-label="Ordre de passage">
-                                @foreach ($artists as $artist)
-                                    <li class="text-lg font-bold uppercase tracking-wide">{{ $artist->name }}</li>
-                                @endforeach
-                            </ul>
-                        </section>
-                    @endif
-
+                    @endforeach
                 </div>
 
                 <div class="text-center mt-12">

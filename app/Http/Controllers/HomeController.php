@@ -11,7 +11,7 @@ class HomeController extends Controller
     public function accueil()
     {
         $edition = app(EditionController::class)->getActiveEdition();
-        $artistsByDay = app(ArtisteController::class)->getActiveArtistes();
+        $artistsByDay = app(ArtisteController::class)->getArtistsGroupedByDay();
 
         return view('accueil', ['edition' => $edition, 'artistsByDay' => $artistsByDay]);
     }

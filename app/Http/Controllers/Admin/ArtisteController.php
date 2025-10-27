@@ -42,6 +42,25 @@ class ArtisteController extends Controller
         return $artists;
     }
 
+    public function getArtistsGroupedByDay()
+    {
+        return DB::table('artistes as a')
+            ->join('edition_artistes as ea', 'a.id', '=', 'ea.artiste_id')
+            ->join('editions as e', 'ea.edition_id', '=', 'e.id')
+            ->select(
+                'a.day',
+                DB::raw('MIN(DATE_FORMAT(a.begin_date, "%W %e %M")) as jour_rep'),
+                DB::raw('DATE_FORMAT(MIN(a.begin_date), "%Hh") as heu_min'),
+                DB::raw('DATE_FORMAT(MAX(a.ending_date), "%Hh") as heu_max'),
+                DB::raw('GROUP_CONCAT(a.name ORDER BY a.begin_date SEPARATOR ", ") as artistes')
+            )
+            ->where('ea.actif', 1)
+            ->where('e.actif', 1)
+            ->groupBy('a.day')
+            ->orderBy(DB::raw('MIN(a.begin_date)'))
+            ->get();
+    }
+
     /**
      * Show the form for creating a new resource.
      */

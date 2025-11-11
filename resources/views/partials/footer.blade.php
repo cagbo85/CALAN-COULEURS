@@ -34,20 +34,20 @@
                             Le Festival
                         </a>
                     </li>
-                    <li>
+                    {{-- <li>
                         <a href="{{ route('programmation') }}"
                             class="text-white hover:text-[#FF0F63] font-medium transition duration-300 focus:outline-none focus-visible:ring focus-visible:ring-offset-2 focus-visible:ring-white/60 rounded">
                             Programmation
                         </a>
-                    </li>
-                    <li>
+                    </li> --}}
+                    {{-- <li>
                         <a href="https://www.helloasso.com/associations/calan-couleurs/evenements/festival-calan-couleurs"
                             target="_blank" rel="noopener noreferrer"
                             aria-label="Billetterie (ouvre une nouvelle fenêtre)"
                             class="text-white hover:text-[#FF0F63] font-medium transition duration-300 focus:outline-none focus-visible:ring focus-visible:ring-offset-2 focus-visible:ring-white/60 rounded">
                             Billetterie <span class="sr-only">(nouvelle fenêtre)</span>
                         </a>
-                    </li>
+                    </li> --}}
                     <li>
                         <a href="{{ route('contact') }}"
                             class="text-white hover:text-[#FF0F63] font-medium transition duration-300 focus:outline-none focus-visible:ring focus-visible:ring-offset-2 focus-visible:ring-white/60 rounded">

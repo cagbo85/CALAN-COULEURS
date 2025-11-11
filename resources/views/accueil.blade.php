@@ -32,153 +32,50 @@
     <section
         class="min-h-[500px] sm:h-[calc(100vh-64px)] w-full px-2 sm:px-4 py-8 flex flex-col justify-center items-center bg-[url('/img/logos/accueil_public.png')] bg-no-repeat bg-center bg-cover text-center">
 
-        <!-- Dates du festival -->
-        <div class="mb-3 sm:mb-4 backdrop-blur-md shadow-lg px-4 sm:px-8 py-2 sm:py-3 rounded-xl border border-white/50"
-            style="background: linear-gradient(180deg, rgba(255,15,99,0.2), rgba(143,30,152,0.2), rgba(39,42,199,0.2));">
-            <h2 class="text-white text-lg sm:text-xl md:text-2xl font-bold tracking-wider drop-shadow-md">
-                VENDREDI 12 & SAMEDI 13 SEPTEMBRE 2025
-            </h2>
-        </div>
+        <div class="w-full max-w-xl sm:max-w-2xl mx-auto mb-6 sm:mb-10">
+            <div class="backdrop-blur-md shadow-lg px-6 sm:px-10 py-8 sm:py-10 rounded-2xl border border-white/50 flex flex-col items-center justify-center text-white text-center"
+                style="background: linear-gradient(180deg, rgba(255,15,99,0.3), rgba(143,30,152,0.3), rgba(39,42,199,0.3));">
 
-        <!-- Timer -->
-        <div class="w-full max-w-xs sm:max-w-md md:max-w-lg mx-auto mb-4 sm:mb-6" role="region"
-            aria-label="Compte à rebours avant le festival">
-            <div id="timer-root"></div>
-        </div>
+                <div class="text-5xl sm:text-6xl mb-4 drop-shadow-lg">🎉</div>
 
-        <!-- Edition et lieu -->
-        <div class="mt-1 sm:mt-2 mb-4 sm:mb-6 backdrop-blur-md px-4 sm:px-6 py-2 sm:py-3 rounded-xl shadow-lg border border-white/30"
-            style="background: linear-gradient(180deg, rgba(255,15,99,0.2), rgba(143,30,152,0.2), rgba(39,42,199,0.2));">
-            <p class="text-white font-bold text-base sm:text-xl tracking-wide drop-shadow-sm">1<sup>ère</sup> ÉDITION À
-                CAMPBON</p>
-        </div>
+                <h2 class="text-2xl sm:text-3xl font-bold mb-3 tracking-wider drop-shadow-md">
+                    Merci à tous pour cette première édition réussie !
+                </h2>
 
-        <!-- Boutons -->
-        <div
-            class="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4 m-3 sm:m-6 w-full sm:w-auto max-w-xs sm:max-w-none mx-auto">
-            <!-- Bouton "Découvre la programmation" -->
-            <div class="relative w-full sm:w-auto">
-                <div class="absolute inset-0 translate-x-1 translate-y-1">
-                    <a href="{{ route('programmation') }}"
-                        class="relative bg-[#8F1E98] text-[#8F1E98] px-4 sm:px-6 py-3 font-bold uppercase tracking-wide transition duration-300 block w-full text-center">
-                        Découvre la programmation →
-                    </a>
-                </div>
-                <a href="{{ route('programmation') }}"
-                    class="relative bg-white text-[#8F1E98] px-4 sm:px-6 py-3 font-bold uppercase tracking-wide hover:bg-[#8F1E98] hover:text-white transition duration-300 block w-full text-center">
-                    Découvre la programmation →
-                </a>
-            </div>
+                <p class="text-lg sm:text-xl drop-shadow-md font-semibold mb-2">
+                    La première édition du <strong>Calan’Couleurs Festival</strong> est désormais terminée.<br>
+                    Merci à tous les bénévoles, partenaires et festivaliers pour cette belle aventure !
+                </p>
 
-            <!-- Bouton "Acheter des billets" -->
-            <div class="relative w-full sm:w-auto">
-                <div class="absolute inset-0 translate-x-1 translate-y-1">
-                    <a href="https://www.helloasso.com/associations/calan-couleurs/evenements/festival-calan-couleurs"
-                        target="_blank" rel="noopener noreferrer"
-                        class="relative bg-white px-4 sm:px-6 py-3 font-bold uppercase tracking-wide transition duration-300 block w-full text-center">
-                        Acheter des billets →
-                    </a>
-                </div>
-                <a href="https://www.helloasso.com/associations/calan-couleurs/evenements/festival-calan-couleurs"
-                    target="_blank" rel="noopener noreferrer"
-                    class="relative bg-[#8F1E98] text-white px-4 sm:px-6 py-3 font-bold uppercase tracking-wide hover:bg-white hover:text-[#8F1E98] transition duration-300 block w-full text-center">
-                    Acheter des billets →
-                </a>
+                <p class="text-sm sm:text-base mt-2 drop-shadow-md">
+                    Rendez-vous en <span class="font-bold text-[#FFEB3B]">2026</span> pour de nouvelles aventures colorées !
+                </p>
             </div>
         </div>
     </section>
-    {{-- Section programme --}}
-    <main>
-        {{-- Section programme --}}
-        <section class="py-16 px-6"
-            style="background: linear-gradient(180deg, rgba(255,15,99,0.9) 0%, rgba(143,30,152,0.9) 35%, rgba(39,42,199,0.9) 100%)"
-            aria-labelledby="programmation-heading">
-            <div class="container mx-auto">
-                <h2 id="programmation-heading"
-                    class="text-3xl text-white font-bold uppercase mb-10 text-center sm:text-left">La programmation</h2>
 
-                <div class="flex flex-wrap justify-center gap-8 max-w-6xl mx-auto">
-                    <!-- Jour 1 - Vendredi -->
-                    <section
-                        class="w-[20rem] h-[35rem] min-h-[24rem] bg-cover bg-center text-white p-6 flex flex-col justify-between border-2 border-white shadow-lg"
-                        style="background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.1))"
-                        aria-labelledby="vendredi-title">
-                        <div>
-                            <h3 id="vendredi-title" class="text-xl font-bold">Vendredi 12 septembre</h3>
-                            <p class="text-sm font-bold text-white/80">
-                                <time datetime="2025-09-12T20:00">20h</time> – <time datetime="2025-09-13T04:00">4h</time>
-                            </p>
-                        </div>
+    {{-- Section Tombola --}}
+    <section id="tombola" class="py-16 px-4 sm:px-8 text-center text-white bg-gray-200">
+        <h2 class="text-3xl font-bold uppercase mb-8 text-[#FF0F63]">Grande Tombola Calan’Couleurs 🎉</h2>
 
-                        <ul class="space-y-3 mt-4" aria-label="Ordre de passage">
-                            <li class="text-lg font-bold uppercase tracking-wide">Rock 109</li>
-                            <li class="text-lg font-bold uppercase tracking-wide">La Rif et Nos Men</li>
-                            <li class="text-lg font-bold uppercase tracking-wide">An'Om x Vayn</li>
-                            <li class="text-lg font-bold uppercase tracking-wide">Wazy</li>
-                            <li class="text-lg font-bold uppercase tracking-wide">AXL R.</li>
-                            <li class="text-lg font-bold uppercase tracking-wide">Hono</li>
-                            <li class="text-lg font-bold uppercase tracking-wide">Dymeister</li>
-                        </ul>
-                    </section>
+        <div class="max-w-3xl mx-auto">
+            <img src="{{ asset('img/events/tombola-2025.jpeg') }}" alt="Affiche Tombola Calan’Couleurs"
+                class="rounded-2xl shadow-2xl border-2 border-white/20 mb-6 mx-auto w-64 sm:w-80 md:w-96 object-contain">
+            <p class="text-lg mb-8 text-[#FF0F63]/90">
+                Tente ta chance et soutiens le festival pour sa prochaine édition ! 🎁<br>
+                Vous avez jusqu'au <strong>12/11</strong> pour participer.<br>
+                Un DJ set aura lieu ainsi qu'un bar pendant la soirée.
+            </p>
+            <a href="https://www.helloasso.com/associations/calan-couleurs/evenements/tombola-calan-couleurs-1"
+                target="_blank" rel="noopener noreferrer"
+                class="inline-block mt-3 px-8 py-4 bg-[#8F1E98] text-white font-semibold rounded-xl hover:bg-[#FF0F63] transition duration-300">
+                Participer à la tombola →
+            </a>
+        </div>
+    </section>
 
-                    <!-- Jour 2 - Samedi -->
-                    <section
-                        class="w-[20rem] h-[35rem] min-h-[24rem] bg-cover bg-center text-white p-6 flex flex-col justify-between border-2 border-white shadow-lg"
-                        style="background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.1))"
-                        aria-labelledby="samedi-title">
-                        <div>
-                            <h3 id="samedi-title" class="text-xl font-bold">Samedi 13 septembre</h3>
-                            <p class="text-sm font-bold text-white/80">
-                                <time datetime="2025-09-13T15:00">15h</time> – <time datetime="2025-09-14T04:00">4h</time>
-                            </p>
-                        </div>
-
-                        <ul class="space-y-3 mt-4" aria-label="Ordre de passage">
-                            <li class="text-lg font-bold uppercase tracking-wide">Youth Collective</li>
-                            <li class="text-lg font-bold uppercase tracking-wide">Maklos</li>
-                            <li class="text-lg font-bold uppercase tracking-wide">Klö</li>
-                            <li class="text-lg font-bold uppercase tracking-wide">Kaboum</li>
-                            <li class="text-lg font-bold uppercase tracking-wide">TOM WORRF</li>
-                            <li class="text-lg font-bold uppercase tracking-wide">2TH</li>
-                            <li class="text-lg font-bold uppercase tracking-wide">Mūne</li>
-                            <li class="text-lg font-bold uppercase tracking-wide">Yonex</li>
-                            <li class="text-lg font-bold uppercase tracking-wide">Leydon</li>
-                            <li class="text-lg font-bold uppercase tracking-wide">Tripidium</li>
-                        </ul>
-                    </section>
-                </div>
-
-                <div class="text-center mt-12">
-                    <a href="{{ route('programmation') }}"
-                        class="inline-block px-8 py-3 text-center mt-2 bg-[#8F1E98] text-white font-semibold rounded-lg hover:bg-[#FF0F63] transition focus:outline-none focus-visible:ring">
-                        Voir les horaires détaillés
-                    </a>
-                </div>
-            </div>
-        </section>
-        {{--
-        <section class="py-16">
-            <div id="program-root"></div>
-        </section> --}}
-
-        {{-- Section carousel --}}
-        {{-- <section class="">
-            <div id="carousel-root"></div>
-        </section> --}}
-
-        {{-- Section Artistes --}}
-        {{-- <section class="py-16">
-            <div id="artist-root"></div>
-        </section> --}}
-
-        {{-- Section Onsite --}}
-        <section aria-labelledby="onsite-heading" class="">
-            <div id="onsite-root" aria-live="polite"></div>
-        </section>
-
-        {{-- Section FAQ --}}
-        <section aria-labelledby="faq-heading" class="">
-            <div id="faq-root" aria-live="polite"></div>
-        </section>
-    </main>
+    {{-- Section FAQ --}}
+    <section aria-labelledby="faq-heading" class="">
+        <div id="faq-root" aria-live="polite"></div>
+    </section>
 @endsection

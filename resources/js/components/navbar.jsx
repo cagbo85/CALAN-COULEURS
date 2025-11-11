@@ -56,13 +56,13 @@ export default function Navbar({ routes }) {
                         >
                             Notre histoire
                         </a>
-                        <a
+                        {/* <a
                             href={routes?.programmation || "/programmation"}
                             className="block py-2 px-3 text-[#8F1E98] font-semibold hover:text-[#FF0F63] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8F1E98]"
                         >
                             Programmation
-                        </a>
-                        <a
+                        </a> */}
+                        {/* <a
                             href={
                                 routes?.billetterie ||
                                 "https://www.helloasso.com/associations/calan-couleurs/evenements/festival-calan-couleurs"
@@ -72,7 +72,7 @@ export default function Navbar({ routes }) {
                             className="block py-2 px-3 text-[#8F1E98] font-semibold hover:text-[#FF0F63] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8F1E98]"
                         >
                             Billetterie
-                        </a>
+                        </a> */}
                         <a
                             href={routes?.contact || "/contact"}
                             className="block py-2 px-3 text-[#8F1E98] font-semibold hover:text-[#FF0F63] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8F1E98]"
@@ -146,12 +146,12 @@ export default function Navbar({ routes }) {
                     >
                         Le Festival
                     </a>
-                    <a
+                    {/* <a
                         href={routes?.programmation || "/programmation"}
                         className="block text-center py-2 text-[#8F1E98] font-semibold hover:text-[#FF0F63] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8F1E98]"
                     >
                         Programmation
-                    </a>
+                    </a> */}
                     <a
                         href={
                             routes?.billetterie ||

@@ -35,6 +35,7 @@ yarn-error.log*
 composer.phar
 phpunit.xml.cache
 database/database.sqlite
+/public/index.php
 
 # docker-compose.override.yml
 sail

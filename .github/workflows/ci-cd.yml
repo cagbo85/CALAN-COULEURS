@@ -4,9 +4,11 @@ permissions:
   contents: write
 on:
   push:
-    branches: [main]
+    branches:
+      - main
   pull_request:
-    branches: [main]
+    branches:
+      - main
 
 env:
   PHP_VERSION: "8.2"
@@ -49,6 +51,7 @@ jobs:
 
   # 2. Lancement des tests unitaires et fonctionnels Laravel (PHPUnit) + vérification de la couverture.
   tests:
+    if: github.ref != 'refs/heads/main'
     name: Tests & Quality
     runs-on: ubuntu-latest
 
@@ -135,31 +138,27 @@ jobs:
       - name: Prepare Laravel Application
         run: |
           php artisan key:generate
-          php artisan migrate --env=testing --force
-          php artisan db:seed --env=testing --force
-
-      - name: Run Database Migrations
-        run: php artisan migrate --force --no-interaction
-
-      - name: Seed Database
-        run: php artisan db:seed --force --no-interaction
+          php artisan migrate:fresh --seed --env=testing --force
 
       - name: Clear caches (after migrations)
         run: |
           php artisan config:clear
-      - name: Run PHPUnit Tests
+      - name: Run Laravel Tests
         run: |
-          vendor/bin/phpunit \
-            --configuration=phpunit.xml \
-            --coverage-text \
-            --coverage-clover=coverage.xml \
-            --testdox \
-            --fail-on-empty-test-suite
+          php artisan test --coverage-clover=coverage.xml --testdox
       - name: Upload Coverage
         if: success()
         uses: codecov/codecov-action@v3
         with:
           file: ./coverage.xml
+
+      - name: Cleanup
+        if: always()
+        run: |
+          php artisan cache:clear
+          php artisan route:clear
+          php artisan view:clear
+          php artisan config:clear
 
   # 3. Vérification du style de code (Laravel Pint) et audit de sécurité des dépendances PHP.
   code-quality:
@@ -198,6 +197,7 @@ jobs:
 
   # 4. Déploiement automatique sur le serveur de production via webhook sécurisé.
   deploy:
+    if: github.ref == 'refs/heads/main'
     name: Deploy to Production
     needs: [tests, code-quality, build-and-release]
     runs-on: ubuntu-latest

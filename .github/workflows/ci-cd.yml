@@ -135,14 +135,7 @@ jobs:
       - name: Prepare Laravel Application
         run: |
           php artisan key:generate
-          php artisan migrate --env=testing --force
-          php artisan db:seed --env=testing --force
-
-      - name: Run Database Migrations
-        run: php artisan migrate --force --no-interaction
-
-      - name: Seed Database
-        run: php artisan db:seed --force --no-interaction
+          php artisan migrate:fresh --seed --env=testing --force
 
       - name: Clear caches (after migrations)
         run: |
@@ -160,6 +153,14 @@ jobs:
         uses: codecov/codecov-action@v3
         with:
           file: ./coverage.xml
+
+      - name: Cleanup
+        if: always()
+        run: |
+          php artisan cache:clear
+          php artisan route:clear
+          php artisan view:clear
+          php artisan config:clear
 
   # 3. Vérification du style de code (Laravel Pint) et audit de sécurité des dépendances PHP.
   code-quality:

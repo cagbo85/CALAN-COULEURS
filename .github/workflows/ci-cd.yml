@@ -4,9 +4,11 @@ permissions:
   contents: write
 on:
   push:
-    branches: [main]
+    branches:
+      - main
   pull_request:
-    branches: [main]
+    branches:
+      - main
 
 env:
   PHP_VERSION: "8.2"
@@ -49,6 +51,7 @@ jobs:
 
   # 2. Lancement des tests unitaires et fonctionnels Laravel (PHPUnit) + vérification de la couverture.
   tests:
+    if: github.ref != 'refs/heads/main'
     name: Tests & Quality
     runs-on: ubuntu-latest
 
@@ -194,6 +197,7 @@ jobs:
 
   # 4. Déploiement automatique sur le serveur de production via webhook sécurisé.
   deploy:
+    if: github.ref == 'refs/heads/main'
     name: Deploy to Production
     needs: [tests, code-quality, build-and-release]
     runs-on: ubuntu-latest

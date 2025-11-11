@@ -140,14 +140,9 @@ jobs:
       - name: Clear caches (after migrations)
         run: |
           php artisan config:clear
-      - name: Run PHPUnit Tests
+      - name: Run Laravel Tests
         run: |
-          vendor/bin/phpunit \
-            --configuration=phpunit.xml \
-            --coverage-text \
-            --coverage-clover=coverage.xml \
-            --testdox \
-            --fail-on-empty-test-suite
+          php artisan test --coverage-clover=coverage.xml --testdox
       - name: Upload Coverage
         if: success()
         uses: codecov/codecov-action@v3

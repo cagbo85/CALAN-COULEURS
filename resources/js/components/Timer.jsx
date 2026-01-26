@@ -12,9 +12,9 @@ export default function Timer() {
 
     useEffect(() => {
         // Festival commence vendredi 12 septembre à 20h
-        const eventStartDate = new Date('2025-09-12T20:00:00');
+        const eventStartDate = new Date('2026-06-26T20:00:00');
         // Festival se termine dimanche 14 septembre à 6h (samedi soir/dimanche matin)
-        const eventEndDate = new Date('2025-09-14T06:00:00');
+        const eventEndDate = new Date('2026-06-27T06:00:00');
 
         const interval = setInterval(() => {
             const now = new Date();

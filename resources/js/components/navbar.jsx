@@ -65,7 +65,7 @@ export default function Navbar({ routes }) {
                         {/* <a
                             href={
                                 routes?.billetterie ||
-                                "https://www.helloasso.com/associations/calan-couleurs/evenements/festival-calan-couleurs"
+                                "https://www.helloasso.com/associations/calan-couleurs/evenements/festival-calan-couleurs-26-27-juin-2026"
                             }
                             target="_blank"
                             rel="noopener noreferrer"
@@ -86,7 +86,7 @@ export default function Navbar({ routes }) {
                     <a
                         href={
                             routes?.billetterie ||
-                            "https://www.helloasso.com/associations/calan-couleurs/evenements/festival-calan-couleurs"
+                            "https://www.helloasso.com/associations/calan-couleurs/evenements/festival-calan-couleurs-26-27-juin-2026"
                         }
                         target="_blank"
                         rel="noopener noreferrer"
@@ -155,7 +155,7 @@ export default function Navbar({ routes }) {
                     <a
                         href={
                             routes?.billetterie ||
-                            "https://www.helloasso.com/associations/calan-couleurs/evenements/festival-calan-couleurs"
+                            "https://www.helloasso.com/associations/calan-couleurs/evenements/festival-calan-couleurs-26-27-juin-2026"
                         }
                         target="_blank"
                         rel="noopener noreferrer"
@@ -173,7 +173,7 @@ export default function Navbar({ routes }) {
                     <a
                         href={
                             routes?.billetterie ||
-                            "https://www.helloasso.com/associations/calan-couleurs/evenements/festival-calan-couleurs"
+                            "https://www.helloasso.com/associations/calan-couleurs/evenements/festival-calan-couleurs-26-27-juin-2026"
                         }
                         target="_blank"
                         rel="noopener noreferrer"

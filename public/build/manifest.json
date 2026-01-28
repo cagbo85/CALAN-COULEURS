@@ -1,0 +1,59 @@
+{
+  "_client-8xLAL1SS.js": {
+    "file": "assets/client-8xLAL1SS.js",
+    "name": "client"
+  },
+  "resources/css/app.css": {
+    "file": "assets/app-BaExGOv2.css",
+    "src": "resources/css/app.css",
+    "isEntry": true
+  },
+  "resources/js/app.js": {
+    "file": "assets/app-DlYOw6CL.js",
+    "name": "app",
+    "src": "resources/js/app.js",
+    "isEntry": true
+  },
+  "resources/js/app.jsx": {
+    "file": "assets/app-l0sNRNKZ.js",
+    "name": "app",
+    "src": "resources/js/app.jsx",
+    "isEntry": true
+  },
+  "resources/js/faq-loader.jsx": {
+    "file": "assets/faq-loader-Bz_YYTHH.js",
+    "name": "faq-loader",
+    "src": "resources/js/faq-loader.jsx",
+    "isEntry": true,
+    "imports": [
+      "_client-8xLAL1SS.js"
+    ]
+  },
+  "resources/js/navbar-loader.jsx": {
+    "file": "assets/navbar-loader-snmGg6E4.js",
+    "name": "navbar-loader",
+    "src": "resources/js/navbar-loader.jsx",
+    "isEntry": true,
+    "imports": [
+      "_client-8xLAL1SS.js"
+    ]
+  },
+  "resources/js/onsite-loader.jsx": {
+    "file": "assets/onsite-loader-CV4AmbtK.js",
+    "name": "onsite-loader",
+    "src": "resources/js/onsite-loader.jsx",
+    "isEntry": true,
+    "imports": [
+      "_client-8xLAL1SS.js"
+    ]
+  },
+  "resources/js/timer-loader.jsx": {
+    "file": "assets/timer-loader-Dvelx8s8.js",
+    "name": "timer-loader",
+    "src": "resources/js/timer-loader.jsx",
+    "isEntry": true,
+    "imports": [
+      "_client-8xLAL1SS.js"
+    ]
+  }
+}

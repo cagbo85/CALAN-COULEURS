@@ -59,21 +59,24 @@
                 @foreach ($collections as $collection)
                     <div
                         class="group bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
-                        <div class="h-64 flex items-center justify-center bg-gray-100">
+
+                        {{-- <div class="h-64 w-full overflow-hidden">
                             <img src="{{ asset($collection['image']) }}" alt="{{ $collection['title'] }}"
-                                class="object-contain h-48">
+                                class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
+                        </div> --}}
+                        <div class="aspect-square overflow-hidden">
+                            <img src="{{ asset($collection['image']) }}" alt="{{ $collection['title'] }}" class="w-full h-full object-cover" />
                         </div>
+
+
                         <div class="p-6">
                             <h3 class="font-bold text-lg mb-2">{{ $collection['title'] }}</h3>
                             <p class="text-gray-600 text-sm">{{ $collection['description'] }}</p>
-                            {{-- <a href="{{ route('boutique.products', ['category' => $collection['badge']]) }}"
-                                class="inline-block mt-2 px-6 py-2 rounded-full bg-[#8F1E98] text-white font-semibold shadow hover:bg-[#FF0F63] transition">
-                                Voir la collection
-                            </a> --}}
                         </div>
                     </div>
                 @endforeach
             </div>
+
             <!-- Bouton CTA -->
             <div class="text-center">
                 <a href="{{ route('boutique.products') }}"

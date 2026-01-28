@@ -24,19 +24,19 @@ class BoutiqueController extends Controller
                 'badge' => 't-shirt',
                 'title' => 'Collection T-shirts',
                 'description' => 'Designs exclusifs aux couleurs du festival',
-                'image' => 'img/boutique/tshirt-decontracte_blanc.webp',
+                'image' => 'img/boutique/products/tshirt-classique_blanc_5.jpg',
             ],
             [
                 'badge' => 'pull',
                 'title' => 'Collection Pulls',
                 'description' => 'Chaud, doux et coloré pour toutes les saisons',
-                'image' => 'img/boutique/pull-premium_vert.webp',
+                'image' => 'img/boutique/pull-zippe_vert.jpg',
             ],
             [
                 'badge' => 'accessoire',
                 'title' => 'Collection Accessoires',
-                'description' => 'Lunettes, casquettes et plus pour compléter ton style',
-                'image' => 'img/boutique/lunettes-calan-couleurs_noir.webp',
+                'description' => 'Lunettes, tote bags, gourdes et bandanas pour compléter ton style',
+                'image' => 'img/boutique/lunettes-calan_bleu.jpg',
             ],
         ];
 
@@ -247,6 +247,17 @@ class BoutiqueController extends Controller
     }
 
     /**
+     * Récupèrer toutes les images liées à un produit.
+     */
+    public function getImagesForProduct($productId)
+    {
+        return DB::table('products_images as pi')
+            ->where('pi.product_id', $productId)
+            ->orderBy('pi.ordre', 'asc')
+            ->get();
+    }
+
+    /**
      * Affiche la liste des produits avec filtres.
      */
     public function products(Request $request)
@@ -282,11 +293,11 @@ class BoutiqueController extends Controller
 
         $allVariants = $this->getAllVariantsForProduct($product->id);
 
-        // $stockTexts = $this->getStockTextsForProduct($product->id);
-
         $stockTexts = $this->getStockTextsForProduct($product->id)->keyBy('id');
 
-        return view('boutique.show', compact('product', 'uniqueVariants', 'uniqueSizes', 'stockTexts', 'allVariants'));
+        $productImages = $this->getImagesForProduct($product->id);
+
+        return view('boutique.show', compact('product', 'uniqueVariants', 'uniqueSizes', 'stockTexts', 'allVariants', 'productImages'));
     }
 
     /**

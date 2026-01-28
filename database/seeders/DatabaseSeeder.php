@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
             ColorSeeder::class,
             FaqSeeder::class,
             ProductSeeder::class,
+            ProductImageSeeder::class,
             EditionArtistesSeeder::class,
             EditionStandsSeeder::class,
             EditionPartenairesSeeder::class,

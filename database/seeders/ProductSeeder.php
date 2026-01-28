@@ -27,92 +27,139 @@ class ProductSeeder extends Seeder
 
         $products = [
             [
-                'title' => 'T-shirt Décontracté',
-                'slug' => 'tshirt-decontracte',
-                'description' => 'T-shirt coupe loose, parfait pour l\'été.',
-                'detailed_description' => 'Disponible en plusieurs couleurs et tailles. Unisexe.',
-                'price' => 12.00,
-                'old_price' => 15.00,
+                'title' => 'T-shirt Collector',
+                'slug' => 'tshirt-collector',
+                'description' => 'T-shirt collector violet de la première édition.',
+                'detailed_description' => 'Disponible en plusieurs tailles. Unisexe.',
+                'price' => 19.00,
+                'old_price' => null,
                 'is_featured' => true,
-                'image' => 'img/boutique/tshirt-decontracte_blanc.webp',
+                'image' => 'img/boutique/tshirt-collector_violet.jpg',
                 'category' => 'vetements',
                 'badge' => 't-shirt',
-                'colors' => ['jaune', 'rouge', 'blanc'],
+                'colors' => ['violet'],
                 'images' => [
-                    'jaune' => 'img/boutique/tshirt-decontracte_jaune.webp',
-                    'rouge' => 'img/boutique/tshirt-decontracte_rouge.webp',
-                    'blanc' => 'img/boutique/tshirt-decontracte_blanc.webp',
+                    'violet' => 'img/boutique/tshirt-collector_violet.jpg',
                 ],
-                // Quantités spécifiques pour la démo (autres à 0)
+                // Quantités
                 'quantities' => [
-                    'jaune' => ['XS' => 1, 'S' => 2, 'M' => 3, 'L' => 4, 'XL' => 5, 'XXL' => 0],
-                    'rouge' => ['XS' => 5, 'S' => 4, 'M' => 3, 'L' => 2, 'XL' => 1, 'XXL' => 0],
-                    'blanc' => ['XS' => 0, 'S' => 0, 'M' => 3, 'L' => 2, 'XL' => 0, 'XXL' => 0],
+                    'violet' => ['XS' => 0, 'S' => 8, 'M' => 0, 'L' => 9, 'XL' => 10, 'XXL' => 2],
                 ]
             ],
             [
                 'title' => 'T-shirt Classique',
                 'slug' => 'tshirt-classique',
                 'description' => 'T-shirt classique Calan\'Couleurs.',
-                'detailed_description' => 'Coton bio, impression violet ou blanc.',
-                'price' => 10.00,
+                'detailed_description' => 'Disponible en plusieurs tailles. Unisexe.',
+                'price' => 19.00,
                 'old_price' => null,
                 'is_featured' => false,
-                'image' => 'img/boutique/tshirt-classique_violet.webp',
+                'image' => 'img/boutique/tshirt-classique_blanc.jpg',
                 'category' => 'vetements',
                 'badge' => 't-shirt',
-                'colors' => ['blanc', 'violet'],
+                'colors' => ['blanc'],
                 'images' => [
-                    'blanc' => 'img/boutique/tshirt-classique_blanc.webp',
-                    'violet' => 'img/boutique/tshirt-classique_violet.webp',
+                    'blanc' => 'img/boutique/tshirt-classique_blanc.jpg',
                 ],
                 'quantities' => [
-                    'blanc' => ['XS' => 1, 'S' => 3, 'M' => 5, 'L' => 6, 'XL' => 0, 'XXL' => 0],
-                    'violet' => ['XS' => 3, 'S' => 6, 'M' => 0, 'L' => 2, 'XL' => 1, 'XXL' => 0],
+                    'blanc' => ['XS' => 0, 'S' => 8, 'M' => 11, 'L' => 21, 'XL' => 3, 'XXL' => 1],
                 ]
             ],
             [
-                'title' => 'Pull Prémium',
-                'slug' => 'pull-premium',
-                'description' => 'Pull chaud et doux, édition limitée.',
-                'detailed_description' => 'Plusieurs couleurs, coupe mixte.',
-                'price' => 25.00,
-                'old_price' => 30.00,
+                'title' => 'Pull zippé',
+                'slug' => 'pull-zippe',
+                'description' => 'Pull chaud et doux au couleur de Calan\'Couleurs.',
+                'detailed_description' => 'Disponible en plusieurs tailles. Unisexe.',
+                'price' => 35.00,
+                'old_price' => null,
                 'is_featured' => true,
-                'image' => 'img/boutique/pull-premium_vert.webp',
+                'image' => 'img/boutique/pull-zippe_vert.jpg',
                 'category' => 'vetements',
                 'badge' => 'pull',
-                'colors' => ['vert', 'rose', 'bleu'],
+                'colors' => ['vert'],
                 'images' => [
-                    'vert' => 'img/boutique/pull-premium_vert.webp',
-                    'rose' => 'img/boutique/pull-premium_rose.webp',
-                    'bleu' => 'img/boutique/pull-premium_bleu.webp',
+                    'vert' => 'img/boutique/pull-zippe_vert.jpg',
                 ],
                 'quantities' => [
-                    'vert' => ['XS' => 0, 'S' => 0, 'M' => 1, 'L' => 4, 'XL' => 2, 'XXL' => 0],
-                    'rose' => ['XS' => 1, 'S' => 2, 'M' => 3, 'L' => 2, 'XL' => 5, 'XXL' => 0],
-                    'bleu' => ['XS' => 1, 'S' => 0, 'M' => 1, 'L' => 6, 'XL' => 0, 'XXL' => 0],
+                    'vert' => ['XS' => 0, 'S' => 2, 'M' => 0, 'L' => 6, 'XL' => 4, 'XXL' => 3],
                 ]
             ],
             [
-                'title' => 'Lunettes Calan\'Couleurs',
-                'slug' => 'lunettes-calan-couleurs',
+                'title' => 'Lunettes Calan',
+                'slug' => 'lunettes-calan',
                 'description' => 'Lunettes de soleil stylées, protection UV.',
-                'detailed_description' => 'Coloris rose ou noir, pour tous les genres.',
-                'price' => 8.00,
-                'old_price' => 10.00,
+                'detailed_description' => 'Coloris bleu ou rouge, pour tous les genres.',
+                'price' => 3.00,
+                'old_price' => null,
                 'is_featured' => false,
-                'image' => 'img/boutique/lunettes-calan-couleurs_noir.webp',
+                'image' => 'img/boutique/lunettes-calan_rouge.jpg',
                 'category' => 'accessoires',
                 'badge' => 'accessoire',
-                'colors' => ['rose', 'noir'],
+                'colors' => ['rouge', 'bleu'],
                 'images' => [
-                    'rose' => 'img/boutique/lunettes-calan-couleurs_rose.webp',
-                    'noir' => 'img/boutique/lunettes-calan-couleurs_noir.webp',
+                    'rouge' => 'img/boutique/lunettes-calan_rouge.jpg',
+                    'bleu' => 'img/boutique/lunettes-calan_bleu.jpg',
                 ],
                 'quantities' => [
-                    'rose' => ['Unique' => 4],
-                    'noir' => ['Unique' => 6],
+                    'rouge' => ['Unique' => 3],
+                    'bleu' => ['Unique' => 7],
+                ]
+            ],
+            [
+                'title' => 'Tôt bag',
+                'slug' => 'tot-bag',
+                'description' => 'Tot bag super classe.',
+                'detailed_description' => 'Parfait pour vos courses ou vos sorties.',
+                'price' => 5.00,
+                'old_price' => null,
+                'is_featured' => false,
+                'image' => 'img/boutique/tot-bag_blanc.jpg',
+                'category' => 'goodies',
+                'badge' => 'accessoire',
+                'colors' => ['blanc'],
+                'images' => [
+                    'blanc' => 'img/boutique/tot-bag_blanc.jpg',
+                ],
+                'quantities' => [
+                    'blanc' => ['Unique' => 7],
+                ]
+            ],
+            [
+                'title' => 'Gourde',
+                'slug' => 'gourde-25cl',
+                'description' => 'Gourde de 25cl pour vous nourrir de Calan\'Couleurs.',
+                'detailed_description' => 'Idéale pour vos boissons chaudes ou froides.',
+                'price' => 3.00,
+                'old_price' => null,
+                'is_featured' => false,
+                'image' => 'img/boutique/gourde-25cl_noir.jpg',
+                'category' => 'goodies',
+                'badge' => 'accessoire',
+                'colors' => ['noir'],
+                'images' => [
+                    'noir' => 'img/boutique/gourde-25cl_noir.jpg',
+                ],
+                'quantities' => [
+                    'noir' => ['Unique' => 9],
+                ]
+            ],
+            [
+                'title' => 'Bandana',
+                'slug' => 'bandana',
+                'description' => 'Bandana, idéal pour le style ou la protection.',
+                'detailed_description' => 'Polyvalent et confortable, unisexe.',
+                'price' => 2.50,
+                'old_price' => null,
+                'is_featured' => false,
+                'image' => 'img/boutique/bandana_violet.jpg',
+                'category' => 'goodies',
+                'badge' => 'accessoire',
+                'colors' => ['violet'],
+                'images' => [
+                    'violet' => 'img/boutique/bandana_violet.jpg',
+                ],
+                'quantities' => [
+                    'violet' => ['Unique' => 57],
                 ]
             ],
         ];
@@ -134,7 +181,7 @@ class ProductSeeder extends Seeder
                 'updated_by' => 1,
             ]);
 
-            if ($data['slug'] === 'lunettes-calan-couleurs' && $uniqueSizeId) {
+            if (($data['slug'] === 'bandana' || $data['slug'] === 'gourde-25cl' || $data['slug'] === 'tot-bag' || $data['slug'] === 'lunettes-calan') && $uniqueSizeId) {
                 foreach ($data['colors'] as $color) {
                     $quantity = $data['quantities'][$color]['Unique'] ?? 0;
                     $sku = strtoupper($data['slug']) . '-' . strtoupper($color) . '-UNIQUE';

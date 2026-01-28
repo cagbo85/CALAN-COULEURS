@@ -329,6 +329,18 @@ CREATE TABLE IF NOT EXISTS products_variants (
     CONSTRAINT products_variants_ibfk_5 FOREIGN KEY (color_id) REFERENCES colors(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Variantes des produits (taille, couleur, etc.)';
 
+CREATE TABLE IF NOT EXISTS products_images (
+    id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    product_id INT DEFAULT NULL COMMENT 'ID du produit parent',
+    variant_id INT DEFAULT NULL COMMENT 'ID de la variante (optionnel)',
+    image VARCHAR(255) NOT NULL COMMENT 'Chemin vers l\'image du produit ou de la variante',
+    ordre INT NOT NULL DEFAULT 0 COMMENT 'Ordre d\'affichage des images',
+    created_at TIMESTAMP NULL DEFAULT current_timestamp() COMMENT 'Date de création',
+    updated_at TIMESTAMP NULL DEFAULT current_timestamp() ON UPDATE current_timestamp() COMMENT 'Date de modification',
+    CONSTRAINT products_images_ibfk_1 FOREIGN KEY (product_id) REFERENCES products(id),
+    CONSTRAINT products_images_ibfk_2 FOREIGN KEY (variant_id) REFERENCES products_variants(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Images supplémentaires pour les produits et variantes';
+
 CREATE TABLE IF NOT EXISTS sizes (
     id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     label VARCHAR(10) NOT NULL UNIQUE COMMENT 'Libellé de la taille (XS, S, M, L, XL, XXL)',

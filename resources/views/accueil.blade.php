@@ -46,8 +46,6 @@
             s.parentNode.insertBefore(g, s);
         })();
     </script>
-    <!-- End Matomo Code -->
-
     <section
         class="min-h-[500px] sm:h-[calc(100vh-64px)] w-full px-2 sm:px-4 py-8 flex flex-col justify-center items-center bg-[url('/img/logos/accueil_public.png')] bg-no-repeat bg-center bg-cover text-center">
 

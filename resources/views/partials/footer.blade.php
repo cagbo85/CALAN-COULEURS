@@ -92,7 +92,7 @@
 
             {{-- Copyright et mentions légales --}}
             <div class="flex flex-col sm:flex-row gap-2 sm:gap-6 text-center sm:text-right">
-                <small class="text-sm text-white/80">© 2025 Calan'Couleurs. Tous droits réservés.</small>
+                <small class="text-sm text-white/80">© {{ date('Y') }} Calan'Couleurs. Tous droits réservés.</small>
                 {{-- <a href="#" class="text-sm text-white/70 hover:text-white transition duration-300 focus:outline-none focus-visible:ring focus-visible:ring-offset-2 focus-visible:ring-white/60 rounded">Mentions légales</a>
                 <a href="#" class="text-sm text-white/70 hover:text-white transition duration-300 focus:outline-none focus-visible:ring focus-visible:ring-offset-2 focus-visible:ring-white/60 rounded">Politique de confidentialité</a> --}}
             </div>

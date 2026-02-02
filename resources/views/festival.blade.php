@@ -11,7 +11,7 @@
                 Calan'Couleurs
             </h1>
             <p class="text-xl sm:text-2xl font-medium text-white drop-shadow-md">
-                12 & 13 septembre 2025
+                26 & 27 juin 2026
             </p>
         </div>
     </section>
@@ -31,7 +31,7 @@
                     </p>
 
                     <p class="text-lg font-bold leading-relaxed">
-                        Rendez-vous les 12 et 13 septembre 2025 à Campbon (44 750) pour une première édition haute
+                        Rendez-vous les 26 et 27 juin 2026 à Campbon (44 750) pour une deuxième édition haute
                         en couleur, avec une programmation mêlant artistes émergents et confirmés, dans une ambiance
                         conviviale et festive.
                     </p>

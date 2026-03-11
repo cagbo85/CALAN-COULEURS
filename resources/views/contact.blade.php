@@ -12,6 +12,48 @@
             </h1>
         </div>
     </section>
+    <!-- formulaire de contact -->
+    <div class="max-w-lg mx-auto bg-white p-6 rounded shadow">
+        <h1 class="text-2xl font-bold mb-4">Contactez-nous</h1>
+
+        @if(session('success'))
+            <div class="bg-green-100 text-green-800 p-2 rounded mb-4">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        <form action="{{ route('contact.submit') }}" method="POST">
+            @csrf
+
+            <div class="mb-4">
+                <label class="block mb-1">Nom</label>
+                <input type="text" name="name" class="w-full border p-2 rounded" value="{{ old('name') }}">
+                @error('name')
+                    <p class="text-red-500 text-sm">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <div class="mb-4">
+                <label class="block mb-1">Email</label>
+                <input type="email" name="email" class="w-full border p-2 rounded" value="{{ old('email') }}">
+                @error('email')
+                    <p class="text-red-500 text-sm">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <div class="mb-4">
+                <label class="block mb-1">Message</label>
+                <textarea name="message" rows="5" class="w-full border p-2 rounded">{{ old('message') }}</textarea>
+                @error('message')
+                    <p class="text-red-500 text-sm">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                Envoyer
+            </button>
+        </form>
+    </div>
 
     <!-- Contenu -->
     <section class="py-16 px-4 sm:px-6 lg:px-8 bg-white">

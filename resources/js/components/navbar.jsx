@@ -183,7 +183,12 @@ export default function Navbar({ routes }) {
                                 </div>
                             )}
                         </div>
-
+                        <a
+                        href={routes?.galerie || "/galerie"}
+                            className="block py-2 px-3 text-[#8F1E98] font-semibold hover:text-[#FF0F63] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8F1E98]"
+                        >
+                            Galerie
+                        </a>
                         {/* Liens simples */}
                         {/* <a
                             href={routes?.programmation || "/programmation"}

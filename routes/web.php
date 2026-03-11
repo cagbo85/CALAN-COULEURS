@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\GalerieController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProgrammationController;
 use App\Http\Controllers\ContactController;
@@ -24,6 +25,7 @@ Route::middleware('auth')->group(function () {
 Route::get('/', [HomeController::class, 'accueil'])->name('accueil');
 
 Route::get('programmation', [ProgrammationController::class, 'index'])->name('programmation');
+Route::get('galerie', [GalerieController::class, 'index'])->name('galerie.index');
 
 Route::get('notre-histoire', [HomeController::class, 'festival'])->name('festival');
 

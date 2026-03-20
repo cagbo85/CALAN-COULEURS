@@ -25,6 +25,20 @@ services:
         depends_on:
             - mysql
             - mailpit
+    scheduler:
+        image: 'sail-8.4/app'
+        container_name: 'calan-scheduler'
+        command: php artisan schedule:work
+        environment:
+            WWWUSER: '${WWWUSER}'
+            WWWGROUP: '${WWWGROUP}'
+        volumes:
+            - '.:/var/www/html'
+        working_dir: /var/www/html
+        depends_on:
+            - mysql
+        networks:
+            - calan-network
     mysql:
         image: 'mysql/mysql-server:8.0'
         container_name: 'calan-mysql'
@@ -37,9 +51,14 @@ services:
             MYSQL_USER: '${DB_USERNAME}'
             MYSQL_PASSWORD: '${DB_PASSWORD}'
             MYSQL_ALLOW_EMPTY_PASSWORD: 1
+            TZ: Europe/Paris
+        command:
+            - --default-time-zone=SYSTEM
+            - --lc-time-names=fr_FR
         volumes:
             - 'calan-mysql:/var/lib/mysql'
             - './vendor/laravel/sail/database/mysql/create-testing-database.sh:/docker-entrypoint-initdb.d/10-create-testing-database.sh'
+            - './docker/mysql/my.cnf:/etc/mysql/conf.d/my.cnf'
         networks:
             - calan-network
         healthcheck:

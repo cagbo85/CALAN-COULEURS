@@ -13,6 +13,8 @@ export default defineConfig({
                 "resources/js/timer-loader.jsx",
                 "resources/js/stands-loader.jsx",
                 "resources/js/faq-loader.jsx",
+                "resources/js/programmation-loader.jsx",
+                "resources/js/partners-loader.jsx",
                 "resources/js/app.js",
             ],
             publicDirectory: "public",

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Faq;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -145,7 +146,7 @@ class Faq2Controller extends Controller
             ]);
 
             return redirect()->route('admin.faqs.show', $faq->id);
-        } catch (\Illuminate\Database\QueryException $e) {
+        } catch (QueryException $e) {
             DB::rollBack();
 
             Log::error('Erreur de base de données lors de la création d\'une FAQ', [
@@ -284,7 +285,7 @@ class Faq2Controller extends Controller
             notify()->success("La FAQ #{$faq->id} a été modifiée avec succès.", 'Modification réussie ! 🎉');
 
             return redirect()->route('admin.faqs.show', $faq->id);
-        } catch (\Illuminate\Database\QueryException $e) {
+        } catch (QueryException $e) {
             DB::rollBack();
 
             Log::error('Erreur de base de données lors de la modification de la FAQ', [
@@ -352,7 +353,7 @@ class Faq2Controller extends Controller
             notify()->success("La FAQ #{$faq->id} a été masquée avec succès.", 'Masquage réussi ! 🎉');
 
             return redirect()->route('admin.faqs.index');
-        } catch (\Illuminate\Database\QueryException $e) {
+        } catch (QueryException $e) {
             DB::rollBack();
 
             Log::error('Erreur de base de données lors de la modification du statut de la FAQ', [
@@ -457,7 +458,7 @@ class Faq2Controller extends Controller
             );
 
             return redirect()->route('admin.faqs.index');
-        } catch (\Illuminate\Database\QueryException $e) {
+        } catch (QueryException $e) {
             DB::rollBack();
 
             Log::error('Erreur de base de données lors de la modification des FAQs', [
@@ -562,7 +563,7 @@ class Faq2Controller extends Controller
             );
 
             return redirect()->route('admin.faqs.index');
-        } catch (\Illuminate\Database\QueryException $e) {
+        } catch (QueryException $e) {
             DB::rollBack();
 
             Log::error('Erreur de base de données lors de la modification des FAQs', [
@@ -706,7 +707,7 @@ class Faq2Controller extends Controller
             notify()->success("L'ordre de la FAQ #{$faq->id} a été modifié avec succès.", 'Modification réussie ! 🎉');
 
             return back()->withInput();
-        } catch (\Illuminate\Database\QueryException $e) {
+        } catch (QueryException $e) {
             DB::rollBack();
 
             Log::error('Erreur de base de données lors de la modification de l\'ordre de la FAQ', [

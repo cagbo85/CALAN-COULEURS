@@ -2,11 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\Product;
 use App\Models\ProductsImage;
-use App\Models\Size;
-use App\Models\Color;
-use App\Models\ProductsVariant;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 

@@ -21,30 +21,28 @@ use Illuminate\Database\Eloquent\Model;
  * @property int|null $updated_by
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- *
  * @property User|null $user
  * @property Collection|ProductsVariant[] $products_variants
- *
- * @package App\Models
  */
 class Color extends Model
 {
     use HasFactory;
-	protected $table = 'colors';
 
-	protected $casts = [
-		'ordre' => 'int',
-		'created_by' => 'int',
-		'updated_by' => 'int'
-	];
+    protected $table = 'colors';
 
-	protected $fillable = [
-		'name',
-		'hex_code',
-		'ordre',
-		'created_by',
-		'updated_by'
-	];
+    protected $casts = [
+        'ordre' => 'int',
+        'created_by' => 'int',
+        'updated_by' => 'int',
+    ];
+
+    protected $fillable = [
+        'name',
+        'hex_code',
+        'ordre',
+        'created_by',
+        'updated_by',
+    ];
 
     /**
      * Utilisateur ayant créé cette couleur.

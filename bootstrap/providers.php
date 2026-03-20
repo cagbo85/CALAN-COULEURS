@@ -1,7 +1,10 @@
 <?php
 
-return [
-    App\Providers\AppServiceProvider::class,
+use App\Providers\AppServiceProvider;
+use Mckenziearts\Notify\LaravelNotifyServiceProvider;
 
-    Mckenziearts\Notify\LaravelNotifyServiceProvider::class,
+return [
+    AppServiceProvider::class,
+
+    LaravelNotifyServiceProvider::class,
 ];

@@ -32,8 +32,8 @@ class AppServiceProvider extends ServiceProvider
             $currentEdition = Edition::getCurrentEdition();
 
             // Définir quels liens afficher selon le statut
-            $showProgrammation = $currentEdition && in_array($currentEdition->status, ['upcoming','ongoing', 'past']);
-            $showPartenaires = $currentEdition && in_array($currentEdition->status, ['upcoming','ongoing', 'past']);
+            $showProgrammation = $currentEdition && in_array($currentEdition->status, ['upcoming', 'ongoing', 'past']);
+            $showPartenaires = $currentEdition && in_array($currentEdition->status, ['upcoming', 'ongoing', 'past']);
             // $showPhotoSouvenirs = $currentEdition && in_array($currentEdition->status, ['past']);
             // $showNews = $currentEdition && in_array($currentEdition->status, ['upcoming','past']);
 

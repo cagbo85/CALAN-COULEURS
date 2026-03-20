@@ -46,12 +46,11 @@ class EditionSeeder extends Seeder
                 'updated_by' => 1,
                 'created_at' => $now,
                 'updated_at' => $now,
-            ]
+            ],
         ];
 
         foreach ($editions as $edition) {
             DB::table('editions')->insert($edition);
         }
-
     }
 }

@@ -1,8 +1,8 @@
 <?php
 
 use App\Http\Controllers\Admin\ArtisteController;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\EditionController;
+use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'verified']], function () {
     Route::get('/editions', [EditionController::class, 'index'])->name('admin.editions.index');

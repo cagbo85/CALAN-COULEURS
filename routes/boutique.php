@@ -1,8 +1,8 @@
 <?php
 
+use App\Http\Controllers\BoutiqueController;
 use App\Services\HelloAssoService;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\BoutiqueController;
 
 Route::get('/boutique', [BoutiqueController::class, 'index'])->name('boutique.index');
 Route::get('/boutique/produits', [BoutiqueController::class, 'products'])->name('boutique.products');
@@ -33,35 +33,35 @@ Route::get('/test-helloasso-complete', function (HelloAssoService $helloAsso) {
         $results = [];
 
         // 1. Info organisation
-        $org = $helloAsso->apiCall("organizations/Charlzouu-Asso");
+        $org = $helloAsso->apiCall('organizations/Charlzouu-Asso');
         $results['organization'] = [
             'name' => $org['name'],
             'url' => $org['url'] ?? 'N/A',
-            'description' => $org['description'] ?? 'N/A'
+            'description' => $org['description'] ?? 'N/A',
         ];
 
         // 2. Formulaires existants
-        $forms = $helloAsso->apiCall("organizations/Charlzouu-Asso/forms");
+        $forms = $helloAsso->apiCall('organizations/Charlzouu-Asso/forms');
         $results['forms'] = [
             'total' => count($forms['data'] ?? []),
-            'types' => array_column($forms['data'] ?? [], 'formType')
+            'types' => array_column($forms['data'] ?? [], 'formType'),
         ];
 
         // 3. Commandes
-        $orders = $helloAsso->apiCall("organizations/Charlzouu-Asso/orders");
+        $orders = $helloAsso->apiCall('organizations/Charlzouu-Asso/orders');
         $results['orders'] = [
-            'total' => count($orders['data'] ?? [])
+            'total' => count($orders['data'] ?? []),
         ];
 
         return response()->json([
             'success' => true,
             'message' => 'Tests HelloAsso complets réussis !',
-            'data' => $results
+            'data' => $results,
         ]);
     } catch (Exception $e) {
         return response()->json([
             'success' => false,
-            'error' => $e->getMessage()
+            'error' => $e->getMessage(),
         ]);
     }
 });

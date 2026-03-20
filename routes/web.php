@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Controllers\HomeController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProgrammationController;
 use Illuminate\Support\Facades\Route;
@@ -36,9 +36,9 @@ Route::get('partenaires', [HomeController::class, 'partenaires'])->name('partena
 
 Route::get('camping', [HomeController::class, 'camping'])->name('camping');
 
-require __DIR__ . '/auth.php';
-require __DIR__ . '/artistes.php';
-require __DIR__ . '/faqs.php';
-require __DIR__ . '/users.php';
-require __DIR__ . '/boutique.php';
-require __DIR__ . '/editions.php';
+require __DIR__.'/auth.php';
+require __DIR__.'/artistes.php';
+require __DIR__.'/faqs.php';
+require __DIR__.'/users.php';
+require __DIR__.'/boutique.php';
+require __DIR__.'/editions.php';

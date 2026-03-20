@@ -4,11 +4,12 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Edition;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
 
 class EditionController extends Controller
 {
@@ -223,7 +224,7 @@ class EditionController extends Controller
             notify()->success("L'édition {$edition->name} a été modifiée avec succès.", 'Modification réussie ! 🎉');
 
             return redirect()->route('admin.editions.show', $edition->id);
-        } catch (\Illuminate\Database\QueryException $e) {
+        } catch (QueryException $e) {
             DB::rollBack();
 
             Log::error('Erreur de base de données lors de la modification d\'une édition', [
@@ -376,7 +377,7 @@ class EditionController extends Controller
             notify()->success("L'édition {$edition->name} a été créée avec succès.", 'Création réussie ! 🎉');
 
             return redirect()->route('admin.editions.show', $edition->id);
-        } catch (\Illuminate\Database\QueryException $e) {
+        } catch (QueryException $e) {
             DB::rollBack();
 
             Log::error('Erreur de base de données lors de la création d\'une édition', [
@@ -433,9 +434,9 @@ class EditionController extends Controller
     {
         $currentEdition = Edition::getCurrentEdition();
 
-        if (!$currentEdition) {
+        if (! $currentEdition) {
             return response()->json([
-                'message' => 'Aucune édition courante disponible'
+                'message' => 'Aucune édition courante disponible',
             ], 404);
         }
 

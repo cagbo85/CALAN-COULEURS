@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class EditionPartenairesSeeder extends Seeder
 {
@@ -24,8 +23,9 @@ class EditionPartenairesSeeder extends Seeder
         // Récupère la première édition
         $edition = DB::table('editions')->first();
 
-        if (!$edition) {
+        if (! $edition) {
             $this->command->warn('⚠️ Aucune édition trouvée. Exécute d’abord le EditionSeeder.');
+
             return;
         }
 
@@ -34,6 +34,7 @@ class EditionPartenairesSeeder extends Seeder
 
         if ($partenaires->isEmpty()) {
             $this->command->warn('⚠️ Aucun partenaire trouvé. Exécute d’abord le PartenaireSeeder.');
+
             return;
         }
 

@@ -27,38 +27,36 @@ use Illuminate\Database\Eloquent\Model;
  * @property int|null $updated_by
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- *
  * @property User|null $user
  * @property Collection|Edition[] $editions
- *
- * @package App\Models
  */
 class Stand extends Model
 {
     use HasFactory;
-	protected $table = 'stands';
 
-	protected $casts = [
-		'ordre' => 'int',
-		'created_by' => 'int',
-		'updated_by' => 'int'
-	];
+    protected $table = 'stands';
 
-	protected $fillable = [
-		'name',
-		'description',
-		'photo',
-		'type',
-		'instagram_url',
-		'facebook_url',
-		'website_url',
-		'other_link',
-		'ordre',
-		'created_by',
-		'updated_by'
-	];
+    protected $casts = [
+        'ordre' => 'int',
+        'created_by' => 'int',
+        'updated_by' => 'int',
+    ];
 
-	/**
+    protected $fillable = [
+        'name',
+        'description',
+        'photo',
+        'type',
+        'instagram_url',
+        'facebook_url',
+        'website_url',
+        'other_link',
+        'ordre',
+        'created_by',
+        'updated_by',
+    ];
+
+    /**
      * Utilisateur ayant créé ce stand.
      */
     public function createdBy()
@@ -77,9 +75,9 @@ class Stand extends Model
     /**
      * Éditions associées à ce stand.
      */
-	public function editions()
-	{
-		return $this->belongsToMany(Edition::class, 'edition_stands')
-					->withPivot('actif');
-	}
+    public function editions()
+    {
+        return $this->belongsToMany(Edition::class, 'edition_stands')
+            ->withPivot('actif');
+    }
 }

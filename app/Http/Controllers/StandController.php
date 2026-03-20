@@ -31,9 +31,9 @@ class StandController extends Controller
     {
         $currentEdition = Edition::getCurrentEdition();
 
-        if (!$currentEdition) {
+        if (! $currentEdition) {
             return response()->json([
-                'message' => 'Aucune édition courante disponible'
+                'message' => 'Aucune édition courante disponible',
             ], 404);
         }
 

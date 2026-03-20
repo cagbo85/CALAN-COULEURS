@@ -26,17 +26,15 @@ use Illuminate\Database\Eloquent\Model;
  * @property int|null $updated_by
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- *
  * @property User|null $user
  * @property Collection|Partenaire[] $partenaires
  * @property Collection|Stand[] $stands
  * @property Collection|Performance[] $performances
- *
- * @package App\Models
  */
 class Edition extends Model
 {
     use HasFactory;
+
     protected $table = 'editions';
 
     protected $casts = [
@@ -45,7 +43,7 @@ class Edition extends Model
         'ending_date' => 'datetime',
         'actif' => 'bool',
         'created_by' => 'int',
-        'updated_by' => 'int'
+        'updated_by' => 'int',
     ];
 
     protected $fillable = [
@@ -57,7 +55,7 @@ class Edition extends Model
         'actif',
         'status',
         'created_by',
-        'updated_by'
+        'updated_by',
     ];
 
     /**

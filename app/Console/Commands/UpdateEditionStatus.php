@@ -3,7 +3,6 @@
 namespace App\Console\Commands;
 
 use App\Models\Edition;
-use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
 
@@ -89,7 +88,7 @@ class UpdateEditionStatus extends Command
                 $this->info("{$edition->name} : '{$oldStatus}' → '{$newStatus}'");
                 Log::info("Mise à jour terminée pour l'édition ID: {$edition->id} ({$edition->name})");
                 $updatedCount++;
-            } elseif (!$newStatus && $edition->id !== $phaseB) {
+            } elseif (! $newStatus && $edition->id !== $phaseB) {
                 if (in_array($edition->status, ['upcoming', 'ongoing', 'past'])) {
                     $edition->update(['status' => 'archived']);
                     Log::info("L'édition ID: {$edition->id} ({$edition->name}) n'est plus en Phase B et a été archivée");

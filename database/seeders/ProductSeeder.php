@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
+use App\Models\Color;
 use App\Models\Product;
 use App\Models\ProductsVariant;
 use App\Models\Size;
-use App\Models\Color;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -44,7 +44,7 @@ class ProductSeeder extends Seeder
                 // Quantités
                 'quantities' => [
                     'violet' => ['XS' => 0, 'S' => 8, 'M' => 0, 'L' => 9, 'XL' => 10, 'XXL' => 2],
-                ]
+                ],
             ],
             [
                 'title' => 'T-shirt Classique',
@@ -63,7 +63,7 @@ class ProductSeeder extends Seeder
                 ],
                 'quantities' => [
                     'blanc' => ['XS' => 0, 'S' => 8, 'M' => 11, 'L' => 21, 'XL' => 3, 'XXL' => 1],
-                ]
+                ],
             ],
             [
                 'title' => 'Pull zippé',
@@ -82,7 +82,7 @@ class ProductSeeder extends Seeder
                 ],
                 'quantities' => [
                     'vert' => ['XS' => 0, 'S' => 2, 'M' => 0, 'L' => 6, 'XL' => 4, 'XXL' => 3],
-                ]
+                ],
             ],
             [
                 'title' => 'Lunettes Calan',
@@ -103,7 +103,7 @@ class ProductSeeder extends Seeder
                 'quantities' => [
                     'rouge' => ['Unique' => 3],
                     'bleu' => ['Unique' => 7],
-                ]
+                ],
             ],
             [
                 'title' => 'Tôt bag',
@@ -122,7 +122,7 @@ class ProductSeeder extends Seeder
                 ],
                 'quantities' => [
                     'blanc' => ['Unique' => 7],
-                ]
+                ],
             ],
             [
                 'title' => 'Gourde',
@@ -141,7 +141,7 @@ class ProductSeeder extends Seeder
                 ],
                 'quantities' => [
                     'noir' => ['Unique' => 9],
-                ]
+                ],
             ],
             [
                 'title' => 'Bandana',
@@ -160,7 +160,7 @@ class ProductSeeder extends Seeder
                 ],
                 'quantities' => [
                     'violet' => ['Unique' => 57],
-                ]
+                ],
             ],
         ];
 
@@ -184,7 +184,7 @@ class ProductSeeder extends Seeder
             if (($data['slug'] === 'bandana' || $data['slug'] === 'gourde-25cl' || $data['slug'] === 'tot-bag' || $data['slug'] === 'lunettes-calan') && $uniqueSizeId) {
                 foreach ($data['colors'] as $color) {
                     $quantity = $data['quantities'][$color]['Unique'] ?? 0;
-                    $sku = strtoupper($data['slug']) . '-' . strtoupper($color) . '-UNIQUE';
+                    $sku = strtoupper($data['slug']).'-'.strtoupper($color).'-UNIQUE';
                     ProductsVariant::create([
                         'product_id' => $product->id,
                         'size_id' => $uniqueSizeId,
@@ -203,7 +203,7 @@ class ProductSeeder extends Seeder
                             continue;
                         }
                         $quantity = $data['quantities'][$color][$sizeLabel] ?? 0;
-                        $sku = strtoupper($data['slug']) . '-' . strtoupper($color) . '-' . strtoupper($sizeLabel);
+                        $sku = strtoupper($data['slug']).'-'.strtoupper($color).'-'.strtoupper($sizeLabel);
                         ProductsVariant::create([
                             'product_id' => $product->id,
                             'size_id' => $sizeId,

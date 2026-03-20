@@ -20,37 +20,35 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $ordre
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- *
  * @property Product|null $product
  * @property ProductsVariant|null $products_variant
- *
- * @package App\Models
  */
 class ProductsImage extends Model
 {
     use HasFactory;
-	protected $table = 'products_images';
 
-	protected $casts = [
-		'product_id' => 'int',
-		'variant_id' => 'int',
-		'ordre' => 'int'
-	];
+    protected $table = 'products_images';
 
-	protected $fillable = [
-		'product_id',
-		'variant_id',
-		'image',
-		'ordre'
-	];
+    protected $casts = [
+        'product_id' => 'int',
+        'variant_id' => 'int',
+        'ordre' => 'int',
+    ];
 
-	public function product()
-	{
-		return $this->belongsTo(Product::class, 'product_id');
-	}
+    protected $fillable = [
+        'product_id',
+        'variant_id',
+        'image',
+        'ordre',
+    ];
 
-	public function variant()
-	{
-		return $this->belongsTo(ProductsVariant::class, 'variant_id');
-	}
+    public function product()
+    {
+        return $this->belongsTo(Product::class, 'product_id');
+    }
+
+    public function variant()
+    {
+        return $this->belongsTo(ProductsVariant::class, 'variant_id');
+    }
 }

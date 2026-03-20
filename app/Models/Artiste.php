@@ -6,7 +6,6 @@
 
 namespace App\Models;
 
-use App\Models\Performance;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -28,20 +27,18 @@ use Illuminate\Database\Eloquent\Model;
  * @property int|null $updated_by
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- *
  * @property User|null $user
  * @property Collection|Performance[] $performances
- *
- * @package App\Models
  */
 class Artiste extends Model
 {
     use HasFactory;
+
     protected $table = 'artistes';
 
     protected $casts = [
         'created_by' => 'int',
-        'updated_by' => 'int'
+        'updated_by' => 'int',
     ];
 
     protected $fillable = [
@@ -54,7 +51,7 @@ class Artiste extends Model
         'youtube_url',
         'deezer_url',
         'created_by',
-        'updated_by'
+        'updated_by',
     ];
 
     /**

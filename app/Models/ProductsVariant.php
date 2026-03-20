@@ -25,18 +25,16 @@ use Illuminate\Database\Eloquent\Model;
  * @property int|null $updated_by
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- *
  * @property User|null $user
  * @property Product $product
  * @property Size|null $size
  * @property Color|null $color
  * @property Collection|OrderItem[] $order_items
- *
- * @package App\Models
  */
 class ProductsVariant extends Model
 {
     use HasFactory;
+
     protected $table = 'products_variants';
 
     protected $casts = [
@@ -45,7 +43,7 @@ class ProductsVariant extends Model
         'size_id' => 'int',
         'quantity' => 'int',
         'created_by' => 'int',
-        'updated_by' => 'int'
+        'updated_by' => 'int',
     ];
 
     protected $fillable = [
@@ -56,7 +54,7 @@ class ProductsVariant extends Model
         'quantity',
         'image',
         'created_by',
-        'updated_by'
+        'updated_by',
     ];
 
     /**

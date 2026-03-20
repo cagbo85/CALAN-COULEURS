@@ -30,44 +30,42 @@ use Illuminate\Database\Eloquent\Model;
  * @property int|null $updated_by
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- *
  * @property User|null $user
  * @property Collection|OrderItem[] $order_items
  * @property Collection|ProductsVariant[] $products_variants
- *
- * @package App\Models
  */
 class Product extends Model
 {
     use HasFactory;
-	protected $table = 'products';
 
-	protected $casts = [
-		'price' => 'float',
-		'old_price' => 'float',
-		'is_featured' => 'bool',
-		'actif' => 'bool',
-		'created_by' => 'int',
-		'updated_by' => 'int'
-	];
+    protected $table = 'products';
 
-	protected $fillable = [
-		'title',
-		'slug',
-		'description',
-		'detailed_description',
-		'price',
-		'old_price',
-		'is_featured',
-		'image',
-		'category',
-		'badge',
-		'actif',
-		'created_by',
-		'updated_by'
-	];
+    protected $casts = [
+        'price' => 'float',
+        'old_price' => 'float',
+        'is_featured' => 'bool',
+        'actif' => 'bool',
+        'created_by' => 'int',
+        'updated_by' => 'int',
+    ];
 
-	/**
+    protected $fillable = [
+        'title',
+        'slug',
+        'description',
+        'detailed_description',
+        'price',
+        'old_price',
+        'is_featured',
+        'image',
+        'category',
+        'badge',
+        'actif',
+        'created_by',
+        'updated_by',
+    ];
+
+    /**
      * Utilisateur ayant créé ce produit.
      */
     public function createdBy()
@@ -79,23 +77,23 @@ class Product extends Model
      * Utilisateur ayant mis à jour ce produit.
      */
     public function updatedBy()
-	{
-		return $this->belongsTo(User::class, 'updated_by');
-	}
+    {
+        return $this->belongsTo(User::class, 'updated_by');
+    }
 
     /**
      * OrderItems associés à ce produit.
      */
     public function orderItems()
-	{
+    {
         return $this->hasMany(OrderItem::class, 'product_id');
-	}
+    }
 
     /**
      * Variantes associées à ce produit.
      */
     public function productsVariants()
-	{
+    {
         return $this->hasMany(ProductsVariant::class, 'product_id');
-	}
+    }
 }

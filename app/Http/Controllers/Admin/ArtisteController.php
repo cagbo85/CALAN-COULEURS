@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Artiste;
 use App\Models\Edition;
 use App\Models\Performance;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -32,9 +33,9 @@ class ArtisteController extends Controller
     {
         $currentEdition = Edition::getCurrentEdition();
 
-        if (!$currentEdition) {
+        if (! $currentEdition) {
             return response()->json([
-                'message' => 'Aucune édition courante disponible'
+                'message' => 'Aucune édition courante disponible',
             ], 404);
         }
 
@@ -76,6 +77,7 @@ class ArtisteController extends Controller
     {
         $edition = Edition::findOrFail($editionId);
         $artistes = Artiste::orderBy('name')->get();
+
         return view('admin.editions.performances.create', compact('edition', 'artistes'));
     }
 
@@ -149,6 +151,7 @@ class ArtisteController extends Controller
             if ($exactDuplicate) {
                 DB::rollBack();
                 notify()->warning('Cette performance existe déjà exactement à l\'identique.', 'Doublon détecté ! ⚠️');
+
                 return back()->withErrors([
                     'begin_date' => 'Cette performance existe déjà (même artiste, même scène, mêmes horaires).',
                 ])->withInput();
@@ -165,6 +168,7 @@ class ArtisteController extends Controller
             if ($artistConflict) {
                 DB::rollBack();
                 notify()->warning('Cet artiste est déjà programmé sur un créneau qui se chevauche.', 'Conflit artiste ! ⚠️');
+
                 return back()->withErrors([
                     'artiste_id' => 'Cet artiste est déjà programmé sur ce créneau (ou un créneau qui se chevauche).',
                 ])->withInput();
@@ -181,21 +185,22 @@ class ArtisteController extends Controller
             if ($sceneConflict) {
                 DB::rollBack();
                 notify()->warning('Le créneau est déjà occupé sur cette scène.', 'Conflit scène ! ⚠️');
+
                 return back()->withErrors([
                     'scene' => 'Ce créneau est déjà pris sur cette scène (chevauchement détecté).',
                 ])->withInput();
             }
 
             Performance::create([
-                'edition_id'  => $editionId,
-                'artiste_id'  => $request->input('artiste_id'),
-                'begin_date'  => $beginDate,
+                'edition_id' => $editionId,
+                'artiste_id' => $request->input('artiste_id'),
+                'begin_date' => $beginDate,
                 'ending_date' => $endingDate,
-                'scene'       => $request->input('scene'),
-                'day'         => $computedDay,
-                'actif'       => $request->boolean('actif'),
-                'created_by'  => $user->id,
-                'updated_by'  => $user->id,
+                'scene' => $request->input('scene'),
+                'day' => $computedDay,
+                'actif' => $request->boolean('actif'),
+                'created_by' => $user->id,
+                'updated_by' => $user->id,
             ]);
 
             DB::commit();
@@ -203,7 +208,7 @@ class ArtisteController extends Controller
             notify()->success("La performance de l'artiste a été créée avec succès.", 'Création réussie ! 🎉');
 
             return redirect()->route('admin.artistes.show', ['artisteId' => $request->input('artiste_id')]);
-        } catch (\Illuminate\Database\QueryException $e) {
+        } catch (QueryException $e) {
             DB::rollBack();
 
             Log::error('Erreur de base de données lors de la création d\'une performance', [
@@ -328,7 +333,7 @@ class ArtisteController extends Controller
                 $file = $request->file('photo');
 
                 // Nom de fichier personnalisé : NOM_ARTISTE en UPPERCASE
-                $filename = strtoupper($request->input('name')) . '.webp';
+                $filename = strtoupper($request->input('name')).'.webp';
 
                 // Dossier de destination personnalisé
                 $destinationPath = public_path('img/artists/photos/Photos_artistes');
@@ -342,7 +347,7 @@ class ArtisteController extends Controller
                 $file->move($destinationPath, $filename);
 
                 // Stocker le chemin relatif dans la DB
-                $updateData['photo'] = 'img/artists/photos/Photos_artistes/' . $filename;
+                $updateData['photo'] = 'img/artists/photos/Photos_artistes/'.$filename;
             }
 
             $artiste = Artiste::create([
@@ -365,10 +370,10 @@ class ArtisteController extends Controller
 
             DB::commit();
 
-            notify()->success("L'artiste " . $artiste->name . ' a été créé avec succès.', 'Création réussie !🎉');
+            notify()->success("L'artiste ".$artiste->name.' a été créé avec succès.', 'Création réussie !🎉');
 
             return redirect()->route('admin.artistes.show', ['artisteId' => $artiste->id]);
-        } catch (\Illuminate\Database\QueryException $e) {
+        } catch (QueryException $e) {
             DB::rollBack();
 
             Log::error('Erreur de base de données lors de la création d\'un artiste', [
@@ -604,7 +609,7 @@ class ArtisteController extends Controller
                 $file = $request->file('photo');
 
                 // Nouveau nom basé sur le nom modifié
-                $filename = strtoupper($request->input('name')) . '.webp';
+                $filename = strtoupper($request->input('name')).'.webp';
 
                 // Dossier de destination
                 $destinationPath = public_path('img/artists/photos/Photos_artistes');
@@ -618,25 +623,25 @@ class ArtisteController extends Controller
                 $file->move($destinationPath, $filename);
 
                 // Mettre à jour le chemin
-                $updateArtistsData['photo'] = 'img/artists/photos/Photos_artistes/' . $filename;
+                $updateArtistsData['photo'] = 'img/artists/photos/Photos_artistes/'.$filename;
             }
             // Si le nom a changé mais pas de nouvelle photo, renommer l'ancienne
             elseif ($artiste->name !== $request->input('name') && $artiste->photo) {
                 $oldPhotoPath = public_path($artiste->photo);
-                $newFilename = strtoupper($request->input('name')) . '.webp';
-                $newPhotoPath = public_path('img/artists/photos/Photos_artistes/' . $newFilename);
+                $newFilename = strtoupper($request->input('name')).'.webp';
+                $newPhotoPath = public_path('img/artists/photos/Photos_artistes/'.$newFilename);
 
                 if (File::exists($oldPhotoPath)) {
                     File::move($oldPhotoPath, $newPhotoPath);
-                    $updateArtistsData['photo'] = 'img/artists/photos/Photos_artistes/' . $newFilename;
+                    $updateArtistsData['photo'] = 'img/artists/photos/Photos_artistes/'.$newFilename;
                 }
             }
 
             $artiste->update($updateArtistsData);
 
             foreach ($request->input('performances', []) as $performanceId => $data) {
-                $beginDate = !empty($data['begin_date']) ? str_replace('T', ' ', $data['begin_date']) : null;
-                $endingDate = !empty($data['ending_date']) ? str_replace('T', ' ', $data['ending_date']) : null;
+                $beginDate = ! empty($data['begin_date']) ? str_replace('T', ' ', $data['begin_date']) : null;
+                $endingDate = ! empty($data['ending_date']) ? str_replace('T', ' ', $data['ending_date']) : null;
 
                 Performance::where('id', $performanceId)
                     ->where('artiste_id', $artiste->id)
@@ -655,7 +660,7 @@ class ArtisteController extends Controller
             notify()->success("L'artiste {$artiste->name} a été modifié avec succès.", 'Modification réussie ! 🎉');
 
             return redirect()->route('admin.artistes.show', $artiste->id);
-        } catch (\Illuminate\Database\QueryException $e) {
+        } catch (QueryException $e) {
             DB::rollBack();
 
             Log::error('Erreur de base de données lors de la modification d\'un artiste', [
@@ -723,7 +728,7 @@ class ArtisteController extends Controller
             notify()->success("L'artiste {$artiste->name} a été masqué avec succès.", 'Masquage réussi ! 🎉');
 
             return redirect()->route('admin.artistes.index');
-        } catch (\Illuminate\Database\QueryException $e) {
+        } catch (QueryException $e) {
             DB::rollBack();
 
             Log::error('Erreur de base de données lors de la modification du statut de l\'artiste', [

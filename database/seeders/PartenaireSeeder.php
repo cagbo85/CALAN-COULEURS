@@ -233,7 +233,7 @@ class PartenaireSeeder extends Seeder
                 'updated_at' => $now,
             ],
             [
-                'name' => "Thélem Assurance (PontChâteau)",
+                'name' => 'Thélem Assurance (PontChâteau)',
                 'description' => 'Assurances',
                 'logo' => null,
                 'photo' => null,

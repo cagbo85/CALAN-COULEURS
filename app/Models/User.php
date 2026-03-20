@@ -36,7 +36,6 @@ use Laravel\Sanctum\HasApiTokens;
  * @property int|null $updated_by
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- *
  * @property User|null $user
  * @property Collection|Artiste[] $artistes
  * @property Collection|Faq[] $faqs
@@ -47,8 +46,6 @@ use Laravel\Sanctum\HasApiTokens;
  * @property Collection|ProductsVariant[] $products_variants
  * @property Collection|Stand[] $stands
  * @property Collection|User[] $users
- *
- * @package App\Models
  */
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -63,12 +60,12 @@ class User extends Authenticatable implements MustVerifyEmail
         'reactivation_requested_by' => 'int',
         'reactivation_approved_at' => 'datetime',
         'reactivation_approved_by' => 'int',
-        'updated_by' => 'int'
+        'updated_by' => 'int',
     ];
 
     protected $hidden = [
         'password',
-        'remember_token'
+        'remember_token',
     ];
 
     protected $fillable = [
@@ -86,7 +83,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'reactivation_approved_at',
         'reactivation_approved_by',
         'remember_token',
-        'updated_by'
+        'updated_by',
     ];
 
     /**

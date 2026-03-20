@@ -21,30 +21,28 @@ use Illuminate\Database\Eloquent\Model;
  * @property int|null $updated_by
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- *
  * @property User|null $user
  * @property Collection|ProductsVariant[] $products_variants
- *
- * @package App\Models
  */
 class Size extends Model
 {
     use HasFactory;
-	protected $table = 'sizes';
 
-	protected $casts = [
-		'ordre' => 'int',
-		'created_by' => 'int',
-		'updated_by' => 'int'
-	];
+    protected $table = 'sizes';
 
-	protected $fillable = [
-		'label',
-		'description',
-		'ordre',
-		'created_by',
-		'updated_by'
-	];
+    protected $casts = [
+        'ordre' => 'int',
+        'created_by' => 'int',
+        'updated_by' => 'int',
+    ];
+
+    protected $fillable = [
+        'label',
+        'description',
+        'ordre',
+        'created_by',
+        'updated_by',
+    ];
 
     /**
      * Utilisateur ayant créé cette taille.

@@ -17,42 +17,42 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $partenaire_id
  * @property bool $actif
  * @property Carbon|null $created_at
- *
  * @property Edition $edition
  * @property Partenaire $partenaire
- *
- * @package App\Models
  */
 class EditionPartenaire extends Model
 {
     use HasFactory;
-	protected $table = 'edition_partenaires';
-	public $incrementing = false;
-	public $timestamps = false;
 
-	protected $casts = [
-		'edition_id' => 'int',
-		'partenaire_id' => 'int',
-		'actif' => 'bool'
-	];
+    protected $table = 'edition_partenaires';
 
-	protected $fillable = [
-		'actif'
-	];
+    public $incrementing = false;
 
-	/**
+    public $timestamps = false;
+
+    protected $casts = [
+        'edition_id' => 'int',
+        'partenaire_id' => 'int',
+        'actif' => 'bool',
+    ];
+
+    protected $fillable = [
+        'actif',
+    ];
+
+    /**
      * L'édition associée.
      */
-	public function edition()
-	{
-		return $this->belongsTo(Edition::class, 'edition_id');
-	}
+    public function edition()
+    {
+        return $this->belongsTo(Edition::class, 'edition_id');
+    }
 
     /**
      * Le partenaire associé.
      */
-	public function partenaire()
-	{
-		return $this->belongsTo(Partenaire::class, 'partenaire_id');
-	}
+    public function partenaire()
+    {
+        return $this->belongsTo(Partenaire::class, 'partenaire_id');
+    }
 }

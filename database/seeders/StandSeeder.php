@@ -18,7 +18,7 @@ class StandSeeder extends Seeder
         DB::table('stands')->insert([
             [
                 'name' => "👚🛍️ Calan'Boutique",
-                'description' => "Collection officielle Calan’Couleurs : t-shirts, sweats et accessoires exclusifs.",
+                'description' => 'Collection officielle Calan’Couleurs : t-shirts, sweats et accessoires exclusifs.',
                 'photo' => "img/surplace/Calan'Boutique.webp",
                 'type' => 'boutique',
                 'instagram_url' => null,
@@ -48,7 +48,7 @@ class StandSeeder extends Seeder
             ],
             [
                 'name' => "🥞 So'Galettes",
-                'description' => "Je vous propose des galettes et crêpes garnies traditionnelles ou originales, pour un goût authentique de la Bretagne.",
+                'description' => 'Je vous propose des galettes et crêpes garnies traditionnelles ou originales, pour un goût authentique de la Bretagne.',
                 'photo' => "img/surplace/So'Galettes.webp",
                 'type' => 'foodtruck',
                 'instagram_url' => 'https://www.instagram.com/sogalettes/',

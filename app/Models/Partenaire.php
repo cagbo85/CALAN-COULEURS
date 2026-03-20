@@ -36,49 +36,47 @@ use Illuminate\Database\Eloquent\Model;
  * @property int|null $updated_by
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- *
  * @property User|null $user
  * @property Collection|Edition[] $editions
- *
- * @package App\Models
  */
 class Partenaire extends Model
 {
     use HasFactory;
-	protected $table = 'partenaires';
 
-	protected $casts = [
-		'latitude' => 'float',
-		'longitude' => 'float',
-		'ordre' => 'int',
-		'created_by' => 'int',
-		'updated_by' => 'int'
-	];
+    protected $table = 'partenaires';
 
-	protected $fillable = [
-		'name',
-		'description',
-		'logo',
-		'photo',
-		'site_url',
-		'instagram_url',
-		'facebook_url',
-		'linkedin_url',
-		'autre_url',
-		'phone',
-		'adresse',
-		'ville',
-		'departement',
-		'code_postal',
-		'pays',
-		'latitude',
-		'longitude',
-		'ordre',
-		'created_by',
-		'updated_by'
-	];
+    protected $casts = [
+        'latitude' => 'float',
+        'longitude' => 'float',
+        'ordre' => 'int',
+        'created_by' => 'int',
+        'updated_by' => 'int',
+    ];
 
-	/**
+    protected $fillable = [
+        'name',
+        'description',
+        'logo',
+        'photo',
+        'site_url',
+        'instagram_url',
+        'facebook_url',
+        'linkedin_url',
+        'autre_url',
+        'phone',
+        'adresse',
+        'ville',
+        'departement',
+        'code_postal',
+        'pays',
+        'latitude',
+        'longitude',
+        'ordre',
+        'created_by',
+        'updated_by',
+    ];
+
+    /**
      * Utilisateur ayant créé ce partenaire.
      */
     public function createdBy()
@@ -97,9 +95,9 @@ class Partenaire extends Model
     /**
      * Éditions associées à ce partenaire.
      */
-	public function editions()
-	{
-		return $this->belongsToMany(Edition::class, 'edition_partenaires')
-					->withPivot('actif');
-	}
+    public function editions()
+    {
+        return $this->belongsToMany(Edition::class, 'edition_partenaires')
+            ->withPivot('actif');
+    }
 }

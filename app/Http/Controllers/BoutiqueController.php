@@ -3,17 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
-use App\Models\Product;
 use App\Models\OrderItem;
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
+use App\Models\Product;
 use App\Models\ProductsVariant;
 use App\Services\HelloAssoService;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class BoutiqueController extends Controller
 {
@@ -166,7 +165,7 @@ class BoutiqueController extends Controller
     {
         return DB::table('products_variants as pv')
             ->join(
-                DB::raw('(SELECT color_id, MIN(id) as min_id FROM products_variants WHERE product_id = ' . $productId . ' GROUP BY color_id) as grouped'),
+                DB::raw('(SELECT color_id, MIN(id) as min_id FROM products_variants WHERE product_id = '.$productId.' GROUP BY color_id) as grouped'),
                 function ($join) {
                     $join->on('pv.color_id', '=', 'grouped.color_id')
                         ->on('pv.id', '=', 'grouped.min_id');
@@ -283,7 +282,7 @@ class BoutiqueController extends Controller
      */
     public function show(Product $product)
     {
-        if (!$product->actif) {
+        if (! $product->actif) {
             abort(404);
         }
 
@@ -308,7 +307,7 @@ class BoutiqueController extends Controller
         $validator = Validator::make($request->all(), [
             'product_id' => 'required|exists:products,id',
             'variant_id' => 'nullable|exists:products_variants,id',
-            'quantity' => 'required|integer|min:1|max:10'
+            'quantity' => 'required|integer|min:1|max:10',
         ]);
 
         if ($validator->fails()) {
@@ -317,7 +316,7 @@ class BoutiqueController extends Controller
                 $fieldNames = [
                     'product_id' => 'Produit',
                     'variant_id' => 'Variante',
-                    'quantity' => 'Quantité'
+                    'quantity' => 'Quantité',
                 ];
 
                 $fieldName = $fieldNames[$field] ?? $field;
@@ -331,9 +330,10 @@ class BoutiqueController extends Controller
                 "Erreurs de validation détectées : {$errorSummary}",
                 'Validation échouée'
             );
+
             return response()->json([
                 'success' => false,
-                'error' => 'Erreur de validation'
+                'error' => 'Erreur de validation',
             ], 400);
         }
 
@@ -350,7 +350,7 @@ class BoutiqueController extends Controller
         $cart = session()->get('cart', []);
 
         // Créer une clé unique pour l'article
-        $cartKey = $variant ? $variant->sku : ($product->id . '_no_variant');
+        $cartKey = $variant ? $variant->sku : ($product->id.'_no_variant');
 
         // Si l'article existe déjà, augmenter la quantité
         if (isset($cart[$cartKey])) {
@@ -370,7 +370,7 @@ class BoutiqueController extends Controller
                 'color' => $variant && $variant->color ? $variant->color->name : null,
                 'quantity' => $request->quantity,
                 'unit_price' => $product->price,
-                'image' => $variant && $variant->image ? $variant->image : $product->image
+                'image' => $variant && $variant->image ? $variant->image : $product->image,
             ];
         }
 
@@ -380,7 +380,7 @@ class BoutiqueController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Produit ajouté au panier',
-            'cart_count' => array_sum(array_column($cart, 'quantity'))
+            'cart_count' => array_sum(array_column($cart, 'quantity')),
         ]);
     }
 
@@ -412,7 +412,7 @@ class BoutiqueController extends Controller
     {
         $request->validate([
             'cart_key' => 'required',
-            'quantity' => 'required|integer|min:0|max:10'
+            'quantity' => 'required|integer|min:0|max:10',
         ]);
 
         $cart = session()->get('cart', []);
@@ -438,6 +438,7 @@ class BoutiqueController extends Controller
     public function clearCart()
     {
         session()->forget('cart');
+
         return redirect()->route('boutique.cart')->with('success', 'Panier vidé');
     }
 
@@ -468,18 +469,19 @@ class BoutiqueController extends Controller
         $cart = session()->get('cart', []);
 
         if (empty($cart)) {
-            notify()->error("Votre panier est vide", "Erreur");
+            notify()->error('Votre panier est vide', 'Erreur');
+
             return redirect()->route('boutique.cart');
         }
 
         $validator = Validator::make($request->all(), [
-                'email' => 'required|email|max:255',
-                'firstname' => 'required|string|max:255',
-                'lastname' => 'required|string|max:255',
-                'adresse' => 'required|string|max:255',
-                'ville' => 'required|string|max:100',
-                'code_postal' => 'required|string|max:20',
-                'pays' => 'required|string|max:100'
+            'email' => 'required|email|max:255',
+            'firstname' => 'required|string|max:255',
+            'lastname' => 'required|string|max:255',
+            'adresse' => 'required|string|max:255',
+            'ville' => 'required|string|max:100',
+            'code_postal' => 'required|string|max:20',
+            'pays' => 'required|string|max:100',
         ], [
             'email.required' => 'L\'adresse e-mail est obligatoire.',
             'email.email' => 'L\'adresse e-mail doit être valide.',
@@ -488,7 +490,7 @@ class BoutiqueController extends Controller
             'adresse.required' => 'L\'adresse est obligatoire.',
             'ville.required' => 'La ville est obligatoire.',
             'code_postal.required' => 'Le code postal est obligatoire.',
-            'pays.required' => 'Le pays est obligatoire.'
+            'pays.required' => 'Le pays est obligatoire.',
         ]
         );
 
@@ -502,7 +504,7 @@ class BoutiqueController extends Controller
                     'adresse' => 'Adresse',
                     'ville' => 'Ville',
                     'code_postal' => 'Code postal',
-                    'pays' => 'Pays'
+                    'pays' => 'Pays',
                 ];
                 $fieldName = $fieldNames[$field] ?? $field;
                 foreach ($messages as $message) {
@@ -548,7 +550,7 @@ class BoutiqueController extends Controller
                 'payment_metadata' => null,
                 'token' => $orderToken,
                 'stock_decremented' => false,
-                'status' => 'pending'
+                'status' => 'pending',
             ]);
 
             // 2) Créer les order items (stock non modifié tant que pas payé)
@@ -558,7 +560,7 @@ class BoutiqueController extends Controller
                     'product_id' => $item['product_id'],
                     'variant_id' => $item['variant_id'],
                     'quantity' => $item['quantity'],
-                    'unit_price' => $item['unit_price']
+                    'unit_price' => $item['unit_price'],
                 ]);
             }
 
@@ -567,7 +569,7 @@ class BoutiqueController extends Controller
             $checkoutData = $this->buildHelloAssoCheckoutData($cart, $validated, $total);
 
             // Forcer returnUrl avec token pour retrouver la commande même si session perdue
-            $checkoutData['returnUrl'] = url('/commande/success?order_token=' . $orderToken, [], true);
+            $checkoutData['returnUrl'] = url('/commande/success?order_token='.$orderToken, [], true);
 
             $checkoutData['metadata']['order_token'] = $orderToken;
 
@@ -601,7 +603,8 @@ class BoutiqueController extends Controller
 
             if (empty($checkoutResponse['redirectUrl'])) {
                 Log::error('HelloAsso createOrder missing redirectUrl', ['response' => $checkoutResponse]);
-                notify()->error("Impossible de démarrer le paiement (redirect manquant). Contactez l'administrateur.", "Erreur");
+                notify()->error("Impossible de démarrer le paiement (redirect manquant). Contactez l'administrateur.", 'Erreur');
+
                 return redirect()->route('boutique.checkout');
             }
 
@@ -609,7 +612,8 @@ class BoutiqueController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Erreur processCheckout HelloAsso', ['error' => $e->getMessage(), 'stack' => $e->getTraceAsString()]);
-            notify()->error("Une erreur est survenue lors du traitement de votre commande. Veuillez réessayer plus tard.", "Erreur");
+            notify()->error('Une erreur est survenue lors du traitement de votre commande. Veuillez réessayer plus tard.', 'Erreur');
+
             return redirect()->route('boutique.checkout')->withInput();
         }
     }
@@ -625,22 +629,26 @@ class BoutiqueController extends Controller
             $name = $cartItem['title'];
             if ($cartItem['size'] || $cartItem['color']) {
                 $name .= ' (';
-                if ($cartItem['size']) $name .= $cartItem['size'];
-                if ($cartItem['color']) $name .= ' - ' . ucfirst($cartItem['color']);
+                if ($cartItem['size']) {
+                    $name .= $cartItem['size'];
+                }
+                if ($cartItem['color']) {
+                    $name .= ' - '.ucfirst($cartItem['color']);
+                }
                 $name .= ')';
             }
 
             $items[] = [
                 'name' => $name,
                 'priceCategory' => 'Fixed',
-                'price' => (int)($cartItem['unit_price'] * 100), // Prix en centimes
-                'quantity' => $cartItem['quantity']
+                'price' => (int) ($cartItem['unit_price'] * 100), // Prix en centimes
+                'quantity' => $cartItem['quantity'],
             ];
         }
 
         return [
-            'totalAmount' => (int)($total * 100), // Montant total en centimes
-            'initialAmount' => (int)($total * 100),
+            'totalAmount' => (int) ($total * 100), // Montant total en centimes
+            'initialAmount' => (int) ($total * 100),
             'itemName' => 'Commande Boutique Calan\'Couleurs',
             'backUrl' => url('/panier', [], true),
             'errorUrl' => url('/commande/cancel', [], true),
@@ -653,13 +661,13 @@ class BoutiqueController extends Controller
                 'address' => $customer['adresse'],
                 'city' => $customer['ville'],
                 'zipCode' => $customer['code_postal'],
-                'country' => $customer['pays']
+                'country' => $customer['pays'],
             ],
             'items' => $items,
             'metadata' => [
                 'order_type' => 'boutique',
-                'customer_address' => json_encode($customer)
-            ]
+                'customer_address' => json_encode($customer),
+            ],
         ];
     }
 
@@ -672,18 +680,18 @@ class BoutiqueController extends Controller
         $order = null;
         $orderData = session()->get('order_data');
 
-        if (!empty($orderData['order_id'])) {
+        if (! empty($orderData['order_id'])) {
             $order = Order::find($orderData['order_id']);
         }
 
-        if (!$order) {
+        if (! $order) {
             $orderToken = $request->query('order_token') ?: ($orderData['order_token'] ?? null);
             if ($orderToken) {
                 $order = Order::where('token', $orderToken)->first();
             }
         }
 
-        if (!$order) {
+        if (! $order) {
             // fallback : essayer avec helloasso_order_id en param ou session
             $helloassoId = $request->get('orderId') ?: ($orderData['helloasso_order_id'] ?? null);
             if ($helloassoId) {
@@ -691,8 +699,9 @@ class BoutiqueController extends Controller
             }
         }
 
-        if (!$order) {
-            notify()->error("Aucune commande trouvée", "Erreur");
+        if (! $order) {
+            notify()->error('Aucune commande trouvée', 'Erreur');
+
             return redirect()->route('boutique.index');
         }
 
@@ -722,7 +731,7 @@ class BoutiqueController extends Controller
         }
 
         // si pas trouvé et qu'on a un checkoutIntentId, tenter fallback via service
-        if (!$helloAssoData && $checkoutIntentId) {
+        if (! $helloAssoData && $checkoutIntentId) {
             try {
                 if (method_exists($helloAssoService, 'getOrderByCheckoutIntent')) {
                     $helloAssoData = $helloAssoService->getOrderByCheckoutIntent($checkoutIntentId);
@@ -737,16 +746,18 @@ class BoutiqueController extends Controller
 
         if ($helloAssoData) {
             // récupérer le statut de paiement (plusieurs emplacements possibles)
-            if (!empty($helloAssoData['payments'][0]['state'])) {
+            if (! empty($helloAssoData['payments'][0]['state'])) {
                 $paymentStatus = strtolower($helloAssoData['payments'][0]['state']);
-            } elseif (!empty($helloAssoData['items'][0]['state'])) {
+            } elseif (! empty($helloAssoData['items'][0]['state'])) {
                 $paymentStatus = strtolower($helloAssoData['items'][0]['state']);
-            } elseif (!empty($helloAssoData['state'])) {
+            } elseif (! empty($helloAssoData['state'])) {
                 $paymentStatus = strtolower($helloAssoData['state']);
             }
 
             $cashOutState = $helloAssoData['cashOutState'] ?? ($helloAssoData['payments'][0]['cashOutState'] ?? null);
-            if ($cashOutState) $cashOutState = strtolower($cashOutState);
+            if ($cashOutState) {
+                $cashOutState = strtolower($cashOutState);
+            }
         }
 
         $paidStates = ['authorized', 'processed', 'registered'];
@@ -763,7 +774,7 @@ class BoutiqueController extends Controller
 
             // si on a trouvé un remoteOrderId et que l'order->helloasso_id est vide, on le sauve
             if ($remoteOrderId && empty($order->helloasso_id)) {
-                $order->helloasso_id = (string)$remoteOrderId;
+                $order->helloasso_id = (string) $remoteOrderId;
             }
 
             // sécuriser/tronquer avant sauvegarde
@@ -779,14 +790,18 @@ class BoutiqueController extends Controller
             $order->save();
 
             // Décrémenter le stock si payé et non encore fait (idempotence)
-            if ($isPaid && !$order->stock_decremented) {
+            if ($isPaid && ! $order->stock_decremented) {
                 foreach ($order->orderItems as $oi) {
                     if ($oi->variant_id) {
                         $variant = ProductsVariant::find($oi->variant_id);
-                        if ($variant) $variant->decrement('quantity', $oi->quantity);
+                        if ($variant) {
+                            $variant->decrement('quantity', $oi->quantity);
+                        }
                     } else {
                         $product = Product::find($oi->product_id);
-                        if ($product) $product->decrement('stock_quantity', $oi->quantity);
+                        if ($product) {
+                            $product->decrement('stock_quantity', $oi->quantity);
+                        }
                     }
                 }
                 $order->stock_decremented = true;
@@ -797,7 +812,8 @@ class BoutiqueController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Erreur lors de la mise à jour de la commande après HelloAsso', ['error' => $e->getMessage()]);
-            notify()->error("Une erreur est survenue lors du traitement de la confirmation de paiement.", "Erreur");
+            notify()->error('Une erreur est survenue lors du traitement de la confirmation de paiement.', 'Erreur');
+
             return redirect()->route('boutique.cart');
         }
 
@@ -806,7 +822,7 @@ class BoutiqueController extends Controller
 
         return view('boutique.order-success', [
             'order' => $order,
-            'helloasso_data' => $helloAssoData
+            'helloasso_data' => $helloAssoData,
         ]);
     }
 
@@ -831,63 +847,83 @@ class BoutiqueController extends Controller
         // tenter de récupérer l'id de commande HelloAsso (id final) ou checkout/paiement id
         $helloassoOrderId = $payload['order']['id'] ?? $payload['orderId'] ?? null;
         $possibleCheckoutIds = [];
-        if (!empty($payload['id'])) $possibleCheckoutIds[] = $payload['id'];
-        if (!empty($payload['checkoutIntentId'])) $possibleCheckoutIds[] = $payload['checkoutIntentId'];
-        if (!empty($payload['checkout_intent_id'])) $possibleCheckoutIds[] = $payload['checkout_intent_id'];
-        if (!empty($payload['payments'][0]['id'])) $possibleCheckoutIds[] = $payload['payments'][0]['id'];
+        if (! empty($payload['id'])) {
+            $possibleCheckoutIds[] = $payload['id'];
+        }
+        if (! empty($payload['checkoutIntentId'])) {
+            $possibleCheckoutIds[] = $payload['checkoutIntentId'];
+        }
+        if (! empty($payload['checkout_intent_id'])) {
+            $possibleCheckoutIds[] = $payload['checkout_intent_id'];
+        }
+        if (! empty($payload['payments'][0]['id'])) {
+            $possibleCheckoutIds[] = $payload['payments'][0]['id'];
+        }
 
         $paymentState = null;
-        if (!empty($payload['state'])) $paymentState = strtolower($payload['state']);
-        elseif (!empty($payload['payment']['state'])) $paymentState = strtolower($payload['payment']['state']);
-        elseif (!empty($payload['payments'][0]['state'])) $paymentState = strtolower($payload['payments'][0]['state']);
-        elseif (!empty($payload['items'][0]['state'])) $paymentState = strtolower($payload['items'][0]['state']);
+        if (! empty($payload['state'])) {
+            $paymentState = strtolower($payload['state']);
+        } elseif (! empty($payload['payment']['state'])) {
+            $paymentState = strtolower($payload['payment']['state']);
+        } elseif (! empty($payload['payments'][0]['state'])) {
+            $paymentState = strtolower($payload['payments'][0]['state']);
+        } elseif (! empty($payload['items'][0]['state'])) {
+            $paymentState = strtolower($payload['items'][0]['state']);
+        }
 
         $cashOutState = $payload['cashOutState'] ?? ($payload['payments'][0]['cashOutState'] ?? null);
-        if ($cashOutState) $cashOutState = strtolower($cashOutState);
+        if ($cashOutState) {
+            $cashOutState = strtolower($cashOutState);
+        }
 
         // Si on n'a ni order id ni checkout id ni token, on ne peut pas rattacher la commande
-        $hasAnyId = $helloassoOrderId || !empty($possibleCheckoutIds) || (!empty($payload['metadata']['order_token'] ?? null));
-        if (!$hasAnyId) {
+        $hasAnyId = $helloassoOrderId || ! empty($possibleCheckoutIds) || (! empty($payload['metadata']['order_token'] ?? null));
+        if (! $hasAnyId) {
             return response()->json(['ok' => false, 'message' => 'Missing identifiers'], 400);
         }
 
         // Recherche principale par helloasso_id si fourni
         $order = null;
         if ($helloassoOrderId) {
-            $order = Order::where('helloasso_id', (string)$helloassoOrderId)->first();
+            $order = Order::where('helloasso_id', (string) $helloassoOrderId)->first();
         }
 
         // fallback : chercher par helloasso_payment_id / checkout intent id
-        if (!$order && !empty($possibleCheckoutIds)) {
+        if (! $order && ! empty($possibleCheckoutIds)) {
             foreach ($possibleCheckoutIds as $cid) {
-                $order = Order::where('helloasso_payment_id', (string)$cid)->first();
-                if ($order) break;
-            }
-        }
-
-        // fallback : chercher par metadata.order_token
-        if (!$order && !empty($payload['metadata']['order_token'])) {
-            $order = Order::where('token', $payload['metadata']['order_token'])->first();
-        }
-
-        // fallback : chercher par token dans items metadata (si présent)
-        if (!$order && !empty($payload['items'])) {
-            foreach ($payload['items'] as $it) {
-                if (!empty($it['metadata']['order_token'])) {
-                    $order = Order::where('token', $it['metadata']['order_token'])->first();
-                    if ($order) break;
+                $order = Order::where('helloasso_payment_id', (string) $cid)->first();
+                if ($order) {
+                    break;
                 }
             }
         }
 
-        if (!$order) {
+        // fallback : chercher par metadata.order_token
+        if (! $order && ! empty($payload['metadata']['order_token'])) {
+            $order = Order::where('token', $payload['metadata']['order_token'])->first();
+        }
+
+        // fallback : chercher par token dans items metadata (si présent)
+        if (! $order && ! empty($payload['items'])) {
+            foreach ($payload['items'] as $it) {
+                if (! empty($it['metadata']['order_token'])) {
+                    $order = Order::where('token', $it['metadata']['order_token'])->first();
+                    if ($order) {
+                        break;
+                    }
+                }
+            }
+        }
+
+        if (! $order) {
             Log::warning('Webhook HelloAsso : commande introuvable', ['helloasso_id' => $helloassoOrderId, 'possibleCheckoutIds' => $possibleCheckoutIds, 'payload' => $payload]);
+
             return response()->json(['ok' => false, 'message' => 'Order not found'], 404);
         }
 
         // Si order trouvé et helloasso_id vide mais payload contient l'id final, on le sauvegarde
         if (empty($order->helloasso_id) && $helloassoOrderId) {
-            $order->helloasso_id = (string)$helloassoOrderId;
+            $order->helloasso_id = (string) $helloassoOrderId;
         }
 
         $paidStates = ['authorized', 'processed', 'registered'];
@@ -904,14 +940,18 @@ class BoutiqueController extends Controller
             $order->save();
 
             // décrémenter les stocks si payé et pas encore fait
-            if ($isPaid && !$order->stock_decremented) {
+            if ($isPaid && ! $order->stock_decremented) {
                 foreach ($order->orderItems as $oi) {
                     if ($oi->variant_id) {
                         $variant = ProductsVariant::find($oi->variant_id);
-                        if ($variant) $variant->decrement('quantity', $oi->quantity);
+                        if ($variant) {
+                            $variant->decrement('quantity', $oi->quantity);
+                        }
                     } else {
                         $product = Product::find($oi->product_id);
-                        if ($product) $product->decrement('stock_quantity', $oi->quantity);
+                        if ($product) {
+                            $product->decrement('stock_quantity', $oi->quantity);
+                        }
                     }
                 }
                 $order->stock_decremented = true;

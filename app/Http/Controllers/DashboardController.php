@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Artiste;
+use App\Models\Edition;
 use App\Models\Faq;
 use App\Models\User;
-use App\Models\Edition;
 
 class DashboardController extends Controller
 {

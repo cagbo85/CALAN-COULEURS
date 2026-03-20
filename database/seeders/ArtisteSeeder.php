@@ -76,8 +76,8 @@ class ArtisteSeeder extends Seeder
             [
                 'name' => 'AXL R.',
                 'style' => 'House, Afro house, Disco house, Techno, Hard techno',
-                'description' => "Figure bien connue de la scène nantaise, AXL R. fait vibrer les platines depuis plus de 12 ans. Des clubs aux festivals, il distille un mix percutant et polyvalent.",
-                'photo' => "img/artists/photos/Photos_artistes/AXL R..webp",
+                'description' => 'Figure bien connue de la scène nantaise, AXL R. fait vibrer les platines depuis plus de 12 ans. Des clubs aux festivals, il distille un mix percutant et polyvalent.',
+                'photo' => 'img/artists/photos/Photos_artistes/AXL R..webp',
                 'soundcloud_url' => 'https://soundcloud.com/dj-axl-r',
                 'spotify_url' => null,
                 'youtube_url' => null,
@@ -104,7 +104,7 @@ class ArtisteSeeder extends Seeder
             [
                 'name' => 'Dymeister',
                 'style' => 'Techno – Acid – Hard Trance',
-                'description' => "Place aux vibrations brutes et sans compromis avec DYMEISTER, architecte sonore des nuits les plus intenses.",
+                'description' => 'Place aux vibrations brutes et sans compromis avec DYMEISTER, architecte sonore des nuits les plus intenses.',
                 'photo' => 'img/artists/photos/Photos_artistes/DYMEISTER.webp',
                 'soundcloud_url' => 'https://soundcloud.com/dylan-chevalier-56586261',
                 'spotify_url' => null,
@@ -119,7 +119,7 @@ class ArtisteSeeder extends Seeder
             [
                 'name' => 'Youth Collective',
                 'style' => 'Reggae Roots & Dub UK – Sound System',
-                'description' => "Né en 2015 autour de la culture sound system nantaise, Youth Collective rassemble six passionnés.",
+                'description' => 'Né en 2015 autour de la culture sound system nantaise, Youth Collective rassemble six passionnés.',
                 'photo' => 'img/artists/photos/Photos_artistes/YOUTH COLLECTIVE.webp',
                 'soundcloud_url' => null,
                 'spotify_url' => null,
@@ -133,7 +133,7 @@ class ArtisteSeeder extends Seeder
             [
                 'name' => 'Maklos',
                 'style' => 'House / Techno – Old School & Underground',
-                'description' => "Maklos est un DJ et producteur qui fait le lien entre house old school et techno underground.",
+                'description' => 'Maklos est un DJ et producteur qui fait le lien entre house old school et techno underground.',
                 'photo' => 'img/artists/photos/Photos_artistes/MAKLOS.webp',
                 'soundcloud_url' => 'https://soundcloud.com/maklosmusic',
                 'spotify_url' => null,

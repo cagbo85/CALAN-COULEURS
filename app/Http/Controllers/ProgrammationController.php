@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\DB;
 use App\Models\Edition;
+use Illuminate\Support\Facades\DB;
 
 class ProgrammationController extends Controller
 {

@@ -48,7 +48,7 @@ class AuthController extends Controller
         }
 
         // 3. Vérifier que le compte est actif
-        if (!$user->actif) {
+        if (! $user->actif) {
             throw ValidationException::withMessages([
                 'login' => 'Votre compte est désactivé. Contactez un administrateur.',
             ]);
@@ -71,7 +71,7 @@ class AuthController extends Controller
             $isReactivation = true;
         }
 
-        if (!$canInitialize) {
+        if (! $canInitialize) {
             throw ValidationException::withMessages([
                 'login' => 'L\'initialisation de votre compte a déjà été effectuée. Utilisez la page de connexion normale.',
             ]);

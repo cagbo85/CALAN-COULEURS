@@ -2,18 +2,19 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\User;
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
     public function index()
     {
         $users = User::all();
+
         return view('admin.users.index', compact('users'));
     }
 
@@ -24,16 +25,19 @@ class UserController extends Controller
 
         if ($current->role === 'super-admin') {
             if ($user->id === $current->id) {
-                notify()->error("Tu ne peux pas te désactiver toi-même.", 'Modification échouée ! ❌');
+                notify()->error('Tu ne peux pas te désactiver toi-même.', 'Modification échouée ! ❌');
+
                 return back()->withInput();
             }
         } elseif ($current->role === 'admin') {
             if ($user->role !== 'editor') {
                 notify()->error("Tu ne peux désactiver que les comptes avec le rôle 'editor'.", 'Modification échouée ! ❌');
+
                 return back()->withInput();
             }
         } else {
             notify()->error("Tu n'as pas la permission de désactiver des comptes.", 'Modification échouée ! ❌');
+
             return back()->withInput();
         }
 
@@ -56,12 +60,14 @@ class UserController extends Controller
         $user = User::findOrFail($id);
 
         if ($user->actif) {
-            notify()->error("Le compte est déjà actif.", 'Demande échouée ! ❌');
+            notify()->error('Le compte est déjà actif.', 'Demande échouée ! ❌');
+
             return back()->withInput();
         }
 
         if ($user->reactivation_requested_at) {
-            notify()->error("Une demande de réactivation est déjà en cours.", 'Demande échouée ! ❌');
+            notify()->error('Une demande de réactivation est déjà en cours.', 'Demande échouée ! ❌');
+
             return back()->withInput();
         }
 
@@ -71,9 +77,11 @@ class UserController extends Controller
             $user->save();
 
             notify()->success("Demande de réactivation envoyée à l'administrateur.", 'Demande réussie ! 🎉');
+
             return back()->withInput();
         } else {
             notify()->error("Tu n'as pas le droit de demander la réactivation de ce compte.", 'Demande échouée ! ❌');
+
             return back()->withInput();
         }
     }
@@ -85,23 +93,26 @@ class UserController extends Controller
 
         if ($current->role !== 'super-admin') {
             notify()->error("Tu n'as pas la permission de réactiver des comptes.", 'Réactivation échouée ! ❌');
+
             return back()->withInput();
         }
 
         if ($user->actif) {
-            notify()->error("Ce compte est déjà actif.", 'Réactivation échouée ! ❌');
+            notify()->error('Ce compte est déjà actif.', 'Réactivation échouée ! ❌');
+
             return back()->withInput();
         }
 
         if ($user->id === $current->id) {
-            notify()->error("Tu ne peux pas te réactiver toi-même.", 'Réactivation échouée ! ❌');
+            notify()->error('Tu ne peux pas te réactiver toi-même.', 'Réactivation échouée ! ❌');
+
             return back()->withInput();
         }
 
         // Réactivation directe
         $user->actif = 1;
         $user->email_verified_at = null;
-        $user->password = Hash::make(Str::random(60) . time());
+        $user->password = Hash::make(Str::random(60).time());
         $user->remember_token = null;
         $user->reactivation_requested_at = null;
         $user->reactivation_requested_by = null;
@@ -109,7 +120,8 @@ class UserController extends Controller
         $user->reactivation_approved_by = $current->id;
         $user->save();
 
-        notify()->success("Utilisateur réactivé avec succès.", 'Réactivation réussie ! 🎉');
+        notify()->success('Utilisateur réactivé avec succès.', 'Réactivation réussie ! 🎉');
+
         return back()->withInput();
     }
 
@@ -120,28 +132,32 @@ class UserController extends Controller
 
         if ($current->role !== 'super-admin') {
             notify()->error("Tu n'as pas la permission d'approuver les réactivations.", 'Approbation échouée ! ❌');
+
             return back()->withInput();
         }
 
         if ($user->actif) {
-            notify()->error("Ce compte est déjà actif.", 'Approbation échouée ! ❌');
+            notify()->error('Ce compte est déjà actif.', 'Approbation échouée ! ❌');
+
             return back()->withInput();
         }
 
-        if (!$user->reactivation_requested_at) {
-            notify()->error("Aucune demande de réactivation en cours.", 'Approbation échouée ! ❌');
+        if (! $user->reactivation_requested_at) {
+            notify()->error('Aucune demande de réactivation en cours.', 'Approbation échouée ! ❌');
+
             return back()->withInput();
         }
 
         $user->actif = 1;
         $user->email_verified_at = null;
-        $user->password = Hash::make(Str::random(60) . time());
+        $user->password = Hash::make(Str::random(60).time());
         $user->remember_token = null;
         $user->reactivation_approved_at = now();
         $user->reactivation_approved_by = $current->id;
         $user->save();
 
-        notify()->success("Réactivation approuvée avec succès.", 'Approbation réussie ! 🎉');
+        notify()->success('Réactivation approuvée avec succès.', 'Approbation réussie ! 🎉');
+
         return back()->withInput();
     }
 }

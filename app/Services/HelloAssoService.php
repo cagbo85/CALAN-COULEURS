@@ -3,16 +3,18 @@
 namespace App\Services;
 
 use Exception;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Cache;
-use League\OAuth2\Client\Provider\GenericProvider;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use League\OAuth2\Client\Provider\Exception\IdentityProviderException;
+use League\OAuth2\Client\Provider\GenericProvider;
 
 class HelloAssoService
 {
     private GenericProvider $provider;
+
     private string $organizationSlug;
+
     private string $baseApiUrl;
 
     public function __construct()
@@ -29,11 +31,11 @@ class HelloAssoService
         }
 
         $this->provider = new GenericProvider([
-            'clientId'                => config('helloasso.client_id'),
-            'clientSecret'            => config('helloasso.client_secret'),
-            'urlAccessToken'          => $oauthUrl,
-            'urlAuthorize'            => '',
-            'urlResourceOwnerDetails' => ''
+            'clientId' => config('helloasso.client_id'),
+            'clientSecret' => config('helloasso.client_secret'),
+            'urlAccessToken' => $oauthUrl,
+            'urlAuthorize' => '',
+            'urlResourceOwnerDetails' => '',
         ]);
 
         $this->organizationSlug = config('helloasso.organization_slug');
@@ -64,7 +66,7 @@ class HelloAssoService
 
             return $token;
         } catch (IdentityProviderException $e) {
-            throw new Exception('Erreur authentification HelloAsso: ' . $e->getMessage());
+            throw new Exception('Erreur authentification HelloAsso: '.$e->getMessage());
         }
     }
 
@@ -74,10 +76,10 @@ class HelloAssoService
     public function apiCall(string $endpoint, string $method = 'GET', array $data = []): array
     {
         $token = $this->getAccessToken();
-        $url = $this->baseApiUrl . '/' . ltrim($endpoint, '/');
+        $url = $this->baseApiUrl.'/'.ltrim($endpoint, '/');
 
         $request = Http::timeout(30)->withHeaders([
-            'Authorization' => 'Bearer ' . $token,
+            'Authorization' => 'Bearer '.$token,
             'Accept' => 'application/json',
             'Content-Type' => 'application/json',
         ]);
@@ -95,7 +97,7 @@ class HelloAssoService
             throw new Exception('Rate limit HelloAsso atteint. Réessayez plus tard.');
         }
 
-        if (!$response->successful()) {
+        if (! $response->successful()) {
             throw new Exception("Erreur API HelloAsso: {$response->status()} - {$response->body()}");
         }
 
@@ -119,12 +121,12 @@ class HelloAssoService
                 'organization_name' => $orgData['name'] ?? 'N/A',
                 'organization_slug' => $this->organizationSlug,
                 'environment' => config('helloasso.environment'),
-                'token_preview' => substr($token, 0, 20) . '...',
+                'token_preview' => substr($token, 0, 20).'...',
             ];
         } catch (Exception $e) {
             return [
                 'success' => false,
-                'message' => 'Erreur connexion: ' . $e->getMessage(),
+                'message' => 'Erreur connexion: '.$e->getMessage(),
                 'environment' => config('helloasso.environment'),
             ];
         }
@@ -171,18 +173,19 @@ class HelloAssoService
             // 1) tenter endpoint direct (si l'API expose /orders/{id})
             try {
                 $resp = $this->apiCall("orders/{$checkoutIntentId}");
-                if (!empty($resp)) {
+                if (! empty($resp)) {
                     Log::debug('HelloAsso getOrderByCheckoutIntent via orders/{id}', ['id' => $checkoutIntentId, 'resp' => $resp]);
+
                     return $resp;
                 }
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 // ignore, essayer la suite
             }
 
             // 2) tenter requête avec paramètre (orders?checkoutIntentId=...)
             try {
                 $resp = $this->apiCall("orders?checkoutIntentId={$checkoutIntentId}");
-                if (!empty($resp['data'])) {
+                if (! empty($resp['data'])) {
                     // si data est une liste, retourner le premier match
                     foreach ($resp['data'] as $order) {
                         if (
@@ -190,28 +193,30 @@ class HelloAssoService
                             || (isset($order['id']) && $order['id'] == $checkoutIntentId)
                         ) {
                             Log::debug('HelloAsso getOrderByCheckoutIntent via orders?checkoutIntentId', ['id' => $checkoutIntentId, 'order' => $order]);
+
                             return $order;
                         }
                     }
                 }
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 // ignore, essayer la suite
             }
 
             // 3) fallback: récupérer les orders récents et chercher (attention volumétrie en prod)
             try {
-                $resp = $this->apiCall("orders");
-                if (!empty($resp['data'])) {
+                $resp = $this->apiCall('orders');
+                if (! empty($resp['data'])) {
                     foreach ($resp['data'] as $order) {
                         if ((isset($order['checkoutIntentId']) && $order['checkoutIntentId'] == $checkoutIntentId)
                             || (isset($order['id']) && $order['id'] == $checkoutIntentId)
                         ) {
                             Log::debug('HelloAsso getOrderByCheckoutIntent via orders (fallback)', ['id' => $checkoutIntentId, 'order' => $order]);
+
                             return $order;
                         }
                     }
                 }
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 // nothing
             }
         } catch (\Throwable $e) {
@@ -219,6 +224,7 @@ class HelloAssoService
         }
 
         Log::debug('HelloAsso getOrderByCheckoutIntent not found', ['id' => $checkoutIntentId]);
+
         return null;
     }
 }

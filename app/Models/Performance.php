@@ -25,16 +25,14 @@ use Illuminate\Database\Eloquent\Model;
  * @property int|null $updated_by
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- *
  * @property Edition $edition
  * @property Artiste $artiste
  * @property User|null $user
- *
- * @package App\Models
  */
 class Performance extends Model
 {
     use HasFactory;
+
     protected $table = 'performances';
 
     protected $casts = [
@@ -44,7 +42,7 @@ class Performance extends Model
         'ending_date' => 'datetime',
         'actif' => 'bool',
         'created_by' => 'int',
-        'updated_by' => 'int'
+        'updated_by' => 'int',
     ];
 
     protected $fillable = [
@@ -56,7 +54,7 @@ class Performance extends Model
         'day',
         'actif',
         'created_by',
-        'updated_by'
+        'updated_by',
     ];
 
     /**

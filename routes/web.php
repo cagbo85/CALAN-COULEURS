@@ -24,32 +24,21 @@ Route::get('/', [HomeController::class, 'accueil'])->name('accueil');
 
 Route::get('programmation', [ProgrammationController::class, 'index'])->name('programmation');
 
-Route::get('notre-histoire', function () {
-    return view('festival');
-})->name('festival');
+Route::get('notre-histoire', [HomeController::class, 'festival'])->name('festival');
 
-Route::get('contact', function () {
-    return view('contact');
-})->name('contact');
+Route::get('contact', [HomeController::class, 'contact'])->name('contact');
 
-Route::get('benevoles', function () {
-    return view('benevoles');
-})->name('benevoles');
+Route::get('benevoles', [HomeController::class, 'benevoles'])->name('benevoles');
 
-Route::get('charte', function () {
-    return view('charte');
-})->name('charte');
+Route::get('charte', [HomeController::class, 'charte'])->name('charte');
 
-Route::get('/partenaires', function () {
-    return view('partenaires');
-})->name('partenaires');
+Route::get('partenaires', [HomeController::class, 'partenaires'])->name('partenaires');
 
-Route::get('camping', function () {
-    return view('camping');
-})->name('camping');
+Route::get('camping', [HomeController::class, 'camping'])->name('camping');
 
-require __DIR__.'/auth.php';
-require __DIR__.'/artistes.php';
-require __DIR__.'/faqs.php';
-require __DIR__.'/users.php';
-require __DIR__.'/boutique.php';
+require __DIR__ . '/auth.php';
+require __DIR__ . '/artistes.php';
+require __DIR__ . '/faqs.php';
+require __DIR__ . '/users.php';
+require __DIR__ . '/boutique.php';
+require __DIR__ . '/editions.php';

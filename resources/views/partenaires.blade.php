@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Partenaires - Calan\'Couleurs Festival 2025')
+@section('title', 'Partenaires - Calan\'Couleurs Festival ' . $currentEdition->year)
 
 @section('content')
 <main class="w-full">

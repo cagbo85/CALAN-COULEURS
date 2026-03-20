@@ -1,6 +1,6 @@
 @extends('errors::minimal')
 
-@section('title', 'Paiement requis - Calan\'Couleurs Festival 2025')
+@section('title', 'Paiement requis - Calan\'Couleurs Festival ' . $currentEdition->year)
 
 @section('code', '402')
 
@@ -9,7 +9,7 @@
 @section('message', 'Cette fonctionnalité nécessite un paiement ou un abonnement. Direction la billetterie pour profiter pleinement du festival !')
 
 @section('actions')
-    <a href="https://www.helloasso.com/associations/calan-couleurs/evenements/festival-calan-couleurs"
+    <a href="{{ $currentEdition->reservation_url }}"
         target="_blank" rel="noopener noreferrer"
         class="inline-block bg-white text-[#8F1E98] font-bold px-8 py-3 rounded-lg hover:bg-gray-100 transition-colors duration-300 shadow-lg">
         Acheter un billet

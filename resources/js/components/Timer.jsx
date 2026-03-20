@@ -1,27 +1,29 @@
 import { useState, useEffect } from "react";
+import { BiSolidError } from "react-icons/bi";
 
 export default function Timer() {
     const [edition, setEdition] = useState(null);
-    const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+    const [timeLeft, setTimeLeft] = useState({
+        days: 0,
+        hours: 0,
+        minutes: 0,
+        seconds: 0,
+    });
     const [isEventStarted, setIsEventStarted] = useState(false);
     const [isEventEnded, setIsEventEnded] = useState(false);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        fetch("/api/active/editions")
+        fetch("/api/edition/current")
             .then((response) => {
                 if (!response.ok) {
-                    throw new Error("Erreur lors du chargement de l'édition active");
+                    throw new Error("Aucune édition courante disponible");
                 }
                 return response.json();
             })
             .then((data) => {
-                if (data.length > 0) {
-                    setEdition(data[0]); // ⚠️ Ton endpoint renvoie un tableau
-                } else {
-                    setError("Aucune édition active trouvée.");
-                }
+                setEdition(data);
                 setLoading(false);
             })
             .catch((err) => {
@@ -111,7 +113,7 @@ export default function Timer() {
                     className="backdrop-blur-md shadow-lg px-6 py-8 rounded-xl border border-white/50 flex flex-col items-center justify-center text-white"
                     style={{
                         background:
-                        "linear-gradient(180deg, rgba(255,15,99,0.3), rgba(143,30,152,0.3), rgba(39,42,199,0.3))",
+                            "linear-gradient(180deg, rgba(255,15,99,0.3), rgba(143,30,152,0.3), rgba(39,42,199,0.3))",
                     }}
                 >
                     <div className="text-6xl mb-4 drop-shadow-lg">🎉</div>
@@ -119,9 +121,11 @@ export default function Timer() {
                         Merci à tous !
                     </h3>
                     <p className="text-lg font-semibold text-center">
-                        La première édition {edition.name} est terminée.
+                        L'édition {edition.name ?? edition.year} est terminée.
                     </p>
-                    <p className="text-sm text-center mt-2">À l'année prochaine 🎶</p>
+                    <p className="text-sm text-center mt-2">
+                        À l'année prochaine 🎶
+                    </p>
                 </div>
             </div>
         );
@@ -140,10 +144,10 @@ export default function Timer() {
                 >
                     <div className="text-6xl mb-4 drop-shadow-lg">🎵</div>
                     <h3 className="text-3xl font-bold mb-2 text-center drop-shadow-md">
-                        C’est parti !
+                        C'est parti !
                     </h3>
                     <p className="text-lg font-semibold text-center">
-                        Le festival {edition.name} a commencé 🎤
+                        Le festival {edition.name ?? edition.year} a commencé 🎤
                     </p>
                     <p className="text-sm text-center mt-2">Profitez bien !</p>
                 </div>
@@ -151,15 +155,9 @@ export default function Timer() {
         );
     }
 
-    // Compte à rebours
+    // Affichage du compte à rebours quand le festival n'a pas encore commencé
     return (
         <div className="rounded-xl p-6">
-            <div className="text-center mb-6">
-                <h3 className="text-2xl sm:text-3xl font-bold text-white drop-shadow-md">
-                    Le festival {edition.name} commence dans :
-                </h3>
-            </div>
-
             <div className="flex flex-wrap justify-center gap-4">
                 {["Jours", "Heures", "Min", "Sec"].map((label, i) => {
                     const value = [
@@ -171,12 +169,13 @@ export default function Timer() {
                     return (
                         <div
                             key={label}
-                            className="flex flex-col items-center bg-white/70 backdrop-blur-sm text-[#FF0F63] font-bold px-4 py-3 rounded-lg shadow-md border-2 border-[#8F1E98]/20"
+                            className="flex flex-col items-center justify-center bg-white/70 backdrop-blur-sm text-[#FF0F63] font-bold rounded-lg shadow-md border-2 border-[#8F1E98]/20"
+                            style={{ width: "100px", height: "100px" }}
                         >
-                            <span className="text-4xl sm:text-5xl">
+                            <span className="text-4xl sm:text-5xl leading-none">
                                 {String(value).padStart(2, "0")}
                             </span>
-                            <span className="text-xs sm:text-sm uppercase mt-1 tracking-wider">
+                            <span className="text-xs sm:text-sm uppercase tracking-wider text-center mt-1">
                                 {label}
                             </span>
                         </div>

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Charte du festivalier - Calan\'Couleurs Festival 2025')
+@section('title', 'Charte du festivalier - Calan\'Couleurs Festival ' . $currentEdition->year)
 
 @section('content')
     <main class="w-full">

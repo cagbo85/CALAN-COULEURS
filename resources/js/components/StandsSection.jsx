@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import OnSiteFeature from './OnSiteFeature';
+import React, { useState, useEffect } from "react";
+import OnSiteFeature from "./OnSiteFeature";
+import { BiSolidError } from "react-icons/bi";
 
-const toAccessibleTitle = (title) => title.replace(/^[^\p{L}\p{N}]+/u, '').trim();
+const toAccessibleTitle = (title) =>
+    title.replace(/^[^\p{L}\p{N}]+/u, "").trim();
 
 export default function StandsSection() {
     const [stands, setStands] = useState([]);
@@ -9,18 +11,18 @@ export default function StandsSection() {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        fetch('/api/stands')
-            .then(response => {
+        fetch("/api/stands/current")
+            .then((response) => {
                 if (!response.ok) {
-                    throw new Error('Erreur lors du chargement des stands');
+                    throw new Error("Impossible de charger les stands");
                 }
                 return response.json();
             })
-            .then(data => {
+            .then((data) => {
                 setStands(data);
                 setLoading(false);
             })
-            .catch(err => {
+            .catch((err) => {
                 setError(err.message);
                 setLoading(false);
             });
@@ -28,27 +30,19 @@ export default function StandsSection() {
 
     // Grouper les stands par type
     const standsByType = {
-        autre: stands.filter(stand => stand.type === 'autre'),
-        boutique: stands.filter(stand => stand.type === 'boutique'),
-        foodtruck: stands.filter(stand => stand.type === 'foodtruck'),
-        tatouage: stands.filter(stand => stand.type === 'tatouage'),
+        autre: stands.filter((stand) => stand.type === "autre"),
+        boutique: stands.filter((stand) => stand.type === "boutique"),
+        foodtruck: stands.filter((stand) => stand.type === "foodtruck"),
+        tatouage: stands.filter((stand) => stand.type === "tatouage"),
     };
 
     const typeLabels = {
-        autre: 'Nos stands',
-        boutique: 'Friperie & Boutique',
-        foodtruck: 'Food Trucks',
-        tatouage: 'Stand Tatouage',
+        autre: "Nos stands",
+        boutique: "Friperie & Boutique",
+        foodtruck: "Food Trucks",
+        tatouage: "Stand Tatouage",
     };
 
-    const typeIcons = {
-        autre: '🛟',
-        boutique: '👚🛍️',
-        foodtruck: '🍔',
-        tatouage: '🖋',
-    };
-
-    // Fonction pour obtenir le lien prioritaire (website > instagram > facebook > other)
     const getPrimaryLink = (stand) => {
         if (stand.website_url) return stand.website_url;
         if (stand.instagram_url) return stand.instagram_url;
@@ -57,64 +51,138 @@ export default function StandsSection() {
         return null;
     };
 
-    // Fonction pour formater le titre avec l'icône
-    const formatTitle = (stand, typeIcon) => {
-        // Gérer certains cas particuliers
-        if (stand.name === "Calan'Boutique") {
-            return `${typeIcon} Friperie & Boutique Calan'Couleurs`;
-        } else if (stand.name === "So'Galettes") {
-            return `🥞 So'Galettes`;
-        } else if (stand.name === "Sylvain Tacos et Burgers") {
-            return `${typeIcon}🌮 Sylvain Tacos et Burgers`;
-        }
-
-        // Pour tous les autres, on met toujours l'emoji devant le nom
-        return `${typeIcon} ${stand.name}`;
-    };
-
+    // Etat de chargement
     if (loading) {
         return (
-            <section className="py-12 px-6 bg-white" aria-labelledby="stands-heading">
+            <section className="pb-16 px-6 bg-gray-100">
                 <div className="container mx-auto text-center">
-                    <div className="animate-pulse">
-                        <div className="h-8 bg-gray-300 rounded w-64 mx-auto mb-8"></div>
-                        <div className="flex flex-wrap justify-center gap-8">
-                            {[...Array(6)].map((_, i) => (
-                                <div key={i} className="w-80 h-96 bg-gray-200 rounded"></div>
-                            ))}
-                        </div>
+                    <div className="text-5xl mb-4 drop-shadow-lg">⏳</div>
+                    <p
+                        className="text-white text-lg font-semibold"
+                        style={{
+                            background:
+                                "linear-gradient(to right, #FF0F63, #8F1E98)",
+                            WebkitBackgroundClip: "text",
+                            WebkitTextFillColor: "transparent",
+                            backgroundClip: "text",
+                        }}
+                    >
+                        Chargement des stands...
+                    </p>
+                </div>
+            </section>
+        );
+    }
+
+    // Etat d'erreur
+    if (error) {
+        return (
+            <section
+                className="py-16 px-6 bg-gray-100"
+                style={{
+                    background:
+                        "linear-gradient(180deg, rgba(39,42,199,1) 0%, rgba(143,30,152,1) 35%, rgba(255,15,99,1) 100%)",
+                }}
+                aria-labelledby="stands-heading"
+            >
+                <div className="container mx-auto text-center">
+                    <BiSolidError className="text-5xl mb-4 text-red-400 mx-auto" />
+                    <p className="text-white text-lg font-semibold">{error}</p>
+                </div>
+            </section>
+        );
+    }
+
+    // Etat vide (stands non encore annoncés)
+    if (!stands || stands.length === 0) {
+        return (
+            <section
+                className="py-16 px-6 bg-gray-100"
+                aria-labelledby="stands-heading"
+            >
+                <div className="container mx-auto">
+                    <h2
+                        id="stands-heading"
+                        className="text-4xl font-bold uppercase mb-12 text-left drop-shadow-lg"
+                        style={{
+                            background:
+                                "linear-gradient(180deg, rgba(39,42,199,1) 0%, rgba(143,30,152,1) 35%, rgba(255,15,99,1) 100%)",
+                            WebkitBackgroundClip: "text",
+                            WebkitTextFillColor: "transparent",
+                            backgroundClip: "text",
+                        }}
+                    >
+                        Sur Place
+                    </h2>
+
+                    <div className="max-w-2xl mx-auto">
+                        <article className="bg-white/95 backdrop-blur-sm rounded-xl shadow-xl overflow-hidden border-2 border-white/50">
+                            <div
+                                className="p-8 text-white"
+                                style={{
+                                    background:
+                                        "linear-gradient(to right, #FF0F63, #8F1E98)",
+                                }}
+                            >
+                                <h3 className="text-center sm:text-left text-3xl font-bold uppercase tracking-wide">
+                                    🍔 Ça mijote !
+                                </h3>
+                            </div>
+
+                            <div className="p-8 text-center">
+                                <p className="text-lg text-gray-700 mb-4 leading-relaxed">
+                                    Les stands et food trucks sont en cours de
+                                    sélection pour cette édition.
+                                </p>
+                                <p className="text-base text-gray-600 mb-6">
+                                    Bientôt, vous découvrirez tous nos
+                                    partenaires sur place : restauration,
+                                    boutiques, tatouages et bien plus ! 🎪
+                                </p>
+
+                                <div className="flex justify-center gap-2 mb-6">
+                                    <div className="w-2 h-2 bg-[#FF0F63] rounded-full animate-bounce"></div>
+                                    <div
+                                        className="w-2 h-2 bg-[#8F1E98] rounded-full animate-bounce"
+                                        style={{ animationDelay: "0.1s" }}
+                                    ></div>
+                                    <div
+                                        className="w-2 h-2 bg-[#272AC7] rounded-full animate-bounce"
+                                        style={{ animationDelay: "0.2s" }}
+                                    ></div>
+                                </div>
+                            </div>
+                        </article>
                     </div>
                 </div>
             </section>
         );
     }
 
-    if (error) {
-        return (
-            <section className="py-12 px-6 bg-white" aria-labelledby="stands-heading">
-                <div className="container mx-auto text-center">
-                    <h2 className="text-[#8F1E98] text-3xl font-bold mb-4">Sur place</h2>
-                    <p className="text-red-500">Erreur lors du chargement des stands: {error}</p>
-                </div>
-            </section>
-        );
-    }
-
+    // Etat normal (stands disponibles)
     return (
         <section
-            className="py-12 px-6 bg-white"
+            className="py-16 px-6 bg-gray-100"
             aria-labelledby="stands-heading"
-            aria-describedby="stands-desc"
         >
             <div className="container mx-auto">
                 <h2
                     id="stands-heading"
-                    className="text-[#8F1E98] text-3xl font-bold uppercase mb-2 text-center md:text-left"
+                    className="text-4xl font-bold uppercase mb-12 text-left drop-shadow-lg"
+                    style={{
+                        background:
+                            "linear-gradient(180deg, rgba(39,42,199,1) 0%, rgba(143,30,152,1) 35%, rgba(255,15,99,1) 100%)",
+                        WebkitBackgroundClip: "text",
+                        WebkitTextFillColor: "transparent",
+                        backgroundClip: "text",
+                    }}
                 >
-                    Sur place
+                    Sur Place
                 </h2>
+
                 <p id="stands-desc" className="sr-only">
-                    Informations sur les stands du festival et les food trucks disponibles sur le site.
+                    Informations sur les stands du festival et les food trucks
+                    disponibles sur le site.
                 </p>
 
                 {Object.entries(standsByType).map(([type, typeStands]) => {
@@ -122,19 +190,20 @@ export default function StandsSection() {
 
                     return (
                         <div key={type} className="mb-16">
-                            <h3 className="text-[#FF0F63] text-2xl font-semibold mb-6 ml-4 text-center md:text-left">
+                            <h3 className="text-2xl font-semibold xl:pl-32 mb-6 xl:text-left text-center drop-shadow-md text-[#FF0F63]">
                                 {typeLabels[type]}
                             </h3>
 
                             <ul
                                 role="list"
-                                className={`flex flex-wrap justify-center gap-54`}
+                                className="flex flex-wrap justify-center gap-6"
                                 aria-label={`Liste des ${typeLabels[type].toLowerCase()} présents au festival`}
                             >
                                 {typeStands.map((stand) => {
                                     const primaryLink = getPrimaryLink(stand);
-                                    const accessibleTitle = toAccessibleTitle(stand.name);
-                                    const formattedTitle = formatTitle(stand, typeIcons[type]);
+                                    const accessibleTitle = toAccessibleTitle(
+                                        stand.name,
+                                    );
 
                                     return (
                                         <li
@@ -143,15 +212,20 @@ export default function StandsSection() {
                                             className="w-full sm:w-80"
                                         >
                                             <OnSiteFeature
-                                                title={formattedTitle}
+                                                title={stand.name}
                                                 description={stand.description}
-                                                imageSrc={stand.photo || '/img/default-stand.jpg'}
+                                                imageSrc={
+                                                    stand.photo ||
+                                                    "/img/default-stand.jpg"
+                                                }
                                                 imageAlt={`${accessibleTitle} — ${typeLabels[type].toLowerCase()}`}
                                                 website={primaryLink}
                                                 websiteLabel={
-                                                    stand.name === "Calan'Boutique"
-                                                    ? "Visiter notre boutique →"
-                                                    : "Visiter leur site →"
+                                                    stand.name.includes(
+                                                        "Calan'Boutique",
+                                                    )
+                                                        ? "Visiter notre boutique →"
+                                                        : "Visiter leur site →"
                                                 }
                                             />
                                         </li>
@@ -161,12 +235,6 @@ export default function StandsSection() {
                         </div>
                     );
                 })}
-
-                {stands.length === 0 && (
-                    <div className="text-center py-8">
-                        <p className="text-gray-500 text-lg">Aucun stand pour le moment. Revenez bientôt !</p>
-                    </div>
-                )}
             </div>
         </section>
     );

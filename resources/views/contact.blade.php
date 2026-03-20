@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Contact - Calan\'Couleurs')
+@section('title', 'Contact - Calan\'Couleurs Festival ' . $currentEdition->year)
 
 @section('content')
     <!-- Bannière -->

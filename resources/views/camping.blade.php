@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Camping - Calan\'Couleurs Festival 2025')
+@section('title', 'Camping - Calan\'Couleurs Festival ' . $currentEdition->year)
 
 @section('content')
     <div class="max-w-4xl mx-auto py-12 px-4">

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Notre histoire - Calan\'Couleurs')
+@section('title', 'Notre histoire - Calan\'Couleurs ' . $currentEdition->year)
 
 @section('content')
     <!-- Section Hero avec image pleine hauteur -->
@@ -11,7 +11,7 @@
                 Calan'Couleurs
             </h1>
             <p class="text-xl sm:text-2xl font-medium text-white drop-shadow-md">
-                12 & 13 septembre 2025
+                {{ $currentEdition->formatted_dates_2 }}
             </p>
         </div>
     </section>
@@ -31,7 +31,7 @@
                     </p>
 
                     <p class="text-lg font-bold leading-relaxed">
-                        Rendez-vous les 12 et 13 septembre 2025 à Campbon (44 750) pour une première édition haute
+                        Rendez-vous les {{ $currentEdition->formatted_dates_2 }} à Campbon (44 750) pour une {{ $currentEdition->edition_label }} haute
                         en couleur, avec une programmation mêlant artistes émergents et confirmés, dans une ambiance
                         conviviale et festive.
                     </p>

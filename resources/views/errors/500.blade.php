@@ -1,6 +1,6 @@
 @extends('errors::minimal')
 
-@section('title', 'Erreur serveur - Calan\'Couleurs Festival 2025')
+@section('title', 'Erreur serveur - Calan\'Couleurs Festival ' . $currentEdition->year)
 
 @section('code', '500')
 

@@ -37,7 +37,7 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
     {{-- Titre dynamique --}}
-    <title>@yield('title', 'Calan\'Couleurs Festival 2025')</title>
+    <title>@yield('title', 'Calan\'Couleurs Festival ' . $currentEdition->year)</title>
 
     <!-- Google Tag Manager -->
     <script>

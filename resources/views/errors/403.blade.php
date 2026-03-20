@@ -1,6 +1,6 @@
 @extends('errors::minimal')
 
-@section('title', 'Accès interdit - Calan\'Couleurs Festival 2025')
+@section('title', 'Accès interdit - Calan\'Couleurs Festival ' . $currentEdition->year)
 
 @section('code', '403')
 

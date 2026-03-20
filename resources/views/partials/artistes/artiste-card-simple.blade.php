@@ -9,13 +9,8 @@
             style="background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);">
             <h3 class="text-white font-bold text-base mb-1">{{ $artiste->name }}</h3>
             <p class="text-white text-xs">
-                @php
-                    $beginDate = \Carbon\Carbon::parse($artiste->begin_date);
-                    $dayLabel = $beginDate->format('l') === 'Friday' ? 'VEN 12' : 'SAM 13';
-                    $badgeColor = $beginDate->format('l') === 'Friday' ? 'bg-[#FF0F63]' : 'bg-[#8F1E98]';
-                @endphp
-                <span class="inline-block px-2 py-1 {{ $badgeColor }} rounded-full text-xs font-medium">
-                    {{ $dayLabel }}
+                <span class="inline-block px-2 py-1 {{ $artiste->day_color }} rounded-full text-xs font-medium uppercase">
+                    {{ $artiste->festival_day_label_court }}
                 </span>
             </p>
         </div>

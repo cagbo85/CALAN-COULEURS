@@ -49,7 +49,7 @@
     <div class="min-h-screen flex" x-data="{ sidebarOpen: false }">
 
         <!-- Sidebar -->
-        <div class="fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-lg transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0"
+        <div class="fixed inset-y-0 left-0 z-50 w-64 h-screen bg-white shadow-lg transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0"
             :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'">
 
             <!-- Logo -->
@@ -69,15 +69,25 @@
                 <a href="{{ route('dashboard') }}"
                     class="flex items-center px-6 py-3 {{ request()->routeIs('dashboard') ? 'text-gray-700 bg-purple-50 border-r-4 border-purple-500' : 'text-gray-600 hover:bg-gray-50 hover:text-purple-600 transition-colors' }}">
                     <i
-                        class="fas fa-tachometer-alt mr-3 {{ request()->routeIs('dashboard') ? 'text-purple-500' : '' }}"></i>
+                        class="fa-solid fa-gauge-high mr-3 {{ request()->routeIs('dashboard') ? 'text-purple-500' : '' }}"></i>
                     <span class="{{ request()->routeIs('dashboard') ? 'font-medium' : '' }}">Administration</span>
+                </a>
+
+                <!-- Éditions -->
+                <a href="{{ route('admin.editions.index') }}"
+                    class="flex items-center px-6 py-3 {{ request()->routeIs('admin.editions.*') ? 'text-gray-700 bg-purple-50 border-r-4 border-purple-500' : 'text-gray-600 hover:bg-gray-50 hover:text-purple-600 transition-colors' }}">
+                    <i
+                        class="fa-solid fa-calendar-days mr-3 {{ request()->routeIs('admin.editions.*') ? 'text-purple-500' : '' }}"></i>
+                    <span class="{{ request()->routeIs('admin.editions.*') ? 'font-medium' : '' }}">Éditions</span>
+                    <span
+                        class="ml-auto bg-purple-100 text-purple-600 text-xs px-2 py-1 rounded-full">{{ App\Models\Edition::count() }}</span>
                 </a>
 
                 <!-- Artistes -->
                 <a href="{{ route('admin.artistes.index') }}"
                     class="flex items-center px-6 py-3 {{ request()->routeIs('admin.artistes.*') ? 'text-gray-700 bg-purple-50 border-r-4 border-purple-500' : 'text-gray-600 hover:bg-gray-50 hover:text-purple-600 transition-colors' }}">
                     <i
-                        class="fas fa-microphone mr-3 {{ request()->routeIs('admin.artistes.*') ? 'text-purple-500' : '' }}"></i>
+                        class="fa-solid fa-microphone mr-3 {{ request()->routeIs('admin.artistes.*') ? 'text-purple-500' : '' }}"></i>
                     <span class="{{ request()->routeIs('admin.artistes.*') ? 'font-medium' : '' }}">Artistes</span>
                     <span
                         class="ml-auto bg-purple-100 text-purple-600 text-xs px-2 py-1 rounded-full">{{ App\Models\Artiste::count() }}</span>
@@ -96,7 +106,7 @@
                 <a href="{{ route('admin.users.index') }}"
                     class="flex items-center px-6 py-3 {{ request()->routeIs('admin.users.*') ? 'text-gray-700 bg-purple-50 border-r-4 border-purple-500' : 'text-gray-600 hover:bg-gray-50 hover:text-purple-600 transition-colors' }}">
                     <i
-                        class="fas fa-users mr-3 {{ request()->routeIs('admin.users.*') ? 'text-purple-500' : '' }}"></i>
+                        class="fa-solid fa-users mr-3 {{ request()->routeIs('admin.users.*') ? 'text-purple-500' : '' }}"></i>
                     <span class="{{ request()->routeIs('admin.users.*') ? 'font-medium' : '' }}">Utilisateurs</span>
                     <span
                         class="ml-auto bg-purple-100 text-purple-600 text-xs px-2 py-1 rounded-full">{{ App\Models\User::count() }}</span>
@@ -106,7 +116,7 @@
                 <a href="{{ route('admin.faqs.index') }}"
                     class="flex items-center px-6 py-3 {{ request()->routeIs('admin.faqs.*') ? 'text-gray-700 bg-purple-50 border-r-4 border-purple-500' : 'text-gray-600 hover:bg-gray-50 hover:text-purple-600 transition-colors' }}">
                     <i
-                        class="fas fa-question-circle mr-3 {{ request()->routeIs('admin.faqs.*') ? 'text-purple-500' : '' }}"></i>
+                        class="fa-solid fa-circle-question mr-3 {{ request()->routeIs('admin.faqs.*') ? 'text-purple-500' : '' }}"></i>
                     <span class="{{ request()->routeIs('admin.faqs.*') ? 'font-medium' : '' }}">Foire aux
                         questions</span>
                     <span
@@ -167,7 +177,7 @@
                         @csrf
                         <button type="submit" class="text-gray-400 hover:text-red-500 transition-colors"
                             title="Déconnexion">
-                            <i class="fas fa-sign-out-alt"></i>
+                            <i class="fa-solid fa-right-from-bracket"></i>
                         </button>
                     </form>
                 </div>
@@ -183,7 +193,7 @@
         </div>
 
         <!-- Main Content -->
-        <div class="flex-1 flex flex-col overflow-hidden lg:ml-0">
+        <div class="h-screen flex-1 flex flex-col overflow-hidden lg:ml-0">
 
             <!-- Top Header -->
             <header class="bg-white shadow-sm border-b border-gray-200">
@@ -192,19 +202,18 @@
                         <!-- Mobile menu button -->
                         <button @click="sidebarOpen = !sidebarOpen"
                             class="lg:hidden text-gray-500 hover:text-purple-600 transition-colors">
-                            <i class="fas fa-bars text-xl"></i>
+                            <i class="fa-solid fa-bars text-xl"></i>
                         </button>
 
                         <div class="ml-4 lg:ml-0">
                             @if (request()->routeIs('dashboard'))
-                                <h1 class="text-2xl font-bold text-gray-900">Dashboard</h1>
+                                <h1 class="text-2xl font-bold text-gray-900">Administration</h1>
                             @elseif(request()->routeIs('admin.artistes.index'))
                                 <h1 class="text-2xl font-bold text-gray-900">Gestion des Artistes</h1>
                                 <p class="text-sm text-gray-500">Gérez les artistes</p>
                             @elseif(request()->routeIs('admin.artistes.create'))
                                 <h1 class="text-2xl font-bold text-gray-900">Gestion des Artistes</h1>
-                                <p class="text-sm text-gray-500">Ajoutez un nouvel artiste
-                                </p>
+                                <p class="text-sm text-gray-500">Ajoutez un(e) nouvel(le) artiste</p>
                             @elseif (request()->routeIs('admin.artistes.show'))
                                 <h1 class="text-2xl font-bold text-gray-900">Gestion des Artistes</h1>
                                 <p class="text-sm text-gray-500">Modifiez les informations de l'artiste</p>
@@ -220,6 +229,21 @@
                             @elseif(request()->routeIs('admin.users.index'))
                                 <h1 class="text-2xl font-bold text-gray-900">Gestion des Utilisateurs</h1>
                                 <p class="text-sm text-gray-500">Gérez les utilisateurs</p>
+                            @elseif (request()->routeIs('admin.editions.index'))
+                                <h1 class="text-2xl font-bold text-gray-900">Gestion des Éditions</h1>
+                                <p class="text-sm text-gray-500">Gérez les éditions du festival</p>
+                            @elseif (request()->routeIs('admin.editions.show'))
+                                <h1 class="text-2xl font-bold text-gray-900">Gestion des Éditions</h1>
+                                <p class="text-sm text-gray-500">Modifiez les informations d'une édition</p>
+                            @elseif (request()->routeIs('admin.editions.create'))
+                                <h1 class="text-2xl font-bold text-gray-900">Gestion des Éditions</h1>
+                                <p class="text-sm text-gray-500">Ajoutez une nouvelle édition</p>
+                            @elseif (request()->routeIs('admin.editions.performances.index'))
+                                <h1 class="text-2xl font-bold text-gray-900">Gestion des Performances pour une Édition</h1>
+                                <p class="text-sm text-gray-500">Gérez les performances des artistes d'une édition</p>
+                            @elseif (request()->routeIs('admin.editions.performances.create'))
+                                <h1 class="text-2xl font-bold text-gray-900">Ajouter une Performance pour une Édition</h1>
+                                <p class="text-sm text-gray-500">Ajoutez une nouvelle performance pour une édition</p>
                             @else
                                 Dashboard
                             @endif
@@ -231,7 +255,7 @@
                             <!-- Page liste : Bouton ajouter -->
                             <a href="{{ route('admin.artistes.create') }}"
                                 class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition-colors flex items-center font-medium">
-                                <i class="fas fa-plus mr-2"></i>
+                                <i class="fa-solid fa-plus mr-2"></i>
                                 <span class="hidden sm:inline">Ajouter un artiste</span>
                                 <span class="sm:hidden">Ajouter</span>
                             </a>
@@ -239,48 +263,57 @@
                             <!-- Page liste : Bouton ajouter -->
                             <a href="{{ route('admin.faqs.create') }}"
                                 class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition-colors flex items-center font-medium">
-                                <i class="fas fa-plus mr-2"></i>
+                                <i class="fa-solid fa-plus mr-2"></i>
                                 <span class="hidden sm:inline">Ajouter une FAQ</span>
                                 <span class="sm:hidden">Ajouter</span>
                             </a>
+                        @elseif (request()->routeIs('admin.editions.index'))
+                            <!-- Page liste : Bouton ajouter -->
+                            <a href="{{ route('admin.editions.create') }}"
+                                class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition-colors flex items-center font-medium">
+                                <i class="fa-solid fa-plus mr-2"></i>
+                                <span class="hidden sm:inline">Ajouter une édition</span>
+                                <span class="sm:hidden">Ajouter</span>
+                            </a>
+                        @elseif (request()->routeIs('admin.editions.performances.index'))
+                            <!-- Page liste : Bouton ajouter -->
+                            {{-- <a href="{{ route('admin.editions.artistes.create') }}" --}}
+                            <a href="#"
+                                class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition-colors flex items-center font-medium">
+                                <i class="fa-solid fa-plus mr-2"></i>
+                                <span class="hidden sm:inline">Ajouter une performance à l'édition</span>
+                                <span class="sm:hidden">Ajouter</span>
+                            </a>
                         @endif
-                        <!-- Notifications -->
-                        {{-- <button class="relative text-gray-500 hover:text-purple-600 transition-colors">
-                            <i class="fas fa-bell text-xl"></i>
-                            <span
-                                class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">3</span>
-                        </button> --}}
 
                         <!-- Profile -->
-                        <div class="relative" x-data="{ profileOpen: false }">
-                            <button @click="profileOpen = !profileOpen"
-                                class="flex items-center text-gray-700 hover:text-purple-600 transition-colors">
+                        <div class="relative">
+                            <button id="profileButton"
+                                class="flex items-center text-gray-700 hover:text-purple-600 transition-colors focus:outline-none">
                                 <div
                                     class="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center text-white font-bold mr-2">
                                     {{ substr(auth()->user()->firstname, 0, 1) }}
                                 </div>
                                 <span class="hidden md:block">{{ auth()->user()->firstname }}</span>
-                                <i class="fas fa-chevron-down ml-1 text-sm"></i>
+                                <i class="fa-solid fa-chevron-down ml-1 text-sm"></i>
                             </button>
 
                             <!-- Dropdown -->
-                            <div x-show="profileOpen" @click.away="profileOpen = false"
-                                x-transition:enter="transition ease-out duration-100"
-                                x-transition:enter-start="transform opacity-0 scale-95"
-                                x-transition:enter-end="transform opacity-100 scale-100"
-                                class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg border border-gray-200 z-50">
-                                {{-- <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
+                            <div id="profileDropdown"
+                                class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg border border-gray-200 z-[9999]">
+                                {{-- <a href="#"
+                                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-t-md">
                                     <i class="fas fa-user mr-2"></i> Mon Profil
                                 </a>
                                 <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
                                     <i class="fas fa-cog mr-2"></i> Paramètres
-                                </a>
-                                <hr class="my-1"> --}}
+                                </a> --}}
+                                <hr class="my-1">
                                 <form method="POST" action="{{ route('logout') }}">
                                     @csrf
                                     <button type="submit"
-                                        class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50">
-                                        <i class="fas fa-sign-out-alt mr-2"></i> Déconnexion
+                                        class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 rounded-b-md">
+                                        <i class="fa-solid fa-right-from-bracket mr-2"></i> Déconnexion
                                     </button>
                                 </form>
                             </div>
@@ -293,22 +326,26 @@
             @yield('content')
         </div>
     </div>
-
-    @include('notify::components.notify')
-
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Forcer la fermeture de toutes les notifications après 3 secondes
-            setTimeout(function() {
-                // Cacher toutes les notifications visibles
-                document.querySelectorAll('.notify, .connect, .toast').forEach(function(notification) {
-                    if (notification.style.display !== 'none') {
-                        notification.style.display = 'none';
-                    }
-                });
-            }, 5000);
+            const profileButton = document.getElementById('profileButton');
+            const profileDropdown = document.getElementById('profileDropdown');
+
+            profileButton.addEventListener('click', function(e) {
+                e.preventDefault();
+                profileDropdown.classList.toggle('hidden');
+            });
+
+            // Fermer le dropdown en cliquant ailleurs
+            document.addEventListener('click', function(e) {
+                if (!profileButton.contains(e.target) && !profileDropdown.contains(e.target)) {
+                    profileDropdown.classList.add('hidden');
+                }
+            });
         });
     </script>
+
+    @include('notify::components.notify')
     @notifyJs
 </body>
 

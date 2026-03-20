@@ -40,7 +40,7 @@ export default function Navbar({ routes }) {
 
     const toggleDropdown = (dropdownName) => {
         setActiveDropdown(
-            activeDropdown === dropdownName ? null : dropdownName
+            activeDropdown === dropdownName ? null : dropdownName,
         );
     };
 
@@ -166,23 +166,58 @@ export default function Navbar({ routes }) {
                                     >
                                         À propos
                                     </a>
-                                    <a
+                                    {/* <a
                                         href="/partenaires"
                                         className="block px-4 py-2 text-gray-700 hover:bg-gray-50 hover:text-[#8F1E98] transition"
                                     >
                                         Partenaires
-                                    </a>
+                                    </a> */}
+                                    {routes?.partenaires && (
+                                        <a
+                                            href={routes.partenaires}
+                                            className="block px-4 py-2 text-gray-700 hover:bg-gray-50 hover:text-[#8F1E98] transition"
+                                        >
+                                            Partenaires
+                                        </a>
+                                    )}
                                 </div>
                             )}
                         </div>
 
                         {/* Liens simples */}
-                        <a
+                        {/* <a
                             href={routes?.programmation || "/programmation"}
                             className="block py-2 px-3 text-[#8F1E98] font-semibold hover:text-[#FF0F63] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8F1E98] rounded"
                         >
                             Programmation
-                        </a>
+                        </a> */}
+
+                        {routes?.news && (
+                            <a
+                                href={routes.news}
+                                className="block py-2 px-3 text-[#8F1E98] font-semibold hover:text-[#FF0F63] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8F1E98] rounded"
+                            >
+                                Actualités
+                            </a>
+                        )}
+
+                        {routes?.programmation && (
+                            <a
+                                href={routes.programmation}
+                                className="block py-2 px-3 text-[#8F1E98] font-semibold hover:text-[#FF0F63] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8F1E98] rounded"
+                            >
+                                Programmation
+                            </a>
+                        )}
+
+                        {routes?.photoSouvenirs && (
+                            <a
+                                href={routes.photoSouvenirs}
+                                className="block py-2 px-3 text-[#8F1E98] font-semibold hover:text-[#FF0F63] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8F1E98] rounded"
+                            >
+                                Photo Souvenirs
+                            </a>
+                        )}
 
                         <a
                             href={routes?.contact || "/contact"}
@@ -206,7 +241,7 @@ export default function Navbar({ routes }) {
                     <a
                         href={
                             routes?.billetterie ||
-                            "https://www.helloasso.com/associations/calan-couleurs/evenements/festival-calan-couleurs"
+                            "{{ $currentEdition->reservation_url }}"
                         }
                         target="_blank"
                         rel="noopener noreferrer"
@@ -320,15 +355,60 @@ export default function Navbar({ routes }) {
                         >
                             Partenaires
                         </a>
+
+                        {routes?.news && (
+                            <a
+                                href={routes.news}
+                                className="block py-2 pl-4 text-gray-700 hover:text-[#8F1E98] transition"
+                            >
+                                Actualités
+                            </a>
+                        )}
+
+                        {routes?.programmation && (
+                            <a
+                                href={routes.programmation}
+                                className="block py-2 pl-4 text-gray-700 hover:text-[#8F1E98] transition"
+                            >
+                                Programmation
+                            </a>
+                        )}
+
+                        {routes?.photoSouvenirs && (
+                            <a
+                                href={routes.photoSouvenirs}
+                                className="block py-2 pl-4 text-gray-700 hover:text-[#8F1E98] transition"
+                            >
+                                Photo Souvenirs
+                            </a>
+                        )}
                     </div>
 
                     {/* Liens directs Mobile */}
-                    <a
-                        href={routes?.programmation || "/programmation"}
-                        className="block py-3 text-[#8F1E98] font-semibold hover:text-[#FF0F63] transition border-t border-gray-100"
-                    >
-                        Programmation
-                    </a>
+                    {routes?.news && (
+                        <a
+                            href={routes.news}
+                            className="block py-3 text-[#8F1E98] font-semibold hover:text-[#FF0F63] transition border-t border-gray-100"
+                        >
+                            Actualités
+                        </a>
+                    )}
+                    {routes?.programmation && (
+                        <a
+                            href={routes.programmation}
+                            className="block py-3 text-[#8F1E98] font-semibold hover:text-[#FF0F63] transition border-t border-gray-100"
+                        >
+                            Programmation
+                        </a>
+                    )}
+                    {routes?.photoSouvenirs && (
+                        <a
+                            href={routes.photoSouvenirs}
+                            className="block py-3 text-[#8F1E98] font-semibold hover:text-[#FF0F63] transition border-t border-gray-100"
+                        >
+                            Photo Souvenirs
+                        </a>
+                    )}
                     <a
                         href={routes?.contact || "/contact"}
                         className="block py-3 text-[#8F1E98] font-semibold hover:text-[#FF0F63] transition"
@@ -349,7 +429,7 @@ export default function Navbar({ routes }) {
                     <a
                         href={
                             routes?.billetterie ||
-                            "https://www.helloasso.com/associations/calan-couleurs/evenements/festival-calan-couleurs"
+                            "{{ $currentEdition->reservation_url }}"
                         }
                         target="_blank"
                         rel="noopener noreferrer"

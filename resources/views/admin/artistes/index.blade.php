@@ -9,64 +9,48 @@
         <div class="p-6">
 
             <!-- Statistiques rapides -->
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-                <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
-                    <div class="flex items-center">
-                        <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
-                            <i class="fas fa-microphone text-purple-600 text-xl"></i>
-                        </div>
-                        <div class="ml-4">
-                            <p class="text-sm font-medium text-gray-500">Total Artistes</p>
-                            <p class="text-2xl font-bold text-gray-900">{{ $artistes->count() }}</p>
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 mb-6">
+                <button type="button" id="stats-toggle"
+                    class="w-full px-6 py-4 flex items-center justify-between transition-colors">
+                    <div class="flex items-center gap-3">
+                        <i class="fa-solid fa-chart-pie text-purple-600 text-xl"></i>
+                        <h3 class="text-lg font-semibold text-gray-900">Statistiques</h3>
+                        <span class="hidden sm:inline-block text-sm text-gray-500 bg-gray-100 px-3 py-1 rounded-full">
+                            {{ $artistes->count() }} artiste{{ $artistes->count() > 1 ? 's' : '' }}
+                        </span>
+                    </div>
+                    <i class="fa-solid fa-chevron-down text-gray-400 transition-transform duration-300" id="stats-icon"></i>
+                </button>
+
+                <!-- Contenu -->
+                <div id="stats-content"
+                    class="border-gray-200 bg-gray-50 max-h-96 rounded-b-lg overflow-hidden transition-all duration-300"
+                    style="max-height: 0;">
+                    <div class="p-6">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
+                            <!-- Total des artistes -->
+                            <div class="bg-white rounded-lg p-4 border border-gray-200 hover:shadow-md">
+                                <div class="flex items-center gap-3">
+                                    <div
+                                        class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                                        <i class="fa-solid fa-calendar-days text-blue-600"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs text-gray-500">Total artistes</p>
+                                        <p class="text-2xl font-bold text-gray-900">{{ $artistes->count() }}</p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-
-                <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
-                    <div class="flex items-center">
-                        <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
-                            <i class="fas fa-check-circle text-green-600 text-xl"></i>
-                        </div>
-                        <div class="ml-4">
-                            <p class="text-sm font-medium text-gray-500">Actifs</p>
-                            <p class="text-2xl font-bold text-gray-900">
-                                {{ $artistes->where('actif', 1)->count() }}</p>
-                        </div>
-                    </div>
-                </div>
-
-                {{-- <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
-                            <div class="flex items-center">
-                                <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                                    <i class="fas fa-calendar text-blue-600 text-xl"></i>
-                                </div>
-                                <div class="ml-4">
-                                    <p class="text-sm font-medium text-gray-500">Ce weekend</p>
-                                    <p class="text-2xl font-bold text-gray-900">
-                                        {{ $artistes->whereBetween('begin_date', [now()->startOfWeek(), now()->endOfWeek()])->count() }}
-                                    </p>
-                                </div>
-                            </div>
-                        </div> --}}
-
-                {{-- <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
-                            <div class="flex items-center">
-                                <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
-                                    <i class="fas fa-image text-orange-600 text-xl"></i>
-                                </div>
-                                <div class="ml-4">
-                                    <p class="text-sm font-medium text-gray-500">Avec photo</p>
-                                    <p class="text-2xl font-bold text-gray-900">
-                                        {{ $artistes->whereNotNull('photo')->count() }}</p>
-                                </div>
-                            </div>
-                        </div> --}}
             </div>
 
             <!-- Filtres et recherche -->
             <div class="bg-white rounded-lg shadow-sm border border-gray-200 mb-6">
-                <div class="p-6">
-                    <div class="flex flex-col md:flex-row gap-4">
+                <div class="p-4 sm:p-6">
+                    <div class="flex flex-col xl:flex-row xl:items-end gap-4">
+
                         <!-- Recherche -->
                         <div class="flex-1">
                             <label class="block text-sm font-medium text-gray-700 mb-2">Rechercher</label>
@@ -74,40 +58,15 @@
                                 class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500">
                         </div>
 
-                        <!-- Jour -->
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Jour</label>
-                            <select id="day-select"
-                                class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500">
-                                <option value="">Tous les jours</option>
-                                <option value="vendredi">Vendredi</option>
-                                <option value="samedi">Samedi</option>
-                                <option value="dimanche">Dimanche</option>
-                            </select>
-                        </div>
-
-                        <!-- Statut -->
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Statut</label>
-                            <select id="status-select"
-                                class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500">
-                                <option value="">Tous</option>
-                                <option value="1">Actif</option>
-                                <option value="0">Inactif</option>
-                            </select>
-                        </div>
-
                         <!-- Bouton Reset -->
-                        <div class="flex items-end">
-                            <button type="button" id="reset-filters"
-                                class="bg-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-400 transition-colors">
-                                <i class="fas fa-times mr-1"></i> Reset
-                            </button>
-                        </div>
+                        <button type="button" id="reset-filters"
+                            class="w-full xl:w-auto bg-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-400 transition-colors flex items-center justify-center xl:justify-start">
+                            <i class="fa-solid fa-xmark mr-1"></i> Reset
+                        </button>
                     </div>
 
                     <!-- Compteur de résultats -->
-                    <div class="mt-4 text-sm text-gray-600">
+                    <div class="text-sm text-gray-600 pt-4 mt-4 border-t border-gray-100">
                         <span id="results-count">{{ $artistes->count() }}
                             résultat{{ $artistes->count() > 1 ? 's' : '' }}</span>
                     </div>
@@ -119,8 +78,7 @@
                 <div class="bg-white rounded-lg shadow-sm border border-gray-200">
                     <div class="px-6 py-4 border-b border-gray-200">
                         <h3 class="text-lg font-semibold text-gray-900">
-                            Liste des artistes ({{ $artistes->count() }}
-                            résultat{{ $artistes->count() > 1 ? 's' : '' }})
+                            Liste des artistes
                         </h3>
                     </div>
 
@@ -136,18 +94,6 @@
                                     <th
                                         class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                         Style
-                                    </th>
-                                    <th
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Programmation
-                                    </th>
-                                    <th
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Scène
-                                    </th>
-                                    <th
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Statut
                                     </th>
                                     <th
                                         class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -167,7 +113,7 @@
                                                 @else
                                                     <div
                                                         class="h-12 w-12 rounded-full bg-purple-100 flex items-center justify-center mr-4">
-                                                        <i class="fas fa-microphone text-purple-600"></i>
+                                                        <i class="fa-solid fa-microphone text-purple-600"></i>
                                                     </div>
                                                 @endif
                                                 <div>
@@ -195,67 +141,16 @@
                                             @endif
                                         </td>
 
-                                        <!-- Programmation -->
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                            <div class="flex flex-col">
-                                                <span class="font-medium capitalize">{{ $artiste->day }}</span>
-                                                <span class="text-xs text-gray-500">
-                                                    {{ \Carbon\Carbon::parse($artiste->begin_date)->format('H:i') }}
-                                                    -
-                                                    {{ \Carbon\Carbon::parse($artiste->ending_date)->format('H:i') }}
-                                                </span>
-                                            </div>
-                                        </td>
-
-                                        <!-- Scène -->
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            @if ($artiste->scene)
-                                                <span class="text-sm text-gray-900">
-                                                    {{ $artiste->scene }}
-                                                </span>
-                                            @else
-                                                <span class="text-gray-400 text-sm">Non défini</span>
-                                            @endif
-                                        </td>
-
-                                        <!-- Statut -->
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            @if ($artiste->actif)
-                                                <span
-                                                    class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
-                                                    <i class="fas fa-check mr-1"></i> Actif
-                                                </span>
-                                            @else
-                                                <span
-                                                    class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-800">
-                                                    <i class="fas fa-times mr-1"></i> Inactif
-                                                </span>
-                                            @endif
-                                        </td>
-
                                         <!-- Actions -->
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                        <td class="px-6 py-4 whitespace-nowrap text-left">
                                             <div class="flex items-center space-x-2">
                                                 <!-- Voir -->
                                                 <a href="{{ route('admin.artistes.show', $artiste->id) }}"
-                                                    class="text-blue-600 hover:text-blue-900 transition-colors"
+                                                    class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors"
                                                     title="Voir">
-                                                    <i class="fas fa-eye"></i>
+                                                    <i class="fa-solid fa-eye"></i>
+                                                    Voir
                                                 </a>
-
-                                                <!-- Masquer -->
-                                                <form method="POST"
-                                                    action="{{ route('admin.artistes.destroy', $artiste->id) }}"
-                                                    class="inline"
-                                                    onsubmit="return confirm('Êtes-vous sûr de vouloir masquer cet artiste ? Il ne sera plus visible sur le site.')">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit"
-                                                        class="text-orange-600 hover:text-orange-900 transition-colors"
-                                                        title="Masquer">
-                                                        <i class="fas fa-eye-slash"></i>
-                                                    </button>
-                                                </form>
                                             </div>
                                         </td>
                                     </tr>
@@ -268,27 +163,27 @@
                 <!-- État vide -->
                 <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-12 text-center">
                     <div class="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <i class="fas fa-microphone text-gray-400 text-3xl"></i>
+                        <i class="fa-solid fa-microphone text-gray-400 text-3xl"></i>
                     </div>
                     <h3 class="text-lg font-medium text-gray-900 mb-2">Aucun artiste trouvé</h3>
                     <p class="text-gray-500 mb-6">
-                        @if (request()->anyFilled(['search', 'day', 'actif']))
+                        @if (request()->anyFilled(['search']))
                             Aucun artiste ne correspond à vos critères de recherche.
                         @else
                             Commencez par ajouter votre premier artiste au festival.
                         @endif
                     </p>
                     <div class="space-x-3">
-                        @if (request()->anyFilled(['search', 'day', 'actif']))
+                        @if (request()->anyFilled(['search']))
                             <a href="{{ route('admin.artistes.index') }}"
                                 class="inline-flex items-center px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 transition-colors">
-                                <i class="fas fa-times mr-2"></i>
+                                <i class="fa-solid fa-xmark mr-2"></i>
                                 Effacer les filtres
                             </a>
                         @endif
                         <a href="{{ route('admin.artistes.create') }}"
                             class="inline-flex items-center px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition-colors">
-                            <i class="fas fa-plus mr-2"></i>
+                            <i class="fa-solid fa-user-plus mr-2"></i>
                             Ajouter un artiste
                         </a>
                     </div>
@@ -297,7 +192,7 @@
 
             <div id="no-results" class="bg-white rounded-lg shadow-sm border border-gray-200 p-12 text-center hidden">
                 <div class="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <i class="fas fa-search text-gray-400 text-3xl"></i>
+                    <i class="fa-solid fa-magnifying-glass text-gray-400 text-3xl"></i>
                 </div>
                 <h3 class="text-lg font-medium text-gray-900 mb-2">Aucun artistes ne correspond à vos critères</h3>
                 <p class="text-gray-500 mb-6">
@@ -305,7 +200,7 @@
                 </p>
                 <button onclick="resetFilters()"
                     class="inline-flex items-center px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 transition-colors">
-                    <i class="fas fa-times mr-2"></i>
+                    <i class="fa-solid fa-xmark mr-2"></i>
                     Effacer les filtres
                 </button>
             </div>
@@ -314,18 +209,30 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const searchInput = document.getElementById('search-input');
-            const daySelect = document.getElementById('day-select');
-            const statusSelect = document.getElementById('status-select');
             const resetButton = document.getElementById('reset-filters');
             const resultsCount = document.getElementById('results-count');
             const artistesTable = document.getElementById('artistes-table');
             const noResults = document.getElementById('no-results');
             const artistesContainer = artistesTable.closest('.bg-white');
 
+            const statsToggle = document.getElementById('stats-toggle');
+            const statsContent = document.getElementById('stats-content');
+            const statsIcon = document.getElementById('stats-icon');
+            let isOpen = false;
+
+            statsToggle.addEventListener('click', () => {
+                isOpen = !isOpen;
+                if (isOpen) {
+                    statsContent.style.maxHeight = statsContent.scrollHeight + 'px';
+                    statsIcon.style.transform = 'rotate(180deg)';
+                } else {
+                    statsContent.style.maxHeight = '0';
+                    statsIcon.style.transform = 'rotate(0deg)';
+                }
+            });
+
             function filterArtistes() {
                 const searchTerm = searchInput.value.toLowerCase();
-                const selectedDay = daySelect.value.toLowerCase();
-                const selectedStatus = statusSelect.value;
 
                 const rows = artistesTable.querySelectorAll('tbody tr');
                 let visibleCount = 0;
@@ -333,22 +240,15 @@
                 rows.forEach(row => {
                     const nameCell = row.querySelector('td:nth-child(1)');
                     const styleCell = row.querySelector('td:nth-child(2)');
-                    const dayCell = row.querySelector('td:nth-child(3)');
-                    const statusCell = row.querySelector('td:nth-child(5)');
 
                     const name = nameCell.textContent.toLowerCase();
                     const style = styleCell.textContent.toLowerCase();
-                    const day = dayCell.textContent.toLowerCase();
-                    const isActive = statusCell.textContent.includes('Actif') ? '1' : '0';
 
                     const matchesSearch = !searchTerm ||
                         name.includes(searchTerm) ||
                         style.includes(searchTerm);
 
-                    const matchesDay = !selectedDay || day.includes(selectedDay);
-                    const matchesStatus = !selectedStatus || isActive === selectedStatus;
-
-                    if (matchesSearch && matchesDay && matchesStatus) {
+                    if (matchesSearch) {
                         row.style.display = '';
                         visibleCount++;
                     } else {
@@ -358,14 +258,14 @@
 
                 updateResultsCount(visibleCount);
 
-                const hasActiveFilters = searchTerm || selectedDay || selectedStatus;
+                const hasActiveFilters = searchTerm;
 
                 if (visibleCount === 0 && hasActiveFilters) {
-                    // Aucun résultat avec filtres actifs → Afficher message
+                    // Aucun résultat avec filtres actifs -> Afficher message
                     artistesContainer.style.display = 'none';
                     noResults.classList.remove('hidden');
                 } else {
-                    // Des résultats ou pas de filtres → Afficher tableau
+                    // Des résultats ou pas de filtres -> Afficher tableau
                     artistesContainer.style.display = 'block';
                     noResults.classList.add('hidden');
                 }
@@ -377,17 +277,12 @@
 
             function resetFilters() {
                 searchInput.value = '';
-                daySelect.value = '';
-                statusSelect.value = '';
                 filterArtistes();
             }
 
-            // ✅ RENDRE resetFilters GLOBALE
             window.resetFilters = resetFilters;
 
             searchInput.addEventListener('input', filterArtistes);
-            daySelect.addEventListener('change', filterArtistes);
-            statusSelect.addEventListener('change', filterArtistes);
             resetButton.addEventListener('click', resetFilters);
 
             filterArtistes();

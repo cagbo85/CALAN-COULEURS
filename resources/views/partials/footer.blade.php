@@ -29,21 +29,26 @@
                         <a href="{{ route('festival') }}"
                             class="text-white hover:text-[#FF0F63] font-medium transition">Le Festival</a>
                     </li>
+                    @if ($showProgrammation ?? false)
+                        <li>
+                            <a href="{{ route('programmation') }}"
+                                class="text-white hover:text-[#FF0F63] font-medium transition">
+                                Programmation
+                            </a>
+                        </li>
+                    @endif
                     <li>
-                        <a href="{{ route('programmation') }}"
-                            class="text-white hover:text-[#FF0F63] font-medium transition">Programmation</a>
-                    </li>
-                    <li>
-                        <a href="https://www.helloasso.com/associations/calan-couleurs/evenements/festival-calan-couleurs"
-                            target="_blank" rel="noopener noreferrer"
+                        <a href="{{ $currentEdition->reservation_url }}" target="_blank" rel="noopener noreferrer"
                             class="text-white hover:text-[#FF0F63] font-medium transition">
                             Billetterie <span class="sr-only">(nouvelle fenêtre)</span>
                         </a>
                     </li>
-                    <li>
-                        <a href="{{ route('partenaires') }}"
-                            class="text-white hover:text-[#FF0F63] font-medium transition">Partenaires</a>
-                    </li>
+                    @if ($showPartenaires ?? false)
+                        <li>
+                            <a href="{{ route('partenaires') }}"
+                                class="text-white hover:text-[#FF0F63] font-medium transition">Partenaires</a>
+                        </li>
+                    @endif
                     <li>
                         <a href="{{ route('charte') }}"
                             class="text-white hover:text-[#FF0F63] font-medium transition">Charte</a>
@@ -92,52 +97,16 @@
                     </a>
             </ul>
 
-            {{-- Copyright et mentions légales --}}
-            <div class="flex flex-col sm:flex-row gap-2 sm:gap-6 text-center sm:text-right">
-                <small class="text-sm text-white/80">© 2025 Calan'Couleurs. Tous droits réservés.</small>
+            {{-- Copyright + administration --}}
+            <div class="flex flex-col sm:flex-row gap-2 sm:gap-6 text-center sm:text-right items-center">
+                <small class="text-sm text-white/80">© {{ date('Y') }} Calan'Couleurs. Tous droits réservés.</small>
                 {{-- <a href="#" class="text-sm text-white/70 hover:text-white transition duration-300 focus:outline-none focus-visible:ring focus-visible:ring-offset-2 focus-visible:ring-white/60 rounded">Mentions légales</a>
                 <a href="#" class="text-sm text-white/70 hover:text-white transition duration-300 focus:outline-none focus-visible:ring focus-visible:ring-offset-2 focus-visible:ring-white/60 rounded">Politique de confidentialité</a> --}}
+                <a href="{{ route('login') }}" class="text-xs text-white/60 hover:text-white transition" target="_blank"
+                    rel="noopener noreferrer" aria-label="Accéder à l'administration">
+                    Administration
+                </a>
             </div>
         </div>
     </div>
 </footer>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const trigger = document.getElementById('admin-trigger');
-        let clicks = 0;
-        let timer = null;
-
-        function goAdmin() {
-            window.open('{{ route('login') }}', '_blank', 'noopener,noreferrer');
-        }
-
-        trigger.addEventListener('click', () => {
-            clicks++;
-            if (clicks === 1) {
-                timer = setTimeout(() => {
-                    clicks = 0;
-                }, 500);
-            } else if (clicks === 2) {
-                clearTimeout(timer);
-                clicks = 0;
-                goAdmin();
-            }
-        });
-
-        trigger.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                clicks++;
-                if (clicks === 1) {
-                    timer = setTimeout(() => {
-                        clicks = 0;
-                    }, 500);
-                } else if (clicks === 2) {
-                    clearTimeout(timer);
-                    clicks = 0;
-                    goAdmin();
-                }
-            }
-        });
-    });
-</script>

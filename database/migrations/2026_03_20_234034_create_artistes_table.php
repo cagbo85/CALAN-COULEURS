@@ -18,10 +18,6 @@ return new class extends Migration
             $table->string('style', 100)->nullable()->comment('Style de musique de l\'artiste');
             $table->mediumText('description')->nullable()->comment('Description/bio de l\'artiste');
             $table->string('photo')->nullable()->comment('Chemin vers l\'image');
-            $table->enum('day', ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'])->comment('Jour de passage');
-            $table->dateTime('begin_date')->comment('Date et heure exacte du début de la représentation');
-            $table->dateTime('ending_date')->comment('Date et heure exacte de la fin de la représentation');
-            $table->enum('scene', ['Extérieur', 'Intérieur'])->comment('Type de scène');
             $table->string('soundcloud_url', 500)->nullable()->comment('Lien SoundCloud');
             $table->string('spotify_url', 500)->nullable()->comment('Lien Spotify');
             $table->string('youtube_url', 500)->nullable()->comment('Lien YouTube Music');

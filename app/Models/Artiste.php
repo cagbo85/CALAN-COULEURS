@@ -6,7 +6,9 @@
 
 namespace App\Models;
 
+use App\Models\Performance;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -18,10 +20,6 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $style
  * @property string|null $description
  * @property string|null $photo
- * @property string $day
- * @property Carbon $begin_date
- * @property Carbon $ending_date
- * @property string $scene
  * @property string|null $soundcloud_url
  * @property string|null $spotify_url
  * @property string|null $youtube_url
@@ -32,40 +30,34 @@ use Illuminate\Database\Eloquent\Model;
  * @property Carbon|null $updated_at
  *
  * @property User|null $user
- * @property Collection|Edition[] $editions
+ * @property Collection|Performance[] $performances
  *
  * @package App\Models
  */
 class Artiste extends Model
 {
     use HasFactory;
-	protected $table = 'artistes';
+    protected $table = 'artistes';
 
-	protected $casts = [
-		'begin_date' => 'datetime',
-		'ending_date' => 'datetime',
-		'created_by' => 'int',
-		'updated_by' => 'int'
-	];
+    protected $casts = [
+        'created_by' => 'int',
+        'updated_by' => 'int'
+    ];
 
-	protected $fillable = [
-		'name',
-		'style',
-		'description',
-		'photo',
-		'day',
-		'begin_date',
-		'ending_date',
-		'scene',
-		'soundcloud_url',
-		'spotify_url',
-		'youtube_url',
-		'deezer_url',
-		'created_by',
-		'updated_by'
-	];
+    protected $fillable = [
+        'name',
+        'style',
+        'description',
+        'photo',
+        'soundcloud_url',
+        'spotify_url',
+        'youtube_url',
+        'deezer_url',
+        'created_by',
+        'updated_by'
+    ];
 
-	/**
+    /**
      * Utilisateur ayant créé cet artiste.
      */
     public function createdBy()
@@ -82,11 +74,11 @@ class Artiste extends Model
     }
 
     /**
-     * Les éditions associées à cet artiste.
+     * Les performances associées à cet artiste.
      */
-	public function editions()
-	{
-		return $this->belongsToMany(Edition::class, 'edition_artistes')
-					->withPivot('actif');
-	}
+    public function performances()
+    {
+        return $this->belongsToMany(Performance::class, 'performances')
+            ->withPivot('actif');
+    }
 }

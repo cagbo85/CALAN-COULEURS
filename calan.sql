@@ -125,15 +125,10 @@ CREATE TABLE IF NOT EXISTS artistes (
     style VARCHAR(100) DEFAULT NULL COMMENT 'Style de musique de l\'artiste',
     description MEDIUMTEXT DEFAULT NULL COMMENT 'Description/bio de l\'artiste',
     photo VARCHAR(255) DEFAULT NULL COMMENT 'Chemin vers l\'image',
-    day ENUM('Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche') NOT NULL COMMENT 'Jour de passage',
-    begin_date DATETIME NOT NULL COMMENT 'Date et heure exacte du début de la représentation',
-    ending_date DATETIME NOT NULL COMMENT 'Date et heure exacte de la fin de la représentation',
-    scene ENUM('Extérieur', 'Intérieur') NOT NULL COMMENT 'Type de scène',
     soundcloud_url VARCHAR(500) DEFAULT NULL COMMENT 'Lien SoundCloud',
     spotify_url VARCHAR(500) DEFAULT NULL COMMENT 'Lien Spotify',
     youtube_url VARCHAR(500) DEFAULT NULL COMMENT 'Lien YouTube Music',
     deezer_url VARCHAR(500) DEFAULT NULL COMMENT 'Lien Deezer',
-    -- actif BOOLEAN NOT NULL DEFAULT 1 COMMENT 'Artiste actif/masqué',
     created_by INT DEFAULT NULL COMMENT 'ID utilisateur créateur',
     updated_by INT DEFAULT NULL COMMENT 'ID de l\'utilisateur qui a modifié',
     created_at TIMESTAMP NULL DEFAULT current_timestamp() COMMENT 'Date de création',
@@ -167,6 +162,30 @@ INSERT INTO artistes (name, style, description, photo, day, begin_date, ending_d
 ('Yonex', NULL, NULL, 'img/artists/photos/Photos_artistes/YONEX.webp', 'Samedi', '2025-09-14 00:30:00', '2025-09-14 02:00:00', 'Intérieur', NULL, NULL, NULL, NULL, TRUE, 1, 1),
 ('Leydon', NULL, NULL, 'img/artists/photos/Photos_artistes/LEYDON.webp', 'Samedi', '2025-09-14 02:00:00', '2025-09-14 04:00:00', 'Extérieur', NULL, NULL, NULL, 'https://www.deezer.com/fr/artist/9308144?host=6419575083&deferredFl=1&fbclid=IwY2xjawKbv1RleHRuA2FlbQIxMABicmlkETFnQ3Z2bGw4Y01qUHZkR0pqAR4748kQhqzZGgjReEhijP9rprGnHfCOnd8X85oZrCj1cUmGD0Vm8DDo8Er-3Q_aem_8FPs1pQIei2j88XaZOqOKw&host=6419575083&deferredFl=1&fbclid=IwY2xjawKbv1RleHRuA2FlbQIxMABicmlkETFnQ3Z2bGw4Y01qUHZkR0pqAR4748kQhqzZGgjReEhijP9rprGnHfCOnd8X85oZrCj1cUmGD0Vm8DDo8Er-3Q_aem_8FPs1pQIei2j88XaZOqOKw', TRUE, 1, 1),
 ('Tripidium', NULL, NULL, 'img/artists/photos/Photos_artistes/TRIPIDIUM.webp', 'Samedi', '2025-09-14 02:00:00', '2025-09-14 03:30:00', 'Intérieur', 'https://soundcloud.com/iav-498336354', NULL, NULL, NULL, TRUE, 1, 1);
+
+-- =================================================================
+-- TABLE PERFORMANCES - Gestion des performances des artistes du festival
+-- =================================================================
+CREATE TABLE IF NOT EXISTS performances (
+    id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    edition_id INT NOT NULL COMMENT 'ID de l\'édition du festival',
+    artiste_id INT NOT NULL COMMENT 'ID de l\'artiste',
+    begin_date DATETIME DEFAULT NULL COMMENT 'Date et heure exacte du début de la performance',
+    ending_date DATETIME DEFAULT NULL COMMENT 'Date et heure exacte de la fin de la performance',
+    scene ENUM('Extérieur', 'Intérieur') DEFAULT NULL COMMENT 'Type de scène',
+    day ENUM('Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche') DEFAULT NULL COMMENT 'Jour de passage',
+    actif BOOLEAN NOT NULL DEFAULT 1 COMMENT 'Performance active/masquée',
+    created_by INT DEFAULT NULL COMMENT 'ID utilisateur créateur',
+    updated_by INT DEFAULT NULL COMMENT 'ID de l\'utilisateur qui a modifié',
+    created_at TIMESTAMP NULL DEFAULT current_timestamp() COMMENT 'Date de création',
+    updated_at TIMESTAMP NULL DEFAULT current_timestamp() ON UPDATE current_timestamp() COMMENT 'Date de modification',
+    KEY created_by (created_by),
+    KEY updated_by (updated_by),
+    CONSTRAINT performances_ibfk_1 FOREIGN KEY (edition_id) REFERENCES editions (id),
+    CONSTRAINT performances_ibfk_2 FOREIGN KEY (artiste_id) REFERENCES artistes (id),
+    CONSTRAINT performances_ibfk_3 FOREIGN KEY (created_by) REFERENCES users (id),
+    CONSTRAINT performances_ibfk_4 FOREIGN KEY (updated_by) REFERENCES users (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Table des performances des artistes du festival';
 
 CREATE TABLE IF NOT EXISTS faqs (
     id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
@@ -202,9 +221,7 @@ CREATE TABLE IF NOT EXISTS stands (
     facebook_url VARCHAR(255) DEFAULT NULL COMMENT 'Lien Facebook',
     website_url VARCHAR(255) DEFAULT NULL COMMENT 'Site web officiel',
     other_link VARCHAR(255) DEFAULT NULL COMMENT 'Autre lien (TikTok, etc.)',
-    -- actif BOOLEAN NOT NULL DEFAULT 1 COMMENT 'Stand affiché ou non',
     ordre INT NOT NULL DEFAULT 0 COMMENT 'Ordre d\'affichage',
-    -- year YEAR DEFAULT NULL COMMENT 'Année du festival (pour gérer les éditions)',
     created_by INT DEFAULT NULL COMMENT 'ID utilisateur créateur',
     updated_by INT DEFAULT NULL COMMENT 'ID de l\'utilisateur qui a modifié',
     created_at TIMESTAMP NULL DEFAULT current_timestamp() COMMENT 'Date de création',
@@ -244,9 +261,7 @@ CREATE TABLE IF NOT EXISTS partenaires (
     pays VARCHAR(100) DEFAULT NULL COMMENT 'Pays',
     latitude DECIMAL(10,8) DEFAULT NULL COMMENT 'Latitude',
     longitude DECIMAL(11,8) DEFAULT NULL COMMENT 'Longitude',
-    -- actif BOOLEAN NOT NULL DEFAULT 1 COMMENT 'Partenaire actif',
     ordre INT NOT NULL DEFAULT 0 COMMENT 'Ordre d\'affichage',
-    -- annee YEAR DEFAULT NULL COMMENT 'Année de partenariat',
     created_by INT DEFAULT NULL COMMENT 'ID utilisateur créateur',
     updated_by INT DEFAULT NULL COMMENT 'ID de l\'utilisateur qui a modifié',
     created_at TIMESTAMP NULL DEFAULT current_timestamp() COMMENT 'Date de création',
@@ -436,11 +451,13 @@ CREATE TABLE IF NOT EXISTS shipments (
 
 CREATE TABLE IF NOT EXISTS editions (
     id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    year YEAR NOT NULL UNIQUE COMMENT 'Année de l\'édition',
+    year INT NOT NULL UNIQUE COMMENT 'Année de l\'édition',
     name VARCHAR(255) DEFAULT NULL COMMENT 'Nom de l\'édition',
+    reservation_url VARCHAR(255) DEFAULT NULL COMMENT 'Lien vers la billetterie de l\'édition',
     begin_date DATETIME NOT NULL COMMENT 'Date et heure exacte de l\'ouverture des portes de l\'édition',
     ending_date DATETIME NOT NULL COMMENT 'Date et heure exacte de la fermeture des portes de l\'édition',
-    actif BOOLEAN NOT NULL DEFAULT 1 COMMENT 'Édition actif/inactif',
+    actif BOOLEAN NOT NULL DEFAULT 0 COMMENT 'Édition actif/inactif',
+    status ENUM('draft', 'upcoming', 'ongoing', 'past', 'archived') NOT NULL DEFAULT 'draft' COMMENT 'État du festival',
     created_by INT DEFAULT NULL COMMENT 'ID utilisateur créateur',
     updated_by INT DEFAULT NULL COMMENT 'ID de l\'utilisateur qui a modifié',
     created_at TIMESTAMP NULL DEFAULT current_timestamp() COMMENT 'Date de création',
@@ -450,16 +467,6 @@ CREATE TABLE IF NOT EXISTS editions (
     CONSTRAINT editions_ibfk_1 FOREIGN KEY (created_by) REFERENCES users(id),
     CONSTRAINT editions_ibfk_2 FOREIGN KEY (updated_by) REFERENCES users(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Éditions du festival';
-
-CREATE TABLE IF NOT EXISTS edition_artistes (
-    edition_id INT NOT NULL,
-    artiste_id INT NOT NULL,
-    actif BOOLEAN NOT NULL DEFAULT 1 COMMENT 'Artiste actif/masqué',
-    created_at TIMESTAMP NULL DEFAULT current_timestamp() COMMENT 'Date de création',
-    PRIMARY KEY (edition_id, artiste_id),
-    CONSTRAINT edition_artistes_ibfk_1 FOREIGN KEY (edition_id) REFERENCES editions(id),
-    CONSTRAINT edition_artistes_ibfk_2 FOREIGN KEY (artiste_id) REFERENCES artistes(id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Association entre les éditions et les artistes';
 
 CREATE TABLE IF NOT EXISTS edition_stands (
     edition_id INT NOT NULL,

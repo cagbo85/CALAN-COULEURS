@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             EditionSeeder::class,
             ArtisteSeeder::class,
+            PerformanceSeeder::class,
             StandSeeder::class,
             PartenaireSeeder::class,
             SizeSeeder::class,
@@ -23,7 +24,6 @@ class DatabaseSeeder extends Seeder
             FaqSeeder::class,
             ProductSeeder::class,
             ProductImageSeeder::class,
-            EditionArtistesSeeder::class,
             EditionStandsSeeder::class,
             EditionPartenairesSeeder::class,
         ]);

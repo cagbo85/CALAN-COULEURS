@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class EditionSeeder extends Seeder
 {
@@ -21,25 +20,38 @@ class EditionSeeder extends Seeder
 
         $now = Carbon::now();
 
-        // Vérifie si l’édition 2025 existe déjà pour éviter les doublons
-        $exists = DB::table('editions')->where('year', 2025)->exists();
+        $editions = [
+            [
+                'year' => 2025,
+                'name' => "Calan'Couleurs 2K25",
+                'reservation_url' => 'https://www.helloasso.com/associations/calan-couleurs/evenements/festival-calan-couleurs',
+                'begin_date' => '2025-09-12 19:00:00',
+                'ending_date' => '2025-09-14 05:00:00',
+                'actif' => true,
+                'status' => 'archived',
+                'created_by' => 1,
+                'updated_by' => 1,
+                'created_at' => $now,
+                'updated_at' => $now,
+            ],
+            [
+                'year' => 2026,
+                'reservation_url' => 'https://www.helloasso.com/associations/calan-couleurs/evenements/festival-calan-couleurs-26-27-juin-2026',
+                'name' => "Calan'Couleurs 2K26",
+                'begin_date' => '2026-06-26 19:30:00',
+                'ending_date' => '2026-06-28 03:00:00',
+                'actif' => true,
+                'status' => 'upcoming',
+                'created_by' => 1,
+                'updated_by' => 1,
+                'created_at' => $now,
+                'updated_at' => $now,
+            ]
+        ];
 
-        if ($exists) {
-            $this->command->warn('⚠️ L’édition 2025 existe déjà, aucune insertion effectuée.');
-            return;
+        foreach ($editions as $edition) {
+            DB::table('editions')->insert($edition);
         }
-
-        DB::table('editions')->insert([
-            'year' => 2025,
-            'name' => "Calan'Couleurs 2K25",
-            'begin_date' => '2025-09-12 19:00:00',
-            'ending_date' => '2025-09-14 05:00:00',
-            'actif' => true,
-            'created_by' => 1,
-            'updated_by' => 1,
-            'created_at' => $now,
-            'updated_at' => $now,
-        ]);
 
     }
 }

@@ -227,14 +227,14 @@ export default function Navbar({ routes }) {
                         </a>
 
                         {/* Nouveau lien Boutique */}
-                        <a
+                        {/* <a
                             href={routes?.boutique || "/boutique"}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="block py-2 px-3 text-[#8F1E98] font-semibold hover:text-[#FF0F63] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8F1E98] rounded"
                         >
                             Calan'Boutique
-                        </a>
+                        </a> */}
                     </nav>
 
                     {/* CTA Desktop */}
@@ -416,14 +416,14 @@ export default function Navbar({ routes }) {
                         Contact
                     </a>
                     {/* Boutique Mobile */}
-                    <a
+                    {/* <a
                         href={routes?.boutique || "/boutique"}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="block py-3 text-[#8F1E98] font-semibold hover:text-[#FF0F63] transition"
                     >
                         Calan'Boutique
-                    </a>
+                    </a> */}
 
                     {/* CTA Mobile */}
                     <a

@@ -53,10 +53,10 @@
                         <a href="{{ route('charte') }}"
                             class="text-white hover:text-[#FF0F63] font-medium transition">Charte</a>
                     </li>
-                    <li>
+                    {{-- <li>
                         <a href="{{ route('boutique.index') }}"
                             class="text-white hover:text-[#FF0F63] font-medium transition">Calan'Boutique</a>
-                    </li>
+                    </li> --}}
                     <li>
                         <a href="{{ route('contact') }}"
                             class="text-white hover:text-[#FF0F63] font-medium transition">Contact</a>

@@ -5,7 +5,7 @@
     @endif
     data-festival-url="{{ url('/notre-histoire') }}"
     data-contact-url="{{ url('/contact') }}"
-    data-boutique-url="{{ url('/boutique') }}"
+    {{-- data-boutique-url="{{ url('/boutique') }}" --}}
     data-billetterie-url="{{ $currentEdition->reservation_url }}"
     data-camping-url="{{ url('/camping') }}"
     data-benevoles-url="{{ url('/benevoles') }}"

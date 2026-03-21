@@ -1,9 +1,11 @@
-import React from 'react';
-import { createRoot } from 'react-dom/client';
+import React from "react";
+import ReactDOM from "react-dom/client";
 import FAQSection from './components/FAQSection';
 
-const rootElement = document.getElementById('faq-root');
-if (rootElement) {
-    const root = createRoot(rootElement);
-    root.render(<FAQSection />);
-}
+ReactDOM.createRoot(
+    document.getElementById("faq-root"),
+).render(
+    <React.StrictMode>
+        <FAQSection />
+    </React.StrictMode>,
+);

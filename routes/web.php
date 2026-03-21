@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProgrammationController;
 use Illuminate\Support\Facades\Route;
@@ -19,24 +20,25 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('/', function () {
-    return view('accueil');
-});
+Route::get('/', [HomeController::class, 'accueil'])->name('accueil');
 
 Route::get('programmation', [ProgrammationController::class, 'index'])->name('programmation');
 
-Route::get('programmation2', function () {
-    return view('lineup2');
-})->name('programmation2');
+Route::get('notre-histoire', [HomeController::class, 'festival'])->name('festival');
 
-Route::get('notre-histoire', function () {
-    return view('festival');
-})->name('festival');
+Route::get('contact', [HomeController::class, 'contact'])->name('contact');
 
-Route::get('contact', function () {
-    return view('contact');
-})->name('contact');
+Route::get('benevoles', [HomeController::class, 'benevoles'])->name('benevoles');
+
+Route::get('charte', [HomeController::class, 'charte'])->name('charte');
+
+Route::get('partenaires', [HomeController::class, 'partenaires'])->name('partenaires');
+
+Route::get('camping', [HomeController::class, 'camping'])->name('camping');
 
 require __DIR__.'/auth.php';
 require __DIR__.'/artistes.php';
 require __DIR__.'/faqs.php';
+require __DIR__.'/users.php';
+require __DIR__.'/boutique.php';
+require __DIR__.'/editions.php';

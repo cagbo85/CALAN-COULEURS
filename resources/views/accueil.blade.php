@@ -1,11 +1,11 @@
 @extends('layouts.app')
 
-@section('title', 'Calan\'Couleurs Festival 2025 à Campbon | Musique, Artistes & Billetterie')
+@section('title', 'Calan\'Couleurs Festival ' . $currentEdition->year . ' à Campbon | Musique, Artistes & Billetterie')
 
 @section('meta')
     <meta name="google-site-verification" content="3j2RcHRKc1fefLWwLlGVFZWlAqh6XvK741ZMDtz1LKA" />
     <meta name="description"
-        content="Calan'Couleurs Festival - 12 & 13 septembre 2025 à Campbon. Découvrez la programmation, achetez vos billets et rejoignez-nous pour un week-end inoubliable de musique et de convivialité." />
+        content="Calan'Couleurs Festival - {{ $currentEdition->formatted_dates_2 }} à Campbon. Découvrez la programmation, achetez vos billets et rejoignez-nous pour un week-end inoubliable de musique et de convivialité." />
     <meta name="keywords" content="Calan'Couleurs, Calan Couleurs, Festival, musique, Campbon, programmation, billets" />
     <meta name="robots" content="index, follow" />
     <meta name="author" content="Calan'Couleurs Team" />
@@ -13,69 +13,113 @@
 
     <meta property="og:title" content="CALAN-COULEURS | Festival musical à Campbon" />
     <meta property="og:description"
-        content="Festival les 12 & 13 septembre 2025 à Campbon. Programmation, billets, infos pratiques." />
+        content="Festival les {{ $currentEdition->formatted_dates_2 }} à Campbon. Programmation, billets, infos pratiques." />
     <meta property="og:image" content="https://calan-couleurs.fr/img/logos/accueil_public.png" />
     <meta property="og:url" content="https://calan-couleurs.fr/" />
 
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="CALAN-COULEURS | Festival musical à Campbon" />
     <meta name="twitter:description"
-        content="Un week-end de musique et de festivités à Campbon les 12 & 13 septembre 2025." />
+        content="Un week-end de musique et de festivités à Campbon les {{ $currentEdition->formatted_dates_2 }}." />
     <meta name="twitter:image" content="https://calan-couleurs.fr/img/logos/accueil_public.png" />
 @endsection
 
 @push('scripts')
-    @vite(['resources/js/timer-loader.jsx', 'resources/js/onsite-loader.jsx', 'resources/js/faq-loader.jsx'])
+    @vite(['resources/js/timer-loader.jsx', 'resources/js/stands-loader.jsx', 'resources/js/faq-loader.jsx', 'resources/js/programmation-loader.jsx'])
 @endpush
 
 @section('content')
+    <!-- Matomo -->
+    <script>
+    var _paq = window._paq = window._paq || [];
+    /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+    _paq.push(['trackPageView']);
+    _paq.push(['enableLinkTracking']);
+    (function() {
+        var u="https://calancouleurs.matomo.cloud/";
+        _paq.push(['setTrackerUrl', u+'matomo.php']);
+        _paq.push(['setSiteId', '1']);
+        var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+        g.async=true; g.src='https://cdn.matomo.cloud/calancouleurs.matomo.cloud/matomo.js'; s.parentNode.insertBefore(g,s);
+    })();
+    </script>
     <section
         class="min-h-[500px] sm:h-[calc(100vh-64px)] w-full px-2 sm:px-4 py-8 flex flex-col justify-center items-center bg-[url('/img/logos/accueil_public.png')] bg-no-repeat bg-center bg-cover text-center">
 
-        <div class="w-full max-w-xl sm:max-w-2xl mx-auto mb-6 sm:mb-10">
-            <div class="backdrop-blur-md shadow-lg px-6 sm:px-10 py-8 sm:py-10 rounded-2xl border border-white/50 flex flex-col items-center justify-center text-white text-center"
-                style="background: linear-gradient(180deg, rgba(255,15,99,0.3), rgba(143,30,152,0.3), rgba(39,42,199,0.3));">
-
-                <div class="text-5xl sm:text-6xl mb-4 drop-shadow-lg">🎉</div>
-
-                <h2 class="text-2xl sm:text-3xl font-bold mb-3 tracking-wider drop-shadow-md">
-                    Merci à tous pour cette première édition réussie !
+        <!-- Dates du festival -->
+        @if ($currentEdition)
+            <div class="mb-3 sm:mb-4 backdrop-blur-md shadow-lg px-4 sm:px-8 py-2 sm:py-3 rounded-xl border border-white/50"
+                style="background: linear-gradient(180deg, rgba(255,15,99,0.2), rgba(143,30,152,0.2), rgba(39,42,199,0.2));">
+                <h2 class="text-white text-lg sm:text-xl md:text-2xl font-bold tracking-wider drop-shadow-md">
+                    {{ $currentEdition->formatted_dates }}
                 </h2>
+            </div>
+        @endif
 
-                <p class="text-lg sm:text-xl drop-shadow-md font-semibold mb-2">
-                    La première édition du <strong>Calan’Couleurs Festival</strong> est désormais terminée.<br>
-                    Merci à tous les bénévoles, partenaires et festivaliers pour cette belle aventure !
-                </p>
+        <!-- Timer -->
+        <div class="w-full max-w-xs sm:max-w-md md:max-w-lg mx-auto mb-4 sm:mb-6" role="region"
+            aria-label="Compte à rebours avant le festival">
+            <div id="timer-root"></div>
+        </div>
 
-                <p class="text-sm sm:text-base mt-2 drop-shadow-md">
-                    Rendez-vous en <span class="font-bold text-[#FFEB3B]">2026</span> pour de nouvelles aventures colorées !
+        <!-- Edition et lieu -->
+        @if ($currentEdition)
+            <div class="mt-1 sm:mt-2 mb-4 sm:mb-6 backdrop-blur-md px-4 sm:px-6 py-2 sm:py-3 rounded-xl shadow-lg border border-white/30"
+                style="background: linear-gradient(180deg, rgba(255,15,99,0.2), rgba(143,30,152,0.2), rgba(39,42,199,0.2));">
+                <p class="text-white font-bold text-base sm:text-xl tracking-wide drop-shadow-sm">
+                    {{ strtoupper($currentEdition->name) ?? 'Édition ' . $currentEdition->year }} - CAMPBON
                 </p>
+            </div>
+        @endif
+
+        <!-- Boutons -->
+        <div
+            class="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4 m-3 sm:m-6 w-full sm:w-auto max-w-xs sm:max-w-none mx-auto">
+            <!-- Bouton "Découvre la programmation" -->
+            <div class="relative w-full sm:w-auto">
+                <div class="absolute inset-0 translate-x-1 translate-y-1">
+                    <a href="{{ route('programmation') }}"
+                        class="relative bg-[#8F1E98] text-[#8F1E98] px-4 sm:px-6 py-3 font-bold uppercase tracking-wide transition duration-300 block w-full text-center">
+                        Découvre la programmation →
+                    </a>
+                </div>
+                <a href="{{ route('programmation') }}"
+                    class="relative bg-white text-[#8F1E98] px-4 sm:px-6 py-3 font-bold uppercase tracking-wide hover:bg-[#8F1E98] hover:text-white transition duration-300 block w-full text-center">
+                    Découvre la programmation →
+                </a>
+            </div>
+
+            <!-- Bouton "Acheter des billets" -->
+            <div class="relative w-full sm:w-auto">
+                <div class="absolute inset-0 translate-x-1 translate-y-1">
+                    <a href="{{ $currentEdition->reservation_url }}"
+                        target="_blank" rel="noopener noreferrer"
+                        class="relative bg-white px-4 sm:px-6 py-3 font-bold uppercase tracking-wide transition duration-300 block w-full text-center">
+                        Acheter des billets →
+                    </a>
+                </div>
+                <a href="{{ $currentEdition->reservation_url }}"
+                    target="_blank" rel="noopener noreferrer"
+                    class="relative bg-[#8F1E98] text-white px-4 sm:px-6 py-3 font-bold uppercase tracking-wide hover:bg-white hover:text-[#8F1E98] transition duration-300 block w-full text-center">
+                    Acheter des billets →
+                </a>
             </div>
         </div>
     </section>
+    <main>
+        {{-- Section Programme --}}
+        <section aria-labelledby="programmation-heading" class="">
+            <div id="programmation-root" aria-live="polite"></div>
+        </section>
 
-    {{-- Section Tombola --}}
-    <section id="tombola" class="py-16 px-4 sm:px-8 text-center text-white bg-gray-200">
-        <h2 class="text-3xl font-bold uppercase mb-8 text-[#FF0F63]">Grande Tombola Calan’Couleurs 🎉</h2>
+        {{-- Section Stands --}}
+        <section aria-labelledby="stands-heading" class="">
+            <div id="stands-root" aria-live="polite"></div>
+        </section>
 
-        <div class="max-w-3xl mx-auto">
-            <img src="{{ asset('img/events/tombola-2025.jpeg') }}" alt="Affiche Tombola Calan’Couleurs"
-                class="rounded-2xl shadow-2xl border-2 border-white/20 mb-6 mx-auto w-64 sm:w-80 md:w-96 object-contain">
-            <p class="text-lg mb-8 text-[#FF0F63]/90">
-                Tente ta chance et soutiens le festival pour sa prochaine édition ! 🎁<br>
-                Vous avez jusqu'au <strong>12/11</strong> pour participer.<br>
-                Un DJ set aura lieu ainsi qu'un bar pendant la soirée.
-            </p>
-            <a href="https://www.helloasso.com/associations/calan-couleurs/evenements/tombola-calan-couleurs-1"
-                target="_blank" rel="noopener noreferrer"
-                class="inline-block mt-3 px-8 py-4 bg-[#8F1E98] text-white font-semibold rounded-xl hover:bg-[#FF0F63] transition duration-300">
-                Participer à la tombola →
-            </a>
-        </div>
-    </section>
-
-    {{-- Section FAQ --}}
-    <section aria-labelledby="faq-heading" class="">
-        <div id="faq-root" aria-live="polite"></div>
-    </section>
+        {{-- Section FAQ --}}
+        <section aria-labelledby="faq-heading" class="">
+            <div id="faq-root" aria-live="polite"></div>
+        </section>
+    </main>
 @endsection

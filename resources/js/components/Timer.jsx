@@ -1,108 +1,186 @@
 import { useState, useEffect } from "react";
+import { BiSolidError } from "react-icons/bi";
 
 export default function Timer() {
+    const [edition, setEdition] = useState(null);
     const [timeLeft, setTimeLeft] = useState({
         days: 0,
         hours: 0,
         minutes: 0,
-        seconds: 0
+        seconds: 0,
     });
     const [isEventStarted, setIsEventStarted] = useState(false);
     const [isEventEnded, setIsEventEnded] = useState(false);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
-        // Festival commence vendredi 12 septembre à 20h
-        const eventStartDate = new Date('2025-09-12T20:00:00');
-        // Festival se termine dimanche 14 septembre à 6h (samedi soir/dimanche matin)
-        const eventEndDate = new Date('2025-09-14T06:00:00');
+        fetch("/api/edition/current")
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error("Aucune édition courante disponible");
+                }
+                return response.json();
+            })
+            .then((data) => {
+                setEdition(data);
+                setLoading(false);
+            })
+            .catch((err) => {
+                setError(err.message);
+                setLoading(false);
+            });
+    }, []);
+
+    useEffect(() => {
+        if (!edition) return;
+
+        const start = new Date(edition.begin_date);
+        const end = new Date(edition.ending_date);
 
         const interval = setInterval(() => {
             const now = new Date();
-            const differenceToStart = eventStartDate - now;
-            const differenceToEnd = eventEndDate - now;
 
-            // Le festival est terminé
-            if (differenceToEnd <= 0) {
-                clearInterval(interval);
+            if (now >= end) {
                 setIsEventEnded(true);
-                setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+                setIsEventStarted(false);
+                clearInterval(interval);
                 return;
             }
 
-            // Le festival a commencé mais n'est pas terminé
-            if (differenceToStart <= 0 && differenceToEnd > 0) {
+            if (now >= start && now < end) {
                 setIsEventStarted(true);
-                setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+                setIsEventEnded(false);
                 return;
             }
 
-            // Compte à rebours avant le début du festival
-            const days = Math.floor(differenceToStart / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((differenceToStart % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((differenceToStart % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((differenceToStart % (1000 * 60)) / 1000);
-
-            setTimeLeft({ days, hours, minutes, seconds });
+            const diff = start - now;
+            setTimeLeft({
+                days: Math.floor(diff / (1000 * 60 * 60 * 24)),
+                hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
+                minutes: Math.floor((diff / (1000 * 60)) % 60),
+                seconds: Math.floor((diff / 1000) % 60),
+            });
         }, 1000);
 
         return () => clearInterval(interval);
-    }, []);
+    }, [edition]);
+
+    if (loading) {
+        return (
+            <div className="rounded-xl p-6">
+                <div
+                    className="backdrop-blur-md shadow-lg px-6 py-8 rounded-xl border border-white/50 flex flex-col items-center justify-center text-white"
+                    style={{
+                        background:
+                            "linear-gradient(180deg, rgba(255,15,99,0.3), rgba(143,30,152,0.3), rgba(39,42,199,0.3))",
+                    }}
+                >
+                    <div className="text-5xl mb-4 drop-shadow-lg">⏳</div>
+                    <h3 className="text-3xl font-bold mb-2 text-center drop-shadow-md">
+                        Chargement...
+                    </h3>
+                </div>
+            </div>
+        );
+    }
+
+    if (error) {
+        return (
+            <div className="rounded-xl p-6">
+                <div
+                    className="backdrop-blur-md shadow-lg px-6 py-8 rounded-xl border border-white/50 flex flex-col items-center justify-center text-white"
+                    style={{
+                        background:
+                            "linear-gradient(180deg, rgba(255,15,99,0.3), rgba(143,30,152,0.3), rgba(39,42,199,0.3))",
+                    }}
+                >
+                    <BiSolidError className="text-5xl mb-4 text-red-400" />
+                    <h3 className="text-2xl font-bold mb-2 text-center drop-shadow-md">
+                        Erreur
+                    </h3>
+                    <p className="text-sm text-center opacity-90">{error}</p>
+                </div>
+            </div>
+        );
+    }
 
     // Affichage quand le festival est terminé
     if (isEventEnded) {
-    return (
-        <div className="rounded-xl p-6">
-            <div className="backdrop-blur-md shadow-lg px-4 sm:px-8 py-6 sm:py-8 rounded-xl border border-white/50 flex flex-col items-center justify-center text-white"
-                style={{background: "linear-gradient(180deg, rgba(255,15,99,0.3), rgba(143,30,152,0.3), rgba(39,42,199,0.3))"}}>
-                <div className="text-4xl sm:text-6xl mb-4 drop-shadow-lg">🎉</div>
-                <h3 className="text-2xl sm:text-3xl font-bold mb-2 tracking-wider drop-shadow-md text-center">Merci à tous !</h3>
-                <p className="text-lg sm:text-xl text-center drop-shadow-md font-semibold">Le festival Calan'Couleurs 2025 est terminé</p>
-                <p className="text-sm sm:text-base text-center mt-2 drop-shadow-md">À l'année prochaine pour de nouveaux moments magiques !</p>
-            </div>
-        </div>
-    );
-}
-
-    // Affichage quand le festival a commencé
-    if (isEventStarted) {
-    return (
-        <div className="rounded-xl p-6">
-            <div className="backdrop-blur-md shadow-lg px-4 sm:px-8 py-6 sm:py-8 rounded-xl border border-white/50 flex flex-col items-center justify-center text-white animate-pulse"
-                style={{background: "linear-gradient(180deg, rgba(255,15,99,0.3), rgba(143,30,152,0.3), rgba(39,42,199,0.3))"}}>
-                <div className="text-4xl sm:text-6xl mb-4 drop-shadow-lg">🎵</div>
-                <h3 className="text-2xl sm:text-3xl font-bold mb-2 tracking-wider drop-shadow-md text-center">C'est parti !</h3>
-                <p className="text-lg sm:text-xl text-center drop-shadow-md font-semibold">Le festival Calan'Couleurs 2025 a commencé</p>
-                <p className="text-sm sm:text-base text-center mt-2 drop-shadow-md">Profitez bien de ces moments magiques !</p>
-                <div className="mt-4 flex gap-2">
-                    <span className="animate-bounce drop-shadow-lg">🎶</span>
-                    <span className="animate-bounce delay-100 drop-shadow-lg">🎸</span>
-                    <span className="animate-bounce delay-200 drop-shadow-lg">🎤</span>
+        return (
+            <div className="rounded-xl p-6">
+                <div
+                    className="backdrop-blur-md shadow-lg px-6 py-8 rounded-xl border border-white/50 flex flex-col items-center justify-center text-white"
+                    style={{
+                        background:
+                            "linear-gradient(180deg, rgba(255,15,99,0.3), rgba(143,30,152,0.3), rgba(39,42,199,0.3))",
+                    }}
+                >
+                    <div className="text-6xl mb-4 drop-shadow-lg">🎉</div>
+                    <h3 className="text-3xl font-bold mb-2 text-center drop-shadow-md">
+                        Merci à tous !
+                    </h3>
+                    <p className="text-lg font-semibold text-center">
+                        L'édition {edition.name ?? edition.year} est terminée.
+                    </p>
+                    <p className="text-sm text-center mt-2">
+                        À l'année prochaine 🎶
+                    </p>
                 </div>
             </div>
-        </div>
-    );
+        );
     }
 
-    // Compte à rebours normal
+    // Affichage quand le festival est en cours
+    if (isEventStarted) {
+        return (
+            <div className="rounded-xl p-6">
+                <div
+                    className="backdrop-blur-md shadow-lg px-6 py-8 rounded-xl border border-white/50 flex flex-col items-center justify-center text-white animate-pulse"
+                    style={{
+                        background:
+                            "linear-gradient(180deg, rgba(255,15,99,0.3), rgba(143,30,152,0.3), rgba(39,42,199,0.3))",
+                    }}
+                >
+                    <div className="text-6xl mb-4 drop-shadow-lg">🎵</div>
+                    <h3 className="text-3xl font-bold mb-2 text-center drop-shadow-md">
+                        C'est parti !
+                    </h3>
+                    <p className="text-lg font-semibold text-center">
+                        Le festival {edition.name ?? edition.year} a commencé 🎤
+                    </p>
+                    <p className="text-sm text-center mt-2">Profitez bien !</p>
+                </div>
+            </div>
+        );
+    }
+
+    // Affichage du compte à rebours quand le festival n'a pas encore commencé
     return (
         <div className="rounded-xl p-6">
-            <div className="flex flex-wrap justify-center gap-2 sm:gap-4">
-                <div className="flex flex-col items-center justify-center bg-white/70 backdrop-blur-sm text-[#FF0F63] font-bold px-3 sm:px-4 py-2 rounded-lg shadow-md border-2 border-[#8F1E98]/20">
-                    <span className="text-3xl sm:text-4xl md:text-5xl">{String(timeLeft.days).padStart(2, '0')}</span>
-                    <span className="text-xs sm:text-sm uppercase tracking-wider mt-1">Jours</span>
-                </div>
-                <div className="flex flex-col items-center justify-center bg-white/70 backdrop-blur-sm text-[#FF0F63] font-bold px-3 sm:px-4 py-2 rounded-lg shadow-md border-2 border-[#8F1E98]/20">
-                    <span className="text-3xl sm:text-4xl md:text-5xl">{String(timeLeft.hours).padStart(2, '0')}</span>
-                    <span className="text-xs sm:text-sm uppercase tracking-wider mt-1">Heures</span>
-                </div>
-                <div className="flex flex-col items-center justify-center bg-white/70 backdrop-blur-sm text-[#FF0F63] font-bold px-3 sm:px-4 py-2 rounded-lg shadow-md border-2 border-[#8F1E98]/20">
-                    <span className="text-3xl sm:text-4xl md:text-5xl">{String(timeLeft.minutes).padStart(2, '0')}</span>
-                    <span className="text-xs sm:text-sm uppercase tracking-wider mt-1">Min</span>
-                </div>
-                <div className="flex flex-col items-center justify-center bg-white/70 backdrop-blur-sm text-[#FF0F63] font-bold px-3 sm:px-4 py-2 rounded-lg shadow-md border-2 border-[#8F1E98]/20">
-                    <span className="text-3xl sm:text-4xl md:text-5xl">{String(timeLeft.seconds).padStart(2, '0')}</span>
-                    <span className="text-xs sm:text-sm uppercase tracking-wider mt-1">Sec</span>
-                </div>
+            <div className="flex flex-wrap justify-center gap-4">
+                {["Jours", "Heures", "Min", "Sec"].map((label, i) => {
+                    const value = [
+                        timeLeft.days,
+                        timeLeft.hours,
+                        timeLeft.minutes,
+                        timeLeft.seconds,
+                    ][i];
+                    return (
+                        <div
+                            key={label}
+                            className="flex flex-col items-center justify-center bg-white/70 backdrop-blur-sm text-[#FF0F63] font-bold rounded-lg shadow-md border-2 border-[#8F1E98]/20"
+                            style={{ width: "100px", height: "100px" }}
+                        >
+                            <span className="text-4xl sm:text-5xl leading-none">
+                                {String(value).padStart(2, "0")}
+                            </span>
+                            <span className="text-xs sm:text-sm uppercase tracking-wider text-center mt-1">
+                                {label}
+                            </span>
+                        </div>
+                    );
+                })}
             </div>
         </div>
     );

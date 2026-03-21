@@ -20,7 +20,8 @@
         <!-- Logo -->
         <div class="mb-8">
             <a href="/">
-                <img src="/img/logos/LOGO/Logo-Calan-blanc.png" alt="" aria-hidden="true" class="h-20 drop-shadow-lg">
+                <img src="/img/logos/LOGO/Logo-Calan-blanc.png" alt="" aria-hidden="true"
+                    class="h-20 drop-shadow-lg">
             </a>
         </div>
 
@@ -36,13 +37,40 @@
 
             <!-- Titre du formulaire -->
             <div class="mb-6 text-center">
-                <h2 class="text-2xl font-bold text-purple-800 mb-2">
-                    Première connexion ?
-                </h2>
-                <p class="text-gray-600 text-sm">
-                    Veuillez renseigner les informations suivantes pour initialiser votre compte
-                </p>
+                @if (session('reactivation_notice'))
+                    <h2 class="text-2xl font-bold text-orange-600 mb-2">
+                        Compte réactivé !
+                    </h2>
+                    <p class="text-gray-600 text-sm">
+                        Votre compte a été réactivé par un administrateur. Pour des raisons de sécurité,
+                        vous devez réinitialiser votre mot de passe.
+                    </p>
+                @else
+                    <h2 class="text-2xl font-bold text-purple-800 mb-2">
+                        Première connexion ?
+                    </h2>
+                    <p class="text-gray-600 text-sm">
+                        Veuillez renseigner les informations suivantes pour initialiser votre compte
+                    </p>
+                @endif
             </div>
+
+            @if (session('reactivation_notice'))
+                <div class="mb-4 p-4 bg-orange-100 border border-orange-400 text-orange-700 rounded-lg">
+                    <div class="flex items-center">
+                        <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd"
+                                d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+                                clip-rule="evenodd"></path>
+                        </svg>
+                        <div>
+                            <strong>Compte réactivé !</strong><br>
+                            <span class="text-sm">Votre compte a été réactivé. Veuillez définir un nouveau mot de passe
+                                pour accéder à votre espace.</span>
+                        </div>
+                    </div>
+                </div>
+            @endif
 
             <!-- Messages d'erreur -->
             @if ($errors->any())
@@ -68,8 +96,10 @@
                     <label for="login" class="block text-sm font-medium text-gray-700 mb-2">
                         Nom d'utilisateur <span class="text-red-500">*</span>
                     </label>
-                    <input id="login" type="text" name="login" value="{{ old('login') }}" required autofocus
-                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 @error('login') border-red-500 @enderror"
+                    <input id="login" type="text" name="login"
+                        value="{{ session('login_for_init') ?? old('login') }}"
+                        {{ session('reactivation_notice') }} required autofocus
+                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 @error('login') border-red-500 @enderror {{ session('reactivation_notice') ? 'bg-gray-100' : '' }}"
                         placeholder="Votre nom d'utilisateur">
                     @error('login')
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>

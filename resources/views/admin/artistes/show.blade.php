@@ -8,87 +8,57 @@
     <main class="flex-1 overflow-y-auto bg-gray-50">
         <div class="p-6">
             <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden mb-6">
-                <div class="relative h-48 bg-gradient-to-r from-purple-600 to-pink-500">
-                    <div class="absolute top-4 left-4">
-                        <a href="{{ route('admin.artistes.index') }}"
-                            class="bg-black bg-opacity-30 text-white px-4 py-2 rounded-lg hover:bg-opacity-50 transition-all flex items-center">
-                            <i class="fas fa-arrow-left mr-2"></i>
-                            Retour à la liste
-                        </a>
-                    </div>
+                <div class="relative h-48"
+                    style="background: linear-gradient(135deg, rgba(147,51,234,1) 0%, rgba(236,72,153,1) 100%);">
+                    <div class="absolute inset-x-0 top-0 p-3 sm:p-4">
+                        <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                            <a href="{{ route('admin.artistes.index') }}"
+                                class="inline-flex w-full sm:w-auto items-center justify-center sm:justify-start bg-black bg-opacity-30 text-white px-4 py-2 rounded-lg hover:bg-opacity-50 transition-all text-sm sm:text-base">
+                                <i class="fa-solid fa-arrow-left mr-2"></i>
+                                Retour à la liste
+                            </a>
 
-                    <!-- Actions -->
-                    <div class="absolute top-4 right-4 flex space-x-2">
-                        <button type="button" onclick="toggleEditMode()" id="edit-btn"
-                            class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors flex items-center">
-                            <i class="fas fa-edit mr-2"></i>
-                            Modifier
-                        </button>
-                        <button type="button" onclick="maskArtist()"
-                            class="bg-orange-600 text-white px-4 py-2 rounded-lg hover:bg-orange-700 transition-colors flex items-center">
-                            <i class="fas fa-eye-slash mr-2"></i>
-                            Masquer
-                        </button>
-                        <button type="button" onclick="toggleEditMode()" id="cancel-btn" style="display: none;"
-                            class="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors flex items-center">
-                            <i class="fas fa-times mr-2"></i>
-                            Annuler
-                        </button>
+                            <div class="flex w-full sm:w-auto gap-2 justify-end">
+                                <button type="button" onclick="toggleEditMode()" id="edit-btn"
+                                    class="flex-1 sm:flex-none bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors flex items-center justify-center">
+                                    <i class="fa-solid fa-pen-to-square mr-2"></i>
+                                    Modifier
+                                </button>
+                                <button type="button" onclick="toggleEditMode()" id="cancel-btn" style="display: none;"
+                                    class="flex-1 sm:flex-none bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors flex items-center justify-center">
+                                    <i class="fa-solid fa-xmark mr-2"></i>
+                                    Annuler
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
                 <!-- Profil artiste -->
                 <div class="relative px-6 pb-6">
-                    <div class="flex items-end -mt-16">
+                    <div class="flex flex-col sm:flex-row sm:items-end -mt-16 gap-6">
                         <!-- Photo artiste -->
-                        <div class="relative">
+                        <div class="relative flex justify-center flex-shrink-0">
                             @if ($artiste->photo)
                                 <img src="{{ asset($artiste->photo) }}" alt="{{ $artiste->name }}"
-                                    class="w-32 h-32 rounded-full border-4 border-white shadow-lg object-cover">
+                                    class="w-32 h-32 rounded-full border-4 border-white shadow-lg bg-white flex items-center justify-center object-cover">
                             @else
                                 <div
-                                    class="w-32 h-32 rounded-full border-4 border-white shadow-lg bg-purple-100 flex items-center justify-center">
-                                    <i class="fas fa-microphone text-purple-600 text-3xl"></i>
+                                    class="w-32 h-32 rounded-full border-4 border-white shadow-lg bg-white flex items-center justify-center object-cover">
+                                    <i class="fa-solid fa-microphone text-purple-600 text-3xl"></i>
                                 </div>
                             @endif
-
-                            <!-- Badge statut -->
-                            <div class="absolute -bottom-2 -right-2">
-                                @if ($artiste->actif)
-                                    <span
-                                        class="bg-green-500 text-white px-2 py-1 rounded-full text-xs font-medium flex items-center">
-                                        <i class="fas fa-check mr-1"></i> Actif
-                                    </span>
-                                @else
-                                    <span
-                                        class="bg-red-500 text-white px-2 py-1 rounded-full text-xs font-medium flex items-center">
-                                        <i class="fas fa-times mr-1"></i> Inactif
-                                    </span>
-                                @endif
-                            </div>
                         </div>
 
                         <!-- Info artiste -->
-                        <div class="ml-6 flex-1">
+                        <div class="flex-1 text-center sm:text-left">
                             <h1 class="text-3xl font-bold text-gray-900">{{ $artiste->name }}</h1>
-                            @if ($artiste->style)
-                                <p class="text-lg text-purple-600 font-medium">{{ $artiste->style }}</p>
-                            @endif
 
-                            <!-- Programmation rapide -->
-                            @if ($artiste->day || $artiste->scene)
+                            <!-- Aperçu du style -->
+                            @if ($artiste->style)
                                 <div class="mt-2 flex items-center text-sm text-gray-600">
-                                    @if ($artiste->day)
-                                        <i class="fas fa-calendar mr-1"></i>
-                                        <span class="capitalize">{{ $artiste->day }}</span>
-                                    @endif
-                                    @if ($artiste->day && $artiste->scene)
-                                        <span class="mx-2">•</span>
-                                    @endif
-                                    @if ($artiste->scene)
-                                        <i class="fas fa-map-marker-alt mr-1"></i>
-                                        <span>{{ $artiste->scene }}</span>
-                                    @endif
+                                    <i class="fa-solid fa-music mr-1"></i>
+                                    <span>{{ $artiste->style }}</span>
                                 </div>
                             @endif
                         </div>
@@ -96,24 +66,29 @@
                 </div>
             </div>
 
+            <!-- Formulaire -->
             <form action="{{ route('admin.artistes.update', $artiste->id) }}" method="POST" enctype="multipart/form-data"
-                id="artiste-form" class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden" novalidate>
+                id="artiste-form" novalidate>
                 @csrf
                 @method('PUT')
 
-                <div class="p-8 space-y-8">
+                <div class="p-8 space-y-8 mb-6 bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
 
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                        <div class="space-y-6">
+                    <!-- Informations -->
+                    <div class="grid grid-cols-2 gap-8">
+
+                        <!-- Informations générales -->
+                        <div class="space-y-6 col-span-2">
                             <h3 class="text-xl font-semibold text-gray-900 border-b border-gray-200 pb-2">
                                 Informations générales
                             </h3>
 
                             <!-- Nom -->
                             <div class="space-y-2">
-                                <label class="text-sm font-medium text-gray-700">Nom d'artiste</label>
+                                <label class="text-sm font-medium text-gray-700">Nom d'artiste <span
+                                        class="text-red-500">*</span></label>
                                 <div class="view-mode">
-                                    <p class="text-lg text-gray-900">{{ $artiste->name }}</p>
+                                    <p class="text-lg font-semibold text-gray-900">{{ $artiste->name }}</p>
                                 </div>
                                 <div class="edit-mode" style="display: none;">
                                     <input type="text" name="name" value="{{ $artiste->name }}" required
@@ -161,138 +136,45 @@
                             </div>
                         </div>
 
-                        <!-- Programmation -->
-                        <div class="space-y-6">
-                            <h3 class="text-xl font-semibold text-gray-900 border-b border-gray-200 pb-2">
-                                Programmation
+                        <!-- Liens de streaming -->
+                        <div class="space-y-6 col-span-2">
+                            <h3 class="text-xl font-semibold text-gray-900 border-b border-gray-200 pb-2">Liens de streaming
                             </h3>
 
-                            <!-- Jour -->
-                            <div class="space-y-2">
-                                <label class="text-sm font-medium text-gray-700">Jour</label>
-                                <div class="view-mode">
-                                    @if ($artiste->day)
-                                        <span
-                                            class="inline-block bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium capitalize">
-                                            {{ $artiste->day }}
-                                        </span>
-                                    @else
-                                        <span class="text-gray-400 italic">Non programmé</span>
-                                    @endif
-                                </div>
-                                <div class="edit-mode" style="display: none;">
-                                    <select name="day"
-                                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
-                                        <option value="">Sélectionnez un jour</option>
-                                        <option value="Vendredi" {{ $artiste->day == 'Vendredi' ? 'selected' : '' }}>
-                                            Vendredi</option>
-                                        <option value="Samedi" {{ $artiste->day == 'Samedi' ? 'selected' : '' }}>Samedi
-                                        </option>
-                                        <option value="Dimanche" {{ $artiste->day == 'Dimanche' ? 'selected' : '' }}>
-                                            Dimanche</option>
-                                    </select>
-                                    <x-input-error :messages="$errors->get('day')" class="mt-1" />
-                                </div>
-                            </div>
-
-                            <!-- Horaires -->
-                            <div class="grid grid-cols-2 gap-4">
-                                <!-- Début -->
-                                <div class="space-y-2">
-                                    <label class="text-sm font-medium text-gray-700">Début</label>
-                                    <div class="view-mode">
-                                        <p class="text-gray-900 font-mono">
-                                            {{ \Carbon\Carbon::parse($artiste->begin_date)->format('d/m/Y H:i') }}
-                                        </p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                @foreach (['soundcloud_url' => ['SoundCloud', 'fa-brands fa-soundcloud', 'orange'], 'spotify_url' => ['Spotify', 'fa-brands fa-spotify', 'green'], 'youtube_url' => ['YouTube', 'fa-brands fa-youtube', 'red'], 'deezer_url' => ['Deezer', 'fa-brands fa-deezer', 'purple']] as $field => $info)
+                                    <div class="space-y-2">
+                                        <label class="text-sm font-medium text-gray-700 flex items-center">
+                                            <i class="{{ $info[1] }} text-{{ $info[2] }}-600 mr-2"></i>
+                                            {{ $info[0] }}
+                                        </label>
+                                        <div class="view-mode">
+                                            @if ($artiste->$field)
+                                                <a href="{{ $artiste->$field }}" target="_blank"
+                                                    class="text-{{ $info[2] }}-600 hover:text-{{ $info[2] }}-800 underline flex items-center">
+                                                    <i class="{{ $info[1] }} mr-2"></i>
+                                                    Écouter sur {{ $info[0] }}
+                                                    <i class="fa-solid fa-arrow-up-right-from-square ml-1 text-xs"></i>
+                                                </a>
+                                            @else
+                                                <span class="text-gray-400 italic">Non renseigné</span>
+                                            @endif
+                                        </div>
+                                        <div class="edit-mode" style="display: none;">
+                                            <input type="url" name="{{ $field }}"
+                                                value="{{ $artiste->$field }}" placeholder="https://..."
+                                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
+                                            <x-input-error :messages="$errors->get($field)" class="mt-1" />
+                                        </div>
                                     </div>
-                                    <div class="edit-mode" style="display: none;">
-                                        <input type="datetime-local" name="begin_date"
-                                            value="{{ \Carbon\Carbon::parse($artiste->begin_date)->format('Y-m-d\TH:i') }}"
-                                            required
-                                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
-                                        <x-input-error :messages="$errors->get('begin_date')" class="mt-1" />
-                                    </div>
-                                </div>
-
-                                <!-- Fin -->
-                                <div class="space-y-2">
-                                    <label class="text-sm font-medium text-gray-700">Fin</label>
-                                    <div class="view-mode">
-                                        <p class="text-gray-900 font-mono">
-                                            {{ \Carbon\Carbon::parse($artiste->ending_date)->format('d/m/Y H:i') }}
-                                        </p>
-                                    </div>
-                                    <div class="edit-mode" style="display: none;">
-                                        <input type="datetime-local" name="ending_date"
-                                            value="{{ \Carbon\Carbon::parse($artiste->ending_date)->format('Y-m-d\TH:i') }}"
-                                            required
-                                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
-                                        <x-input-error :messages="$errors->get('ending_date')" class="mt-1" />
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Scène -->
-                            <div class="space-y-2">
-                                <label class="text-sm font-medium text-gray-700">Scène</label>
-                                <div class="view-mode">
-                                    @if ($artiste->scene)
-                                        <span
-                                            class="inline-block bg-orange-100 text-orange-800 px-3 py-1 rounded-full text-sm font-medium">
-                                            {{ $artiste->scene }}
-                                        </span>
-                                    @else
-                                        <span class="text-gray-400 italic">Non définie</span>
-                                    @endif
-                                </div>
-                                <div class="edit-mode" style="display: none;">
-                                    <input type="text" name="scene" value="{{ $artiste->scene }}"
-                                        placeholder="ex: Scène Principale"
-                                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
-                                    <x-input-error :messages="$errors->get('scene')" class="mt-1" />
-                                </div>
+                                @endforeach
                             </div>
                         </div>
-                    </div>
 
-                    <!-- Liens de streaming -->
-                    <div class="border-t border-gray-200 pt-8">
-                        <h3 class="text-xl font-semibold text-gray-900 mb-6">Liens de streaming</h3>
+                        <div class="space-y-6 col-span-2">
+                            <h3 class="text-xl font-semibold text-gray-900 border-b border-gray-200 pb-2">Média
+                            </h3>
 
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            @foreach (['soundcloud_url' => ['SoundCloud', 'fab fa-soundcloud', 'orange'], 'spotify_url' => ['Spotify', 'fab fa-spotify', 'green'], 'youtube_url' => ['YouTube', 'fab fa-youtube', 'red'], 'deezer_url' => ['Deezer', 'fas fa-music', 'purple']] as $field => $info)
-                                <div class="space-y-2">
-                                    <label class="text-sm font-medium text-gray-700 flex items-center">
-                                        <i class="{{ $info[1] }} text-{{ $info[2] }}-600 mr-2"></i>
-                                        {{ $info[0] }}
-                                    </label>
-                                    <div class="view-mode">
-                                        @if ($artiste->$field)
-                                            <a href="{{ $artiste->$field }}" target="_blank"
-                                                class="text-{{ $info[2] }}-600 hover:text-{{ $info[2] }}-800 underline flex items-center">
-                                                <i class="{{ $info[1] }} mr-2"></i>
-                                                Écouter sur {{ $info[0] }}
-                                                <i class="fas fa-external-link-alt ml-1 text-xs"></i>
-                                            </a>
-                                        @else
-                                            <span class="text-gray-400 italic">Non renseigné</span>
-                                        @endif
-                                    </div>
-                                    <div class="edit-mode" style="display: none;">
-                                        <input type="url" name="{{ $field }}" value="{{ $artiste->$field }}"
-                                            placeholder="https://..."
-                                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
-                                        <x-input-error :messages="$errors->get($field)" class="mt-1" />
-                                    </div>
-                                </div>
-                            @endforeach
-                        </div>
-                    </div>
-
-                    <div class="border-t border-gray-200 pt-8">
-                        <h3 class="text-xl font-semibold text-gray-900 mb-6">Média et statut</h3>
-
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <!-- Photo -->
                             <div class="space-y-2">
                                 <label class="text-sm font-medium text-gray-700">Photo</label>
@@ -303,64 +185,311 @@
                                     <x-input-error :messages="$errors->get('photo')" class="mt-1" />
                                 </div>
                             </div>
-
-                            <!-- Statut -->
-                            <div class="space-y-2">
-                                <label class="text-sm font-medium text-gray-700">Statut</label>
-                                <div class="edit-mode" style="display: none;">
-                                    <div class="flex items-center">
-                                        <input type="hidden" name="actif" value="0">
-                                        <input type="checkbox" name="actif" value="1"
-                                            {{ $artiste->actif ? 'checked' : '' }}
-                                            class="rounded border-gray-300 text-purple-600 shadow-sm focus:border-purple-300 focus:ring focus:ring-purple-200 focus:ring-opacity-50">
-                                        <label class="ml-2 text-sm text-gray-600">Artiste actif (visible sur le
-                                            site)</label>
-                                    </div>
-                                    <x-input-error :messages="$errors->get('actif')" class="mt-1" />
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="edit-mode bg-gray-50 px-8 py-6 border-t border-gray-200 flex items-center justify-between"
-                    style="display: none;">
-                    <div class="text-sm text-gray-500">
-                        <i class="fas fa-info-circle mr-1"></i>
-                        Dernière modification par {{ $artiste->updatedBy?->firstname ?? 'Système' }}
-                        le {{ $artiste->updated_at->format('d/m/Y à H:i') }}
-                    </div>
+                <div class="p-8 space-y-8 mb-6 bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                    <div class="grid grid-cols-2 gap-8">
+                        <div class="space-y-6 col-span-2">
+                            <h3 class="text-xl font-semibold text-gray-900 border-b border-gray-200 pb-2">
+                                Performances
+                            </h3>
 
-                    <div class="flex space-x-4">
+                            @if ($performances->isEmpty())
+                                <div class="text-sm text-gray-500">
+                                    Aucune performance associée à cet artiste.
+                                </div>
+                            @else
+                                @foreach ($performances as $performance)
+                                    <div class="p-4 bg-gray-200 rounded-lg">
+                                        <input type="hidden" name="performances[{{ $performance->id }}][id]"
+                                            value="{{ $performance->id }}">
+                                        <!-- Nom de l'édition -->
+                                        <h3 class="text-base font-semibold text-gray-900 border-b border-gray-200 pb-2">
+                                            {{ $performance->edition_name ?? 'Édition ' . $performance->edition_year }}
+                                            <span
+                                                class="ml-2 inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium border border-{{ $performance->statusColor }}-500 bg-{{ $performance->statusColor }}-100 text-{{ $performance->statusColor }}-800">
+                                                {{ $performance->status }}
+                                            </span>
+                                        </h3>
+
+                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 p-2">
+                                            <!-- Jour de représentation -->
+                                            <div class="space-y-2 col-span-2">
+                                                <label class="text-sm font-medium text-gray-700">Jour de
+                                                    représentation</label>
+                                                <div class="view-mode">
+                                                    @if ($performance->day)
+                                                        <p class="text-lg text-gray-900">
+                                                            {{ $performance->day }}
+                                                        </p>
+                                                    @else
+                                                        <span class="text-gray-400 italic">Non définie</span>
+                                                    @endif
+                                                </div>
+                                                <div class="edit-mode" style="display: none;">
+                                                    <select name="performances[{{ $performance->id }}][day]"
+                                                        class="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
+                                                        <option value="">Sélectionnez un jour</option>
+                                                        <option value="Lundi"
+                                                            {{ $performance->day == 'Lundi' ? 'selected' : '' }}>
+                                                            Lundi</option>
+                                                        <option value="Mardi"
+                                                            {{ $performance->day == 'Mardi' ? 'selected' : '' }}>
+                                                            Mardi</option>
+                                                        <option value="Mercredi"
+                                                            {{ $performance->day == 'Mercredi' ? 'selected' : '' }}>
+                                                            Mercredi</option>
+                                                        <option value="Jeudi"
+                                                            {{ $performance->day == 'Jeudi' ? 'selected' : '' }}>
+                                                            Jeudi</option>
+                                                        <option value="Vendredi"
+                                                            {{ $performance->day == 'Vendredi' ? 'selected' : '' }}>
+                                                            Vendredi</option>
+                                                        <option value="Samedi"
+                                                            {{ $performance->day == 'Samedi' ? 'selected' : '' }}>
+                                                            Samedi</option>
+                                                        <option value="Dimanche"
+                                                            {{ $performance->day == 'Dimanche' ? 'selected' : '' }}>
+                                                            Dimanche</option>
+                                                    </select>
+                                                    <x-input-error :messages="$errors->get(
+                                                        'performances.' . $performance->id . '.day',
+                                                    )" class="mt-1" />
+
+                                                    <!-- Aide contextuelle -->
+                                                    <div class="mt-3 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                                                        <div class="flex gap-2"> <i
+                                                                class="fa-solid fa-lightbulb text-blue-600 flex-shrink-0 mt-0.5"></i>
+                                                            <div class="text-xs text-blue-700 space-y-2">
+                                                                <p class="font-semibold text-sm">Comment choisir le bon jour de représentation :</p>
+                                                                <ul class="space-y-1.5 ml-2">
+                                                                    <li> Le bon jour à sélectionner est celui de la soirée de programmation.</li>
+                                                                    <li> Si l'artiste performe après minuit mais fait partie de la nuit précédente, gardez le jour précédent. </li>
+                                                                    <li> Exemple : L'artiste X est annoncé pour le vendredi mais performe à 02h00 le samedi, alors il faut mettre "vendredi" (nuit de vendredi). Si l'artiste Y est annoncé pour le samedi mais performe à 01h00 le dimanche, alors il faut mettre "samedi" (nuit de samedi). </li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Horaires -->
+                                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 col-span-2">
+                                                <!-- Début -->
+                                                <div class="space-y-2">
+                                                    <label class="text-sm font-medium text-gray-700">Début</label>
+                                                    <div class="view-mode">
+                                                        @if ($performance->formatted_begin_date)
+                                                            <p class="text-gray-900 font-mono">
+                                                                {{ $performance->formatted_begin_date }}
+                                                            </p>
+                                                        @else
+                                                            <span class="text-gray-400 italic">Non défini</span>
+                                                        @endif
+                                                    </div>
+                                                    <div class="edit-mode" style="display: none;">
+                                                        <input type="datetime-local"
+                                                            name="performances[{{ $performance->id }}][begin_date]"
+                                                            value="{{ $performance->begin_date }}"
+                                                            class="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
+                                                        <x-input-error :messages="$errors->get(
+                                                            'performances.' . $performance->id . '.begin_date',
+                                                        )" class="mt-1" />
+                                                    </div>
+                                                </div>
+
+                                                <!-- Fin -->
+                                                <div class="space-y-2">
+                                                    <label class="text-sm font-medium text-gray-700">Fin</label>
+                                                    <div class="view-mode">
+                                                        @if ($performance->formatted_ending_date)
+                                                            <p class="text-gray-900 font-mono">
+                                                                {{ $performance->formatted_ending_date }}
+                                                            </p>
+                                                        @else
+                                                            <span class="text-gray-400 italic">Non défini</span>
+                                                        @endif
+                                                    </div>
+                                                    <div class="edit-mode" style="display: none;">
+                                                        <input type="datetime-local"
+                                                            name="performances[{{ $performance->id }}][ending_date]"
+                                                            value="{{ $performance->ending_date }}"
+                                                            class="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
+                                                        <x-input-error :messages="$errors->get(
+                                                            'performances.' . $performance->id . '.ending_date',
+                                                        )" class="mt-1" />
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Scène -->
+                                            <div class="space-y-2 col-span-2">
+                                                <label class="text-sm font-medium text-gray-700">Scène</label>
+                                                <div class="view-mode">
+                                                    @if ($performance->scene)
+                                                        <span
+                                                            class="inline-block bg-orange-100 text-orange-800 px-3 py-1 rounded-full text-sm font-medium">
+                                                            {{ $performance->scene }}
+                                                        </span>
+                                                    @else
+                                                        <span class="text-gray-400 italic">Non définie</span>
+                                                    @endif
+                                                </div>
+                                                <div class="edit-mode" style="display: none;">
+                                                    <select name="performances[{{ $performance->id }}][scene]"
+                                                        class="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
+                                                        <option value="">Sélectionnez une scène</option>
+                                                        <option value="Extérieur"
+                                                            {{ $performance->scene == 'Extérieur' ? 'selected' : '' }}>
+                                                            Extérieur</option>
+                                                        <option value="Intérieur"
+                                                            {{ $performance->scene == 'Intérieur' ? 'selected' : '' }}>
+                                                            Intérieur</option>
+                                                    </select>
+                                                    <x-input-error :messages="$errors->get(
+                                                        'performances.' . $performance->id . '.scene',
+                                                    )" class="mt-1" />
+                                                </div>
+                                            </div>
+
+                                            <!-- Performance visible -->
+                                            <div class="space-y-2 col-span-2">
+                                                <label class="text-sm font-medium text-gray-700">Performance
+                                                    visible</label>
+                                                <div class="view-mode">
+                                                    <span
+                                                        class="items-stretch inline-flex gap-1 px-2 py-1 text-xs font-semibold rounded-full bg-{{ $performance->actifColor }}-100 text-{{ $performance->actifColor }}-800">
+                                                        <i class="{{ $performance->actifIcon }} self-center"></i>
+                                                        <span class="self-center">{{ $performance->actifLabel }}</span>
+                                                    </span>
+                                                </div>
+                                                <div class="edit-mode" style="display: none;">
+                                                    <input type="hidden"
+                                                        name="performances[{{ $performance->id }}][actif]"
+                                                        value="0">
+                                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                                        <!-- Option Active -->
+                                                        <label
+                                                            class="bg-white relative flex items-center p-4 bg-gradient-to-br from-green-50 to-emerald-50 border-2 border-green-200 rounded-xl cursor-pointer hover:shadow-md transition-all group">
+                                                            <input type="radio"
+                                                                name="performances[{{ $performance->id }}][actif]"
+                                                                value="1" {{ $performance->actif ? 'checked' : '' }}
+                                                                class="sr-only peer">
+                                                            <div
+                                                                class="absolute inset-0 border-2 border-green-500 rounded-xl opacity-0 peer-checked:opacity-100 transition-opacity">
+                                                            </div>
+                                                            <div class="flex items-start gap-3 relative z-10">
+                                                                <div
+                                                                    class="w-10 h-10 bg-green-500 rounded-lg flex items-center justify-center flex-shrink-0">
+                                                                    <i class="fa-solid fa-eye text-white"></i>
+                                                                </div>
+                                                                <div>
+                                                                    <div class="font-semibold text-green-900">Active</div>
+                                                                    <div class="text-xs text-green-700 mt-1">Visible
+                                                                        publiquement</div>
+                                                                </div>
+                                                            </div>
+                                                        </label>
+
+                                                        <!-- Option Inactive -->
+                                                        <label
+                                                            class="bg-white relative flex items-center p-4 bg-gradient-to-br from-orange-50 to-red-50 border-2 border-orange-200 rounded-xl cursor-pointer hover:shadow-md transition-all group">
+                                                            <input type="radio"
+                                                                name="performances[{{ $performance->id }}][actif]"
+                                                                value="0" {{ !$performance->actif ? 'checked' : '' }}
+                                                                class="sr-only peer">
+                                                            <div
+                                                                class="absolute inset-0 border-2 border-orange-500 rounded-xl opacity-0 peer-checked:opacity-100 transition-opacity">
+                                                            </div>
+                                                            <div class="flex items-start gap-3 relative z-10">
+                                                                <div
+                                                                    class="w-10 h-10 bg-orange-500 rounded-lg flex items-center justify-center flex-shrink-0">
+                                                                    <i class="fa-solid fa-eye-slash text-white"></i>
+                                                                </div>
+                                                                <div>
+                                                                    <div class="font-semibold text-orange-900">Inactive
+                                                                    </div>
+                                                                    <div class="text-xs text-orange-700 mt-1">Masquée au
+                                                                        public</div>
+                                                                </div>
+                                                            </div>
+                                                        </label>
+                                                    </div>
+                                                    <x-input-error :messages="$errors->get(
+                                                        'performances.' . $performance->id . '.actif',
+                                                    )" class="mt-2" />
+
+                                                    <!-- Aide contextuelle -->
+                                                    <div class="mt-3 p-3 bg-amber-50 border border-amber-200 rounded-lg">
+                                                        <div class="flex gap-2">
+                                                            <i
+                                                                class="fa-solid fa-eye text-amber-600 flex-shrink-0 mt-0.5"></i>
+                                                            <div class="text-xs text-amber-800 space-y-2">
+                                                                <p class="font-semibold text-sm">Comment fonctionne la
+                                                                    visibilité ?</p>
+                                                                <p class="text-amber-700">
+                                                                    La visibilité contrôle si la performance apparaît sur le
+                                                                    site public (remerciements, etc.).
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            @endif
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Actions en mode édition -->
+                <div class="edit-mode bg-gray-50 pb-6 space-y-4" style="display: none;">
+
+                    <!-- Boutons d'action -->
+                    <div class="flex flex-col lg:flex-row lg:items-center gap-3">
                         <button type="button" onclick="toggleEditMode()"
-                            class="bg-gray-300 text-gray-700 px-6 py-3 rounded-lg hover:bg-gray-400 transition-colors flex items-center">
-                            <i class="fas fa-times mr-2"></i>
+                            class="w-full lg:w-auto bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400 transition-colors flex items-center justify-center lg:justify-start">
+                            <i class="fa-solid fa-xmark mr-2"></i>
                             Annuler
                         </button>
 
                         <button type="submit"
-                            class="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg transition-colors flex items-center font-medium">
-                            <i class="fas fa-save mr-2"></i>
+                            class="w-full lg:w-auto bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors flex items-center justify-center lg:justify-start font-medium">
+                            <i class="fa-solid fa-floppy-disk mr-2"></i>
                             Enregistrer les modifications
                         </button>
+                    </div>
+
+                    <!-- Infos de modification - En bas -->
+                    <div class="pt-4 border-t border-gray-300">
+                        <div class="text-sm text-gray-600 flex items-center gap-2">
+                            <i class="fa-solid fa-circle-info flex-shrink-0"></i>
+                            <div class="flex flex-col sm:flex-row sm:gap-1">
+                                <span>Dernière modification :</span>
+                                <span class="font-medium">
+                                    {{ $artiste->formatted_updated_at }}
+                                </span>
+                                @if ($artiste->updated_by_login)
+                                    <span class="hidden sm:inline">par</span>
+                                    <span class="font-medium">{{ $artiste->updated_by_login }}</span>
+                                @endif
+                            </div>
+                        </div>
                     </div>
                 </div>
             </form>
         </div>
     </main>
-    <form id="mask-form" method="POST" action="{{ route('admin.artistes.destroy', $artiste->id) }}"
-        style="display: none;">
-        @csrf
-        @method('DELETE')
-    </form>
     <script>
-        function maskArtist() {
-            if (confirm(
-                    'Êtes-vous sûr de vouloir masquer cet artiste ?\n\nIl ne sera plus visible sur le site.'
-                    )) {
-                document.getElementById('mask-form').submit();
-            }
-        }
+        document.addEventListener('DOMContentLoaded', function() {
+            @if ($errors->any())
+                toggleEditMode();
+            @endif
+        });
 
         function toggleEditMode() {
             const viewElements = document.querySelectorAll('.view-mode');

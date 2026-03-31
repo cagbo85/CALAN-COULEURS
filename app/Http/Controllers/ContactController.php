@@ -14,16 +14,16 @@ class ContactController extends Controller
     }
 
     public function submitForm(Request $request)
-{
-    $request->validate([
-        'name'    => 'required|string|max:255',
-        'email'   => 'required|email|max:255',
-        'message' => 'required|string|max:2000',
-    ]);
+    {
+        $request->validate([
+            'name'    => 'required|string|max:255',
+            'email'   => 'required|email|max:255',
+            'message' => 'required|string|max:2000',
+        ]);
 
-    // Envoyer l'email
-    Mail::send(new ContactMail($request->only('name','email','message')));
+        // Envoyer l'email
+        Mail::send(new ContactMail($request->only('name', 'email', 'message')));
 
-    return back()->with('success', 'Votre message a été envoyé !');
-}
+        return back()->with('success', 'Votre message a été envoyé !');
+    }
 }

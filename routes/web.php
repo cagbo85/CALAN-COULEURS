@@ -4,6 +4,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProgrammationController;
+use App\Http\Controllers\ContactController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/welcome', function () {
@@ -35,6 +36,8 @@ Route::get('charte', [HomeController::class, 'charte'])->name('charte');
 Route::get('partenaires', [HomeController::class, 'partenaires'])->name('partenaires');
 
 Route::get('camping', [HomeController::class, 'camping'])->name('camping');
+
+Route::post('contact', [ContactController::class, 'submitForm'])->name('contact.submit');
 
 require __DIR__.'/auth.php';
 require __DIR__.'/artistes.php';

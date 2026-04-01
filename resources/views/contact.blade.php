@@ -2,6 +2,20 @@
 
 @section('title', 'Contact - Calan\'Couleurs Festival ' . $currentEdition->year)
 
+@push('styles')
+<style>
+.div-input-contact {
+    border: 2px solid transparent;
+    border-radius: 12px;
+
+    background: 
+        linear-gradient(white, white) padding-box,
+        linear-gradient(rgb(143, 30, 152), rgb(255, 15, 99)) border-box;
+}
+</style>
+@endpush
+
+
 @section('content')
     <!-- Bannière -->
     <section class="w-full h-[300px] bg-cover bg-center bg-no-repeat flex items-center justify-center"
@@ -108,8 +122,8 @@
 
             <!-- Colonne Formulaire de contact -->
             <div class="bg-white border border-gray-100 rounded-2xl shadow-md p-6 sm:p-8 lg:sticky lg:top-24 h-full">
-                <h2 class="text-3xl font-bold text-[#8F1E98] mb-8">Envoyez-nous un message</h2>
-
+                <h2 class="text-3xl font-bold text-[#8F1E98]">Envie de nous écrire?</h2>
+                <p class="text-[#8F1E98] mb-8">Une question sur la programmation, une idée brillante à nous partager, envie de devenir bénévole? Vous êtes au bon endroit!</p>
                 @if (session('success'))
                     <div class="bg-green-100 text-green-800 p-3 rounded-lg mb-5">
                         {{ session('success') }}
@@ -119,37 +133,38 @@
                 <form action="{{ route('contact.submit') }}" method="POST" class="space-y-4">
                     @csrf
 
-                    <div>
-                        <label class="block mb-1 font-medium text-gray-700">Nom <span class="text-red-500">*</span></label>
+                    <div class="div-input-contact rounded-lg p-3">
+                        <label class="block mb-1 font-medium text-gray-700">Nom <span class="text-red-500">*</span> :</label>
                         <input type="text" name="name"
-                            class="w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#8F1E98]/40"
+                            class="w-full rounded-lg focus:outline-none"
                             required value="{{ old('name') }}">
                         @error('name')
                             <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                         @enderror
                     </div>
 
-                    <div>
-                        <label class="block mb-1 font-medium text-gray-700">Email <span class="text-red-500">*</span></label>
+                    <div class="div-input-contact rounded-lg p-3">
+                        <label class="block font-medium text-gray-700">Email <span class="text-red-500">*</span> :</label>
                         <input type="email" name="email"
-                            class="w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#8F1E98]/40"
+                            class="w-full rounded-lg focus:outline-none"
                             required value="{{ old('email') }}">
                         @error('email')
                             <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                         @enderror
                     </div>
 
-                    <div>
-                        <label class="block mb-1 font-medium text-gray-700">Message <span class="text-red-500">*</span></label>
+                    <div class="div-input-contact rounded-lg p-3">
+                        <label class="block font-medium text-gray-700">Message <span class="text-red-500">*</span> :</label>
                         <textarea name="message" rows="6"
-                            class="w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#8F1E98]/40" required>{{ old('message') }}</textarea>
+                            class="w-full rounded-lg focus:outline-none" required>{{ old('message') }}</textarea>
                         @error('message')
                             <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                         @enderror
                     </div>
 
                     <button type="submit"
-                        class="w-full sm:w-auto bg-[#8F1E98] text-white px-6 py-3 rounded-lg hover:bg-[#FF0F63] transition-colors duration-300 font-semibold">
+                        class="hidden lg:inline-block text-white font-semibold px-6 py-2.5 rounded-lg hover:from-[#FF0F63] hover:to-[#8F1E98] transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#8F1E98] shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                        style="background: linear-gradient(180deg, rgba(255,15,99,0.9) 0%, rgba(143,30,152,0.9) 35%, rgba(39,42,199,0.9) 100%);">
                         Envoyer
                     </button>
                 </form>

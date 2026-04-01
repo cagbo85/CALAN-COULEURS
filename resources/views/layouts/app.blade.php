@@ -34,6 +34,8 @@
     {{-- Scripts additionnels par page --}}
     @stack('scripts')
 
+    @stack('styles')
+
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
     {{-- Titre dynamique --}}

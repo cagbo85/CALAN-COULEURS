@@ -14,7 +14,7 @@ if (navbarRoot) {
         benevoles: navbarRoot.getAttribute("data-benevoles-url") || "/benevoles",
         news: navbarRoot.getAttribute("data-news-url") || null,
         charte: navbarRoot.getAttribute("data-charte-url") || "/charte",
-        partenaires: navbarRoot.getAttribute("data-partenaires-url") || null,
+        // partenaires: navbarRoot.getAttribute("data-partenaires-url") || null,
         photoSouvenirs: navbarRoot.getAttribute("data-photo-souvenirs-url") || null,
     };
     const currentPath = navbarRoot.getAttribute("data-current-path") || window.location.pathname;

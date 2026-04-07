@@ -172,14 +172,14 @@ export default function Navbar({ routes }) {
                                     >
                                         Partenaires
                                     </a> */}
-                                    {routes?.partenaires && (
+                                    {/* {routes?.partenaires && (
                                         <a
                                             href={routes.partenaires}
                                             className="block px-4 py-2 text-gray-700 hover:bg-gray-50 hover:text-[#8F1E98] transition"
                                         >
                                             Partenaires
                                         </a>
-                                    )}
+                                    )} */}
                                 </div>
                             )}
                         </div>
@@ -345,12 +345,12 @@ export default function Navbar({ routes }) {
                         >
                             À propos
                         </a>
-                        <a
+                        {/* <a
                             href="/partenaires"
                             className="block py-2 pl-4 text-gray-700 hover:text-[#8F1E98] transition"
                         >
                             Partenaires
-                        </a>
+                        </a> */}
 
                         {routes?.news && (
                             <a

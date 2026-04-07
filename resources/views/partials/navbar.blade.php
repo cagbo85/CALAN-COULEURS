@@ -16,8 +16,5 @@
     @if ($showNews ?? false)
         data-news-url="{{ url('#') }}"
     @endif
-    @if ($showPhotoSouvenirs ?? false)
-        data-photo-souvenirs-url="{{ url('#') }}"
-    @endif
     data-current-path="{{ request()->path() }}">
 </div>

@@ -41,7 +41,7 @@
                                 <div class="">
                                     <select id="artiste_id" name="artiste_id" required
                                         class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all">
-                                        <option value="">Sélectionnez un artiste...</option>
+                                        <option value="">Sélectionnez un(e) artiste...</option>
                                         @foreach ($artistes as $artiste)
                                             <option value="{{ $artiste->id }}"
                                                 {{ old('artiste_id') == $artiste->id ? 'selected' : '' }}>

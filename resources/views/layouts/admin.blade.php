@@ -277,8 +277,7 @@
                             </a>
                         @elseif (request()->routeIs('admin.editions.performances.index'))
                             <!-- Page liste : Bouton ajouter -->
-                            {{-- <a href="{{ route('admin.editions.artistes.create') }}" --}}
-                            <a href="#"
+                            <a href="{{ route('admin.editions.performances.create', ['editionId' => request()->route('editionId')]) }}"
                                 class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition-colors flex items-center font-medium">
                                 <i class="fa-solid fa-plus mr-2"></i>
                                 <span class="hidden sm:inline">Ajouter une performance à l'édition</span>

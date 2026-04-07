@@ -267,114 +267,71 @@ class ArtisteController extends Controller
             'name' => 'required|string|max:255',
             'style' => 'nullable|string|max:100',
             'description' => 'nullable|string',
-            'photo' => 'required|file|mimes:webp|max:4096',
-            'day' => 'nullable|in:Vendredi,Samedi,Dimanche',
-            'begin_date' => 'required|date',
-            'ending_date' => 'required|date|after:begin_date',
-            'scene' => 'nullable|string|max:500',
+            'photo' => 'nullable|file|mimes:webp|max:4096',
             'soundcloud_url' => 'nullable|url|max:500',
             'spotify_url' => 'nullable|url|max:500',
             'youtube_url' => 'nullable|url|max:500',
             'deezer_url' => 'nullable|url|max:500',
-            'actif' => 'boolean',
         ], [
             'name.required' => 'Le nom de l\'artiste est obligatoire.',
-            'begin_date.required' => 'La date de début de représentation est obligatoire.',
-            'ending_date.required' => 'La date de fin de représentation est obligatoire.',
-            'ending_date.after' => 'La date de fin de représentation doit être après la date de début.',
-            'photo.required' => 'La photo est obligatoire.',
             'photo.mimes' => 'La photo doit être au format WEBP uniquement.',
             'photo.max' => 'La photo ne doit pas dépasser 4MB.',
+            'soundcloud_url.url' => 'L\'URL SoundCloud doit être valide.',
+            'spotify_url.url' => 'L\'URL Spotify doit être valide.',
+            'youtube_url.url' => 'L\'URL YouTube doit être valide.',
+            'deezer_url.url' => 'L\'URL Deezer doit être valide.',
         ]);
 
         if ($validator->fails()) {
-            $errorMessages = [];
-            foreach ($validator->errors()->messages() as $field => $messages) {
-                $fieldNames = [
-                    'name' => 'Nom',
-                    'style' => 'Style',
-                    'description' => 'Description',
-                    'photo' => 'Photo',
-                    'day' => 'Jour',
-                    'begin_date' => 'Date de début',
-                    'ending_date' => 'Date de fin',
-                    'scene' => 'Scène',
-                    'soundcloud_url' => 'URL SoundCloud',
-                    'spotify_url' => 'URL Spotify',
-                    'youtube_url' => 'URL YouTube',
-                    'deezer_url' => 'URL Deezer',
-                    'actif' => 'Actif',
-                ];
-
-                $fieldName = $fieldNames[$field] ?? $field;
-                foreach ($messages as $message) {
-                    $errorMessages[] = "$fieldName : $message";
-                }
-            }
-
-            $errorSummary = implode(' | ', $errorMessages);
             notify()->error(
-                "Erreurs de validation détectées : {$errorSummary}",
-                'Validation échouée'
+                'Un problème a été détecté dans le formulaire. Veuillez vérifier les champs marqués en rouge.',
+                'Erreur de validation'
             );
 
-            Log::warning("Erreur de validation lors de la crétion de l'artiste", [
+            Log::warning("Erreur de validation lors de la création d'un(e) artiste", [
                 'errors' => $validator->errors(),
                 'user_id' => $user->id,
             ]);
 
             return back()->withErrors($validator->errors())->withInput();
         }
+
+        $storedPhotoPath = null;
+
         try {
             DB::beginTransaction();
 
-            // 📸 GESTION PHOTO PERSONNALISÉE
             if ($request->hasFile('photo')) {
-                $file = $request->file('photo');
-
-                // Nom de fichier personnalisé : NOM_ARTISTE en UPPERCASE
-                $filename = strtoupper($request->input('name')).'.webp';
-
-                // Dossier de destination personnalisé
-                $destinationPath = public_path('img/artists/photos/Photos_artistes');
-
-                // Créer le dossier s'il n'existe pas
-                if (! File::exists($destinationPath)) {
-                    File::makeDirectory($destinationPath, 0755, true);
-                }
-
-                // Déplacer le fichier
-                $file->move($destinationPath, $filename);
-
-                // Stocker le chemin relatif dans la DB
-                $updateData['photo'] = 'img/artists/photos/Photos_artistes/'.$filename;
+                $storedPhotoPath = $this->storeArtistPhoto($request->file('photo'), $request->input('name'));
             }
 
             $artiste = Artiste::create([
-                'name' => $request->input('name'),
-                'style' => $request->input('style'),
-                'description' => $request->input('description'),
-                'photo' => $request->file('photo')->store('artistes', 'public'),
-                'day' => $request->input('day'),
-                'begin_date' => $request->input('begin_date'),
-                'ending_date' => $request->input('ending_date'),
-                'scene' => $request->input('scene'),
-                'soundcloud_url' => $request->input('soundcloud_url'),
-                'spotify_url' => $request->input('spotify_url'),
-                'youtube_url' => $request->input('youtube_url'),
-                'deezer_url' => $request->input('deezer_url'),
-                'actif' => $request->has('actif') && $request->input('actif') == '1',
+                'name' => trim((string) $request->input('name')),
+                'style' => $request->filled('style') ? trim((string) $request->input('style')) : null,
+                'description' => $request->filled('description') ? trim((string) $request->input('description')) : null,
+                'photo' => $storedPhotoPath,
+                'soundcloud_url' => $request->filled('soundcloud_url') ? trim((string) $request->input('soundcloud_url')) : null,
+                'spotify_url' => $request->filled('spotify_url') ? trim((string) $request->input('spotify_url')) : null,
+                'youtube_url' => $request->filled('youtube_url') ? trim((string) $request->input('youtube_url')) : null,
+                'deezer_url' => $request->filled('deezer_url') ? trim((string) $request->input('deezer_url')) : null,
                 'created_by' => $user->id,
                 'updated_by' => $user->id,
             ]);
 
             DB::commit();
 
-            notify()->success("L'artiste ".$artiste->name.' a été créé avec succès.', 'Création réussie !🎉');
+            notify()->success("L'artiste {$artiste->name} a été créé avec succès.", 'Création réussie ! 🎉');
 
             return redirect()->route('admin.artistes.show', ['artisteId' => $artiste->id]);
         } catch (QueryException $e) {
             DB::rollBack();
+
+            if ($storedPhotoPath) {
+                $absolutePath = public_path($storedPhotoPath);
+                if (File::exists($absolutePath)) {
+                    File::delete($absolutePath);
+                }
+            }
 
             Log::error('Erreur de base de données lors de la création d\'un artiste', [
                 'message' => $e->getMessage(),
@@ -383,21 +340,23 @@ class ArtisteController extends Controller
                 'user_id' => $user->id,
             ]);
 
-            if (config('app.debug')) {
-                notify()->error(
-                    "Erreur de base de données : {$e->getMessage()}",
-                    'Erreur technique détaillée'
-                );
-            } else {
-                notify()->error(
-                    'Une erreur de base de données s\'est produite lors de la création de l\'artiste. L\'équipe technique a été notifiée.',
-                    'Erreur de base de données'
-                );
-            }
+            notify()->error(
+                config('app.debug')
+                    ? "Erreur de base de données : {$e->getMessage()}"
+                    : 'Une erreur de base de données s\'est produite lors de la création de l\'artiste. L\'équipe technique a été notifiée.',
+                config('app.debug') ? 'Erreur technique détaillée' : 'Erreur de base de données'
+            );
 
             return back()->withInput();
         } catch (\Exception $e) {
             DB::rollBack();
+
+            if ($storedPhotoPath) {
+                $absolutePath = public_path($storedPhotoPath);
+                if (File::exists($absolutePath)) {
+                    File::delete($absolutePath);
+                }
+            }
 
             Log::error('Erreur générale lors de la création d\'un artiste', [
                 'message' => $e->getMessage(),
@@ -405,20 +364,32 @@ class ArtisteController extends Controller
                 'user_id' => $user->id,
             ]);
 
-            if (config('app.debug')) {
-                notify()->error(
-                    "Erreur technique : {$e->getMessage()} (Ligne {$e->getLine()})",
-                    'Erreur technique détaillée'
-                );
-            } else {
-                notify()->error(
-                    'Une erreur inattendue s\'est produite lors de la création de l\'artiste. L\'équipe technique a été notifiée.',
-                    'Erreur technique'
-                );
-            }
+            notify()->error(
+                config('app.debug')
+                    ? "Erreur technique : {$e->getMessage()} (Ligne {$e->getLine()})"
+                    : 'Une erreur inattendue s\'est produite lors de la création de l\'artiste. L\'équipe technique a été notifiée.',
+                config('app.debug') ? 'Erreur technique détaillée' : 'Erreur technique'
+            );
 
             return back()->withInput();
         }
+    }
+
+    /**
+     * Stocker la photo d'un artiste et retourner le chemin relatif pour la base de données
+     */
+    private function storeArtistPhoto($file, string $artistName): string
+    {
+        $filename = mb_strtoupper($artistName, 'UTF-8') . '.webp';
+        $destinationPath = public_path('img/artists/photos/Photos_artistes');
+
+        if (! File::exists($destinationPath)) {
+            File::makeDirectory($destinationPath, 0755, true);
+        }
+
+        $file->move($destinationPath, $filename);
+
+        return 'img/artists/photos/Photos_artistes/' . $filename;
     }
 
     /**
@@ -440,8 +411,6 @@ class ArtisteController extends Controller
         return DB::table('artistes as a')
             ->select(
                 'a.*',
-                DB::raw('DATE_FORMAT(a.begin_date, "%d/%m/%Y %H:%i") AS formatted_begin_date'),
-                DB::raw('DATE_FORMAT(a.ending_date, "%d/%m/%Y %H:%i") AS formatted_ending_date'),
                 DB::raw('DATE_FORMAT(a.updated_at, "%d/%m/%Y %H:%i") AS formatted_updated_at'),
                 'u.login as updated_by_login',
                 'u2.login as created_by_login'
@@ -566,6 +535,10 @@ class ArtisteController extends Controller
             'performances.*.scene.in' => 'La scène de la performance doit être "Extérieur" ou "Intérieur".',
             'performances.*.ending_date.after_or_equal' => 'La date de fin de la performance doit être après ou égale à la date de début.',
             'performances.*.id.exists' => 'La performance spécifiée n\'existe pas.',
+            'soundcloud_url.url' => 'L\'URL SoundCloud doit être valide.',
+            'spotify_url.url' => 'L\'URL Spotify doit être valide.',
+            'youtube_url.url' => 'L\'URL YouTube doit être valide.',
+            'deezer_url.url' => 'L\'URL Deezer doit être valide.',
         ]);
 
         if ($validator->fails()) {
@@ -609,7 +582,7 @@ class ArtisteController extends Controller
                 $file = $request->file('photo');
 
                 // Nouveau nom basé sur le nom modifié
-                $filename = strtoupper($request->input('name')).'.webp';
+                $filename = mb_strtoupper(trim($request->input('name')), 'UTF-8') . '.webp';
 
                 // Dossier de destination
                 $destinationPath = public_path('img/artists/photos/Photos_artistes');
@@ -623,17 +596,17 @@ class ArtisteController extends Controller
                 $file->move($destinationPath, $filename);
 
                 // Mettre à jour le chemin
-                $updateArtistsData['photo'] = 'img/artists/photos/Photos_artistes/'.$filename;
+                $updateArtistsData['photo'] = 'img/artists/photos/Photos_artistes/' . $filename;
             }
             // Si le nom a changé mais pas de nouvelle photo, renommer l'ancienne
             elseif ($artiste->name !== $request->input('name') && $artiste->photo) {
                 $oldPhotoPath = public_path($artiste->photo);
-                $newFilename = strtoupper($request->input('name')).'.webp';
-                $newPhotoPath = public_path('img/artists/photos/Photos_artistes/'.$newFilename);
+                $newFilename = mb_strtoupper(trim($request->input('name')), 'UTF-8') . '.webp';
+                $newPhotoPath = public_path('img/artists/photos/Photos_artistes/' . $newFilename);
 
                 if (File::exists($oldPhotoPath)) {
                     File::move($oldPhotoPath, $newPhotoPath);
-                    $updateArtistsData['photo'] = 'img/artists/photos/Photos_artistes/'.$newFilename;
+                    $updateArtistsData['photo'] = 'img/artists/photos/Photos_artistes/' . $newFilename;
                 }
             }
 

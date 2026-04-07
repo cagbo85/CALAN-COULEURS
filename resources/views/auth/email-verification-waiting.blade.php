@@ -68,10 +68,6 @@
 
             <!-- Message principal -->
             <div class="mb-6 text-center">
-                <p class="text-gray-700 text-base leading-relaxed mb-4">
-                    <strong>Félicitations !</strong> Votre compte a été initialisé avec succès.
-                </p>
-
                 <p class="text-gray-600 text-sm leading-relaxed">
                     Pour finaliser l'activation de votre compte et accéder à votre espace d'administration,
                     vous devez maintenant <strong>vérifier votre adresse email</strong>.

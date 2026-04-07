@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class() extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -19,9 +19,9 @@ return new class() extends Migration
             $table->string('login')->unique('login')->comment('login de la personne');
             $table->string('email')->unique('email')->comment('Email unique');
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('password')->comment('Mot de passe');
+            $table->string('password')->nullable()->comment('Mot de passe');
             $table->enum('role', ['super-admin', 'admin', 'editor'])->default('editor')->comment('Rôles différenciés');
-            $table->string('statut')->comment('Statut de la personne au sein de l\'Association');
+            $table->string('statut')->nullable()->comment('Statut de la personne au sein de l\'Association');
             $table->boolean('actif')->default(true)->comment('Utilisateur actif/inactif');
             $table->timestamp('reactivation_requested_at')->nullable()->comment('Date de demande de réactivation');
             $table->integer('reactivation_requested_by')->nullable()->index('reactivation_requested_by')->comment('ID de l\'utilisateur qui a demandé la réactivation');

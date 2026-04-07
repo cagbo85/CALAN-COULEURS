@@ -2,9 +2,7 @@
 
 namespace App\Http\Requests\Auth;
 
-use App\Models\User;
 use Illuminate\Auth\Events\Lockout;
-use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
@@ -43,48 +41,54 @@ class LoginRequest extends FormRequest
     {
         $this->ensureIsNotRateLimited();
 
-        $login_field = filter_var($this->input('login'), FILTER_VALIDATE_EMAIL) ? 'email' : 'login';
-        $this->merge([$login_field => $this->input('login')]);
+        $loginInput = (string) $this->input('login');
+        $loginField = filter_var($loginInput, FILTER_VALIDATE_EMAIL) ? 'email' : 'login';
 
         $credentials = [
-            $login_field => $this->input('login'),
+            $loginField => $loginInput,
             'password' => $this->input('password'),
+            'actif' => 1,
         ];
 
-        $user = User::where($login_field, $this->input('login'))->first();
+        if (! Auth::attempt($credentials, $this->boolean('remember'))) {
+            $this->throwInvalidCredentials();
+        }
+
+        $user = Auth::user();
 
         if (! $user) {
-            RateLimiter::hit($this->throttleKey());
-            throw ValidationException::withMessages([
-                'login' => 'Ces identifiants ne correspondent à aucun compte.',
-            ]);
+            // Cas de sécurité défensif
+            Auth::logout();
+            $this->throwInvalidCredentials();
         }
 
-        // Vérifier que l'utilisateur est actif
-        if (! $user->actif) {
-            throw ValidationException::withMessages([
-                'login' => 'Votre compte a été désactivé. Contactez un administrateur.',
-            ]);
-        }
-
+        // On ne révèle l'état "compte réactivé" qu'après auth réussie
         if ($this->hasTemporaryPassword($user)) {
-            // Rediriger vers la page d'initialisation avec un message
+            Auth::logout();
+
             session()->flash('reactivation_notice', true);
-            session()->flash('login_for_init', $this->input('login'));
+            session()->flash('login_for_init', $loginInput);
 
             throw ValidationException::withMessages([
                 'login' => 'Votre compte a été réactivé. Vous devez réinitialiser votre mot de passe.',
             ])->redirectTo(route('password.initialize'));
         }
 
-        if (! Auth::attempt($credentials, $this->boolean('remember'))) {
-            RateLimiter::hit($this->throttleKey());
-            throw ValidationException::withMessages([
-                'login' => 'Mot de passe incorrect.',
-            ]);
-        }
-
         RateLimiter::clear($this->throttleKey());
+    }
+
+    /**
+     * Retourne une erreur d'authentification générique.
+     *
+     * @throws ValidationException
+     */
+    private function throwInvalidCredentials(): never
+    {
+        RateLimiter::hit($this->throttleKey());
+
+        throw ValidationException::withMessages([
+            'login' => 'Identifiants invalides.',
+        ]);
     }
 
     /**
@@ -103,7 +107,7 @@ class LoginRequest extends FormRequest
         $seconds = RateLimiter::availableIn($this->throttleKey());
 
         throw ValidationException::withMessages([
-            'login' => 'Trop de tentatives de connexion. Réessayez dans '.ceil($seconds / 60).' minutes.',
+            'login' => 'Trop de tentatives de connexion. Réessayez dans ' . ceil($seconds / 60) . ' minutes.',
         ]);
     }
 
@@ -112,7 +116,7 @@ class LoginRequest extends FormRequest
      */
     public function throttleKey(): string
     {
-        return Str::transliterate(Str::lower($this->string('login')).'|'.$this->ip());
+        return Str::transliterate(Str::lower($this->string('login')) . '|' . $this->ip());
     }
 
     /**
@@ -120,8 +124,8 @@ class LoginRequest extends FormRequest
      */
     private function hasTemporaryPassword($user): bool
     {
-        // Si password est null, c'est un compte pas encore initialisé
-        if (is_null($user->password)) {
+        // Si password est null ou vide, c'est un compte pas encore initialisé
+        if (is_null($user->password) || $user->password === '') {
             return false;
         }
 

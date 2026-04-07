@@ -43,12 +43,12 @@
                             Billetterie <span class="sr-only">(nouvelle fenêtre)</span>
                         </a>
                     </li>
-                    @if ($showPartenaires ?? false)
+                    {{-- @if ($showPartenaires ?? false)
                         <li>
                             <a href="{{ route('partenaires') }}"
                                 class="text-white hover:text-[#FF0F63] font-medium transition">Partenaires</a>
                         </li>
-                    @endif
+                    @endif --}}
                     <li>
                         <a href="{{ route('charte') }}"
                             class="text-white hover:text-[#FF0F63] font-medium transition">Charte</a>

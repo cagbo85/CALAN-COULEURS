@@ -2,41 +2,51 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
-use Illuminate\Http\Request;
-
 class GalerieController extends Controller
 {
+
     /**
-     * Load gallery images and display them.
-     * 
-     * @param Request $request The user HTTP request.
-     * @return view The gallery view.
+     * Afficher la galerie d'images pour les éditions archivées et passées
      */
-    public function index(Request $request)
+    public function index()
     {
-        // User selected year, otherwise; select past year.
-        $selectedYear = $request->input('year', date("Y",strtotime("-1 year")));
+        $editions = $this->getArchivedAndPastEditions();
 
-        $yearsPath = 'img/galerie/';
+        if ($editions->isEmpty()) {
+            return view('galerie', ['editions' => collect(), 'galleryByYear' => []]);
+        }
 
-        $archivedYears = $this->getArchivedYears($yearsPath);
+        $galleryByYear = [];
+        foreach ($editions as $edition) {
+            $galleryByYear[$edition->year] = $this->loadGalleryImages('img/galerie/' . $edition->year . '/');
+        }
 
-        $imgPath = 'img/galerie/' . $selectedYear . '/';
-
-        $images = $this->loadGalleryImages($imgPath);
-
-        return view('galerie', compact('archivedYears', 'images', 'selectedYear'));
+        return view('galerie', compact('editions', 'galleryByYear'));
     }
 
+    /**
+     * Récupérer les éditions archivées et passées pour pouvoir afficher les photos associées dans la galerie
+     */
+    private function getArchivedAndPastEditions()
+    {
+        return DB::table('editions')
+            ->select('id', 'year', 'name')
+            ->whereIn('status', ['past', 'archived'])
+            ->where('actif', true)
+            ->orderByDesc('year')
+            ->get();
+    }
 
     /**
-     * Get all gallery images in the given folder.
-     * 
-     * @param string $imgPath The folder path.
-     * @return \Illuminate\Support\Collection<int, string>  Collection of relative file paths.
+     * Récupérer toutes les images de la galerie dans le dossier donné.
+     *
+     * @param string $imgPath Le chemin du dossier.
+     * @return \Illuminate\Support\Collection<int, string>  Collection des chemins relatifs des fichiers.
      */
-    public function loadGalleryImages(string $imgPath){
+    public function loadGalleryImages(string $imgPath)
+    {
 
         $path = public_path($imgPath);
 
@@ -45,23 +55,6 @@ class GalerieController extends Controller
         }
 
         return collect(File::files($path))
-            ->map(fn ($file) => $imgPath . $file->getFilename());
-    }
-
-
-    /**
-     * Return all the archived years of photos.
-     * 
-     * @param string $folderPath The path to the photos archive.
-     * @return array All the archived years.
-     */
-    public function getArchivedYears(string $folderPath) : array
-    {
-
-        $path = public_path($folderPath);
-
-        return collect(File::directories($path))
-            ->map(fn ($folder) => basename($folder))
-            ->toArray();
+            ->map(fn($file) => $imgPath . $file->getFilename());
     }
 }

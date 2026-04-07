@@ -23,7 +23,6 @@ class AuthController extends Controller
 
     public function store(Request $request)
     {
-        // 1. Validation des données du formulaire
         $validated = $request->validate([
             'login' => ['required', 'string', 'max:255'],
             'email' => ['required', 'email', 'max:255'],
@@ -38,65 +37,33 @@ class AuthController extends Controller
             'password.confirmed' => 'La confirmation du mot de passe ne correspond pas.',
         ]);
 
-        // 2. Vérifier que l'utilisateur existe
-        $user = User::where('login', $validated['login'])->first();
+        $login = trim($validated['login']);
+        $email = mb_strtolower(trim($validated['email']));
 
-        if (! $user) {
-            throw ValidationException::withMessages([
-                'login' => 'Les informations d\'identification ne sont pas valides.',
-            ]);
-        }
-
-        // 3. Vérifier que le compte est actif
-        if (! $user->actif) {
-            throw ValidationException::withMessages([
-                'login' => 'Votre compte est désactivé. Contactez un administrateur.',
-            ]);
-        }
-
-        // 4. Vérifier les conditions d'initialisation
-        $canInitialize = false;
-        $isReactivation = false;
-
-        // Compte jamais initialisé (password = null)
-        if (is_null($user->password)) {
-            $canInitialize = true;
-        }
-        // Compte réactivé récemment
-        elseif (
-            $user->reactivation_approved_at &&
-            $user->reactivation_approved_at->gt(now()->subDay())
-        ) {
-            $canInitialize = true;
-            $isReactivation = true;
-        }
-
-        if (! $canInitialize) {
-            throw ValidationException::withMessages([
-                'login' => 'L\'initialisation de votre compte a déjà été effectuée. Utilisez la page de connexion normale.',
-            ]);
-        }
-
-        // 5. Vérifier que l'email n'est pas déjà utilisé par un autre utilisateur
-        $existingEmailUser = User::where('email', $validated['email'])
-            ->where('id', '!=', $user->id)
+        $user = User::where('login', $login)
+            ->where('email', $email)
+            ->where('actif', true)
             ->first();
 
-        if ($existingEmailUser) {
-            throw ValidationException::withMessages([
-                'email' => 'Cette adresse e-mail est déjà utilisée par un autre compte.',
-            ]);
+        if (! $user) {
+            return $this->throwInitializationFailed();
         }
 
-        // 6. Mettre à jour les informations de l'utilisateur
+        // Autorisé seulement si compte non initialisé OU réactivé récemment
+        $isNeverInitialized = is_null($user->password) || $user->password === '';
+        $isReactivation = $user->reactivation_approved_at
+            && $user->reactivation_approved_at->gt(now()->subDay());
+
+        if (! $isNeverInitialized && ! $isReactivation) {
+            return $this->throwInitializationFailed();
+        }
+
         $user->update([
-            'email' => $validated['email'],
             'statut' => $validated['statut'],
             'password' => Hash::make($validated['password']),
-            'email_verified_at' => null,  // Force la vérification email
+            'email_verified_at' => null,
         ]);
 
-        // 7. Si c'était une réactivation, nettoyer les champs de réactivation
         if ($isReactivation) {
             $user->update([
                 'reactivation_requested_at' => null,
@@ -113,5 +80,12 @@ class AuthController extends Controller
             : 'Le compte a bien été initialisé. Un e-mail de vérification vous a été envoyé.';
 
         return redirect()->route('email.verification.waiting')->with('status', $message);
+    }
+
+    private function throwInitializationFailed(): never
+    {
+        throw ValidationException::withMessages([
+            'login' => 'Impossible d\'initialiser ce compte avec les informations fournies.',
+        ]);
     }
 }

@@ -123,6 +123,14 @@
                         class="ml-auto bg-purple-100 text-purple-600 text-xs px-2 py-1 rounded-full">{{ App\Models\Faq::count() }}</span>
                 </a>
 
+                <!-- Documentation -->
+                <a href="{{ route('admin.documentation') }}" target="_blank" rel="noopener noreferrer"
+                    class="flex items-center px-6 py-3 {{ request()->routeIs('admin.documentation') ? 'text-gray-700 bg-purple-50 border-r-4 border-purple-500' : 'text-gray-600 hover:bg-gray-50 hover:text-purple-600 transition-colors' }}">
+                    <i
+                        class="fa-solid fa-book mr-3 {{ request()->routeIs('admin.documentation') ? 'text-purple-500' : '' }}"></i>
+                    <span class="{{ request()->routeIs('admin.documentation') ? 'font-medium' : '' }}">Documentation</span>
+                </a>
+
                 <!-- Contenu -->
                 {{-- <a href="#"
                     class="flex items-center px-6 py-3 {{ request()->routeIs('admin.content.*') ? 'text-gray-700 bg-purple-50 border-r-4 border-purple-500' : 'text-gray-600 hover:bg-gray-50 hover:text-purple-600 transition-colors' }}">
@@ -244,6 +252,9 @@
                             @elseif (request()->routeIs('admin.editions.performances.create'))
                                 <h1 class="text-2xl font-bold text-gray-900">Ajouter une Performance pour une Édition</h1>
                                 <p class="text-sm text-gray-500">Ajoutez une nouvelle performance pour une édition</p>
+                            @elseif (request()->routeIs('admin.documentation'))
+                                <h1 class="text-2xl font-bold text-gray-900">Documentation interne</h1>
+                                <p class="text-sm text-gray-500">Consultez la documentation interne</p>
                             @else
                                 Dashboard
                             @endif

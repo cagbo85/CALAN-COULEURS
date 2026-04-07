@@ -25,6 +25,7 @@ Route::middleware('auth')->group(function () {
 Route::get('/', [HomeController::class, 'accueil'])->name('accueil');
 
 Route::get('programmation', [ProgrammationController::class, 'index'])->name('programmation');
+
 Route::get('galerie', [GalerieController::class, 'index'])->name('galerie.index');
 
 Route::get('notre-histoire', [HomeController::class, 'festival'])->name('festival');
@@ -47,3 +48,4 @@ require __DIR__.'/faqs.php';
 require __DIR__.'/users.php';
 require __DIR__.'/boutique.php';
 require __DIR__.'/editions.php';
+require __DIR__.'/documentation.php';

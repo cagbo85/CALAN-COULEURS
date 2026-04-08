@@ -18,7 +18,7 @@ class FaqSeeder extends Seeder
         DB::table('faqs')->insert([
             [
                 'question' => 'Où et quand se déroule le festival ?',
-                'answer' => 'Rendez-vous à Campbon (44) les 12 & 13 septembre pour deux jours de vibes 🔥',
+                'answer' => 'Rendez-vous à Campbon (44) les 26 & 27 juin 2026 pour deux jours de vibes 🔥',
                 'actif' => 1,
                 'ordre' => 1,
                 'created_by' => 1,

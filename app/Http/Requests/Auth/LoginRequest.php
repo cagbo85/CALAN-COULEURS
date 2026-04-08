@@ -107,7 +107,7 @@ class LoginRequest extends FormRequest
         $seconds = RateLimiter::availableIn($this->throttleKey());
 
         throw ValidationException::withMessages([
-            'login' => 'Trop de tentatives de connexion. Réessayez dans ' . ceil($seconds / 60) . ' minutes.',
+            'login' => 'Trop de tentatives de connexion. Réessayez dans '.ceil($seconds / 60).' minutes.',
         ]);
     }
 
@@ -116,7 +116,7 @@ class LoginRequest extends FormRequest
      */
     public function throttleKey(): string
     {
-        return Str::transliterate(Str::lower($this->string('login')) . '|' . $this->ip());
+        return Str::transliterate(Str::lower($this->string('login')).'|'.$this->ip());
     }
 
     /**

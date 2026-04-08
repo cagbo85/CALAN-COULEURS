@@ -380,7 +380,7 @@ class ArtisteController extends Controller
      */
     private function storeArtistPhoto($file, string $artistName): string
     {
-        $filename = mb_strtoupper($artistName, 'UTF-8') . '.webp';
+        $filename = mb_strtoupper($artistName, 'UTF-8').'.webp';
         $destinationPath = public_path('img/artists/photos/Photos_artistes');
 
         if (! File::exists($destinationPath)) {
@@ -389,7 +389,7 @@ class ArtisteController extends Controller
 
         $file->move($destinationPath, $filename);
 
-        return 'img/artists/photos/Photos_artistes/' . $filename;
+        return 'img/artists/photos/Photos_artistes/'.$filename;
     }
 
     /**
@@ -582,7 +582,7 @@ class ArtisteController extends Controller
                 $file = $request->file('photo');
 
                 // Nouveau nom basé sur le nom modifié
-                $filename = mb_strtoupper(trim($request->input('name')), 'UTF-8') . '.webp';
+                $filename = mb_strtoupper(trim($request->input('name')), 'UTF-8').'.webp';
 
                 // Dossier de destination
                 $destinationPath = public_path('img/artists/photos/Photos_artistes');
@@ -596,17 +596,17 @@ class ArtisteController extends Controller
                 $file->move($destinationPath, $filename);
 
                 // Mettre à jour le chemin
-                $updateArtistsData['photo'] = 'img/artists/photos/Photos_artistes/' . $filename;
+                $updateArtistsData['photo'] = 'img/artists/photos/Photos_artistes/'.$filename;
             }
             // Si le nom a changé mais pas de nouvelle photo, renommer l'ancienne
             elseif ($artiste->name !== $request->input('name') && $artiste->photo) {
                 $oldPhotoPath = public_path($artiste->photo);
-                $newFilename = mb_strtoupper(trim($request->input('name')), 'UTF-8') . '.webp';
-                $newPhotoPath = public_path('img/artists/photos/Photos_artistes/' . $newFilename);
+                $newFilename = mb_strtoupper(trim($request->input('name')), 'UTF-8').'.webp';
+                $newPhotoPath = public_path('img/artists/photos/Photos_artistes/'.$newFilename);
 
                 if (File::exists($oldPhotoPath)) {
                     File::move($oldPhotoPath, $newPhotoPath);
-                    $updateArtistsData['photo'] = 'img/artists/photos/Photos_artistes/' . $newFilename;
+                    $updateArtistsData['photo'] = 'img/artists/photos/Photos_artistes/'.$newFilename;
                 }
             }
 

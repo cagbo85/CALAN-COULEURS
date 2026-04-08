@@ -36,7 +36,6 @@ use Laravel\Sanctum\HasApiTokens;
  * @property int|null $updated_by
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- *
  * @property User|null $user
  * @property Collection|Artiste[] $artistes
  * @property Collection|Color[] $colors
@@ -52,47 +51,45 @@ use Laravel\Sanctum\HasApiTokens;
  * @property Collection|Size[] $sizes
  * @property Collection|Stand[] $stands
  * @property Collection|User[] $users
- *
- * @package App\Models
  */
 class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable;
 
-	protected $table = 'users';
+    protected $table = 'users';
 
-	protected $casts = [
-		'email_verified_at' => 'datetime',
-		'actif' => 'bool',
-		'reactivation_requested_at' => 'datetime',
-		'reactivation_requested_by' => 'int',
-		'reactivation_approved_at' => 'datetime',
-		'reactivation_approved_by' => 'int',
-		'updated_by' => 'int'
-	];
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'actif' => 'bool',
+        'reactivation_requested_at' => 'datetime',
+        'reactivation_requested_by' => 'int',
+        'reactivation_approved_at' => 'datetime',
+        'reactivation_approved_by' => 'int',
+        'updated_by' => 'int',
+    ];
 
-	protected $hidden = [
-		'password',
-		'remember_token'
-	];
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
 
-	protected $fillable = [
-		'firstname',
-		'lastname',
-		'login',
-		'email',
-		'email_verified_at',
-		'password',
-		'role',
-		'statut',
-		'actif',
-		'reactivation_requested_at',
-		'reactivation_requested_by',
-		'reactivation_approved_at',
-		'reactivation_approved_by',
-		'remember_token',
-		'updated_by'
-	];
+    protected $fillable = [
+        'firstname',
+        'lastname',
+        'login',
+        'email',
+        'email_verified_at',
+        'password',
+        'role',
+        'statut',
+        'actif',
+        'reactivation_requested_at',
+        'reactivation_requested_by',
+        'reactivation_approved_at',
+        'reactivation_approved_by',
+        'remember_token',
+        'updated_by',
+    ];
 
     /**
      * Utilisateur ayant demandé la réactivation (self-relation).
@@ -106,9 +103,9 @@ class User extends Authenticatable implements MustVerifyEmail
      * Utilisateur ayant approuvé la réactivation (self-relation).
      */
     public function reactivationApprovedBy()
-	{
-		return $this->belongsTo(User::class, 'reactivation_approved_by');
-	}
+    {
+        return $this->belongsTo(User::class, 'reactivation_approved_by');
+    }
 
     /**
      * Utilisateur ayant mis à jour cet utilisateur (self-relation).
@@ -130,25 +127,25 @@ class User extends Authenticatable implements MustVerifyEmail
      * Artistes mis à jour par cet utilisateur.
      */
     public function updatedArtistes()
-	{
-		return $this->hasMany(Artiste::class, 'updated_by');
-	}
+    {
+        return $this->hasMany(Artiste::class, 'updated_by');
+    }
 
     /**
      * Faqs créées par cet utilisateur.
      */
     public function createdFaqs()
-	{
+    {
         return $this->hasMany(Faq::class, 'created_by');
-	}
+    }
 
     /**
      * Faqs mises à jour par cet utilisateur.
      */
     public function updatedFaqs()
-	{
-		return $this->hasMany(Faq::class, 'updated_by');
-	}
+    {
+        return $this->hasMany(Faq::class, 'updated_by');
+    }
 
     /**
      * Stands créés par cet utilisateur.
@@ -170,17 +167,17 @@ class User extends Authenticatable implements MustVerifyEmail
      * OrderItems mis à jour par cet utilisateur.
      */
     public function updatedOrderItems()
-	{
-		return $this->hasMany(OrderItem::class, 'updated_by');
-	}
+    {
+        return $this->hasMany(OrderItem::class, 'updated_by');
+    }
 
     /**
      * ProductsVariants mis à jour par cet utilisateur.
      */
     public function updatedProductsVariants()
-	{
+    {
         return $this->hasMany(ProductsVariant::class, 'updated_by');
-	}
+    }
 
     /**
      * Partenaires créés par cet utilisateur.
@@ -194,17 +191,17 @@ class User extends Authenticatable implements MustVerifyEmail
      * Partenaires mis à jour par cet utilisateur.
      */
     public function updatedPartenaires()
-	{
-		return $this->hasMany(Partenaire::class, 'updated_by');
-	}
+    {
+        return $this->hasMany(Partenaire::class, 'updated_by');
+    }
 
     /**
      * Orders mis à jour par cet utilisateur.
      */
     public function updatedOrders()
-	{
+    {
         return $this->hasMany(Order::class, 'updated_by');
-	}
+    }
 
     /**
      * Products créés par cet utilisateur.
@@ -218,9 +215,9 @@ class User extends Authenticatable implements MustVerifyEmail
      * Products mis à jour par cet utilisateur.
      */
     public function updatedProducts()
-	{
-		return $this->hasMany(Product::class, 'updated_by');
-	}
+    {
+        return $this->hasMany(Product::class, 'updated_by');
+    }
 
     public function isSuperAdmin(): bool
     {
@@ -228,24 +225,24 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     public function isAdmin(): bool
-	{
+    {
         return $this->role === 'admin';
     }
 
     public function isEditor(): bool
     {
         return $this->role === 'editor';
-	}
+    }
 
     public function isActive(): bool
-	{
+    {
         return $this->actif;
     }
 
     public function canCreateUsers(): bool
     {
         return $this->isSuperAdmin();
-	}
+    }
 
     public function canDeactivateUser(User $targetUser): bool
     {
@@ -261,7 +258,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
         // Editor ne peut désactiver personne
         return false;
-	}
+    }
 
     public function canEditUser(User $targetUser): bool
     {
@@ -277,7 +274,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
         // Editor peut seulement s'éditer lui-même
         return $this->id === $targetUser->id;
-	}
+    }
 
     public function canDeleteUser(User $targetUser): bool
     {
@@ -291,5 +288,5 @@ class User extends Authenticatable implements MustVerifyEmail
     public function sendEmailVerificationNotification()
     {
         $this->notify(new VerifyEmailNotification());
-	}
+    }
 }

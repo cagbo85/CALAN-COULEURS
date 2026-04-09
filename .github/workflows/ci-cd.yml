@@ -220,12 +220,27 @@ jobs:
     needs: [tests, code-quality, build-and-release]
     runs-on: ubuntu-latest
     steps:
+      - name: Get runner's public IP
+        id: ip
+        run: echo "ipv4=$(curl -s https://api.ipify.org)" >> $GITHUB_OUTPUT
+
+      - name: Whitelisting the runner IP
+        run: |
+          curl -sm 45 -H'Authorization: cpanel ${{ secrets.CPANEL_USERNAME }}:${{ secrets.CPANEL_API_TOKEN }}' \
+          'https://${{ secrets.CPANEL_SERVER }}:2083/execute/SshWhitelist/add?address=${{ steps.ip.outputs.ipv4 }}&port=22'
+
       - name: Executing remote ssh commands
         uses: appleboy/ssh-action@v1.0.3
         with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
+          host: ${{ secrets.CPANEL_SERVER }}
+          username: ${{ secrets.CPANEL_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: ${{ secrets.SSH_PORT }}
+          port: 22
           script: |
-            bash /home/${{ secrets.SSH_USER }}/deploy.sh
+            bash /home/${{ secrets.CPANEL_USERNAME }}/deploy.sh
+
+      - name: Removing whitelisted IP (Cleanup)
+        if: always()
+        run: |
+          curl -sm 45 -H'Authorization: cpanel ${{ secrets.CPANEL_USERNAME }}:${{ secrets.CPANEL_API_TOKEN }}' \
+          'https://${{ secrets.CPANEL_SERVER }}:2083/execute/SshWhitelist/remove_all'

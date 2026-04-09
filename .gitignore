@@ -35,8 +35,6 @@ composer.phar
 phpunit.xml.cache
 database/database.sqlite
 
-installation.md
-
 # docker-compose.override.yml
 sail
 /.idea

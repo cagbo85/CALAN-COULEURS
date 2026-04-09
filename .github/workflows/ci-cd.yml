@@ -225,4 +225,4 @@ jobs:
           DEPLOY_URL: ${{ secrets.DEPLOY_URL }}
           DEPLOY_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
         run: |
-          curl -fsS --http1.1 -v -X POST -H "X-Deploy-Token: $DEPLOY_TOKEN" -H "Content-Length: 0" "$DEPLOY_URL" || true
+          curl --http1.1 -fL -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36" "$DEPLOY_URL?token=$DEPLOY_TOKEN"

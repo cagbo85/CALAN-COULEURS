@@ -225,4 +225,7 @@ jobs:
           DEPLOY_URL: ${{ secrets.DEPLOY_URL }}
           DEPLOY_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
         run: |
-          curl -fsS --http1.1 -v -X POST -H "X-Deploy-Token: $DEPLOY_TOKEN" "$DEPLOY_URL" || true
+          curl -X POST \
+            -H "X-Deploy-Token: $DEPLOY_TOKEN" \
+            -H "Content-Length: 0" \
+            "$DEPLOY_URL"

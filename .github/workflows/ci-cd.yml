@@ -112,6 +112,28 @@ jobs:
           BCRYPT_ROUNDS=4
           EOF
 
+          cat > .env.testing << 'EOF'
+          APP_NAME="Calan'Couleurs Test"
+          APP_ENV=testing
+          APP_KEY=base64:test-key-for-ci-cd-pipeline-calan-couleurs
+          APP_DEBUG=true
+          APP_URL=http://localhost
+          APP_LOCALE=fr
+          APP_FALLBACK_LOCALE=fr
+          APP_FAKER_LOCALE=fr_FR
+          DB_CONNECTION=mysql
+          DB_HOST=127.0.0.1
+          DB_PORT=3306
+          DB_DATABASE=calan_test
+          DB_USERNAME=sail
+          DB_PASSWORD=password
+          MAIL_MAILER=array
+          QUEUE_CONNECTION=sync
+          SESSION_DRIVER=array
+          CACHE_STORE=array
+          BCRYPT_ROUNDS=4
+          EOF
+
       - uses: actions/cache@v3
         with:
           path: vendor

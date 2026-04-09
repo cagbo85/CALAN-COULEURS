@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -12,6 +13,19 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         //
+        if (app()->environment('testing', 'local')) {
+            User::updateOrCreate(
+                ['id' => 1],
+                [
+                    'firstname' => 'Test',
+                    'lastname' => 'Admin',
+                    'login' => 'admin',
+                    'email' => 'testtest@gmail.com',
+                    'role' => 'admin',
+                ]
+            );
+        }
+
         $this->call([
             EditionSeeder::class,
             ArtisteSeeder::class,

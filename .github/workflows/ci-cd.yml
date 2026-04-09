@@ -213,16 +213,19 @@ jobs:
       - name: Security Audit
         run: composer audit --no-interaction --no-ansi
 
-  # 4. Déploiement automatique sur le serveur de production via webhook sécurisé.
+  # 4. Déploiement automatique sur le serveur de production via SSH.
   deploy:
     if: github.ref == 'refs/heads/main'
     name: Deploy to Production
     needs: [tests, code-quality, build-and-release]
     runs-on: ubuntu-latest
     steps:
-      - name: Deploy via WebHook
-        env:
-          DEPLOY_URL: ${{ secrets.DEPLOY_URL }}
-          DEPLOY_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
-        run: |
-          curl --http1.1 -fL -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36" "$DEPLOY_URL?token=$DEPLOY_TOKEN"
+      - name: Executing remote ssh commands
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            bash /home/${{ secrets.SSH_USER }}/deploy.sh

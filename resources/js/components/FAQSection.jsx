@@ -48,18 +48,11 @@ export default function FAQSection() {
     // Etat de chargement
     if (loading) {
         return (
-            <section className="py-16 px-6 bg-gray-100">
+            <section className="px-6 py-16" style={{ backgroundColor: "#EEF1FF" }}>
                 <div className="container mx-auto text-center">
-                    <div className="text-5xl mb-4 drop-shadow-lg">⏳</div>
+                    <div className="mb-4 text-5xl drop-shadow-lg">⏳</div>
                     <p
-                        className="text-white text-lg font-semibold"
-                        style={{
-                            background:
-                                "linear-gradient(to right, #FF0F63, #8F1E98)",
-                            WebkitBackgroundClip: "text",
-                            WebkitTextFillColor: "transparent",
-                            backgroundClip: "text",
-                        }}
+                        className="text-lg font-semibold text-[#272AC7]"
                     >
                         Chargement de la FAQ...
                     </p>
@@ -71,10 +64,10 @@ export default function FAQSection() {
     // Etat d'erreur
     if (error) {
         return (
-            <section className="py-16 px-6 bg-gray-100">
+            <section className="px-6 py-16" style={{ backgroundColor: "#EEF1FF" }}>
                 <div className="container mx-auto text-center">
-                    <BiSolidError className="text-5xl mb-4 text-red-400 mx-auto" />
-                    <p className="text-white text-lg font-semibold">{error}</p>
+                    <BiSolidError className="mx-auto mb-4 text-5xl text-red-400" />
+                    <p className="text-lg font-semibold text-[#272AC7]">{error}</p>
                 </div>
             </section>
         );
@@ -83,17 +76,13 @@ export default function FAQSection() {
     // Etat normal (FAQ disponible)
     return (
         <section
-            className="py-16 px-6"
+            className="px-6 py-16" style={{ background: "linear-gradient(180deg, #5255d2 0%, #272ac7 80%)" }}
             aria-labelledby="faq-heading"
-            style={{
-                background:
-                    "linear-gradient(180deg, rgba(39,42,199,1) 0%, rgba(143,30,152,1) 35%, rgba(255,15,99,1) 100%)",
-            }}
         >
             <div className="container mx-auto">
                 <h2
                     id={headingId}
-                    className="text-4xl font-bold uppercase mb-12 text-left drop-shadow-lg text-white"
+                    className="mb-12 text-4xl font-bold text-left text-white uppercase drop-shadow-lg"
                 >
                     Foire aux questions
                 </h2>
@@ -124,7 +113,7 @@ export default function FAQSection() {
                             })}
                         </ul>
                     ) : (
-                        <p className="text-white/90" role="note">
+                        <p className="text-[#272AC7]/90" role="note">
                             Aucune question pour le moment.
                         </p>
                     )}

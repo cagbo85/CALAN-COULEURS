@@ -1,11 +1,11 @@
-<footer class="bg-[#8F1E98] text-white py-12" role="contentinfo" aria-labelledby="footer-heading">
-    <div class="container mx-auto px-6">
+<footer class="py-12 text-white" style="background: linear-gradient(180deg, #272ac7 0%, #8f1e98 100%);" role="contentinfo" aria-labelledby="footer-heading">
+    <div class="container px-6 mx-auto">
         {{-- Section supérieure avec logo et navigation --}}
-        <div class="flex flex-col md:flex-row justify-between items-center mb-8">
+        <div class="flex flex-col items-center justify-between mb-8 md:flex-row">
             {{-- Logo --}}
-            <div class="mb-6 md:mb-0 flex items-center gap-3">
+            <div class="flex items-center gap-3 mb-6 md:mb-0">
                 <button id="admin-trigger" type="button"
-                    class="inline-flex items-center focus:outline-none focus-visible:ring focus-visible:ring-offset-2 focus-visible:ring-white/60 rounded-md"
+                    class="inline-flex items-center rounded-md focus:outline-none focus-visible:ring focus-visible:ring-offset-2 focus-visible:ring-white/60"
                     aria-label="Accès administration (double-clic ou appuyez deux fois sur Entrée/Espace)">
                     <img src="/img/logos/LOGO/Logo-Calan-blanc.png" alt="" aria-hidden="true" class="h-16"
                         title="Logo Calan'Couleurs">
@@ -21,7 +21,7 @@
 
             {{-- Navigation --}}
             <nav aria-label="Liens de pied de page">
-                <ul class="flex flex-col sm:flex-row gap-3 sm:gap-8 text-center sm:text-left">
+                <ul class="flex flex-col gap-3 text-center sm:flex-row sm:gap-8 sm:text-left">
                     <li>
                         <a href="/" class="text-white hover:text-[#FF0F63] font-medium transition">Accueil</a>
                     </li>
@@ -66,12 +66,12 @@
         </div>
 
         {{-- Ligne séparatrice --}}
-        <hr class="border-white/20 my-8" aria-hidden="true">
+        <hr class="my-8 border-white/20" aria-hidden="true">
 
         {{-- Section inférieure avec réseaux sociaux et mentions légales --}}
-        <div class="flex flex-col md:flex-row justify-between items-center">
+        <div class="flex flex-col items-center justify-between md:flex-row">
             {{-- Réseaux sociaux --}}
-            <ul class="flex space-x-6 mb-6 md:mb-0" aria-label="Réseaux sociaux">
+            <ul class="flex mb-6 space-x-6 md:mb-0" aria-label="Réseaux sociaux">
                 <li>
                     <a href="https://www.instagram.com/calancouleurs/" target="_blank" rel="noopener noreferrer"
                         aria-label="Instagram Calan’Couleurs (nouvelle fenêtre)"
@@ -98,11 +98,11 @@
             </ul>
 
             {{-- Copyright + administration --}}
-            <div class="flex flex-col sm:flex-row gap-2 sm:gap-6 text-center sm:text-right items-center">
+            <div class="flex flex-col items-center gap-2 text-center sm:flex-row sm:gap-6 sm:text-right">
                 <small class="text-sm text-white/80">© {{ date('Y') }} Calan'Couleurs. Tous droits réservés.</small>
-                {{-- <a href="#" class="text-sm text-white/70 hover:text-white transition duration-300 focus:outline-none focus-visible:ring focus-visible:ring-offset-2 focus-visible:ring-white/60 rounded">Mentions légales</a>
-                <a href="#" class="text-sm text-white/70 hover:text-white transition duration-300 focus:outline-none focus-visible:ring focus-visible:ring-offset-2 focus-visible:ring-white/60 rounded">Politique de confidentialité</a> --}}
-                <a href="{{ route('login') }}" class="text-xs text-white/60 hover:text-white transition" target="_blank"
+                {{-- <a href="#" class="text-sm transition duration-300 rounded text-white/70 hover:text-white focus:outline-none focus-visible:ring focus-visible:ring-offset-2 focus-visible:ring-white/60">Mentions légales</a>
+                <a href="#" class="text-sm transition duration-300 rounded text-white/70 hover:text-white focus:outline-none focus-visible:ring focus-visible:ring-offset-2 focus-visible:ring-white/60">Politique de confidentialité</a> --}}
+                <a href="{{ route('login') }}" class="text-xs transition text-white/60 hover:text-white" target="_blank"
                     rel="noopener noreferrer" aria-label="Accéder à l'administration">
                     Administration
                 </a>

@@ -3,44 +3,119 @@
 @section('title', 'Notre histoire - Calan\'Couleurs ' . $currentEdition->year)
 
 @section('content')
-    <!-- Section Hero avec image pleine hauteur -->
-    <section class="w-full h-[700px] bg-cover bg-center bg-no-repeat flex items-center justify-center"
-        style="background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('/img/festival/banner.jpg')">
-        <div class="text-center px-4">
-            <h1 class="text-5xl sm:text-6xl font-bold text-white drop-shadow-lg mb-4">
-                Calan'Couleurs
-            </h1>
-            <p class="text-xl sm:text-2xl font-medium text-white drop-shadow-md">
-                {{ $currentEdition->formatted_dates_2 }}
-            </p>
-        </div>
-    </section>
+    <div class="w-full min-h-screen bg-[#EEF1FF]">
 
-    <!-- Section Description -->
-    <section class="py-16 px-4 sm:px-6 lg:px-8 bg-white">
-        <div class="container mx-auto max-w-3xl">
-            <div class="p-8 rounded-lg shadow-md"
-                style="background: linear-gradient(180deg, rgba(255,15,99,0.2), rgba(143,30,152,0.2), rgba(39,42,199,0.2));">
-                <h2 class="text-3xl font-bold text-[#8F1E98] mb-8 text-center">Notre histoire</h2>
+        <!-- Hero -->
+        <section
+            class="relative w-full min-h-[560px] sm:min-h-[650px] bg-cover bg-center bg-no-repeat flex items-center justify-center"
+            style="background-image:
+                linear-gradient(rgba(39,42,199,0.55), rgba(39,42,199,0.35)),
+                url('/img/festival/banner.jpg');">
+            <div class="px-4 text-center">
+                <h1 class="mb-4 text-5xl font-bold text-white sm:text-6xl md:text-7xl drop-shadow-lg">
+                    Calan'Couleurs
+                </h1>
+                <p class="text-lg font-semibold sm:text-2xl text-white/95 drop-shadow-md">
+                    {{ $currentEdition->formatted_dates_2 }}
+                </p>
+            </div>
+        </section>
 
-                <div class="space-y-6">
-                    <p class="text-lg font-bold leading-relaxed">
-                        Nous sommes une bande de copains passionnés de musique et attachés à notre territoire. Pour
-                        faire vivre la scène locale, créer du lien et partager un moment festif, nous avons lancé
-                        Calan'Couleurs, un festival qui nous ressemble.
-                    </p>
-
-                    <p class="text-lg font-bold leading-relaxed">
-                        Rendez-vous les {{ $currentEdition->formatted_dates_2 }} à Campbon (44 750) pour une {{ $currentEdition->edition_label }} haute
-                        en couleur, avec une programmation mêlant artistes émergents et confirmés, dans une ambiance
-                        conviviale et festive.
-                    </p>
-
-                    <p class="text-xl font-bold text-center text-[#FF0F63] mt-8">
-                        À bientôt ! 🌾
+        <!-- Intro -->
+        <section class="px-4 sm:px-6 lg:px-8 py-14">
+            <div class="mx-auto max-w-7xl">
+                <div class="mb-10 text-center">
+                    <h2 class="text-3xl sm:text-4xl font-bold text-[#272AC7] mb-4">Notre histoire</h2>
+                    <p class="max-w-3xl mx-auto text-lg text-gray-600">
+                        Un festival créé par des passionnés, pour faire vibrer le territoire et rassembler toutes les
+                        générations.
                     </p>
                 </div>
+
+                <div class="grid grid-cols-1 gap-8 lg:grid-cols-2">
+
+                    <!-- Histoire -->
+                    <article class="overflow-hidden bg-white border border-[#272AC7]/15 shadow-sm rounded-xl">
+                        <div class="px-6 py-4" style="background: linear-gradient(135deg, #272AC7 0%, #8F1E98 100%);">
+                            <h3 class="text-xl font-semibold text-white">Pourquoi Calan'Couleurs ?</h3>
+                        </div>
+                        <div class="p-6 space-y-5 leading-relaxed text-gray-700">
+                            <p>
+                                Nous sommes une bande de copains passionnés de musique et attachés à notre territoire. Pour
+                                faire vivre la scène locale, créer du lien et partager un moment festif, nous avons lancé
+                                Calan'Couleurs, un festival qui nous ressemble.
+                            </p>
+                            <p>
+                                L'idée est simple : proposer une ambiance conviviale, ouverte à tous, où se rencontrent
+                                artistes émergents et confirmés, autour d'une programmation vivante et accessible.
+                            </p>
+                        </div>
+                    </article>
+
+                    <!-- Edition -->
+                    <article class="overflow-hidden bg-white border border-[#272AC7]/15 shadow-sm rounded-xl">
+                        <div class="px-6 py-4" style="background: linear-gradient(135deg, #8F1E98 0%, #272AC7 100%);">
+                            <h3 class="text-xl font-semibold text-white">Cette édition {{ $currentEdition->year }}</h3>
+                        </div>
+                        <div class="p-6 space-y-5 leading-relaxed text-gray-700">
+                            <p>
+                                Rendez-vous les {{ $currentEdition->formatted_dates_2 }} à Campbon (44750)
+                                pour une {{ $currentEdition->edition_label }} haute en couleur.
+                            </p>
+                            <p>
+                                Au programme : concerts, rencontres, émotions, et surtout une énergie collective
+                                qui fait l'ADN du festival depuis le début.
+                            </p>
+
+                            <div class="pt-2">
+                                <a href="{{ route('programmation') }}"
+                                    class="inline-block text-white font-semibold px-4 py-2 rounded-lg transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#8F1E98] shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                                    style="background: linear-gradient(90deg, #272ac7 0%, #8f1e98 100%)">
+                                    Découvrir la programmation <i class="fa-solid fa-arrow-right fa-xs"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </article>
+
+                </div>
             </div>
-        </div>
-    </section>
+        </section>
+
+        <!-- Valeurs -->
+        <section class="px-4 sm:px-6 lg:px-8 pb-14">
+            <div class="mx-auto max-w-7xl">
+                <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+                    <div class="bg-white border border-[#272AC7]/12 rounded-xl p-6 shadow-sm">
+                        <h4 class="font-bold text-[#272AC7] mb-2">🎶 Musique vivante</h4>
+                        <p class="text-sm text-gray-600">Un mélange de styles et d'artistes pour faire découvrir, surprendre
+                            et rassembler.</p>
+                    </div>
+                    <div class="bg-white border border-[#272AC7]/12 rounded-xl p-6 shadow-sm">
+                        <h4 class="font-bold text-[#272AC7] mb-2">🤝 Esprit collectif</h4>
+                        <p class="text-sm text-gray-600">Un événement construit avec des bénévoles, des partenaires locaux
+                            et beaucoup de cœur.</p>
+                    </div>
+                    <div class="bg-white border border-[#272AC7]/12 rounded-xl p-6 shadow-sm">
+                        <h4 class="font-bold text-[#272AC7] mb-2">🌾 Territoire</h4>
+                        <p class="text-sm text-gray-600">Mettre en lumière Campbon et ses alentours dans une ambiance
+                            chaleureuse et familiale.</p>
+                    </div>
+                    <div class="bg-white border border-[#272AC7]/12 rounded-xl p-6 shadow-sm">
+                        <h4 class="font-bold text-[#272AC7] mb-2">✨ Convivialité</h4>
+                        <p class="text-sm text-gray-600">Un festival à taille humaine, pensé pour bien accueillir et faire
+                            passer un vrai bon moment.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="px-6 pb-4 text-white">
+            <div class="container mx-auto text-center">
+                <h2 class="mb-6 text-3xl font-bold text-[#272AC7]">À bientôt à Calan'Couleurs 🌾</h2>
+                <p class="max-w-3xl mx-auto text-lg text-gray-600">
+                    Merci de faire partie de l'aventure. On a hâte de vous retrouver pour partager cette édition avec vous.
+                </p>
+            </div>
+        </section>
+    </div>
 @endsection

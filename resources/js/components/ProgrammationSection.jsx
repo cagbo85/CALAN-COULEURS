@@ -29,18 +29,11 @@ export default function ProgrammationCurrent() {
     // Etat de chargement
     if (loading) {
         return (
-            <section className="py-16 px-6 bg-gray-100">
+            <section className="px-6 py-16" style={{ backgroundColor: "#EEF1FF" }}>
                 <div className="container mx-auto text-center">
-                    <div className="text-5xl mb-4 drop-shadow-lg">⏳</div>
+                    <div className="mb-4 text-5xl drop-shadow-lg">⏳</div>
                     <p
-                        className="text-white text-lg font-semibold"
-                        style={{
-                            background:
-                                "linear-gradient(to right, #FF0F63, #8F1E98)",
-                            WebkitBackgroundClip: "text",
-                            WebkitTextFillColor: "transparent",
-                            backgroundClip: "text",
-                        }}
+                        className="text-lg font-semibold text-[#272AC7]"
                     >
                         Chargement de la programmation...
                     </p>
@@ -52,10 +45,10 @@ export default function ProgrammationCurrent() {
     // Etat d'erreur
     if (error) {
         return (
-            <section className="py-16 px-6 bg-gray-100">
+            <section className="px-6 py-16" style={{ backgroundColor: "#EEF1FF" }}>
                 <div className="container mx-auto text-center">
-                    <BiSolidError className="text-5xl mb-4 text-red-400 mx-auto" />
-                    <p className="text-white text-lg font-semibold">{error}</p>
+                    <BiSolidError className="mx-auto mb-4 text-5xl text-red-400" />
+                    <p className="text-lg font-semibold text-[#272AC7]">{error}</p>
                 </div>
             </section>
         );
@@ -65,13 +58,14 @@ export default function ProgrammationCurrent() {
     if (!artists || artists.length === 0) {
         return (
             <section
-                className="py-16 px-6 bg-gray-100"
+                className="px-6 py-16"
+                style={{ backgroundColor: "#EEF1FF" }}
                 aria-labelledby="programmation-heading"
             >
                 <div className="container mx-auto">
                     <h2
                         id="programmation-heading"
-                        className="text-4xl font-bold uppercase mb-12 text-left drop-shadow-lg"
+                        className="mb-12 text-4xl font-bold text-left uppercase drop-shadow-lg"
                         style={{
                             background:
                                 "linear-gradient(180deg, rgba(39,42,199,1) 0%, rgba(143,30,152,1) 35%, rgba(255,15,99,1) 100%)",
@@ -83,7 +77,7 @@ export default function ProgrammationCurrent() {
                         Programmation
                     </h2>
                     <div className="max-w-2xl mx-auto">
-                        <article className="bg-white/95 backdrop-blur-sm rounded-xl shadow-xl overflow-hidden border-2 border-white/50">
+                        <article className="overflow-hidden border-2 shadow-xl bg-white/95 backdrop-blur-sm rounded-xl border-white/50">
                             <div
                                 className="p-8 text-white"
                                 style={{
@@ -91,17 +85,17 @@ export default function ProgrammationCurrent() {
                                         "linear-gradient(to right, #FF0F63, #8F1E98)",
                                 }}
                             >
-                                <h3 className="text-center sm:text-left text-3xl font-bold uppercase tracking-wide">
+                                <h3 className="text-3xl font-bold tracking-wide text-center uppercase sm:text-left">
                                     🎵 Ça se prépare !
                                 </h3>
                             </div>
 
                             <div className="p-8 text-center">
-                                <p className="text-lg text-gray-700 mb-4 leading-relaxed">
+                                <p className="mb-4 text-lg leading-relaxed text-gray-700">
                                     La programmation de cette édition est
                                     actuellement en cours de finalisation.
                                 </p>
-                                <p className="text-base text-gray-600 mb-6">
+                                <p className="mb-6 text-base text-gray-600">
                                     Restez connectés pour découvrir les artistes
                                     et les surprises qui vous attendent ! 🎶
                                 </p>
@@ -128,42 +122,33 @@ export default function ProgrammationCurrent() {
     // Etat normal (programmation disponible)
     return (
         <section
-            className="py-16 px-6 bg-gray-100"
+            className="px-6 py-16"
+            style={{ backgroundColor: "#EEF1FF" }}
             aria-labelledby="programmation-heading"
         >
             <div className="container mx-auto">
                 <h2
                     id="programmation-heading"
-                    className="text-4xl font-bold uppercase mb-12 text-left drop-shadow-lg"
-                    style={{
-                        background:
-                            "linear-gradient(180deg, rgba(39,42,199,1) 0%, rgba(143,30,152,1) 35%, rgba(255,15,99,1) 100%)",
-                        WebkitBackgroundClip: "text",
-                        WebkitTextFillColor: "transparent",
-                        backgroundClip: "text",
-                    }}
+                    className="text-4xl font-bold uppercase mb-12 text-left drop-shadow-lg text-[#272AC7]"
                 >
                     Programmation
                 </h2>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-6xl mx-auto">
+                <div className="grid max-w-6xl grid-cols-1 gap-6 mx-auto md:grid-cols-2">
                     {artists.map((day, index) => (
                         <article
                             key={index}
-                            className="bg-white/95 backdrop-blur-sm rounded-xl shadow-xl overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 border-2 border-white/50"
+                            className="overflow-hidden transition-all duration-300 transform border-2 shadow-xl bg-white/95 backdrop-blur-sm rounded-xl hover:shadow-2xl hover:-translate-y-1 border-white/50"
                         >
                             {/* Header du jour */}
                             <div
                                 className="p-6 text-white"
-                                style={{
-                                    background:
-                                        "linear-gradient(to right, #FF0F63, #8F1E98)",
-                                }}
+                                style={{ background: "linear-gradient(to right, #272AC7, #8F1E98)" }}
                             >
-                                <h3 className="text-2xl font-bold uppercase tracking-wide">
+                                <h3 className="text-2xl font-bold tracking-wide uppercase">
                                     {day.jour_rep}
                                 </h3>
-                                <p className="text-sm font-semibold text-white/90 mt-2">
+                                <p className="mt-2 text-sm font-semibold text-white/90">
                                     <time>{day.heu_min}</time>
                                     {" - "}
                                     <time>{day.heu_max}</time>
@@ -192,13 +177,13 @@ export default function ProgrammationCurrent() {
                     ))}
                 </div>
 
-                <div className="text-center mt-12">
+                <div className="mt-12 text-center">
                     <a
                         href="/programmation"
-                        className="inline-block text-white font-semibold px-6 py-2.5 rounded-lg hover:from-[#FF0F63] hover:to-[#8F1E98] transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#8F1E98] shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                        className="inline-block text-white font-semibold px-6 py-2.5 rounded-lg transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#272AC7] shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 bg-[#272AC7] hover:bg-[#8F1E98]"
                         style={{
                             background:
-                                "linear-gradient(180deg, rgba(255,15,99,0.9) 0%, rgba(143,30,152,0.9) 35%, rgba(39,42,199,0.9) 100%)",
+                                "linear-gradient(90deg, #272ac7 0%, #8f1e98 100%)",
                         }}
                     >
                         Voir toute la programmation

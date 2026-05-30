@@ -48,25 +48,25 @@
 
         <!-- Dates du festival -->
         @if ($currentEdition)
-            <div class="mb-3 sm:mb-4 backdrop-blur-md shadow-lg px-4 sm:px-8 py-2 sm:py-3 rounded-xl border border-white/50"
-                style="background: linear-gradient(180deg, rgba(255,15,99,0.2), rgba(143,30,152,0.2), rgba(39,42,199,0.2));">
-                <h2 class="text-white text-lg sm:text-xl md:text-2xl font-bold tracking-wider drop-shadow-md">
+            <div class="px-4 py-2 mb-3 border shadow-lg sm:mb-4 backdrop-blur-md sm:px-8 sm:py-3 rounded-xl border-white/50"
+                style="background: linear-gradient(180deg, rgba(39,42,199,0.35), rgba(39,42,199,0.22), rgba(143,30,152,0.14));">
+                <h2 class="text-lg font-bold tracking-wider text-white sm:text-xl md:text-2xl drop-shadow-md">
                     {{ $currentEdition->formatted_dates }}
                 </h2>
             </div>
         @endif
 
         <!-- Timer -->
-        <div class="w-full max-w-xs sm:max-w-md md:max-w-lg mx-auto mb-4 sm:mb-6" role="region"
+        <div class="w-full max-w-xs mx-auto mb-4 sm:max-w-md md:max-w-lg sm:mb-6" role="region"
             aria-label="Compte à rebours avant le festival">
             <div id="timer-root"></div>
         </div>
 
         <!-- Edition et lieu -->
         @if ($currentEdition)
-            <div class="mt-1 sm:mt-2 mb-4 sm:mb-6 backdrop-blur-md px-4 sm:px-6 py-2 sm:py-3 rounded-xl shadow-lg border border-white/30"
-                style="background: linear-gradient(180deg, rgba(255,15,99,0.2), rgba(143,30,152,0.2), rgba(39,42,199,0.2));">
-                <p class="text-white font-bold text-base sm:text-xl tracking-wide drop-shadow-sm">
+            <div class="px-4 py-2 mt-1 mb-4 border shadow-lg sm:mt-2 sm:mb-6 backdrop-blur-md sm:px-6 sm:py-3 rounded-xl border-white/30"
+                style="background: linear-gradient(180deg, rgba(39,42,199,0.35), rgba(39,42,199,0.22), rgba(143,30,152,0.14));">
+                <p class="text-base font-bold tracking-wide text-white sm:text-xl drop-shadow-sm">
                     {{ strtoupper($currentEdition->name) ?? 'Édition ' . $currentEdition->year }} - CAMPBON
                 </p>
             </div>
@@ -74,18 +74,18 @@
 
         <!-- Boutons -->
         <div
-            class="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4 m-3 sm:m-6 w-full sm:w-auto max-w-xs sm:max-w-none mx-auto">
+            class="flex flex-col w-full max-w-xs m-3 mx-auto space-y-3 sm:flex-row sm:space-y-0 sm:space-x-4 sm:m-6 sm:w-auto sm:max-w-none">
             <!-- Bouton "Découvre la programmation" -->
             <div class="relative w-full sm:w-auto">
                 <div class="absolute inset-0 translate-x-1 translate-y-1">
                     <a href="{{ route('programmation') }}"
-                        class="relative bg-[#8F1E98] text-[#8F1E98] px-4 sm:px-6 py-3 font-bold uppercase tracking-wide transition duration-300 block w-full text-center">
-                        Découvre la programmation →
+                        class="relative bg-[#272AC7] text-[#272AC7] px-4 sm:px-6 py-3 font-bold uppercase tracking-wide transition duration-300 block w-full text-center">
+                        Découvre la programmation <i class="fa-solid fa-arrow-right fa-xs"></i>
                     </a>
                 </div>
                 <a href="{{ route('programmation') }}"
-                    class="relative bg-white text-[#8F1E98] px-4 sm:px-6 py-3 font-bold uppercase tracking-wide hover:bg-[#8F1E98] hover:text-white transition duration-300 block w-full text-center">
-                    Découvre la programmation →
+                    class="relative bg-white text-[#272AC7] px-4 sm:px-6 py-3 font-bold uppercase tracking-wide hover:bg-[#272AC7] hover:text-white transition duration-300 block w-full text-center">
+                    Découvre la programmation <i class="fa-solid fa-arrow-right fa-xs"></i>
                 </a>
             </div>
 
@@ -94,14 +94,14 @@
                 <div class="absolute inset-0 translate-x-1 translate-y-1">
                     <a href="{{ $currentEdition->reservation_url }}"
                         target="_blank" rel="noopener noreferrer"
-                        class="relative bg-white px-4 sm:px-6 py-3 font-bold uppercase tracking-wide transition duration-300 block w-full text-center">
-                        Acheter des billets →
+                        class="relative block w-full px-4 py-3 font-bold tracking-wide text-center uppercase transition duration-300 bg-white sm:px-6">
+                        Acheter des billets <i class="fa-solid fa-arrow-right fa-xs"></i>
                     </a>
                 </div>
                 <a href="{{ $currentEdition->reservation_url }}"
                     target="_blank" rel="noopener noreferrer"
-                    class="relative bg-[#8F1E98] text-white px-4 sm:px-6 py-3 font-bold uppercase tracking-wide hover:bg-white hover:text-[#8F1E98] transition duration-300 block w-full text-center">
-                    Acheter des billets →
+                    class="relative bg-[#272AC7] text-white px-4 sm:px-6 py-3 font-bold uppercase tracking-wide hover:bg-white hover:text-[#272AC7] transition duration-300 block w-full text-center">
+                    Acheter des billets <i class="fa-solid fa-arrow-right fa-xs"></i>
                 </a>
             </div>
         </div>

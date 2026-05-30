@@ -54,18 +54,11 @@ export default function StandsSection() {
     // Etat de chargement
     if (loading) {
         return (
-            <section className="pb-16 px-6 bg-gray-100">
+            <section className="px-6 pb-16" style={{ backgroundColor: "#EEF1FF" }}>
                 <div className="container mx-auto text-center">
-                    <div className="text-5xl mb-4 drop-shadow-lg">⏳</div>
+                    <div className="mb-4 text-5xl drop-shadow-lg">⏳</div>
                     <p
-                        className="text-white text-lg font-semibold"
-                        style={{
-                            background:
-                                "linear-gradient(to right, #FF0F63, #8F1E98)",
-                            WebkitBackgroundClip: "text",
-                            WebkitTextFillColor: "transparent",
-                            backgroundClip: "text",
-                        }}
+                        className="text-lg font-semibold text-[#272AC7]"
                     >
                         Chargement des stands...
                     </p>
@@ -77,17 +70,10 @@ export default function StandsSection() {
     // Etat d'erreur
     if (error) {
         return (
-            <section
-                className="py-16 px-6 bg-gray-100"
-                style={{
-                    background:
-                        "linear-gradient(180deg, rgba(39,42,199,1) 0%, rgba(143,30,152,1) 35%, rgba(255,15,99,1) 100%)",
-                }}
-                aria-labelledby="stands-heading"
-            >
+            <section className="px-6 py-16" style={{ backgroundColor: "#EEF1FF" }}>
                 <div className="container mx-auto text-center">
-                    <BiSolidError className="text-5xl mb-4 text-red-400 mx-auto" />
-                    <p className="text-white text-lg font-semibold">{error}</p>
+                    <BiSolidError className="mx-auto mb-4 text-5xl text-red-400" />
+                    <p className="text-lg font-semibold text-[#272AC7]">{error}</p>
                 </div>
             </section>
         );
@@ -97,13 +83,13 @@ export default function StandsSection() {
     if (!stands || stands.length === 0) {
         return (
             <section
-                className="py-16 px-6 bg-gray-100"
+                className="px-6 py-16" style={{ backgroundColor: "#EEF1FF" }}
                 aria-labelledby="stands-heading"
             >
                 <div className="container mx-auto">
                     <h2
                         id="stands-heading"
-                        className="text-4xl font-bold uppercase mb-12 text-left drop-shadow-lg"
+                        className="mb-12 text-4xl font-bold text-left uppercase drop-shadow-lg"
                         style={{
                             background:
                                 "linear-gradient(180deg, rgba(39,42,199,1) 0%, rgba(143,30,152,1) 35%, rgba(255,15,99,1) 100%)",
@@ -116,25 +102,22 @@ export default function StandsSection() {
                     </h2>
 
                     <div className="max-w-2xl mx-auto">
-                        <article className="bg-white/95 backdrop-blur-sm rounded-xl shadow-xl overflow-hidden border-2 border-white/50">
+                        <article className="overflow-hidden border-2 shadow-xl bg-white/95 backdrop-blur-sm rounded-xl border-white/50">
                             <div
                                 className="p-8 text-white"
-                                style={{
-                                    background:
-                                        "linear-gradient(to right, #FF0F63, #8F1E98)",
-                                }}
+                                style={{ background: "linear-gradient(to right, #272AC7, #8F1E98)" }}
                             >
-                                <h3 className="text-center sm:text-left text-3xl font-bold uppercase tracking-wide">
+                                <h3 className="text-3xl font-bold tracking-wide text-center uppercase sm:text-left">
                                     🍔 Ça mijote !
                                 </h3>
                             </div>
 
                             <div className="p-8 text-center">
-                                <p className="text-lg text-gray-700 mb-4 leading-relaxed">
+                                <p className="mb-4 text-lg leading-relaxed text-gray-700">
                                     Les stands et food trucks sont en cours de
                                     sélection pour cette édition.
                                 </p>
-                                <p className="text-base text-gray-600 mb-6">
+                                <p className="mb-6 text-base text-gray-600">
                                     Bientôt, vous découvrirez tous nos
                                     partenaires sur place : restauration,
                                     boutiques, tatouages et bien plus ! 🎪
@@ -162,20 +145,13 @@ export default function StandsSection() {
     // Etat normal (stands disponibles)
     return (
         <section
-            className="py-16 px-6 bg-gray-100"
+            className="px-6 py-16" style={{ backgroundColor: "#EEF1FF" }}
             aria-labelledby="stands-heading"
         >
             <div className="container mx-auto">
                 <h2
                     id="stands-heading"
-                    className="text-4xl font-bold uppercase mb-12 text-left drop-shadow-lg"
-                    style={{
-                        background:
-                            "linear-gradient(180deg, rgba(39,42,199,1) 0%, rgba(143,30,152,1) 35%, rgba(255,15,99,1) 100%)",
-                        WebkitBackgroundClip: "text",
-                        WebkitTextFillColor: "transparent",
-                        backgroundClip: "text",
-                    }}
+                    className="text-4xl font-bold uppercase mb-12 text-left drop-shadow-lg text-[#272AC7]"
                 >
                     Sur Place
                 </h2>
@@ -190,7 +166,7 @@ export default function StandsSection() {
 
                     return (
                         <div key={type} className="mb-16">
-                            <h3 className="text-2xl font-semibold xl:pl-32 mb-6 xl:text-left text-center drop-shadow-md text-[#FF0F63]">
+                            <h3 className="text-2xl font-semibold xl:pl-32 mb-6 xl:text-left text-center drop-shadow-md text-[#272AC7]">
                                 {typeLabels[type]}
                             </h3>
 

@@ -6,8 +6,8 @@
         <!-- ✅ BADGE SCÈNE AVEC LE STYLE PRÉFÉRÉ -->
         <div class="absolute top-2 right-2" style="z-index: 1;">
             @php
-                $sceneColor = $artiste->scene === 'Extérieur' ? 'bg-[#FF0F63]' : 'bg-[#8F1E98]';
-                $sceneIcon = $artiste->scene === 'Extérieur' ? '🌟' : '🏠';
+                $sceneColor = $artiste->scene === 'Nalac' ? 'bg-[#FF0F63]' : 'bg-[#8F1E98]';
+                $sceneIcon = $artiste->scene === 'Nalac' ? '🌟' : '🏠';
             @endphp
             <span class="inline-block px-3 py-1 {{ $sceneColor }} text-white text-xs font-bold rounded-full">
                 {{ $sceneIcon }} {{ $artiste->scene }}

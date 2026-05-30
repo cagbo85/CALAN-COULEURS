@@ -18,7 +18,7 @@ return new class() extends Migration
             $table->integer('artiste_id')->index('performances_ibfk_2')->comment('ID de l\'artiste');
             $table->dateTime('begin_date')->nullable()->comment('Date et heure exacte du début de la performance');
             $table->dateTime('ending_date')->nullable()->comment('Date et heure exacte de la fin de la performance');
-            $table->enum('scene', ['Extérieur', 'Intérieur'])->nullable()->comment('Type de scène');
+            $table->enum('scene', ['Nalac', 'La Cabane'])->nullable()->comment('Type de scène');
             $table->enum('day', ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'])->nullable()->comment('Jour de passage');
             $table->boolean('actif')->default(true)->comment('Performance active/masquée');
             $table->integer('created_by')->nullable()->index('created_by')->comment('ID utilisateur créateur');

@@ -341,12 +341,12 @@
                                                     <select name="performances[{{ $performance->id }}][scene]"
                                                         class="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
                                                         <option value="">Sélectionnez une scène</option>
-                                                        <option value="Extérieur"
-                                                            {{ $performance->scene == 'Extérieur' ? 'selected' : '' }}>
-                                                            Extérieur</option>
-                                                        <option value="Intérieur"
-                                                            {{ $performance->scene == 'Intérieur' ? 'selected' : '' }}>
-                                                            Intérieur</option>
+                                                        <option value="Nalac"
+                                                            {{ $performance->scene == 'Nalac' ? 'selected' : '' }}>
+                                                            Nalac</option>
+                                                        <option value="La Cabane"
+                                                            {{ $performance->scene == 'La Cabane' ? 'selected' : '' }}>
+                                                            La Cabane</option>
                                                     </select>
                                                     <x-input-error :messages="$errors->get(
                                                         'performances.' . $performance->id . '.scene',

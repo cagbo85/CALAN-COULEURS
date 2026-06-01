@@ -15,7 +15,7 @@
 
 @section('content')
     <section class="w-full h-[280px] sm:h-[320px] bg-cover bg-center bg-no-repeat flex items-center justify-center"
-        style="background-image: linear-gradient(rgba(39, 42, 199, 0.65), rgba(143, 30, 152, 0.45)), url('/img/logos/accueil_public.png')">
+        style="background-image: linear-gradient(rgba(29,63,137,0.84), rgba(119,203,243,0.42)), url('/img/logos/accueil_public.png')">
         <div class="px-4 text-center">
             <h1 class="mb-3 text-4xl font-bold text-white sm:text-5xl drop-shadow-lg">
                 Contactez-nous

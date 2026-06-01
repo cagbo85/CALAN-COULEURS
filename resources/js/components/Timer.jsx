@@ -13,6 +13,7 @@ export default function Timer() {
     const [isEventEnded, setIsEventEnded] = useState(false);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const bluePanel = "linear-gradient(180deg, rgba(39,42,199,0.42), rgba(39,42,199,0.24), rgba(143,30,152,0.14))";
 
     useEffect(() => {
         fetch("/api/edition/current")
@@ -68,16 +69,15 @@ export default function Timer() {
 
     if (loading) {
         return (
-            <div className="rounded-xl p-6">
+            <div className="p-6 rounded-xl">
                 <div
-                    className="backdrop-blur-md shadow-lg px-6 py-8 rounded-xl border border-white/50 flex flex-col items-center justify-center text-white"
+                    className="flex flex-col items-center justify-center px-6 py-8 text-white border shadow-lg backdrop-blur-md rounded-xl border-white/50"
                     style={{
-                        background:
-                            "linear-gradient(180deg, rgba(255,15,99,0.3), rgba(143,30,152,0.3), rgba(39,42,199,0.3))",
+                        background: bluePanel,
                     }}
                 >
-                    <div className="text-5xl mb-4 drop-shadow-lg">⏳</div>
-                    <h3 className="text-3xl font-bold mb-2 text-center drop-shadow-md">
+                    <div className="mb-4 text-5xl drop-shadow-lg">⏳</div>
+                    <h3 className="mb-2 text-3xl font-bold text-center drop-shadow-md">
                         Chargement...
                     </h3>
                 </div>
@@ -87,16 +87,15 @@ export default function Timer() {
 
     if (error) {
         return (
-            <div className="rounded-xl p-6">
+            <div className="p-6 rounded-xl">
                 <div
-                    className="backdrop-blur-md shadow-lg px-6 py-8 rounded-xl border border-white/50 flex flex-col items-center justify-center text-white"
+                    className="flex flex-col items-center justify-center px-6 py-8 text-white border shadow-lg backdrop-blur-md rounded-xl border-white/50"
                     style={{
-                        background:
-                            "linear-gradient(180deg, rgba(255,15,99,0.3), rgba(143,30,152,0.3), rgba(39,42,199,0.3))",
+                        background: bluePanel,
                     }}
                 >
-                    <BiSolidError className="text-5xl mb-4 text-red-400" />
-                    <h3 className="text-2xl font-bold mb-2 text-center drop-shadow-md">
+                    <BiSolidError className="mb-4 text-5xl text-red-400" />
+                    <h3 className="mb-2 text-2xl font-bold text-center drop-shadow-md">
                         Erreur
                     </h3>
                     <p className="text-sm text-center opacity-90">{error}</p>
@@ -108,22 +107,21 @@ export default function Timer() {
     // Affichage quand le festival est terminé
     if (isEventEnded) {
         return (
-            <div className="rounded-xl p-6">
+            <div className="p-6 rounded-xl">
                 <div
-                    className="backdrop-blur-md shadow-lg px-6 py-8 rounded-xl border border-white/50 flex flex-col items-center justify-center text-white"
+                    className="flex flex-col items-center justify-center px-6 py-8 text-white border shadow-lg backdrop-blur-md rounded-xl border-white/50"
                     style={{
-                        background:
-                            "linear-gradient(180deg, rgba(255,15,99,0.3), rgba(143,30,152,0.3), rgba(39,42,199,0.3))",
+                        background: bluePanel,
                     }}
                 >
-                    <div className="text-6xl mb-4 drop-shadow-lg">🎉</div>
-                    <h3 className="text-3xl font-bold mb-2 text-center drop-shadow-md">
+                    <div className="mb-4 text-6xl drop-shadow-lg">🎉</div>
+                    <h3 className="mb-2 text-3xl font-bold text-center drop-shadow-md">
                         Merci à tous !
                     </h3>
                     <p className="text-lg font-semibold text-center">
                         L'édition {edition.name ?? edition.year} est terminée.
                     </p>
-                    <p className="text-sm text-center mt-2">
+                    <p className="mt-2 text-sm text-center">
                         À l'année prochaine 🎶
                     </p>
                 </div>
@@ -134,22 +132,21 @@ export default function Timer() {
     // Affichage quand le festival est en cours
     if (isEventStarted) {
         return (
-            <div className="rounded-xl p-6">
+            <div className="p-6 rounded-xl">
                 <div
-                    className="backdrop-blur-md shadow-lg px-6 py-8 rounded-xl border border-white/50 flex flex-col items-center justify-center text-white animate-pulse"
+                    className="flex flex-col items-center justify-center px-6 py-8 text-white border shadow-lg backdrop-blur-md rounded-xl border-white/50 animate-pulse"
                     style={{
-                        background:
-                            "linear-gradient(180deg, rgba(255,15,99,0.3), rgba(143,30,152,0.3), rgba(39,42,199,0.3))",
+                        background: bluePanel,
                     }}
                 >
-                    <div className="text-6xl mb-4 drop-shadow-lg">🎵</div>
-                    <h3 className="text-3xl font-bold mb-2 text-center drop-shadow-md">
+                    <div className="mb-4 text-6xl drop-shadow-lg">🎵</div>
+                    <h3 className="mb-2 text-3xl font-bold text-center drop-shadow-md">
                         C'est parti !
                     </h3>
                     <p className="text-lg font-semibold text-center">
                         Le festival {edition.name ?? edition.year} a commencé 🎤
                     </p>
-                    <p className="text-sm text-center mt-2">Profitez bien !</p>
+                    <p className="mt-2 text-sm text-center">Profitez bien !</p>
                 </div>
             </div>
         );
@@ -157,7 +154,7 @@ export default function Timer() {
 
     // Affichage du compte à rebours quand le festival n'a pas encore commencé
     return (
-        <div className="rounded-xl p-6">
+        <div className="p-6 rounded-xl">
             <div className="flex flex-wrap justify-center gap-4">
                 {["Jours", "Heures", "Min", "Sec"].map((label, i) => {
                     const value = [
@@ -169,13 +166,13 @@ export default function Timer() {
                     return (
                         <div
                             key={label}
-                            className="flex flex-col items-center justify-center bg-white/70 backdrop-blur-sm text-[#FF0F63] font-bold rounded-lg shadow-md border-2 border-[#8F1E98]/20"
+                            className="flex flex-col items-center justify-center bg-white/70 backdrop-blur-sm text-[#1d3f89] font-bold rounded-lg shadow-md border-2 border-[#1d3f89]/30"
                             style={{ width: "100px", height: "100px" }}
                         >
-                            <span className="text-4xl sm:text-5xl leading-none">
+                            <span className="text-4xl leading-none sm:text-5xl">
                                 {String(value).padStart(2, "0")}
                             </span>
-                            <span className="text-xs sm:text-sm uppercase tracking-wider text-center mt-1">
+                            <span className="mt-1 text-xs tracking-wider text-center uppercase sm:text-sm">
                                 {label}
                             </span>
                         </div>

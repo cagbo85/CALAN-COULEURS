@@ -14,6 +14,9 @@ export default function FAQItem({
     return (
         <div
             className="bg-white/10 backdrop-blur-md rounded-md text-white px-4 py-3"
+            style={{
+                background: "linear-gradient(90deg, #1d3f89 0%, #77cbf3 100%)",
+            }}
             data-open={open ? "true" : "false"}
         >
             {/* Utilise un vrai <button> pour le clavier + SR */}

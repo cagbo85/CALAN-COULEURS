@@ -33,7 +33,7 @@ export default function FAQSection() {
                     {
                         id: "fallback-1",
                         question: "Où et quand se déroule le festival ?",
-                        answer: "Rendez-vous à Campbon (44) les 12 & 13 septembre pour deux jours de musique.",
+                        answer: "Rendez-vous à Campbon (44) les 26 & 27 juin pour deux jours de musique.",
                     },
                     {
                         id: "fallback-2",
@@ -48,19 +48,13 @@ export default function FAQSection() {
     // Etat de chargement
     if (loading) {
         return (
-            <section className="py-16 px-6 bg-gray-100">
+            <section
+                className="px-6 py-16"
+                style={{ backgroundColor: "#EEF1FF" }}
+            >
                 <div className="container mx-auto text-center">
-                    <div className="text-5xl mb-4 drop-shadow-lg">⏳</div>
-                    <p
-                        className="text-white text-lg font-semibold"
-                        style={{
-                            background:
-                                "linear-gradient(to right, #FF0F63, #8F1E98)",
-                            WebkitBackgroundClip: "text",
-                            WebkitTextFillColor: "transparent",
-                            backgroundClip: "text",
-                        }}
-                    >
+                    <div className="mb-4 text-5xl drop-shadow-lg">⏳</div>
+                    <p className="text-lg font-semibold text-[#1d3f89]">
                         Chargement de la FAQ...
                     </p>
                 </div>
@@ -71,10 +65,15 @@ export default function FAQSection() {
     // Etat d'erreur
     if (error) {
         return (
-            <section className="py-16 px-6 bg-gray-100">
+            <section
+                className="px-6 py-16"
+                style={{ backgroundColor: "#EEF1FF" }}
+            >
                 <div className="container mx-auto text-center">
-                    <BiSolidError className="text-5xl mb-4 text-red-400 mx-auto" />
-                    <p className="text-white text-lg font-semibold">{error}</p>
+                    <BiSolidError className="mx-auto mb-4 text-5xl text-red-400" />
+                    <p className="text-lg font-semibold text-[#1d3f89]">
+                        {error}
+                    </p>
                 </div>
             </section>
         );
@@ -83,17 +82,21 @@ export default function FAQSection() {
     // Etat normal (FAQ disponible)
     return (
         <section
-            className="py-16 px-6"
+            className="px-6 py-16"
+            style={{ backgroundColor: "#EEF1FF" }}
             aria-labelledby="faq-heading"
-            style={{
-                background:
-                    "linear-gradient(180deg, rgba(39,42,199,1) 0%, rgba(143,30,152,1) 35%, rgba(255,15,99,1) 100%)",
-            }}
         >
             <div className="container mx-auto">
                 <h2
                     id={headingId}
-                    className="text-4xl font-bold uppercase mb-12 text-left drop-shadow-lg text-white"
+                    className="mb-12 text-4xl font-bold text-left uppercase drop-shadow-lg"
+                    style={{
+                        background:
+                            "linear-gradient(180deg, #1d3f89 0%, #77cbf3 100%)",
+                        WebkitBackgroundClip: "text",
+                        WebkitTextFillColor: "transparent",
+                        backgroundClip: "text",
+                    }}
                 >
                     Foire aux questions
                 </h2>
@@ -101,17 +104,26 @@ export default function FAQSection() {
                     Réponses aux questions fréquemment posées.
                 </p>
 
-                <div className="max-w-2xl mx-auto mt-6 space-y-4">
+                <div className="max-w-6xl mx-auto mt-6 space-y-4">
                     {faqs.length > 0 ? (
-                        <ul role="list" aria-label="Liste des questions fréquentes">
+                        <ul
+                            role="list"
+                            aria-label="Liste des questions fréquentes"
+                        >
                             {faqs.map((faq, idx) => {
                                 const itemId =
-                                    typeof faq.id !== "undefined" ? faq.id : `faq-${idx}`;
+                                    typeof faq.id !== "undefined"
+                                        ? faq.id
+                                        : `faq-${idx}`;
                                 const buttonId = `${itemId}-button`;
                                 const panelId = `${itemId}-panel`;
 
                                 return (
-                                    <li key={itemId} role="listitem" className="mb-3">
+                                    <li
+                                        key={itemId}
+                                        role="listitem"
+                                        className="mb-3"
+                                    >
                                         <FAQItem
                                             idBase={itemId}
                                             buttonId={buttonId}
@@ -124,7 +136,7 @@ export default function FAQSection() {
                             })}
                         </ul>
                     ) : (
-                        <p className="text-white/90" role="note">
+                        <p className="text-[#1d3f89]/90" role="note">
                             Aucune question pour le moment.
                         </p>
                     )}

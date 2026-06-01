@@ -13,6 +13,8 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
     <link rel="icon" type="image/png" href="{{ asset('img/logos/TOUCAN.png') }}">
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
     <script>
         tailwind.config = {
@@ -61,7 +63,7 @@
     <!-- End Google Tag Manager -->
 </head>
 
-<body class="w-full min-h-screen flex flex-col">
+<body class="flex flex-col w-full min-h-screen">
     <!-- Google Tag Manager (noscript) -->
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TBMDHRBX" height="0" width="0"
             style="display:none;visibility:hidden"></iframe></noscript>
@@ -77,7 +79,7 @@
     </header>
 
     {{-- Contenu principal --}}
-    <main id="contenu-principal" class="w-full flex-1" tabindex="-1">
+    <main id="contenu-principal" class="flex-1 w-full" tabindex="-1">
         @yield('content')
     </main>
 

@@ -42,7 +42,7 @@
                             <h3 class="text-xl font-semibold text-[#272AC7] mb-2">Par email</h3>
                             <p class="mb-3 text-gray-600">Pour toute question ou demande d'information :</p>
                             <a href="mailto:calancouleurs@gmail.com"
-                                class="text-[#FF0F63] hover:text-[#8F1E98] text-xl font-bold transition-colors duration-300">
+                                class="text-[#8F1E98] hover:text-[#FF0F63] text-xl font-bold transition-colors duration-300">
                                 calancouleurs@gmail.com
                             </a>
                         </div>
@@ -61,11 +61,11 @@
 
                             <div class="space-y-2 md:space-y-3">
                                 <a href="tel:+33782422959"
-                                    class="text-[#FF0F63] hover:text-[#8F1E98] text-xl font-bold transition-colors duration-300 block">
+                                    class="text-[#8F1E98] hover:text-[#FF0F63] text-xl font-bold transition-colors duration-300 block">
                                     07 82 42 29 59
                                 </a>
                                 <a href="tel:+33782741747"
-                                    class="text-[#FF0F63] hover:text-[#8F1E98] text-xl font-bold transition-colors duration-300 block">
+                                    class="text-[#8F1E98] hover:text-[#FF0F63] text-xl font-bold transition-colors duration-300 block">
                                     07 82 74 17 47
                                 </a>
                             </div>
@@ -88,7 +88,7 @@
                             <p class="mb-3 text-gray-600">Suivez-nous pour ne rien manquer :</p>
                             <div class="flex justify-center space-x-4 md:justify-start">
                                 <a href="https://www.instagram.com/calancouleurs/" target="_blank" rel="noopener noreferrer"
-                                    class="text-[#FF0F63] hover:text-[#8F1E98] transition-colors duration-300">
+                                    class="text-[#8F1E98] hover:text-[#FF0F63] transition-colors duration-300">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                         fill="currentColor" class="w-8 h-8" viewBox="0 0 16 16">
                                         <path
@@ -97,7 +97,7 @@
                                 </a>
                                 <a href="https://www.facebook.com/profile.php?id=61555539331779" target="_blank"
                                     rel="noopener noreferrer"
-                                    class="text-[#FF0F63] hover:text-[#8F1E98] transition-colors duration-300">
+                                    class="text-[#8F1E98] hover:text-[#FF0F63] transition-colors duration-300">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                         fill="currentColor" class="w-8 h-8" viewBox="0 0 16 16">
                                         <path
@@ -154,7 +154,7 @@
 
                     <button type="submit"
                         class="px-6 py-3 font-semibold text-white transition-all duration-300 rounded-lg shadow tab-button-goto hover:shadow-lg"
-                        style="background: linear-gradient(90deg, #272ac7 0%, #8f1e98 100%)">
+                        style="background: linear-gradient(135deg, #1d3f89 40%, #77cbf3 100%)">
                         Envoyer
                     </button>
                 </form>

@@ -68,7 +68,7 @@ export default function Navbar({ routes }) {
                     >
                         <a
                             href={routes?.accueil || "/"}
-                            className="block py-2 px-3 text-[#272AC7] font-semibold hover:text-[#8F1E98] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8F1E98] rounded"
+                            className="block py-2 px-3 text-[#1d3f89] font-semibold hover:text-[#8F1E98] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8F1E98] rounded"
                         >
                             Accueil
                         </a>
@@ -77,7 +77,7 @@ export default function Navbar({ routes }) {
                         <div className="relative dropdown-container">
                             <button
                                 onClick={() => toggleDropdown("infos")}
-                                className="flex items-center py-2 px-3 text-[#272AC7] font-semibold hover:text-[#8F1E98] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8F1E98] rounded"
+                                className="flex items-center py-2 px-3 text-[#1d3f89] font-semibold hover:text-[#8F1E98] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8F1E98] rounded"
                                 aria-expanded={activeDropdown === "infos"}
                                 aria-haspopup="true"
                             >
@@ -103,13 +103,13 @@ export default function Navbar({ routes }) {
                                 <div className="absolute left-0 w-48 py-2 mt-1 bg-white border border-gray-100 rounded-lg shadow-lg top-full">
                                     <a
                                         href="/camping"
-                                        className="block px-4 py-2 text-gray-700 hover:bg-gray-50 hover:text-[#272AC7] transition"
+                                        className="block px-4 py-2 text-gray-700 hover:bg-gray-50 hover:text-[#1d3f89] transition"
                                     >
                                         Camping & Hébergement
                                     </a>
                                     <a
                                         href="/benevoles"
-                                        className="block px-4 py-2 text-gray-700 hover:bg-gray-50 hover:text-[#272AC7] transition"
+                                        className="block px-4 py-2 text-gray-700 hover:bg-gray-50 hover:text-[#1d3f89] transition"
                                     >
                                         Bénévoles
                                     </a>
@@ -121,7 +121,7 @@ export default function Navbar({ routes }) {
                         <div className="relative dropdown-container">
                             <button
                                 onClick={() => toggleDropdown("festival")}
-                                className="flex items-center py-2 px-3 text-[#272AC7] font-semibold hover:text-[#8F1E98] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8F1E98] rounded"
+                                className="flex items-center py-2 px-3 text-[#1d3f89] font-semibold hover:text-[#8F1E98] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8F1E98] rounded"
                                 aria-expanded={activeDropdown === "festival"}
                                 aria-haspopup="true"
                             >
@@ -147,13 +147,13 @@ export default function Navbar({ routes }) {
                                 <div className="absolute left-0 py-2 mt-1 bg-white border border-gray-100 rounded-lg shadow-lg top-full w-52">
                                     {/* <a
                                         href="/news"
-                                        className="block px-4 py-2 text-gray-700 hover:bg-gray-50 hover:text-[#272AC7] transition"
+                                        className="block px-4 py-2 text-gray-700 hover:bg-gray-50 hover:text-[#1d3f89] transition"
                                     >
                                         News & Actualités
                                     </a> */}
                                     <a
                                         href="/charte"
-                                        className="block px-4 py-2 text-gray-700 hover:bg-gray-50 hover:text-[#272AC7] transition"
+                                        className="block px-4 py-2 text-gray-700 hover:bg-gray-50 hover:text-[#1d3f89] transition"
                                     >
                                         Charte du festivalier
                                     </a>
@@ -162,20 +162,20 @@ export default function Navbar({ routes }) {
                                             routes?.festival ||
                                             "/notre-histoire"
                                         }
-                                        className="block px-4 py-2 text-gray-700 hover:bg-gray-50 hover:text-[#272AC7] transition"
+                                        className="block px-4 py-2 text-gray-700 hover:bg-gray-50 hover:text-[#1d3f89] transition"
                                     >
                                         À propos
                                     </a>
                                     {/* <a
                                         href="/partenaires"
-                                        className="block px-4 py-2 text-gray-700 hover:bg-gray-50 hover:text-[#272AC7] transition"
+                                        className="block px-4 py-2 text-gray-700 hover:bg-gray-50 hover:text-[#1d3f89] transition"
                                     >
                                         Partenaires
                                     </a> */}
                                     {/* {routes?.partenaires && (
                                         <a
                                             href={routes.partenaires}
-                                            className="block px-4 py-2 text-gray-700 hover:bg-gray-50 hover:text-[#272AC7] transition"
+                                            className="block px-4 py-2 text-gray-700 hover:bg-gray-50 hover:text-[#1d3f89] transition"
                                         >
                                             Partenaires
                                         </a>
@@ -185,14 +185,14 @@ export default function Navbar({ routes }) {
                         </div>
                         <a
                         href={routes?.galerie || "/galerie"}
-                            className="block py-2 px-3 text-[#272AC7] font-semibold hover:text-[#8F1E98] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8F1E98]"
+                            className="block py-2 px-3 text-[#1d3f89] font-semibold hover:text-[#8F1E98] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8F1E98]"
                         >
                             Galerie
                         </a>
                         {/* Liens simples */}
                         {/* <a
                             href={routes?.programmation || "/programmation"}
-                            className="block py-2 px-3 text-[#272AC7] font-semibold hover:text-[#8F1E98] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8F1E98] rounded"
+                            className="block py-2 px-3 text-[#1d3f89] font-semibold hover:text-[#8F1E98] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8F1E98] rounded"
                         >
                             Programmation
                         </a> */}
@@ -200,7 +200,7 @@ export default function Navbar({ routes }) {
                         {routes?.news && (
                             <a
                                 href={routes.news}
-                                className="block py-2 px-3 text-[#272AC7] font-semibold hover:text-[#8F1E98] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8F1E98] rounded"
+                                className="block py-2 px-3 text-[#1d3f89] font-semibold hover:text-[#8F1E98] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8F1E98] rounded"
                             >
                                 Actualités
                             </a>
@@ -209,7 +209,7 @@ export default function Navbar({ routes }) {
                         {routes?.programmation && (
                             <a
                                 href={routes.programmation}
-                                className="block py-2 px-3 text-[#272AC7] font-semibold hover:text-[#8F1E98] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8F1E98] rounded"
+                                className="block py-2 px-3 text-[#1d3f89] font-semibold hover:text-[#8F1E98] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8F1E98] rounded"
                             >
                                 Programmation
                             </a>
@@ -217,7 +217,7 @@ export default function Navbar({ routes }) {
 
                         <a
                             href={routes?.contact || "/contact"}
-                            className="block py-2 px-3 text-[#272AC7] font-semibold hover:text-[#8F1E98] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8F1E98] rounded"
+                            className="block py-2 px-3 text-[#1d3f89] font-semibold hover:text-[#8F1E98] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8F1E98] rounded"
                         >
                             Contact
                         </a>
@@ -227,7 +227,7 @@ export default function Navbar({ routes }) {
                             href={routes?.boutique || "/boutique"}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="block py-2 px-3 text-[#272AC7] font-semibold hover:text-[#8F1E98] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8F1E98] rounded"
+                            className="block py-2 px-3 text-[#1d3f89] font-semibold hover:text-[#8F1E98] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8F1E98] rounded"
                         >
                             Calan'Boutique
                         </a> */}
@@ -243,12 +243,12 @@ export default function Navbar({ routes }) {
                         rel="noopener noreferrer"
                         style={{
                             background:
-                                "linear-gradient(90deg, #272ac7 20%, #8f1e98 100%)",
+                                "linear-gradient(135deg, #1d3f89 40%, #77cbf3 100%)",
                         }}
                         className="hidden lg:inline-block text-white font-semibold px-6 py-2.5 rounded-lg hover:from-[#FF0F63] hover:to-[#8F1E98] transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#8F1E98] shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
                         aria-label="Acheter des billets (ouvre une nouvelle fenêtre)"
                     >
-                        Acheter des billets <span aria-hidden="true"><i class="fa-solid fa-arrow-right fa-xs"></i></span>
+                        Acheter des billets <span aria-hidden="true"><i className="fa-solid fa-arrow-right fa-xs"></i></span>
                     </a>
 
                     {/* Menu Burger (Mobile) */}
@@ -414,12 +414,12 @@ export default function Navbar({ routes }) {
                         rel="noopener noreferrer"
                         style={{
                             background:
-                                "linear-gradient(90deg, #272ac7 20%, #8f1e98 100%)",
+                                "linear-gradient(135deg, #1d3f89 40%, #77cbf3 100%)",
                         }}
-                        className="block text-center mt-4 text-white font-semibold py-3 rounded-lg hover:from-[#FF0F63] hover:to-[#8F1E98] transition-all duration-300 shadow-lg"
+                        className="block text-center mt-4 text-white font-semibold py-3 rounded-lg transition-all duration-300 shadow-lg"
                         aria-label="Acheter des billets (ouvre une nouvelle fenêtre)"
                     >
-                        Acheter des billets <span aria-hidden="true"><i class="fa-solid fa-arrow-right fa-xs"></i></span>
+                        Acheter des billets <span aria-hidden="true"><i className="fa-solid fa-arrow-right fa-xs"></i></span>
                     </a>
                 </nav>
             </div>

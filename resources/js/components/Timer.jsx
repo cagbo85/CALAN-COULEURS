@@ -166,7 +166,7 @@ export default function Timer() {
                     return (
                         <div
                             key={label}
-                            className="flex flex-col items-center justify-center bg-white/70 backdrop-blur-sm text-[#272AC7] font-bold rounded-lg shadow-md border-2 border-[#272AC7]/30"
+                            className="flex flex-col items-center justify-center bg-white/70 backdrop-blur-sm text-[#1d3f89] font-bold rounded-lg shadow-md border-2 border-[#1d3f89]/30"
                             style={{ width: "100px", height: "100px" }}
                         >
                             <span className="text-4xl leading-none sm:text-5xl">

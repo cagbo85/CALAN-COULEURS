@@ -29,12 +29,13 @@ export default function ProgrammationCurrent() {
     // Etat de chargement
     if (loading) {
         return (
-            <section className="px-6 py-16" style={{ backgroundColor: "#EEF1FF" }}>
+            <section
+                className="px-6 py-16"
+                style={{ backgroundColor: "#EEF1FF" }}
+            >
                 <div className="container mx-auto text-center">
                     <div className="mb-4 text-5xl drop-shadow-lg">⏳</div>
-                    <p
-                        className="text-lg font-semibold text-[#272AC7]"
-                    >
+                    <p className="text-lg font-semibold text-[#1d3f89]">
                         Chargement de la programmation...
                     </p>
                 </div>
@@ -45,10 +46,15 @@ export default function ProgrammationCurrent() {
     // Etat d'erreur
     if (error) {
         return (
-            <section className="px-6 py-16" style={{ backgroundColor: "#EEF1FF" }}>
+            <section
+                className="px-6 py-16"
+                style={{ backgroundColor: "#EEF1FF" }}
+            >
                 <div className="container mx-auto text-center">
                     <BiSolidError className="mx-auto mb-4 text-5xl text-red-400" />
-                    <p className="text-lg font-semibold text-[#272AC7]">{error}</p>
+                    <p className="text-lg font-semibold text-[#1d3f89]">
+                        {error}
+                    </p>
                 </div>
             </section>
         );
@@ -68,7 +74,7 @@ export default function ProgrammationCurrent() {
                         className="mb-12 text-4xl font-bold text-left uppercase drop-shadow-lg"
                         style={{
                             background:
-                                "linear-gradient(180deg, rgba(39,42,199,1) 0%, rgba(143,30,152,1) 35%, rgba(255,15,99,1) 100%)",
+                                "linear-gradient(180deg, #1d3f89 0%, #77cbf3 100%)",
                             WebkitBackgroundClip: "text",
                             WebkitTextFillColor: "transparent",
                             backgroundClip: "text",
@@ -82,7 +88,7 @@ export default function ProgrammationCurrent() {
                                 className="p-8 text-white"
                                 style={{
                                     background:
-                                        "linear-gradient(to right, #FF0F63, #8F1E98)",
+                                        "linear-gradient(90deg, #1d3f89 0%, #77cbf3 100%)",
                                 }}
                             >
                                 <h3 className="text-3xl font-bold tracking-wide text-center uppercase sm:text-left">
@@ -107,7 +113,7 @@ export default function ProgrammationCurrent() {
                                         style={{ animationDelay: "0.1s" }}
                                     ></div>
                                     <div
-                                        className="w-2 h-2 bg-[#272AC7] rounded-full animate-bounce"
+                                        className="w-2 h-2 bg-[#1d3f89] rounded-full animate-bounce"
                                         style={{ animationDelay: "0.2s" }}
                                     ></div>
                                 </div>
@@ -129,7 +135,7 @@ export default function ProgrammationCurrent() {
             <div className="container mx-auto">
                 <h2
                     id="programmation-heading"
-                    className="text-4xl font-bold uppercase mb-12 text-left drop-shadow-lg text-[#272AC7]"
+                    className="text-4xl font-bold uppercase mb-12 text-left drop-shadow-lg text-[#1d3f89]"
                 >
                     Programmation
                 </h2>
@@ -143,7 +149,10 @@ export default function ProgrammationCurrent() {
                             {/* Header du jour */}
                             <div
                                 className="p-6 text-white"
-                                style={{ background: "linear-gradient(to right, #272AC7, #8F1E98)" }}
+                                style={{
+                                    background:
+                                        "linear-gradient(90deg, #1d3f89 0%, #77cbf3 100%)",
+                                }}
                             >
                                 <h3 className="text-2xl font-bold tracking-wide uppercase">
                                     {day.jour_rep}
@@ -180,10 +189,10 @@ export default function ProgrammationCurrent() {
                 <div className="mt-12 text-center">
                     <a
                         href="/programmation"
-                        className="inline-block text-white font-semibold px-6 py-2.5 rounded-lg transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#272AC7] shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 bg-[#272AC7] hover:bg-[#8F1E98]"
+                        className="inline-block text-white font-semibold px-6 py-2.5 rounded-lg transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#1d3f89] shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
                         style={{
                             background:
-                                "linear-gradient(90deg, #272ac7 0%, #8f1e98 100%)",
+                                "linear-gradient(135deg, #1d3f89 40%, #77cbf3 100%)",
                         }}
                     >
                         Voir toute la programmation

@@ -7,7 +7,7 @@
 
         <div class="mx-auto mb-12 max-w-7xl">
             <div class="mb-8 text-center">
-                <h1 class="text-4xl sm:text-5xl font-bold text-[#272AC7] mb-4">
+                <h1 class="text-4xl sm:text-5xl font-bold text-[#1d3f89] mb-4">
                     Charte du festivalier
                 </h1>
                 <p class="max-w-3xl mx-auto text-lg text-gray-600">
@@ -17,22 +17,22 @@
             </div>
 
             <div class="flex flex-wrap justify-center gap-4 mb-8">
-                <div class="px-6 py-3 bg-white border border-[#272AC7]/15 rounded-lg shadow-sm">
+                <div class="px-6 py-3 bg-white border border-[#1d3f89]/15 rounded-lg shadow-sm">
                     <div class="flex items-center space-x-2">
                         <span class="text-2xl">🤝</span>
                         <span class="font-medium text-gray-600">Respect</span>
                     </div>
                 </div>
-                <div class="px-6 py-3 bg-white border border-[#272AC7]/15 rounded-lg shadow-sm">
+                <div class="px-6 py-3 bg-white border border-[#1d3f89]/15 rounded-lg shadow-sm">
                     <div class="flex items-center space-x-2">
                         <span class="text-2xl">🍻</span>
                         <span class="font-medium text-gray-600">Modération</span>
                     </div>
                 </div>
-                <div class="px-6 py-3 bg-white border border-[#272AC7]/15 rounded-lg shadow-sm">
+                <div class="px-6 py-3 bg-white border border-[#1d3f89]/15 rounded-lg shadow-sm">
                     <div class="flex items-center space-x-2">
                         <span class="text-2xl">🏕️</span>
-                        <span class="font-medium text-gray-600">Camping propre</span>
+                        <span class="font-medium text-gray-600">Propreté</span>
                     </div>
                 </div>
             </div>
@@ -134,7 +134,7 @@
         {{-- Règles de vie --}}
         <div class="mx-auto mb-12 max-w-7xl">
             <div class="mb-8 text-center">
-                <h2 class="text-3xl font-bold text-[#272AC7] mb-4">
+                <h2 class="text-3xl font-bold text-[#1d3f89] mb-4">
                     Les valeurs du festival
                 </h2>
                 <p class="max-w-3xl mx-auto text-lg text-gray-600">
@@ -145,9 +145,9 @@
             <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
 
                 <div
-                    class="bg-white rounded-2xl p-8 text-center shadow-lg hover:shadow-xl transition-shadow border border-[#272AC7]/10">
+                    class="bg-white rounded-2xl p-8 text-center shadow-lg hover:shadow-xl transition-shadow border border-[#1d3f89]/10">
                     <div class="mb-4 text-6xl">🤝</div>
-                    <h3 class="text-xl font-bold text-[#272AC7] mb-4">Le consentement</h3>
+                    <h3 class="text-xl font-bold text-[#1d3f89] mb-4">Le consentement</h3>
                     <p class="text-sm leading-relaxed text-gray-700">
                         Le respect mutuel est la base d’un festival réussi. Chacun doit se sentir libre et en sécurité.
                         Non, c’est non.
@@ -155,9 +155,9 @@
                 </div>
 
                 <div
-                    class="bg-white rounded-2xl p-8 text-center shadow-lg hover:shadow-xl transition-shadow border border-[#272AC7]/10">
+                    class="bg-white rounded-2xl p-8 text-center shadow-lg hover:shadow-xl transition-shadow border border-[#1d3f89]/10">
                     <div class="mb-4 text-6xl">🍻</div>
-                    <h3 class="text-xl font-bold text-[#272AC7] mb-4">La modération</h3>
+                    <h3 class="text-xl font-bold text-[#1d3f89] mb-4">La modération</h3>
                     <p class="text-sm leading-relaxed text-gray-700">
                         L’alcool peut faire partie de la fête, mais toujours avec modération. Pensez à boire de l’eau et à
                         prendre soin de vos proches.
@@ -165,9 +165,9 @@
                 </div>
 
                 <div
-                    class="bg-white rounded-2xl p-8 text-center shadow-lg hover:shadow-xl transition-shadow border border-[#272AC7]/10">
+                    class="bg-white rounded-2xl p-8 text-center shadow-lg hover:shadow-xl transition-shadow border border-[#1d3f89]/10">
                     <div class="mb-4 text-6xl">💜</div>
-                    <h3 class="text-xl font-bold text-[#272AC7] mb-4">Le respect</h3>
+                    <h3 class="text-xl font-bold text-[#1d3f89] mb-4">Le respect</h3>
                     <p class="text-sm leading-relaxed text-gray-700">
                         Respectons les artistes, les bénévoles, les équipes et les autres festivaliers. Le festival vit
                         grâce à la bienveillance de chacun.
@@ -175,9 +175,9 @@
                 </div>
 
                 <div
-                    class="bg-white rounded-2xl p-8 text-center shadow-lg hover:shadow-xl transition-shadow border border-[#272AC7]/10">
+                    class="bg-white rounded-2xl p-8 text-center shadow-lg hover:shadow-xl transition-shadow border border-[#1d3f89]/10">
                     <div class="mb-4 text-6xl">🏕️</div>
-                    <h3 class="text-xl font-bold text-[#272AC7] mb-4">Le camping propre</h3>
+                    <h3 class="text-xl font-bold text-[#1d3f89] mb-4">La propreté</h3>
                     <p class="text-sm leading-relaxed text-gray-700">
                         Utilisez les poubelles et les sanitaires prévus. Laissons le site propre et agréable pour tout le
                         monde.
@@ -189,7 +189,7 @@
 
         <section class="px-6 pb-4 text-white">
             <div class="container mx-auto text-center">
-                <h2 class="mb-6 text-3xl font-bold text-[#272AC7]">Prêt·e à vivre Calan'Couleurs ? 🎪</h2>
+                <h2 class="mb-6 text-3xl font-bold text-[#1d3f89]">Prêt·e à vivre Calan'Couleurs ? 🎪</h2>
                 <p class="max-w-3xl mx-auto text-lg text-gray-600">
                     En respectant cette charte, tu contribues à faire de ce festival un moment magique pour tous.
                 </p>

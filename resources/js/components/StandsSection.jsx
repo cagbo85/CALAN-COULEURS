@@ -54,12 +54,13 @@ export default function StandsSection() {
     // Etat de chargement
     if (loading) {
         return (
-            <section className="px-6 pb-16" style={{ backgroundColor: "#EEF1FF" }}>
+            <section
+                className="px-6 pb-16"
+                style={{ backgroundColor: "#EEF1FF" }}
+            >
                 <div className="container mx-auto text-center">
                     <div className="mb-4 text-5xl drop-shadow-lg">⏳</div>
-                    <p
-                        className="text-lg font-semibold text-[#272AC7]"
-                    >
+                    <p className="text-lg font-semibold text-[#1d3f89]">
                         Chargement des stands...
                     </p>
                 </div>
@@ -70,10 +71,15 @@ export default function StandsSection() {
     // Etat d'erreur
     if (error) {
         return (
-            <section className="px-6 py-16" style={{ backgroundColor: "#EEF1FF" }}>
+            <section
+                className="px-6 py-16"
+                style={{ backgroundColor: "#EEF1FF" }}
+            >
                 <div className="container mx-auto text-center">
                     <BiSolidError className="mx-auto mb-4 text-5xl text-red-400" />
-                    <p className="text-lg font-semibold text-[#272AC7]">{error}</p>
+                    <p className="text-lg font-semibold text-[#1d3f89]">
+                        {error}
+                    </p>
                 </div>
             </section>
         );
@@ -83,7 +89,8 @@ export default function StandsSection() {
     if (!stands || stands.length === 0) {
         return (
             <section
-                className="px-6 py-16" style={{ backgroundColor: "#EEF1FF" }}
+                className="px-6 py-16"
+                style={{ backgroundColor: "#EEF1FF" }}
                 aria-labelledby="stands-heading"
             >
                 <div className="container mx-auto">
@@ -92,7 +99,7 @@ export default function StandsSection() {
                         className="mb-12 text-4xl font-bold text-left uppercase drop-shadow-lg"
                         style={{
                             background:
-                                "linear-gradient(180deg, rgba(39,42,199,1) 0%, rgba(143,30,152,1) 35%, rgba(255,15,99,1) 100%)",
+                                "linear-gradient(180deg, #1d3f89 0%, #77cbf3 100%)",
                             WebkitBackgroundClip: "text",
                             WebkitTextFillColor: "transparent",
                             backgroundClip: "text",
@@ -105,7 +112,10 @@ export default function StandsSection() {
                         <article className="overflow-hidden border-2 shadow-xl bg-white/95 backdrop-blur-sm rounded-xl border-white/50">
                             <div
                                 className="p-8 text-white"
-                                style={{ background: "linear-gradient(to right, #272AC7, #8F1E98)" }}
+                                style={{
+                                    background:
+                                        "linear-gradient(90deg, #1d3f89 0%, #77cbf3 100%)",
+                                }}
                             >
                                 <h3 className="text-3xl font-bold tracking-wide text-center uppercase sm:text-left">
                                     🍔 Ça mijote !
@@ -130,7 +140,7 @@ export default function StandsSection() {
                                         style={{ animationDelay: "0.1s" }}
                                     ></div>
                                     <div
-                                        className="w-2 h-2 bg-[#272AC7] rounded-full animate-bounce"
+                                        className="w-2 h-2 bg-[#1d3f89] rounded-full animate-bounce"
                                         style={{ animationDelay: "0.2s" }}
                                     ></div>
                                 </div>
@@ -145,13 +155,14 @@ export default function StandsSection() {
     // Etat normal (stands disponibles)
     return (
         <section
-            className="px-6 py-16" style={{ backgroundColor: "#EEF1FF" }}
+            className="px-6 py-16"
+            style={{ backgroundColor: "#EEF1FF" }}
             aria-labelledby="stands-heading"
         >
             <div className="container mx-auto">
                 <h2
                     id="stands-heading"
-                    className="text-4xl font-bold uppercase mb-12 text-left drop-shadow-lg text-[#272AC7]"
+                    className="text-4xl font-bold uppercase mb-12 text-left drop-shadow-lg text-[#1d3f89]"
                 >
                     Sur Place
                 </h2>
@@ -166,7 +177,7 @@ export default function StandsSection() {
 
                     return (
                         <div key={type} className="mb-16">
-                            <h3 className="text-2xl font-semibold xl:pl-32 mb-6 xl:text-left text-center drop-shadow-md text-[#272AC7]">
+                            <h3 className="text-2xl font-semibold xl:pl-32 mb-6 xl:text-left text-center drop-shadow-md text-[#1d3f89]">
                                 {typeLabels[type]}
                             </h3>
 

@@ -7,7 +7,7 @@
         @if (($allArtistes ?? collect())->isEmpty())
             <div class="max-w-2xl mx-auto">
                 <article class="overflow-hidden border-2 shadow-xl bg-white/95 backdrop-blur-sm rounded-xl border-white/50">
-                    <div class="p-8 text-white" style="background: linear-gradient(to right, #FF0F63, #8F1E98);">
+                    <div class="p-8 text-white" style="background: linear-gradient(135deg, #1d3f89 0%, #77cbf3 100%)">
                         <h2 class="text-3xl font-bold tracking-wide text-center uppercase sm:text-left">
                             🎵 Ça se prépare !
                         </h2>
@@ -22,10 +22,10 @@
                         </p>
 
                         <div class="flex justify-center gap-2 mb-2">
-                            <div class="w-2 h-2 bg-[#FF0F63] rounded-full animate-bounce"></div>
+                            <div class="w-2 h-2 bg-[#1d3f89] rounded-full animate-bounce"></div>
                             <div class="w-2 h-2 bg-[#8F1E98] rounded-full animate-bounce" style="animation-delay: 0.1s">
                             </div>
-                            <div class="w-2 h-2 bg-[#272AC7] rounded-full animate-bounce" style="animation-delay: 0.2s">
+                            <div class="w-2 h-2 bg-[#FF0F63] rounded-full animate-bounce" style="animation-delay: 0.2s">
                             </div>
                         </div>
                     </div>
@@ -35,7 +35,7 @@
             <!-- En-tête -->
             <div class="mx-auto mb-12 max-w-7xl">
                 <div class="mb-8 text-center">
-                    <h1 class="text-4xl sm:text-5xl font-bold text-[#272AC7] mb-4">
+                    <h1 class="text-4xl sm:text-5xl font-bold text-[#1d3f89] mb-4">
                         Programmation {{ $currentEdition->year }}
                     </h1>
                     <p class="max-w-3xl mx-auto text-lg text-gray-600">
@@ -46,21 +46,21 @@
 
                 <!-- Statistiques -->
                 <div class="flex flex-wrap justify-center gap-4 mb-8">
-                    <div class="px-6 py-3 bg-white border border-[#272AC7]/15 rounded-lg shadow-sm">
+                    <div class="px-6 py-3 bg-white border border-[#1d3f89]/15 rounded-lg shadow-sm">
                         <div class="flex items-center space-x-2">
                             <span class="text-2xl text-[#8F1E98]">{{ $stats['total_artistes'] }}</span>
                             <span class="font-medium text-gray-600">artistes</span>
                         </div>
                     </div>
-                    <div class="px-6 py-3 bg-white border border-[#272AC7]/15 rounded-lg shadow-sm">
+                    <div class="px-6 py-3 bg-white border border-[#1d3f89]/15 rounded-lg shadow-sm">
                         <div class="flex items-center space-x-2">
                             <span class="text-2xl text-[#FF0F63]">{{ $stats['total_jours'] }}</span>
                             <span class="font-medium text-gray-600">jours</span>
                         </div>
                     </div>
-                    <div class="px-6 py-3 bg-white border border-[#272AC7]/15 rounded-lg shadow-sm">
+                    <div class="px-6 py-3 bg-white border border-[#1d3f89]/15 rounded-lg shadow-sm">
                         <div class="flex items-center space-x-2">
-                            <span class="text-2xl text-[#272AC7]">{{ $stats['scenes']->count() }}</span>
+                            <span class="text-2xl text-[#1d3f89]">{{ $stats['scenes']->count() }}</span>
                             <span class="font-medium text-gray-600">scènes</span>
                         </div>
                     </div>
@@ -70,7 +70,7 @@
                 <div class="mb-8 border-b border-gray-200" style="position: relative; z-index: 5;">
                     <nav class="flex flex-wrap justify-center space-x-1 sm:space-x-8" role="tablist">
                         <button
-                            class="tab-button tab-active px-4 py-3 text-sm font-medium border-b-2 border-[#272AC7] text-[#272AC7] hover:text-[#8F1E98] hover:border-gray-300"
+                            class="tab-button tab-active px-4 py-3 text-sm font-medium border-b-2 border-[#1d3f89] text-[#1d3f89] hover:text-[#8F1E98] hover:border-gray-300"
                             data-tab="all" role="tab" aria-selected="true">
                             Tous les artistes
                         </button>
@@ -121,7 +121,7 @@
                                     <!-- En-tête de période -->
                                     <div class="flex items-center mb-6">
                                         <div class="flex items-center justify-center w-12 h-12 -ml-6 rounded-full shadow-lg"
-                                            style="background: linear-gradient(90deg, #272ac7 0%, #8f1e98 100%)">
+                                            style="background: linear-gradient(90deg, #1d3f89 0%, #8f1e98 100%)">
                                             <span
                                                 class="text-sm font-bold text-white">{{ $periodData['period_Icon'] }}</span>
                                         </div>
@@ -160,17 +160,18 @@
 
                     // Réinitialiser tous les onglets
                     tabButtons.forEach(btn => {
-                    btn.classList.remove('tab-active', 'border-[#272AC7]', 'text-[#272AC7]');
-                    btn.classList.add('border-transparent', 'text-gray-500');
-                    btn.setAttribute('aria-selected', 'false');
-                });
+                        btn.classList.remove('tab-active', 'border-[#1d3f89]',
+                            'text-[#1d3f89]');
+                        btn.classList.add('border-transparent', 'text-gray-500');
+                        btn.setAttribute('aria-selected', 'false');
+                    });
 
                     tabContents.forEach(content => {
                         content.classList.add('hidden');
                     });
 
                     // Activer l'onglet cliqué
-                    this.classList.add('tab-active', 'border-[#272AC7]', 'text-[#272AC7]');
+                    this.classList.add('tab-active', 'border-[#1d3f89]', 'text-[#1d3f89]');
                     this.classList.remove('border-transparent', 'text-gray-500');
                     this.setAttribute('aria-selected', 'true');
 

@@ -1,4 +1,4 @@
-<footer class="py-12 text-white" style="background: linear-gradient(180deg, #272ac7 0%, #8f1e98 100%);" role="contentinfo" aria-labelledby="footer-heading">
+<footer class="py-12 text-white" style="background: linear-gradient(180deg, #77cbf3 0%, #1d3f89 100%);" role="contentinfo" aria-labelledby="footer-heading">
     <div class="container px-6 mx-auto">
         {{-- Section supérieure avec logo et navigation --}}
         <div class="flex flex-col items-center justify-between mb-8 md:flex-row">
@@ -23,43 +23,43 @@
             <nav aria-label="Liens de pied de page">
                 <ul class="flex flex-col gap-3 text-center sm:flex-row sm:gap-8 sm:text-left">
                     <li>
-                        <a href="/" class="text-white hover:text-[#FF0F63] font-medium transition">Accueil</a>
+                        <a href="/" class="text-white hover:text-[#8F1E98] font-medium transition">Accueil</a>
                     </li>
                     <li>
                         <a href="{{ route('festival') }}"
-                            class="text-white hover:text-[#FF0F63] font-medium transition">Le Festival</a>
+                            class="text-white hover:text-[#8F1E98] font-medium transition">Le Festival</a>
                     </li>
                     @if ($showProgrammation ?? false)
                         <li>
                             <a href="{{ route('programmation') }}"
-                                class="text-white hover:text-[#FF0F63] font-medium transition">
+                                class="text-white hover:text-[#8F1E98] font-medium transition">
                                 Programmation
                             </a>
                         </li>
                     @endif
                     <li>
                         <a href="{{ $currentEdition->reservation_url }}" target="_blank" rel="noopener noreferrer"
-                            class="text-white hover:text-[#FF0F63] font-medium transition">
+                            class="text-white hover:text-[#8F1E98] font-medium transition">
                             Billetterie <span class="sr-only">(nouvelle fenêtre)</span>
                         </a>
                     </li>
                     {{-- @if ($showPartenaires ?? false)
                         <li>
                             <a href="{{ route('partenaires') }}"
-                                class="text-white hover:text-[#FF0F63] font-medium transition">Partenaires</a>
+                                class="text-white hover:text-[#8F1E98] font-medium transition">Partenaires</a>
                         </li>
                     @endif --}}
                     <li>
                         <a href="{{ route('charte') }}"
-                            class="text-white hover:text-[#FF0F63] font-medium transition">Charte</a>
+                            class="text-white hover:text-[#8F1E98] font-medium transition">Charte</a>
                     </li>
                     {{-- <li>
                         <a href="{{ route('boutique.index') }}"
-                            class="text-white hover:text-[#FF0F63] font-medium transition">Calan'Boutique</a>
+                            class="text-white hover:text-[#8F1E98] font-medium transition">Calan'Boutique</a>
                     </li> --}}
                     <li>
                         <a href="{{ route('contact') }}"
-                            class="text-white hover:text-[#FF0F63] font-medium transition">Contact</a>
+                            class="text-white hover:text-[#8F1E98] font-medium transition">Contact</a>
                     </li>
                 </ul>
             </nav>
@@ -75,7 +75,7 @@
                 <li>
                     <a href="https://www.instagram.com/calancouleurs/" target="_blank" rel="noopener noreferrer"
                         aria-label="Instagram Calan’Couleurs (nouvelle fenêtre)"
-                        class="text-white hover:text-[#FF0F63] transition duration-300 focus:outline-none focus-visible:ring focus-visible:ring-offset-2 focus-visible:ring-white/60 rounded">
+                        class="text-white hover:text-[#8F1E98] transition duration-300 focus:outline-none focus-visible:ring focus-visible:ring-offset-2 focus-visible:ring-white/60 rounded">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                             fill="currentColor" class="w-6 h-6">
                             <path
@@ -87,7 +87,7 @@
                 <li>
                     <a href="https://www.facebook.com/profile.php?id=61555539331779" target="_blank"
                         rel="noopener noreferrer" aria-label="Facebook Calan’Couleurs (nouvelle fenêtre)"
-                        class="text-white hover:text-[#FF0F63] transition duration-300 focus:outline-none focus-visible:ring focus-visible:ring-offset-2 focus-visible:ring-white/60 rounded">
+                        class="text-white hover:text-[#8F1E98] transition duration-300 focus:outline-none focus-visible:ring focus-visible:ring-offset-2 focus-visible:ring-white/60 rounded">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                             fill="currentColor" class="w-6 h-6">
                             <path

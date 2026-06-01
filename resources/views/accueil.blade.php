@@ -79,12 +79,12 @@
             <div class="relative w-full sm:w-auto">
                 <div class="absolute inset-0 translate-x-1 translate-y-1">
                     <a href="{{ route('programmation') }}"
-                        class="relative bg-[#272AC7] text-[#272AC7] px-4 sm:px-6 py-3 font-bold uppercase tracking-wide transition duration-300 block w-full text-center">
+                        class="relative bg-[#1d3f89] text-[#1d3f89] px-4 sm:px-6 py-3 font-bold uppercase tracking-wide transition duration-300 block w-full text-center">
                         Découvre la programmation <i class="fa-solid fa-arrow-right fa-xs"></i>
                     </a>
                 </div>
                 <a href="{{ route('programmation') }}"
-                    class="relative bg-white text-[#272AC7] px-4 sm:px-6 py-3 font-bold uppercase tracking-wide hover:bg-[#272AC7] hover:text-white transition duration-300 block w-full text-center">
+                    class="relative bg-white text-[#1d3f89] px-4 sm:px-6 py-3 font-bold uppercase tracking-wide hover:bg-[#1d3f89] hover:text-white transition duration-300 block w-full text-center">
                     Découvre la programmation <i class="fa-solid fa-arrow-right fa-xs"></i>
                 </a>
             </div>
@@ -100,7 +100,7 @@
                 </div>
                 <a href="{{ $currentEdition->reservation_url }}"
                     target="_blank" rel="noopener noreferrer"
-                    class="relative bg-[#272AC7] text-white px-4 sm:px-6 py-3 font-bold uppercase tracking-wide hover:bg-white hover:text-[#272AC7] transition duration-300 block w-full text-center">
+                    class="relative bg-[#1d3f89] text-white px-4 sm:px-6 py-3 font-bold uppercase tracking-wide hover:bg-white hover:text-[#1d3f89] transition duration-300 block w-full text-center">
                     Acheter des billets <i class="fa-solid fa-arrow-right fa-xs"></i>
                 </a>
             </div>

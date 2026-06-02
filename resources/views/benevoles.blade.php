@@ -209,7 +209,7 @@
                             </p>
                             <p class="flex items-start gap-2">
                                 <span class="text-[#1d3f89] font-bold"><i class="fa-solid fa-check"></i></span>
-                                Choisissez votre soirée : vendredi 12 ou samedi 13 septembre
+                                Choisissez votre soirée : vendredi 26 ou samedi 27 juin
                             </p>
                             <p class="flex items-start gap-2">
                                 <span class="text-[#1d3f89] font-bold"><i class="fa-solid fa-check"></i></span>

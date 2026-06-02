@@ -145,11 +145,11 @@ class ProgrammationController extends Controller
             ELSE '🎵'
         END AS period_Icon,
         CASE
-            WHEN src.scene LIKE 'Extérieur' THEN 'bg-[#FF0F63]'
+            WHEN src.scene LIKE 'Nalac' THEN 'bg-[#FF0F63]'
             ELSE 'bg-[#8F1E98]'
         END AS sceneColor,
         CASE
-            WHEN src.scene LIKE 'Extérieur' THEN '🌟'
+            WHEN src.scene LIKE 'Nalac' THEN '🌟'
             ELSE '🏠'
         END AS sceneIcon
     ");

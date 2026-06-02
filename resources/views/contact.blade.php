@@ -3,102 +3,92 @@
 @section('title', 'Contact - Calan\'Couleurs Festival ' . $currentEdition->year)
 
 @push('styles')
-<style>
-.div-input-contact {
-    border: 2px solid transparent;
-    border-radius: 12px;
-
-    background: 
-        linear-gradient(white, white) padding-box,
-        linear-gradient(rgb(143, 30, 152), rgb(255, 15, 99)) border-box;
-}
-</style>
+    <style>
+        .div-input-contact {
+            border: 2px solid transparent;
+            border-radius: 12px;
+            background: linear-gradient(white, white) padding-box, linear-gradient(135deg, #272AC7, #8F1E98) border-box;
+        }
+    </style>
 @endpush
 
 
 @section('content')
-    <!-- Bannière -->
-    <section class="w-full h-[300px] bg-cover bg-center bg-no-repeat flex items-center justify-center"
-        style="background-image: linear-gradient(rgba(143, 30, 152, 0.7), rgba(255, 15, 99, 0.7)), url('/img/logos/accueil_public.png')">
-        <div class="text-center px-4">
-            <h1 class="text-4xl sm:text-5xl font-bold text-white drop-shadow-lg mb-4">
+    <section class="w-full h-[280px] sm:h-[320px] bg-cover bg-center bg-no-repeat flex items-center justify-center"
+        style="background-image: linear-gradient(rgba(29,63,137,0.84), rgba(119,203,243,0.42)), url('/img/logos/accueil_public.png')">
+        <div class="px-4 text-center">
+            <h1 class="mb-3 text-4xl font-bold text-white sm:text-5xl drop-shadow-lg">
                 Contactez-nous
             </h1>
+            <p class="text-lg text-white/90">
+                Une question, une idée, une envie de participer ? On est là.
+            </p>
         </div>
     </section>
 
-    <section class="py-10 px-4 sm:px-6 lg:px-8 bg-gray-100">
-        <div class="container mx-auto max-w-6xl grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10 items-start">
+    <section class="px-4 py-10 sm:px-6 lg:px-8">
+        <div class="container grid items-start max-w-6xl grid-cols-1 gap-8 mx-auto lg:grid-cols-2 lg:gap-10">
             <!-- Colonne Infos -->
-            <div class="p-6 sm:p-8 rounded-2xl shadow-md"
-                style="background: linear-gradient(180deg, rgba(255,15,99,0.12), rgba(143,30,152,0.12), rgba(39,42,199,0.12));">
-                <h2 class="text-3xl font-bold text-[#8F1E98] mb-8">Restons en contact</h2>
+            <div class="h-full p-6 bg-white border border-gray-100 shadow-md rounded-2xl sm:p-8 lg:sticky lg:top-24">
+                <h2 class="text-3xl font-bold text-[#272AC7] mb-8">Restons en contact</h2>
 
                 <div class="space-y-12">
                     <!-- Email -->
-                    <div class="flex flex-col md:flex-row items-center gap-6">
-                        <div class="flex items-center justify-center w-16 h-16 bg-[#FF0F63]/10 rounded-full">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-[#FF0F63]" fill="none"
-                                viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                            </svg>
+                    <div class="flex flex-col items-center gap-6 md:flex-row">
+                        <div class="flex items-center justify-center w-16 h-16 bg-[#272AC7]/10 rounded-full">
+                            <i class="fa-solid fa-envelope fa-2xl text-[#272AC7]"></i>
                         </div>
                         <div class="text-center md:text-left">
-                            <h3 class="text-xl font-semibold text-[#8F1E98] mb-2">Par email</h3>
-                            <p class="text-gray-600 mb-3">Pour toute question ou demande d'information :</p>
+                            <h3 class="text-xl font-semibold text-[#272AC7] mb-2">Par email</h3>
+                            <p class="mb-3 text-gray-600">Pour toute question ou demande d'information :</p>
                             <a href="mailto:calancouleurs@gmail.com"
-                                class="text-[#FF0F63] hover:text-[#8F1E98] text-xl font-bold transition-colors duration-300">
+                                class="text-[#8F1E98] hover:text-[#FF0F63] text-xl font-bold transition-colors duration-300">
                                 calancouleurs@gmail.com
                             </a>
                         </div>
                     </div>
 
                     <!-- Téléphone -->
-                    <div class="flex flex-col md:flex-row items-center gap-6">
-                        <div class="flex items-center justify-center w-16 h-16 bg-[#8F1E98]/10 rounded-full">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-[#8F1E98]" fill="none"
-                                viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                            </svg>
+                    <div class="flex flex-col items-center gap-6 md:flex-row">
+                        <div class="flex items-center justify-center w-16 h-16 bg-[#272AC7]/10 rounded-full">
+                            <div class="flex items-center justify-center w-16 h-16 bg-[#272AC7]/10 rounded-full">
+                                <i class="fa-solid fa-phone fa-2xl text-[#272AC7]"></i>
+                            </div>
                         </div>
                         <div class="text-center md:text-left">
-                            <h3 class="text-xl font-semibold text-[#8F1E98] mb-2">Par téléphone</h3>
-                            <p class="text-gray-600 mb-3">Pour nous joindre directement :</p>
+                            <h3 class="text-xl font-semibold text-[#272AC7] mb-2">Par téléphone</h3>
+                            <p class="mb-3 text-gray-600">Pour nous joindre directement :</p>
 
                             <div class="space-y-2 md:space-y-3">
                                 <a href="tel:+33782422959"
-                                    class="text-[#FF0F63] hover:text-[#8F1E98] text-xl font-bold transition-colors duration-300 block">
+                                    class="text-[#8F1E98] hover:text-[#FF0F63] text-xl font-bold transition-colors duration-300 block">
                                     07 82 42 29 59
                                 </a>
                                 <a href="tel:+33782741747"
-                                    class="text-[#FF0F63] hover:text-[#8F1E98] text-xl font-bold transition-colors duration-300 block">
+                                    class="text-[#8F1E98] hover:text-[#FF0F63] text-xl font-bold transition-colors duration-300 block">
                                     07 82 74 17 47
                                 </a>
                             </div>
 
-                            <p class="text-sm text-gray-600 mt-3 italic">
+                            <p class="mt-3 text-sm italic text-gray-600">
                                 Ces contacts sont strictement réservés aux demandes concernant le festival.
                             </p>
                         </div>
                     </div>
 
                     <!-- Réseaux sociaux -->
-                    <div class="flex flex-col md:flex-row items-center gap-6">
-                        <div class="flex items-center justify-center w-16 h-16 bg-[#FF0F63]/10 rounded-full">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-[#FF0F63]" fill="none"
-                                viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M13 10V3L4 14h7v7l9-11h-7z" />
-                            </svg>
+                    <div class="flex flex-col items-center gap-6 md:flex-row">
+                        <div class="flex items-center justify-center w-16 h-16 bg-[#272AC7]/10 rounded-full">
+                            <div class="flex items-center justify-center w-16 h-16 bg-[#272AC7]/10 rounded-full">
+                                <i class="fa-solid fa-bolt fa-2xl text-[#272AC7]"></i>
+                            </div>
                         </div>
                         <div class="text-center md:text-left">
-                            <h3 class="text-xl font-semibold text-[#8F1E98] mb-2">Réseaux sociaux</h3>
-                            <p class="text-gray-600 mb-3">Suivez-nous pour ne rien manquer :</p>
-                            <div class="flex space-x-4 justify-center md:justify-start">
+                            <h3 class="text-xl font-semibold text-[#272AC7] mb-2">Réseaux sociaux</h3>
+                            <p class="mb-3 text-gray-600">Suivez-nous pour ne rien manquer :</p>
+                            <div class="flex justify-center space-x-4 md:justify-start">
                                 <a href="https://www.instagram.com/calancouleurs/" target="_blank" rel="noopener noreferrer"
-                                    class="text-[#FF0F63] hover:text-[#8F1E98] transition-colors duration-300">
+                                    class="text-[#8F1E98] hover:text-[#FF0F63] transition-colors duration-300">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                         fill="currentColor" class="w-8 h-8" viewBox="0 0 16 16">
                                         <path
@@ -107,7 +97,7 @@
                                 </a>
                                 <a href="https://www.facebook.com/profile.php?id=61555539331779" target="_blank"
                                     rel="noopener noreferrer"
-                                    class="text-[#FF0F63] hover:text-[#8F1E98] transition-colors duration-300">
+                                    class="text-[#8F1E98] hover:text-[#FF0F63] transition-colors duration-300">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                         fill="currentColor" class="w-8 h-8" viewBox="0 0 16 16">
                                         <path
@@ -121,11 +111,12 @@
             </div>
 
             <!-- Colonne Formulaire de contact -->
-            <div class="bg-white border border-gray-100 rounded-2xl shadow-md p-6 sm:p-8 lg:sticky lg:top-24 h-full">
-                <h2 class="text-3xl font-bold text-[#8F1E98]">Envie de nous écrire?</h2>
-                <p class="text-[#8F1E98] mb-8">Une question sur la programmation, une idée brillante à nous partager, envie de devenir bénévole? Vous êtes au bon endroit!</p>
+            <div class="h-full p-6 bg-white border border-gray-100 shadow-md rounded-2xl sm:p-8 lg:sticky lg:top-24">
+                <h2 class="text-3xl font-bold text-[#272AC7]">Envie de nous écrire?</h2>
+                <p class="text-[#272AC7] mb-8">Une question sur la programmation, une idée brillante à nous partager, envie
+                    de devenir bénévole? Vous êtes au bon endroit!</p>
                 @if (session('success'))
-                    <div class="bg-green-100 text-green-800 p-3 rounded-lg mb-5">
+                    <div class="p-3 mb-5 text-green-800 bg-green-100 rounded-lg">
                         {{ session('success') }}
                     </div>
                 @endif
@@ -133,38 +124,37 @@
                 <form action="{{ route('contact.submit') }}" method="POST" class="space-y-4">
                     @csrf
 
-                    <div class="div-input-contact rounded-lg p-3">
-                        <label class="block mb-1 font-medium text-gray-700">Nom <span class="text-red-500">*</span> :</label>
-                        <input type="text" name="name"
-                            class="w-full rounded-lg focus:outline-none"
-                            required value="{{ old('name') }}">
+                    <div class="p-3 rounded-lg div-input-contact">
+                        <label class="block mb-1 font-medium text-gray-700">Nom <span class="text-red-500">*</span>
+                            :</label>
+                        <input type="text" name="name" class="w-full rounded-lg focus:outline-none" required
+                            value="{{ old('name') }}">
                         @error('name')
-                            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                            <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
                         @enderror
                     </div>
 
-                    <div class="div-input-contact rounded-lg p-3">
+                    <div class="p-3 rounded-lg div-input-contact">
                         <label class="block font-medium text-gray-700">Email <span class="text-red-500">*</span> :</label>
-                        <input type="email" name="email"
-                            class="w-full rounded-lg focus:outline-none"
-                            required value="{{ old('email') }}">
+                        <input type="email" name="email" class="w-full rounded-lg focus:outline-none" required
+                            value="{{ old('email') }}">
                         @error('email')
-                            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                            <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
                         @enderror
                     </div>
 
-                    <div class="div-input-contact rounded-lg p-3">
-                        <label class="block font-medium text-gray-700">Message <span class="text-red-500">*</span> :</label>
-                        <textarea name="message" rows="6"
-                            class="w-full rounded-lg focus:outline-none" required>{{ old('message') }}</textarea>
+                    <div class="p-3 rounded-lg div-input-contact">
+                        <label class="block font-medium text-gray-700">Message <span class="text-red-500">*</span>
+                            :</label>
+                        <textarea name="message" rows="6" class="w-full rounded-lg focus:outline-none" required>{{ old('message') }}</textarea>
                         @error('message')
-                            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                            <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
                         @enderror
                     </div>
 
                     <button type="submit"
-                        class="hidden lg:inline-block text-white font-semibold px-6 py-2.5 rounded-lg hover:from-[#FF0F63] hover:to-[#8F1E98] transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#8F1E98] shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
-                        style="background: linear-gradient(180deg, rgba(255,15,99,0.9) 0%, rgba(143,30,152,0.9) 35%, rgba(39,42,199,0.9) 100%);">
+                        class="px-6 py-3 font-semibold text-white transition-all duration-300 rounded-lg shadow tab-button-goto hover:shadow-lg"
+                        style="background: linear-gradient(135deg, #1d3f89 40%, #77cbf3 100%)">
                         Envoyer
                     </button>
                 </form>

@@ -150,11 +150,11 @@
                                     <select id="scene" name="scene" required
                                         class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all">
                                         <option value="">Sélectionnez une scène...</option>
-                                        <option value="Extérieur" {{ old('scene') == 'Extérieur' ? 'selected' : '' }}>
-                                            Extérieur
+                                        <option value="Nalac" {{ old('scene') == 'Nalac' ? 'selected' : '' }}>
+                                            Nalac
                                         </option>
-                                        <option value="Intérieur" {{ old('scene') == 'Intérieur' ? 'selected' : '' }}>
-                                            Intérieur
+                                        <option value="La Cabane" {{ old('scene') == 'La Cabane' ? 'selected' : '' }}>
+                                            La Cabane
                                         </option>
                                     </select>
                                     <x-input-error :messages="$errors->get('scene')" class="mt-2" />

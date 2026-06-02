@@ -288,7 +288,7 @@ class ArtisteSeeder extends Seeder
             [
                 'name' => 'OASIS',
                 'style' => 'Electro',
-                'description' => "DJ membre du collectif Fontn’r, il aime redonner vie aux classiques avec une touche groovy techno. Entre nostalgie assumée et énergie moderne, ses sets sont pensés pour être immersifs, intenses et résolument taillés pour le dancefloor. Une chose est sûre : ça va vibrer, transpirer et danser fort.",
+                'description' => 'DJ membre du collectif Fontn’r, il aime redonner vie aux classiques avec une touche groovy techno. Entre nostalgie assumée et énergie moderne, ses sets sont pensés pour être immersifs, intenses et résolument taillés pour le dancefloor. Une chose est sûre : ça va vibrer, transpirer et danser fort.',
                 'photo' => 'img/artists/photos/Photos_artistes/OASIS.webp',
                 'soundcloud_url' => null,
                 'spotify_url' => null,
@@ -302,7 +302,7 @@ class ArtisteSeeder extends Seeder
             [
                 'name' => 'SANS LACTOSE',
                 'style' => 'Pop',
-                'description' => "Duo formé par deux frères, Sans Lactose raconte depuis 2019 le passage de la jeunesse à l’âge adulte à travers un univers mêlant pop nostalgique et refrains entêtants. Influencés par Columbine, Paul McCartney, Christophe ou encore FAUVE, ils s’inscrivent dans la nouvelle scène pop française en explorant sans cesse de nouveaux horizons musicaux.",
+                'description' => 'Duo formé par deux frères, Sans Lactose raconte depuis 2019 le passage de la jeunesse à l’âge adulte à travers un univers mêlant pop nostalgique et refrains entêtants. Influencés par Columbine, Paul McCartney, Christophe ou encore FAUVE, ils s’inscrivent dans la nouvelle scène pop française en explorant sans cesse de nouveaux horizons musicaux.',
                 'photo' => 'img/artists/photos/Photos_artistes/SANS LACTOSE.webp',
                 'soundcloud_url' => null,
                 'spotify_url' => 'https://open.spotify.com/intl-fr/artist/5o9bgsy6gISpQ7FJszf34L?si=ojBOu6sqSw6nl4K3BeMZgQ',
@@ -316,7 +316,7 @@ class ArtisteSeeder extends Seeder
             [
                 'name' => 'PURE',
                 'style' => 'Pop',
-                'description' => "Habitués des scènes et des festivals, PURE propose une expérience musicale à part : une alliance parfaite entre harmonies vocales, rythmes dansants et mélodies entêtantes. Originaire de Rennes, cette bande de copains transmet sur scène une énergie débordante et un amour sincère de la musique. Entre douceur, pop et sonorités singulières comme la harpe celtique, ils nous promettent un moment fascinant",
+                'description' => 'Habitués des scènes et des festivals, PURE propose une expérience musicale à part : une alliance parfaite entre harmonies vocales, rythmes dansants et mélodies entêtantes. Originaire de Rennes, cette bande de copains transmet sur scène une énergie débordante et un amour sincère de la musique. Entre douceur, pop et sonorités singulières comme la harpe celtique, ils nous promettent un moment fascinant',
                 'photo' => 'img/artists/photos/Photos_artistes/PURE.webp',
                 'soundcloud_url' => null,
                 'spotify_url' => 'https://open.spotify.com/intl-fr/artist/0nLw7iGQ3F4tdff3AbTw5M?si=cDJtVz2STWews2Rq6ejzYQ',
@@ -330,7 +330,7 @@ class ArtisteSeeder extends Seeder
             [
                 'name' => 'MIMOSA',
                 'style' => 'Pop',
-                'description' => "Basé à Nantes, Mimosa est un trio de chanson française pop aux sonorités indie et rock. À travers des textes imagés et une musique rythmée, le groupe nous embarque dans un véritable voyage entre nostalgie, souvenirs et émotions, avec la mer comme fil conducteur.",
+                'description' => 'Basé à Nantes, Mimosa est un trio de chanson française pop aux sonorités indie et rock. À travers des textes imagés et une musique rythmée, le groupe nous embarque dans un véritable voyage entre nostalgie, souvenirs et émotions, avec la mer comme fil conducteur.',
                 'photo' => 'img/artists/photos/Photos_artistes/MIMOSA.webp',
                 'soundcloud_url' => null,
                 'spotify_url' => 'https://open.spotify.com/intl-fr/artist/64XUJ8nVZaAZ8U42pvw7Rl?si=Ld-WLTKuTVmAILePiMcLeA',
@@ -344,7 +344,7 @@ class ArtisteSeeder extends Seeder
             [
                 'name' => 'PARENTHÈSE',
                 'style' => 'Rap',
-                'description' => "Projet solo de DJUL, leader vocal du KKC Orchestra, Parenthèse propose un live rap intimiste : un micro, une platine et des textes sincères, portés par le partage, l’émotion et l’authenticité. Avec plus de 20 ans d’expérience et 600 concerts, il crée une vraie bulle, une pause musicale à vivre ensemble",
+                'description' => 'Projet solo de DJUL, leader vocal du KKC Orchestra, Parenthèse propose un live rap intimiste : un micro, une platine et des textes sincères, portés par le partage, l’émotion et l’authenticité. Avec plus de 20 ans d’expérience et 600 concerts, il crée une vraie bulle, une pause musicale à vivre ensemble',
                 'photo' => 'img/artists/photos/Photos_artistes/PARENTHÈSE.webp',
                 'soundcloud_url' => null,
                 'spotify_url' => null,
@@ -358,7 +358,7 @@ class ArtisteSeeder extends Seeder
             [
                 'name' => 'SINNA',
                 'style' => 'Electro',
-                'description' => "DJ française de 20 ans, Sinna s’est imposée sur la scène électro avec des sets énergiques et fédérateurs. Résidente au @warehousenantes, elle a déjà fait vibrer de nombreux clubs et événements partout en France, avec une culture musicale large et une seule mission : faire kiffer le public !",
+                'description' => 'DJ française de 20 ans, Sinna s’est imposée sur la scène électro avec des sets énergiques et fédérateurs. Résidente au @warehousenantes, elle a déjà fait vibrer de nombreux clubs et événements partout en France, avec une culture musicale large et une seule mission : faire kiffer le public !',
                 'photo' => 'img/artists/photos/Photos_artistes/SINNA.webp',
                 'soundcloud_url' => null,
                 'spotify_url' => null,

@@ -10,9 +10,10 @@ use App\Services\HelloAssoService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use App\Mail\OrderRecapMail;
+use Illuminate\Support\Facades\Mail;
 
 class BoutiqueController extends Controller
 {
@@ -165,7 +166,7 @@ class BoutiqueController extends Controller
     {
         return DB::table('products_variants as pv')
             ->join(
-                DB::raw('(SELECT color_id, MIN(id) as min_id FROM products_variants WHERE product_id = '.$productId.' GROUP BY color_id) as grouped'),
+                DB::raw('(SELECT color_id, MIN(id) as min_id FROM products_variants WHERE product_id = ' . $productId . ' GROUP BY color_id) as grouped'),
                 function ($join) {
                     $join->on('pv.color_id', '=', 'grouped.color_id')
                         ->on('pv.id', '=', 'grouped.min_id');
@@ -248,7 +249,7 @@ class BoutiqueController extends Controller
     /**
      * Récupèrer toutes les images liées à un produit.
      */
-    public function getImagesForProduct($productId)
+    public function getImagesForProduct(int $productId)
     {
         return DB::table('products_images as pi')
             ->where('pi.product_id', $productId)
@@ -296,7 +297,16 @@ class BoutiqueController extends Controller
 
         $productImages = $this->getImagesForProduct($product->id);
 
-        return view('boutique.show', compact('product', 'uniqueVariants', 'uniqueSizes', 'stockTexts', 'allVariants', 'productImages'));
+        $carouselImages = $productImages
+            ->pluck('image')
+            ->filter()
+            ->values();
+
+        if ($carouselImages->isEmpty() && ! empty($product->image)) {
+            $carouselImages = collect([$product->image]);
+        }
+
+        return view('boutique.show', compact('product', 'uniqueVariants', 'uniqueSizes', 'stockTexts', 'allVariants', 'productImages', 'carouselImages'));
     }
 
     /**
@@ -350,7 +360,7 @@ class BoutiqueController extends Controller
         $cart = session()->get('cart', []);
 
         // Créer une clé unique pour l'article
-        $cartKey = $variant ? $variant->sku : ($product->id.'_no_variant');
+        $cartKey = $variant ? $variant->sku : ($product->id . '_no_variant');
 
         // Si l'article existe déjà, augmenter la quantité
         if (isset($cart[$cartKey])) {
@@ -391,45 +401,93 @@ class BoutiqueController extends Controller
     {
         $cart = session()->get('cart', []);
         $total = 0;
-
         foreach ($cart as $item) {
             $total += $item['quantity'] * $item['unit_price'];
         }
 
-        // Si AJAX, retourne juste le contenu du panneau
+        $productIds = collect($cart)
+            ->pluck('product_id')
+            ->filter()
+            ->unique()
+            ->values();
+
+        $variantsByProduct = ProductsVariant::with(['size', 'color'])
+            ->whereIn('product_id', $productIds)
+            ->where('quantity', '>', 0)
+            ->orderBy('id')
+            ->get()
+            ->groupBy('product_id');
+
         if ($request->ajax() || $request->get('ajax')) {
             return view('boutique.partials.cart-panel-content', compact('cart', 'total'))->render();
         }
 
-        // Sinon, vue classique du panier
-        return view('boutique.cart', compact('cart', 'total'));
+        return view('boutique.cart', compact('cart', 'total', 'variantsByProduct'));
     }
 
     /**
-     * Met à jour les quantités dans le panier.
+     * Met à jour la quantité d'un article dans le panier ou le supprime si la quantité est à 0.
      */
     public function updateCart(Request $request)
     {
         $request->validate([
             'cart_key' => 'required',
             'quantity' => 'required|integer|min:0|max:10',
+            'variant_id' => 'nullable|exists:products_variants,id',
         ]);
 
         $cart = session()->get('cart', []);
+        $cartKey = $request->cart_key;
+        $newQty = (int) $request->quantity;
 
-        if ($request->quantity == 0) {
-            // Supprimer l'article
-            unset($cart[$request->cart_key]);
-        } else {
-            // Mettre à jour la quantité
-            if (isset($cart[$request->cart_key])) {
-                $cart[$request->cart_key]['quantity'] = $request->quantity;
+        if (!isset($cart[$cartKey])) {
+            notify()->error(
+                "L'article que vous essayez de modifier n'existe pas dans le panier.",
+                'Article introuvable'
+            );
+            return redirect()->route('boutique.cart');
+        }
+
+        if ($newQty === 0) {
+            unset($cart[$cartKey]);
+            session()->put('cart', $cart);
+            notify()->success(
+                "Article supprimé du panier.",
+                'Succès'
+            );
+            return redirect()->route('boutique.cart');
+        }
+
+        $item = $cart[$cartKey];
+
+        if (!empty($item['variant_id'])) {
+            $variant = ProductsVariant::find($item['variant_id']);
+            if (!$variant) {
+                notify()->error(
+                    "Variante introuvable.",
+                    'Erreur'
+                );
+                return redirect()->route('boutique.cart');
+            }
+
+            if ($newQty > (int) $variant->quantity) {
+                notify()->error(
+                    "Stock insuffisant pour cette quantité.",
+                    'Erreur'
+                );
+                return redirect()->route('boutique.cart');
             }
         }
 
+        $cart[$cartKey]['quantity'] = $newQty;
         session()->put('cart', $cart);
 
-        return redirect()->route('boutique.cart')->with('success', 'Panier mis à jour');
+        notify()->success(
+            "Quantité mise à jour avec succès.",
+            'Succès'
+        );
+
+        return redirect()->route('boutique.cart');
     }
 
     /**
@@ -439,7 +497,12 @@ class BoutiqueController extends Controller
     {
         session()->forget('cart');
 
-        return redirect()->route('boutique.cart')->with('success', 'Panier vidé');
+        notify()->success(
+            "Panier vidé avec succès.",
+            'Succès'
+        );
+
+        return redirect()->route('boutique.cart');
     }
 
     /**
@@ -450,7 +513,8 @@ class BoutiqueController extends Controller
         $cart = session()->get('cart', []);
 
         if (empty($cart)) {
-            return redirect()->route('boutique.cart')->with('error', 'Votre panier est vide');
+            notify()->error('Votre panier est vide', 'Erreur');
+            return redirect()->route('boutique.cart');
         }
 
         $total = 0;
@@ -474,46 +538,32 @@ class BoutiqueController extends Controller
             return redirect()->route('boutique.cart');
         }
 
-        $validator = Validator::make($request->all(), [
-            'email' => 'required|email|max:255',
-            'firstname' => 'required|string|max:255',
-            'lastname' => 'required|string|max:255',
-            'adresse' => 'required|string|max:255',
-            'ville' => 'required|string|max:100',
-            'code_postal' => 'required|string|max:20',
-            'pays' => 'required|string|max:100',
-        ], [
-            'email.required' => 'L\'adresse e-mail est obligatoire.',
-            'email.email' => 'L\'adresse e-mail doit être valide.',
-            'firstname.required' => 'Le prénom est obligatoire.',
-            'lastname.required' => 'Le nom de famille est obligatoire.',
-            'adresse.required' => 'L\'adresse est obligatoire.',
-            'ville.required' => 'La ville est obligatoire.',
-            'code_postal.required' => 'Le code postal est obligatoire.',
-            'pays.required' => 'Le pays est obligatoire.',
-        ]
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'email' => 'required|email|max:255',
+                'firstname' => 'required|string|max:255',
+                'lastname' => 'required|string|max:255',
+                'adresse' => 'required|string|max:255',
+                'ville' => 'required|string|max:100',
+                'code_postal' => 'required|string|max:20',
+                'pays' => 'required|string|max:100',
+            ],
+            [
+                'email.required' => 'L\'adresse e-mail est obligatoire.',
+                'email.email' => 'L\'adresse e-mail doit être valide.',
+                'firstname.required' => 'Le prénom est obligatoire.',
+                'lastname.required' => 'Le nom de famille est obligatoire.',
+                'adresse.required' => 'L\'adresse est obligatoire.',
+                'ville.required' => 'La ville est obligatoire.',
+                'code_postal.required' => 'Le code postal est obligatoire.',
+                'pays.required' => 'Le pays est obligatoire.',
+            ]
         );
 
         if ($validator->fails()) {
-            $errorMessages = [];
-            foreach ($validator->errors()->messages() as $field => $messages) {
-                $fieldNames = [
-                    'email' => 'Adresse e-mail',
-                    'firstname' => 'Prénom',
-                    'lastname' => 'Nom de famille',
-                    'adresse' => 'Adresse',
-                    'ville' => 'Ville',
-                    'code_postal' => 'Code postal',
-                    'pays' => 'Pays',
-                ];
-                $fieldName = $fieldNames[$field] ?? $field;
-                foreach ($messages as $message) {
-                    $errorMessages[] = "$fieldName : $message";
-                }
-            }
-            $errorSummary = implode(' | ', $errorMessages);
             notify()->error(
-                "Erreurs de validation détectées : {$errorSummary}",
+                "Erreurs de validation détectées : vérifiéz les erreurs dans le formulaire.",
                 'Validation échouée'
             );
 
@@ -569,7 +619,7 @@ class BoutiqueController extends Controller
             $checkoutData = $this->buildHelloAssoCheckoutData($cart, $validated, $total);
 
             // Forcer returnUrl avec token pour retrouver la commande même si session perdue
-            $checkoutData['returnUrl'] = url('/commande/success?order_token='.$orderToken, [], true);
+            $checkoutData['returnUrl'] = url('/commande/success?order_token=' . $orderToken, [], true);
 
             $checkoutData['metadata']['order_token'] = $orderToken;
 
@@ -618,6 +668,34 @@ class BoutiqueController extends Controller
         }
     }
 
+    private function sendOrderRecapIfNeeded(Order $order): void
+    {
+        $order->loadMissing([
+            'orderItems.product',
+            'orderItems.productsVariant.size',
+            'orderItems.productsVariant.color',
+        ]);
+
+        if ($order->status !== 'paid') {
+            return;
+        }
+
+        if (! empty($order->recap_sent_at)) {
+            return;
+        }
+
+        if (empty($order->email)) {
+            Log::warning('Recap commande non envoye: email client manquant', ['order_id' => $order->id]);
+            return;
+        }
+
+        Mail::send(new OrderRecapMail($order));
+
+        $order->forceFill([
+            'recap_sent_at' => now(),
+        ])->save();
+    }
+
     /**
      * Construire les données pour HelloAsso Checkout
      */
@@ -633,7 +711,7 @@ class BoutiqueController extends Controller
                     $name .= $cartItem['size'];
                 }
                 if ($cartItem['color']) {
-                    $name .= ' - '.ucfirst($cartItem['color']);
+                    $name .= ' - ' . ucfirst($cartItem['color']);
                 }
                 $name .= ')';
             }
@@ -808,6 +886,7 @@ class BoutiqueController extends Controller
                 $order->save();
             }
 
+            $this->sendOrderRecapIfNeeded($order);
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();
@@ -929,17 +1008,19 @@ class BoutiqueController extends Controller
         $paidStates = ['authorized', 'processed', 'registered'];
         $isPaid = $paymentState && in_array($paymentState, $paidStates, true);
 
-        DB::transaction(function () use ($order, $paymentState, $cashOutState, $isPaid) {
-            // tronquer valeurs externes pour sécurité
+        $shouldSendRecap = false;
+
+        DB::transaction(function () use ($order, $paymentState, $cashOutState, $isPaid, &$shouldSendRecap) {
             $order->payment_status = $paymentState ? substr($paymentState, 0, 255) : $order->payment_status;
             $order->cashout_state = $cashOutState ? substr($cashOutState, 0, 255) : $order->cashout_state;
+
             if ($isPaid) {
                 $order->status = 'paid';
                 $order->paid_at = $order->paid_at ?? now();
             }
+
             $order->save();
 
-            // décrémenter les stocks si payé et pas encore fait
             if ($isPaid && ! $order->stock_decremented) {
                 foreach ($order->orderItems as $oi) {
                     if ($oi->variant_id) {
@@ -957,7 +1038,13 @@ class BoutiqueController extends Controller
                 $order->stock_decremented = true;
                 $order->save();
             }
+
+            $shouldSendRecap = $isPaid && empty($order->recap_sent_at);
         });
+
+        if ($shouldSendRecap) {
+            $this->sendOrderRecapIfNeeded($order->fresh());
+        }
 
         return response()->json(['ok' => true]);
     }

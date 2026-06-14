@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class() extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -28,6 +28,7 @@ return new class() extends Migration
             $table->string('cashout_state', 100)->nullable();
             $table->string('helloasso_payment_id', 100)->nullable()->comment('ID du paiement HelloAsso');
             $table->timestamp('paid_at')->nullable()->comment('Date et heure du paiement');
+            $table->timestamp('recap_sent_at')->nullable()->comment('Date et heure de l\'envoi du récapitulatif client');
             $table->json('payment_metadata')->nullable()->comment('Métadonnées du paiement (stockées en JSON)');
             $table->string('token')->comment('Token unique pour accéder à la commande');
             $table->boolean('stock_decremented')->default(false)->comment('Indique si le stock a été décrémenté pour cette commande');

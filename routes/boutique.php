@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/boutique', [BoutiqueController::class, 'index'])->name('boutique.index');
 Route::get('/boutique/produits', [BoutiqueController::class, 'products'])->name('boutique.products');
+Route::get('/boutique/contact', [BoutiqueController::class, 'contact'])->name('boutique.contact');
 Route::get('/boutique/{product:slug}', [BoutiqueController::class, 'show'])->name('boutique.show');
 
 // Routes du panier

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class() extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -20,6 +20,7 @@ return new class() extends Migration
             $table->timestamp('shipped_at')->nullable()->comment('Date et heure d\'expédition');
             $table->timestamp('delivered_at')->nullable()->comment('Date et heure de livraison');
             $table->enum('status', ['in preparation', 'shipped', 'delivered', 'returned'])->default('in preparation')->comment('Statut d\'expédition');
+            $table->string('last_notified_status', 50)->nullable()->comment('Dernier statut expedition notifie par email');
             $table->integer('created_by')->nullable()->index('created_by')->comment('ID utilisateur créateur');
             $table->integer('updated_by')->nullable()->index('updated_by')->comment('ID de l\'utilisateur qui a modifié');
             $table->timestamp('created_at')->nullable()->useCurrent()->comment('Date de création');

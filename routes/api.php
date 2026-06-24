@@ -6,6 +6,7 @@ use App\Http\Controllers\FaqController;
 use App\Http\Controllers\PartenaireController;
 use App\Http\Controllers\StandController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\HelloAssoWebhookController;
 
 Route::get('/faqs', [FaqController::class, 'getAllFaqs'])
     ->name('faqs.index');
@@ -24,3 +25,6 @@ Route::get('/artists/current', [ArtisteController::class, 'getArtistsGroupedByDa
 
 Route::get('stands/current', [StandController::class, 'getStandsCurrentEdition'])
     ->name('stands.current');
+
+Route::post('/webhooks/helloasso', [HelloAssoWebhookController::class, 'handlePayment'])
+    ->name('webhooks.helloasso');

@@ -2,7 +2,29 @@
 
 use App\Http\Controllers\Admin\ArtisteController;
 use App\Http\Controllers\Admin\EditionController;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Route;
+
+Route::get('/billetterie', function () {
+    return view('tickets.index');
+})->name('tickets.index');
+
+Route::get('/billetterie/merci', function () {
+    return view('tickets.thanks');
+})->name('tickets.thanks');
+
+Route::get('/billetterie/check-status', function () {
+    // On récupère l'ID de session du visiteur anonyme actuel
+    $sessionToken = session()->getId();
+
+    // On vérifie si le Webhook a déposé un drapeau vert pour ce jeton de session
+    if (Cache::has('helloasso_success_' . $sessionToken)) {
+        Cache::forget('helloasso_success_' . $sessionToken); // Nettoyage
+        return response()->json(['success' => true]);
+    }
+
+    return response()->json(['success' => false]);
+})->name('tickets.check-status');
 
 Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'verified']], function () {
     Route::get('/editions', [EditionController::class, 'index'])->name('admin.editions.index');

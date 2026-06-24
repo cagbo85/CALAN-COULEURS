@@ -77,26 +77,18 @@ export default function Navbar({ routes }) {
                         <div className="relative dropdown-container">
                             <button
                                 onClick={() => toggleDropdown("infos")}
-                                className="flex items-center py-2 px-3 text-[#1d3f89] font-semibold hover:text-[#8F1E98] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8F1E98] rounded"
+                                className="flex items-center gap-2 py-2 px-3 text-[#1d3f89] font-semibold hover:text-[#8F1E98] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8F1E98] rounded"
                                 aria-expanded={activeDropdown === "infos"}
                                 aria-haspopup="true"
                             >
                                 Infos
-                                <svg
-                                    className={`ml-1 w-4 h-4 transition-transform ${
+                                <i
+                                    className={`fa-solid fa-chevron-down inline-block text-xs transition-transform duration-300 ${
                                         activeDropdown === "infos"
-                                            ? "rotate-180"
+                                            ? "rotate-90"
                                             : ""
                                     }`}
-                                    fill="currentColor"
-                                    viewBox="0 0 20 20"
-                                >
-                                    <path
-                                        fillRule="evenodd"
-                                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                        clipRule="evenodd"
-                                    />
-                                </svg>
+                                ></i>
                             </button>
 
                             {activeDropdown === "infos" && (
@@ -121,26 +113,18 @@ export default function Navbar({ routes }) {
                         <div className="relative dropdown-container">
                             <button
                                 onClick={() => toggleDropdown("festival")}
-                                className="flex items-center py-2 px-3 text-[#1d3f89] font-semibold hover:text-[#8F1E98] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8F1E98] rounded"
+                                className="flex items-center gap-2 py-2 px-3 text-[#1d3f89] font-semibold hover:text-[#8F1E98] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8F1E98] rounded"
                                 aria-expanded={activeDropdown === "festival"}
                                 aria-haspopup="true"
                             >
                                 Festival
-                                <svg
-                                    className={`ml-1 w-4 h-4 transition-transform ${
+                                <i
+                                    className={`fa-solid fa-chevron-down inline-block text-xs transition-transform duration-300 ${
                                         activeDropdown === "festival"
-                                            ? "rotate-180"
+                                            ? "rotate-90"
                                             : ""
                                     }`}
-                                    fill="currentColor"
-                                    viewBox="0 0 20 20"
-                                >
-                                    <path
-                                        fillRule="evenodd"
-                                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                        clipRule="evenodd"
-                                    />
-                                </svg>
+                                ></i>
                             </button>
 
                             {activeDropdown === "festival" && (
@@ -166,36 +150,24 @@ export default function Navbar({ routes }) {
                                     >
                                         À propos
                                     </a>
-                                    {/* <a
-                                        href="/partenaires"
-                                        className="block px-4 py-2 text-gray-700 hover:bg-gray-50 hover:text-[#1d3f89] transition"
-                                    >
-                                        Partenaires
-                                    </a> */}
-                                    {/* {routes?.partenaires && (
+                                    {routes?.partenaires && (
                                         <a
                                             href={routes.partenaires}
                                             className="block px-4 py-2 text-gray-700 hover:bg-gray-50 hover:text-[#1d3f89] transition"
                                         >
-                                            Partenaires
+                                            Nos Partenaires
                                         </a>
-                                    )} */}
+                                    )}
                                 </div>
                             )}
                         </div>
+
                         <a
-                        href={routes?.galerie || "/galerie"}
+                            href={routes?.galerie || "/galerie"}
                             className="block py-2 px-3 text-[#1d3f89] font-semibold hover:text-[#8F1E98] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8F1E98]"
                         >
                             Galerie
                         </a>
-                        {/* Liens simples */}
-                        {/* <a
-                            href={routes?.programmation || "/programmation"}
-                            className="block py-2 px-3 text-[#1d3f89] font-semibold hover:text-[#8F1E98] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8F1E98] rounded"
-                        >
-                            Programmation
-                        </a> */}
 
                         {routes?.news && (
                             <a
@@ -248,36 +220,29 @@ export default function Navbar({ routes }) {
                         className="hidden lg:inline-block text-white font-semibold px-6 py-2.5 rounded-lg hover:from-[#FF0F63] hover:to-[#8F1E98] transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#8F1E98] shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
                         aria-label="Acheter des billets (ouvre une nouvelle fenêtre)"
                     >
-                        Acheter des billets <span aria-hidden="true"><i className="fa-solid fa-arrow-right fa-xs"></i></span>
+                        Acheter des billets{" "}
+                        <span aria-hidden="true">
+                            <i className="fa-solid fa-arrow-right fa-xs"></i>
+                        </span>
                     </a>
 
                     {/* Menu Burger (Mobile) */}
                     <button
                         ref={btnRef}
-                        onClick={() => setIsOpen(!isOpen)}
-                        className="lg:hidden text-[#8F1E98] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#8F1E98] rounded p-2"
+                        type="button"
+                        onClick={() => setIsOpen((open) => !open)}
+                        className="p-1 text-[#1d3f89] focus:outline-none lg:hidden"
                         aria-controls="mobile-menu"
                         aria-expanded={isOpen}
                         aria-label={
                             isOpen ? "Fermer le menu" : "Ouvrir le menu"
                         }
                     >
-                        <svg
-                            className="w-6 h-6"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            aria-hidden="true"
-                        >
-                            {isOpen ? (
-                                <path d="M6 18L18 6M6 6l12 12" />
-                            ) : (
-                                <path d="M4 6h16M4 12h16M4 18h16" />
-                            )}
-                        </svg>
+                        {isOpen ? (
+                            <i className="fa-solid fa-xmark fa-xl"></i>
+                        ) : (
+                            <i className="fa-solid fa-bars fa-xl"></i>
+                        )}
                     </button>
                 </div>
             </div>
@@ -285,46 +250,44 @@ export default function Navbar({ routes }) {
             {/* Menu Mobile */}
             <div
                 id="mobile-menu"
-                className={`lg:hidden transition-all duration-300 motion-reduce:transition-none ${
+                className={`lg:hidden absolute left-0 right-0 top-full bg-white shadow-xl transition-all duration-300 motion-reduce:transition-none ${
                     isOpen
                         ? "max-h-screen opacity-100 visible"
                         : "max-h-0 opacity-0 invisible"
-                } overflow-hidden`}
+                } overflow-y-auto`}
                 hidden={!isOpen}
                 aria-label="Navigation principale mobile"
             >
-                <nav className="px-4 py-4 bg-white border-t border-gray-100">
+                <nav className="px-4 py-4 space-y-2 bg-white border-t border-gray-100">
                     {/* Accueil Mobile */}
                     <a
                         href={routes?.accueil || "/"}
                         ref={firstMobileLinkRef}
-                        className="block py-3 text-[#8F1E98] font-semibold hover:text-[#FF0F63] transition border-b border-gray-100"
+                        className="block py-2 font-semibold text-[#1d3f89]"
                     >
                         Accueil
                     </a>
-
                     {/* Infos Mobile */}
                     <div className="mb-4">
-                        <h3 className="text-[#8F1E98] font-bold text-sm uppercase tracking-wide mb-2">
+                        <h3 className="block py-2 font-semibold text-[#1d3f89]">
                             Infos
                         </h3>
                         <a
                             href="/camping"
-                            className="block py-2 pl-4 text-gray-700 hover:text-[#8F1E98] transition"
+                            className="block py-2 pl-4 text-gray-700 transition"
                         >
                             Camping & Hébergement
                         </a>
                         <a
                             href="/benevoles"
-                            className="block py-2 pl-4 text-gray-700 hover:text-[#8F1E98] transition"
+                            className="block py-2 pl-4 text-gray-700 transition"
                         >
                             Bénévoles
                         </a>
                     </div>
-
                     {/* Festival Mobile */}
                     <div className="mb-4">
-                        <h3 className="text-[#8F1E98] font-bold text-sm uppercase tracking-wide mb-2">
+                        <h3 className="block py-2 font-semibold text-[#1d3f89]">
                             Festival
                         </h3>
                         {/* <a
@@ -345,12 +308,12 @@ export default function Navbar({ routes }) {
                         >
                             À propos
                         </a>
-                        {/* <a
+                        <a
                             href="/partenaires"
                             className="block py-2 pl-4 text-gray-700 hover:text-[#8F1E98] transition"
                         >
-                            Partenaires
-                        </a> */}
+                            Nos partenaires
+                        </a>
 
                         {routes?.news && (
                             <a
@@ -370,7 +333,6 @@ export default function Navbar({ routes }) {
                             </a>
                         )}
                     </div>
-
                     {/* Liens directs Mobile */}
                     {routes?.news && (
                         <a
@@ -382,15 +344,15 @@ export default function Navbar({ routes }) {
                     )}
                     {routes?.programmation && (
                         <a
-                            href={routes.programmation}
-                            className="block py-3 text-[#8F1E98] font-semibold hover:text-[#FF0F63] transition border-t border-gray-100"
+                            href={routes.programmation || "/programmation"}
+                            className="block py-2 font-semibold text-[#1d3f89]"
                         >
                             Programmation
                         </a>
                     )}
                     <a
                         href={routes?.contact || "/contact"}
-                        className="block py-3 text-[#8F1E98] font-semibold hover:text-[#FF0F63] transition"
+                        className="block py-2 font-semibold text-[#1d3f89]"
                     >
                         Contact
                     </a>
@@ -403,7 +365,6 @@ export default function Navbar({ routes }) {
                     >
                         Calan'Boutique
                     </a> */}
-
                     {/* CTA Mobile */}
                     <a
                         href={
@@ -416,10 +377,13 @@ export default function Navbar({ routes }) {
                             background:
                                 "linear-gradient(135deg, #1d3f89 40%, #77cbf3 100%)",
                         }}
-                        className="block text-center mt-4 text-white font-semibold py-3 rounded-lg transition-all duration-300 shadow-lg"
+                        className="block py-3 mt-4 font-semibold text-center text-white transition-all duration-300 rounded-lg shadow-lg"
                         aria-label="Acheter des billets (ouvre une nouvelle fenêtre)"
                     >
-                        Acheter des billets <span aria-hidden="true"><i className="fa-solid fa-arrow-right fa-xs"></i></span>
+                        Acheter des billets{" "}
+                        <span aria-hidden="true">
+                            <i className="fa-solid fa-arrow-right fa-xs"></i>
+                        </span>
                     </a>
                 </nav>
             </div>

@@ -38,7 +38,7 @@ class DatabaseSeeder extends Seeder
             ProductSeeder::class,
             ProductImageSeeder::class,
             EditionStandsSeeder::class,
-            EditionPartenairesSeeder::class,
+            EditionPartenaireSeeder::class,
         ]);
     }
 }

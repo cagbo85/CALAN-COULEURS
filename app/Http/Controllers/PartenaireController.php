@@ -10,7 +10,24 @@ class PartenaireController extends Controller
     /**
      * Récupérer les partenaires pour l'édition courante UNIQUEMENT
      */
-    public function getPartenairesCurrentEdition()
+    public function getPartenairesCurrentEdition(int $editionId)
+    {
+        $partenaires = DB::table('partenaires as p')
+            ->join('edition_partenaires as ep', 'p.id', '=', 'ep.partenaire_id')
+            ->join('editions as e', 'ep.edition_id', '=', 'e.id')
+            ->select('p.*', 'e.year')
+            ->where('ep.actif', 1)
+            ->where('e.id', $editionId)
+            ->orderBy('p.ordre')
+            ->get();
+
+        return $partenaires;
+    }
+
+    /**
+     * Afficher la page des partenaires
+     */
+    public function index()
     {
         $currentEdition = Edition::getCurrentEdition();
 
@@ -20,15 +37,10 @@ class PartenaireController extends Controller
             ], 404);
         }
 
-        $partenaires = DB::table('partenaires as p')
-            ->join('edition_partenaires as ep', 'p.id', '=', 'ep.partenaire_id')
-            ->join('editions as e', 'ep.edition_id', '=', 'e.id')
-            ->select('p.*', 'e.year')
-            ->where('ep.actif', 1)
-            ->where('e.id', $currentEdition->id)
-            ->orderBy('p.ordre')
-            ->get();
+        $partenaires = $this->getPartenairesCurrentEdition($currentEdition->id);
 
-        return response()->json($partenaires);
+        $partnerCount = $partenaires->count();
+
+        return view('partenaires', compact('partenaires', 'partnerCount', 'currentEdition'));
     }
 }

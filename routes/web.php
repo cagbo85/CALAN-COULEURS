@@ -4,6 +4,7 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GalerieController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PartenaireController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProgrammationController;
 use Illuminate\Support\Facades\Route;
@@ -36,7 +37,7 @@ Route::get('benevoles', [HomeController::class, 'benevoles'])->name('benevoles')
 
 Route::get('charte', [HomeController::class, 'charte'])->name('charte');
 
-Route::get('partenaires', [HomeController::class, 'partenaires'])->name('partenaires');
+Route::get('partenaires', [PartenaireController::class, 'index'])->name('partenaire.index');
 
 Route::get('camping', [HomeController::class, 'camping'])->name('camping');
 

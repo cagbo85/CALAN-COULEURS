@@ -20,6 +20,9 @@
                         <a href="/" class="text-white hover:text-[#8F1E98] font-medium transition">Accueil</a>
                     </li>
                     <li>
+                        <a href="/boutique" class="text-white hover:text-[#8F1E98] font-medium transition">Calan'Boutique</a>
+                    </li>
+                    <li>
                         <a href="{{ route('festival') }}"
                             class="text-white hover:text-[#8F1E98] font-medium transition">Le Festival</a>
                     </li>

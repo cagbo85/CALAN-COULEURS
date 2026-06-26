@@ -3,110 +3,131 @@
 @section('title', 'Boutique - Calan\'Couleurs')
 
 @section('content')
-    <!-- Section Hero sans titre -->
-    <section class="w-full h-[600px] bg-cover bg-center bg-no-repeat"
-        style="background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('/img/festival/banner.jpg')">
-    </section>
+    <div class="w-full min-h-screen bg-[#EEF1FF]">
 
-    <!-- Section Calan'boutique -->
-    <section class="py-16 px-4 sm:px-6 lg:px-8 bg-white">
-        <div class="container mx-auto max-w-4xl">
-            <div class="text-center mb-12">
-                <h1 class="text-4xl sm:text-5xl font-bold text-[#8F1E98] mb-6">
-                    Calan'boutique
+        <!-- Hero -->
+        <section
+            class="relative flex items-center justify-center w-full min-h-[560px] bg-center bg-cover bg-no-repeat sm:min-h-[650px]"
+            style="background-image:
+                linear-gradient(rgba(29,63,137,0.84), rgba(119,203,243,0.42)),
+                url('/img/festival/banner.jpg');">
+            <div class="px-4 text-center">
+                <h1 class="mb-4 text-5xl font-bold text-white drop-shadow-lg sm:text-6xl md:text-7xl">
+                    Calan'Boutique
                 </h1>
-                <div class="w-24 h-1 mx-auto mb-8" style="background: linear-gradient(to right, #FF0F63, #8F1E98)"></div>
+                <p class="max-w-2xl mx-auto text-lg font-semibold text-white/95 drop-shadow-md sm:text-2xl">
+                    La boutique officielle du festival.
+                </p>
             </div>
+        </section>
 
-            <div class="p-8 sm:p-12 rounded-2xl shadow-lg"
-                style="background: linear-gradient(to bottom right, rgb(250, 245, 255), rgb(253, 242, 248))">
-                <div class="space-y-6 text-center">
-                    <p class="text-lg sm:text-xl leading-relaxed text-gray-700">
-                        Parce que l'esprit du festival ne s'arrête pas aux deux jours de septembre, nous avons créé
-                        <span class="font-bold text-[#8F1E98]">Calan'boutique</span> pour vous permettre de garder
-                        un morceau de cette magie avec vous.
-                    </p>
-
-                    <p class="text-lg sm:text-xl leading-relaxed text-gray-700">
-                        Découvrez notre sélection de produits exclusifs : t-shirts, sweats et accessoires
-                        qui célèbrent la musique, les couleurs et l'esprit festif qui nous animent. Chaque achat
-                        soutient directement le festival et la scène artistique locale.
+        <!-- Intro -->
+        <section class="px-4 py-14 sm:px-6 lg:px-8">
+            <div class="mx-auto max-w-7xl">
+                <div class="mb-10 text-center">
+                    <h2 class="mb-4 text-3xl font-bold text-[#1d3f89] sm:text-4xl">
+                        Notre boutique officielle
+                    </h2>
+                    <p class="max-w-3xl mx-auto text-lg text-gray-600">
+                        Parce que l'esprit du festival ne s'arrête pas aux deux jours de juin, Calan'Boutique vous permet
+                        d'emporter un peu de cette énergie avec vous, sur scène comme au quotidien.
                     </p>
                 </div>
 
-                {{-- <div class="flex justify-center items-center space-x-2 mt-8">
-                        <span class="text-2xl">🎵</span>
-                        <span class="text-lg font-medium text-[#8F1E98]">Portez les couleurs, vivez la musique</span>
-                        <span class="text-2xl">🌈</span>
-                    </div> --}}
-            </div>
-        </div>
-        </div>
-    </section>
+                <div class="grid grid-cols-1 gap-8 lg:grid-cols-2">
+                    <article class="overflow-hidden bg-white border border-[#1d3f89]/15 rounded-xl shadow-sm">
+                        <div class="px-6 py-4" style="background: linear-gradient(135deg, #1d3f89 0%, #77cbf3 100%);">
+                            <h3 class="text-xl font-semibold text-white">L'esprit Calan'Couleurs</h3>
+                        </div>
+                        <div class="p-6 space-y-5 leading-relaxed text-gray-700">
+                            <p>
+                                Porter Calan'Boutique, c'est prolonger l'univers du festival au-delà du week-end :
+                                une ambiance conviviale, locale et généreuse, portée par la musique et le collectif.
+                            </p>
+                            <p>
+                                Chaque pièce a été pensée comme un souvenir vivant du festival, à porter au quotidien
+                                et à partager avec celles et ceux qui font vivre l'aventure.
+                            </p>
+                        </div>
+                    </article>
 
-    <!-- Section Nos produits -->
-    <section class="py-16 px-4 sm:px-6 lg:px-8" style="background: linear-gradient(to bottom, rgb(249, 250, 251), white)">
-        <div class="container mx-auto max-w-6xl">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl sm:text-4xl font-bold text-[#8F1E98] mb-4">
-                    Nos produits
+                    <article class="overflow-hidden bg-white border border-[#1d3f89]/15 rounded-xl shadow-sm">
+                        <div class="px-6 py-4" style="background: linear-gradient(135deg, #1d3f89 0%, #77cbf3 100%);">
+                            <h3 class="text-xl font-semibold text-white">Une boutique qui soutient le festival</h3>
+                        </div>
+                        <div class="p-6 space-y-5 leading-relaxed text-gray-700">
+                            <p>
+                                T-shirts, pulls et accessoires vous permettent de retrouver l'identité visuelle de
+                                Calan'Couleurs dans des produits pensés pour durer.
+                            </p>
+                            <p>
+                                Chaque commande contribue directement au développement du festival et aide à faire vivre
+                                un projet culturel local, indépendant et passionné.
+                            </p>
+
+                            <div class="pt-2">
+                                <a href="{{ route('boutique.products') }}"
+                                    class="inline-block px-4 py-2 font-semibold text-white transition-all duration-300 transform rounded-lg shadow-lg hover:shadow-xl hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#1d3f89]"
+                                    style="background: linear-gradient(135deg, #1d3f89 40%, #77cbf3 100%);">
+                                    Voir tous les produits <i class="fa-solid fa-arrow-right fa-xs"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- Produits -->
+        <section class="px-4 pb-14 sm:px-6 lg:px-8">
+            <div class="mx-auto max-w-7xl">
+                <div class="mb-10 text-center">
+                    <h2 class="mb-4 text-3xl font-bold text-[#1d3f89] sm:text-4xl">
+                        Nos produits
+                    </h2>
+                    <p class="max-w-2xl mx-auto text-lg text-gray-600">
+                        Une sélection pensée pour retrouver l'univers du festival dans des pièces à porter, offrir et
+                        garder.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 gap-6 mb-12 md:grid-cols-2 lg:grid-cols-3">
+                    @foreach ($collections as $collection)
+                        <article
+                            class="overflow-hidden transition-all duration-300 transform bg-white border border-[#1d3f89]/12 rounded-xl shadow-sm hover:-translate-y-1 hover:shadow-lg">
+                            <div class="aspect-square overflow-hidden bg-[#dff2fb]">
+                                <img src="{{ asset($collection['image']) }}" alt="{{ $collection['title'] }}"
+                                    class="object-cover w-full h-full transition-transform duration-300 hover:scale-[1.02]" />
+                            </div>
+
+                            <div class="p-6">
+                                <h3 class="mb-2 text-lg font-bold text-[#1d3f89]">{{ $collection['title'] }}</h3>
+                                <p class="text-sm text-gray-600">{{ $collection['description'] }}</p>
+                            </div>
+                        </article>
+                    @endforeach
+                </div>
+
+                <div class="text-center">
+                    <a href="{{ route('boutique.products') }}"
+                        class="inline-block px-8 py-4 font-semibold text-white transition-all duration-300 transform rounded-lg shadow-lg hover:shadow-xl hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#1d3f89]"
+                        style="background: linear-gradient(135deg, #1d3f89 40%, #77cbf3 100%);">
+                        Explorer la boutique <i class="fa-solid fa-arrow-right fa-xs"></i>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Outro -->
+        <section class="px-6 pb-4">
+            <div class="container mx-auto text-center">
+                <h2 class="mb-6 text-3xl font-bold text-[#1d3f89]">
+                    Portez les couleurs du festival
                 </h2>
-                <p class="text-lg text-gray-600 max-w-2xl mx-auto">
-                    Une collection unique pensée pour les amoureux de musique et de festivals
+                <p class="max-w-3xl mx-auto text-lg text-gray-600">
+                    Chaque achat aide Calan'Couleurs à grandir et prolonge l'aventure bien au-delà de l'été.
                 </p>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-                @foreach ($collections as $collection)
-                    <div
-                        class="group bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
-
-                        {{-- <div class="h-64 w-full overflow-hidden">
-                            <img src="{{ asset($collection['image']) }}" alt="{{ $collection['title'] }}"
-                                class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
-                        </div> --}}
-                        <div class="aspect-square overflow-hidden">
-                            <img src="{{ asset($collection['image']) }}" alt="{{ $collection['title'] }}" class="w-full h-full object-cover" />
-                        </div>
-
-
-                        <div class="p-6">
-                            <h3 class="font-bold text-lg mb-2">{{ $collection['title'] }}</h3>
-                            <p class="text-gray-600 text-sm">{{ $collection['description'] }}</p>
-                        </div>
-                    </div>
-                @endforeach
-            </div>
-
-            <!-- Bouton CTA -->
-            <div class="text-center">
-                <a href="{{ route('boutique.products') }}"
-                    class="inline-flex items-center px-8 py-4 text-white font-bold text-lg rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 group"
-                    style="background: linear-gradient(to right, #FF0F63, #8F1E98)">
-                    <span>Voir nos produits</span>
-                    <svg class="ml-3 w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" fill="none"
-                        stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                    </svg>
-                </a>
-            </div>
-        </div>
-    </section>
-
-    {{-- <!-- Section Call-to-action finale -->
-    <section class="py-16 px-4 sm:px-6 lg:px-8" style="background: linear-gradient(to right, #FF0F63, #8F1E98)">
-        <div class="container mx-auto max-w-4xl text-center">
-            <h3 class="text-3xl sm:text-4xl font-bold text-white mb-6">
-                Rejoignez l'aventure Calan'Couleurs
-            </h3>
-            <p class="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
-                Chaque produit acheté contribue au développement du festival et soutient la scène musicale locale
-            </p>
-            <div class="flex justify-center items-center space-x-4 text-white">
-                <span class="text-2xl">🎪</span>
-                <span class="text-lg font-medium">12 & 13 septembre 2025</span>
-                <span class="text-2xl">🎵</span>
-            </div>
-        </div>
-    </section> --}}
+        </section>
+    </div>
 @endsection

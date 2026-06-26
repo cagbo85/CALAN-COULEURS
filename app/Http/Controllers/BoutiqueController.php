@@ -2,15 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\AdminOrderNotificationMail;
+use App\Mail\ContactMail;
+use App\Mail\OrderRecapMail;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
 use App\Models\ProductsVariant;
+use App\Models\Shipment;
 use App\Services\HelloAssoService;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
@@ -29,7 +35,7 @@ class BoutiqueController extends Controller
                 'badge' => 'pull',
                 'title' => 'Collection Pulls',
                 'description' => 'Chaud, doux et coloré pour toutes les saisons',
-                'image' => 'img/boutique/pull-zippe_vert.jpg',
+                'image' => 'img/boutique/pull-demi-zip_vert.jpg',
             ],
             [
                 'badge' => 'accessoire',
@@ -125,7 +131,11 @@ class BoutiqueController extends Controller
             $query->whereIn('category', $categories);
         }
         if ($request->filled('badge')) {
-            $query->where('badge', $request->badge);
+            if ($request->badge === 'nouveaute') {
+                $query->where('is_featured', true);
+            } else {
+                $query->where('badge', $request->badge);
+            }
         }
 
         return $query->orderBy('is_featured', 'desc')->orderBy('created_at', 'desc')->get();
@@ -248,7 +258,7 @@ class BoutiqueController extends Controller
     /**
      * Récupèrer toutes les images liées à un produit.
      */
-    public function getImagesForProduct($productId)
+    public function getImagesForProduct(int $productId)
     {
         return DB::table('products_images as pi')
             ->where('pi.product_id', $productId)
@@ -296,14 +306,27 @@ class BoutiqueController extends Controller
 
         $productImages = $this->getImagesForProduct($product->id);
 
-        return view('boutique.show', compact('product', 'uniqueVariants', 'uniqueSizes', 'stockTexts', 'allVariants', 'productImages'));
+        $carouselImages = $productImages
+            ->pluck('image')
+            ->filter()
+            ->values();
+
+        if ($carouselImages->isEmpty() && ! empty($product->image)) {
+            $carouselImages = collect([$product->image]);
+        }
+
+        return view('boutique.show', compact('product', 'uniqueVariants', 'uniqueSizes', 'stockTexts', 'allVariants', 'productImages', 'carouselImages'));
     }
 
     /**
      * Ajoute un produit au panier.
      */
+    /**
+     * Ajoute un produit au panier.
+     */
     public function addToCart(Request $request)
     {
+        // Validation
         $validator = Validator::make($request->all(), [
             'product_id' => 'required|exists:products,id',
             'variant_id' => 'nullable|exists:products_variants,id',
@@ -311,25 +334,22 @@ class BoutiqueController extends Controller
         ]);
 
         if ($validator->fails()) {
-            $errorMessages = [];
-            foreach ($validator->errors()->messages() as $field => $messages) {
-                $fieldNames = [
-                    'product_id' => 'Produit',
-                    'variant_id' => 'Variante',
-                    'quantity' => 'Quantité',
-                ];
+            // Construire un message d'erreur lisible
+            $messages = collect($validator->errors()->messages())
+                ->map(function ($msgs, $field) {
+                    $names = [
+                        'product_id' => 'Produit',
+                        'variant_id' => 'Variante',
+                        'quantity' => 'Quantité',
+                    ];
+                    $label = $names[$field] ?? $field;
 
-                $fieldName = $fieldNames[$field] ?? $field;
-                foreach ($messages as $message) {
-                    $errorMessages[] = "$fieldName : $message";
-                }
-            }
+                    return collect($msgs)->map(fn ($m) => "$label : $m");
+                })
+                ->flatten()
+                ->implode(' | ');
 
-            $errorSummary = implode(' | ', $errorMessages);
-            notify()->error(
-                "Erreurs de validation détectées : {$errorSummary}",
-                'Validation échouée'
-            );
+            notify()->error("Erreurs de validation détectées : {$messages}", 'Validation échouée');
 
             return response()->json([
                 'success' => false,
@@ -337,11 +357,15 @@ class BoutiqueController extends Controller
             ], 400);
         }
 
+        // Récupération du produit et de la variante
         $product = Product::findOrFail($request->product_id);
-        $variant = $request->variant_id ? ProductsVariant::with(['size', 'color'])->findOrFail($request->variant_id) : null;
+        $variant = $request->variant_id
+            ? ProductsVariant::with(['size', 'color'])->findOrFail($request->variant_id)
+            : null;
 
-        // Vérifier le stock
+        // Vérification du stock
         $availableStock = $variant ? $variant->quantity : $product->stock_quantity;
+
         if ($request->quantity > $availableStock) {
             return response()->json(['error' => 'Stock insuffisant'], 400);
         }
@@ -349,32 +373,34 @@ class BoutiqueController extends Controller
         // Récupérer le panier actuel
         $cart = session()->get('cart', []);
 
-        // Créer une clé unique pour l'article
-        $cartKey = $variant ? $variant->sku : ($product->id.'_no_variant');
+        // Clé unique du panier
+        $cartKey = $variant ? $variant->sku : "product_{$product->id}";
 
-        // Si l'article existe déjà, augmenter la quantité
+        // Si l'article existe déjà → incrémenter
         if (isset($cart[$cartKey])) {
             $newQuantity = $cart[$cartKey]['quantity'] + $request->quantity;
+
             if ($newQuantity > $availableStock) {
                 return response()->json(['error' => 'Stock insuffisant'], 400);
             }
+
             $cart[$cartKey]['quantity'] = $newQuantity;
         } else {
-            // Ajouter nouvel article
+            // Ajouter un nouvel article
             $cart[$cartKey] = [
                 'product_id' => $product->id,
-                'variant_id' => $variant ? $variant->id : null,
-                'sku' => $variant ? $variant->sku : null,
+                'variant_id' => $variant?->id,
+                'sku' => $variant?->sku,
                 'title' => $product->title,
-                'size' => $variant && $variant->size ? $variant->size->label : null,
-                'color' => $variant && $variant->color ? $variant->color->name : null,
+                'size' => $variant?->size?->label,
+                'color' => $variant?->color?->name,
                 'quantity' => $request->quantity,
                 'unit_price' => $product->price,
-                'image' => $variant && $variant->image ? $variant->image : $product->image,
+                'image' => $variant?->image ?? $product->image,
             ];
         }
 
-        // Sauvegarder dans la session
+        // Sauvegarder le panier
         session()->put('cart', $cart);
 
         return response()->json([
@@ -392,44 +418,126 @@ class BoutiqueController extends Controller
         $cart = session()->get('cart', []);
         $total = 0;
 
-        foreach ($cart as $item) {
+        // Nettoyer le panier des produits ou variantes supprimés
+        foreach ($cart as $key => $item) {
+            // Vérifier que le produit existe encore
+            $product = Product::find($item['product_id']);
+            if (! $product) {
+                unset($cart[$key]);
+
+                continue;
+            }
+
+            // Vérifier que la variante existe encore (si applicable)
+            if (! empty($item['variant_id'])) {
+                $variant = ProductsVariant::find($item['variant_id']);
+                if (! $variant) {
+                    unset($cart[$key]);
+
+                    continue;
+                }
+            }
+
+            // Calcul du total
             $total += $item['quantity'] * $item['unit_price'];
         }
 
-        // Si AJAX, retourne juste le contenu du panneau
+        // Mettre à jour le panier nettoyé
+        session()->put('cart', $cart);
+
+        // Récupérer les variantes disponibles pour chaque produit du panier
+        $productIds = collect($cart)
+            ->pluck('product_id')
+            ->unique()
+            ->values();
+
+        $variantsByProduct = ProductsVariant::with(['size', 'color'])
+            ->whereIn('product_id', $productIds)
+            ->where('quantity', '>', 0)
+            ->orderBy('id')
+            ->get()
+            ->groupBy('product_id');
+
+        // Si AJAX → renvoyer juste le panel
         if ($request->ajax() || $request->get('ajax')) {
             return view('boutique.partials.cart-panel-content', compact('cart', 'total'))->render();
         }
 
-        // Sinon, vue classique du panier
-        return view('boutique.cart', compact('cart', 'total'));
+        // Sinon → page complète
+        return view('boutique.cart', compact('cart', 'total', 'variantsByProduct'));
     }
 
     /**
-     * Met à jour les quantités dans le panier.
+     * Met à jour la quantité d'un article dans le panier ou le supprime si la quantité est à 0.
      */
     public function updateCart(Request $request)
     {
         $request->validate([
             'cart_key' => 'required',
             'quantity' => 'required|integer|min:0|max:10',
+            'variant_id' => 'nullable|exists:products_variants,id',
         ]);
 
         $cart = session()->get('cart', []);
+        $cartKey = $request->cart_key;
+        $newQty = (int) $request->quantity;
 
-        if ($request->quantity == 0) {
-            // Supprimer l'article
-            unset($cart[$request->cart_key]);
+        // Vérifier que l'article existe dans le panier
+        if (! isset($cart[$cartKey])) {
+            notify()->error("L'article que vous essayez de modifier n'existe pas dans le panier.", 'Article introuvable');
+
+            return redirect()->route('boutique.cart');
+        }
+
+        $item = $cart[$cartKey];
+
+        // Si quantité = 0 → suppression
+        if ($newQty === 0) {
+            unset($cart[$cartKey]);
+            session()->put('cart', $cart);
+            notify()->success('Article supprimé du panier.', 'Succès');
+
+            return redirect()->route('boutique.cart');
+        }
+
+        // Vérification du stock
+        if (! empty($item['variant_id'])) {
+            // Variante
+            $variant = ProductsVariant::find($item['variant_id']);
+            if (! $variant) {
+                notify()->error('Variante introuvable.', 'Erreur');
+
+                return redirect()->route('boutique.cart');
+            }
+
+            if ($newQty > (int) $variant->quantity) {
+                notify()->error('Stock insuffisant pour cette quantité.', 'Erreur');
+
+                return redirect()->route('boutique.cart');
+            }
         } else {
-            // Mettre à jour la quantité
-            if (isset($cart[$request->cart_key])) {
-                $cart[$request->cart_key]['quantity'] = $request->quantity;
+            // Produit simple
+            $product = Product::find($item['product_id']);
+            if (! $product) {
+                notify()->error('Produit introuvable.', 'Erreur');
+
+                return redirect()->route('boutique.cart');
+            }
+
+            if ($newQty > (int) $product->stock_quantity) {
+                notify()->error('Stock insuffisant pour cette quantité.', 'Erreur');
+
+                return redirect()->route('boutique.cart');
             }
         }
 
+        // Mise à jour de la quantité
+        $cart[$cartKey]['quantity'] = $newQty;
         session()->put('cart', $cart);
 
-        return redirect()->route('boutique.cart')->with('success', 'Panier mis à jour');
+        notify()->success('Quantité mise à jour avec succès.', 'Succès');
+
+        return redirect()->route('boutique.cart');
     }
 
     /**
@@ -439,7 +547,12 @@ class BoutiqueController extends Controller
     {
         session()->forget('cart');
 
-        return redirect()->route('boutique.cart')->with('success', 'Panier vidé');
+        notify()->success(
+            'Panier vidé avec succès.',
+            'Succès'
+        );
+
+        return redirect()->route('boutique.cart');
     }
 
     /**
@@ -450,7 +563,9 @@ class BoutiqueController extends Controller
         $cart = session()->get('cart', []);
 
         if (empty($cart)) {
-            return redirect()->route('boutique.cart')->with('error', 'Votre panier est vide');
+            notify()->error('Votre panier est vide', 'Erreur');
+
+            return redirect()->route('boutique.cart');
         }
 
         $total = 0;
@@ -474,6 +589,7 @@ class BoutiqueController extends Controller
             return redirect()->route('boutique.cart');
         }
 
+        // Validation
         $validator = Validator::make($request->all(), [
             'email' => 'required|email|max:255',
             'firstname' => 'required|string|max:255',
@@ -482,55 +598,26 @@ class BoutiqueController extends Controller
             'ville' => 'required|string|max:100',
             'code_postal' => 'required|string|max:20',
             'pays' => 'required|string|max:100',
-        ], [
-            'email.required' => 'L\'adresse e-mail est obligatoire.',
-            'email.email' => 'L\'adresse e-mail doit être valide.',
-            'firstname.required' => 'Le prénom est obligatoire.',
-            'lastname.required' => 'Le nom de famille est obligatoire.',
-            'adresse.required' => 'L\'adresse est obligatoire.',
-            'ville.required' => 'La ville est obligatoire.',
-            'code_postal.required' => 'Le code postal est obligatoire.',
-            'pays.required' => 'Le pays est obligatoire.',
-        ]
-        );
+        ]);
 
         if ($validator->fails()) {
-            $errorMessages = [];
-            foreach ($validator->errors()->messages() as $field => $messages) {
-                $fieldNames = [
-                    'email' => 'Adresse e-mail',
-                    'firstname' => 'Prénom',
-                    'lastname' => 'Nom de famille',
-                    'adresse' => 'Adresse',
-                    'ville' => 'Ville',
-                    'code_postal' => 'Code postal',
-                    'pays' => 'Pays',
-                ];
-                $fieldName = $fieldNames[$field] ?? $field;
-                foreach ($messages as $message) {
-                    $errorMessages[] = "$fieldName : $message";
-                }
-            }
-            $errorSummary = implode(' | ', $errorMessages);
-            notify()->error(
-                "Erreurs de validation détectées : {$errorSummary}",
-                'Validation échouée'
-            );
+            notify()->error('Erreurs de validation détectées.', 'Validation échouée');
 
-            return back()->withErrors($validator->errors())->withInput();
+            return back()->withErrors($validator)->withInput();
         }
 
         $validated = $validator->validated();
 
-        // Calculer le total
-        $total = 0;
-        foreach ($cart as $item) {
-            $total += $item['quantity'] * $item['unit_price'];
-        }
+        // Calcul du total
+        $total = array_reduce(
+            $cart,
+            fn ($sum, $item) => $sum + ($item['quantity'] * $item['unit_price']),
+            0
+        );
 
         DB::beginTransaction();
         try {
-            // 1) Créer la commande PENDING avant redirection (token unique)
+            // 1) Créer la commande PENDING
             $orderToken = (string) Str::uuid();
 
             $order = Order::create([
@@ -553,8 +640,8 @@ class BoutiqueController extends Controller
                 'status' => 'pending',
             ]);
 
-            // 2) Créer les order items (stock non modifié tant que pas payé)
-            foreach ($cart as $cartKey => $item) {
+            // 2) Créer les order items
+            foreach ($cart as $item) {
                 OrderItem::create([
                     'order_id' => $order->id,
                     'product_id' => $item['product_id'],
@@ -564,31 +651,45 @@ class BoutiqueController extends Controller
                 ]);
             }
 
-            // 3) Construire la requête HelloAsso et forcer returnUrl avec token
+            // 3) Construire la requête HelloAsso
             $helloAssoService = app(HelloAssoService::class);
-            $checkoutData = $this->buildHelloAssoCheckoutData($cart, $validated, $total);
 
-            // Forcer returnUrl avec token pour retrouver la commande même si session perdue
+            $checkoutData = $this->buildHelloAssoCheckoutData(
+                $cart,
+                $validated,
+                $total,
+                $orderToken,
+                $order->id
+            );
+
+            // Forcer returnUrl avec token
             $checkoutData['returnUrl'] = url('/commande/success?order_token='.$orderToken, [], true);
 
+            // Ajouter metadata essentiels
             $checkoutData['metadata']['order_token'] = $orderToken;
+            $checkoutData['metadata']['order_id'] = $order->id;
 
+            // Appel HelloAsso
             $checkoutResponse = $helloAssoService->createOrder($checkoutData);
 
             Log::debug('HelloAsso createOrder response', ['response' => $checkoutResponse]);
 
-            $helloassoOrderId = $checkoutResponse['order']['id'] ?? $checkoutResponse['orderId'] ?? $checkoutResponse['data']['order']['id'] ?? $checkoutResponse['order_id'] ?? null;
+            // 4) Récupérer les IDs HelloAsso proprement
+            $helloassoOrderId = data_get($checkoutResponse, 'order.id')
+                ?? data_get($checkoutResponse, 'orderId')
+                ?? data_get($checkoutResponse, 'data.order.id');
 
-            $checkoutIntentId = $checkoutResponse['id'] ?? $checkoutResponse['checkoutIntentId'] ?? $checkoutResponse['checkout_intent_id'] ?? $checkoutResponse['payment']['id'] ?? null;
+            $checkoutIntentId = data_get($checkoutResponse, 'id')
+                ?? data_get($checkoutResponse, 'checkoutIntentId')
+                ?? data_get($checkoutResponse, 'checkout_intent_id')
+                ?? data_get($checkoutResponse, 'payment.id');
 
-            Log::debug('HelloAsso createOrder checkoutIntentId', ['checkoutIntentId' => $checkoutIntentId]);
-
-            // 4) Mettre à jour l'order avec l'ID HelloAsso si présent
+            // 5) Mettre à jour la commande
             $order->helloasso_id = $helloassoOrderId;
             $order->helloasso_payment_id = $checkoutIntentId;
             $order->save();
 
-            // 5) Stocker minimalement en session pour le retour navigateur
+            // 6) Stocker minimalement en session
             session()->put('order_data', [
                 'order_id' => $order->id,
                 'order_token' => $orderToken,
@@ -601,9 +702,10 @@ class BoutiqueController extends Controller
 
             DB::commit();
 
-            if (empty($checkoutResponse['redirectUrl'])) {
+            // 7) Redirection HelloAsso
+            if (! data_get($checkoutResponse, 'redirectUrl')) {
                 Log::error('HelloAsso createOrder missing redirectUrl', ['response' => $checkoutResponse]);
-                notify()->error("Impossible de démarrer le paiement (redirect manquant). Contactez l'administrateur.", 'Erreur');
+                notify()->error('Impossible de démarrer le paiement.', 'Erreur');
 
                 return redirect()->route('boutique.checkout');
             }
@@ -611,48 +713,74 @@ class BoutiqueController extends Controller
             return redirect($checkoutResponse['redirectUrl']);
         } catch (\Exception $e) {
             DB::rollBack();
-            Log::error('Erreur processCheckout HelloAsso', ['error' => $e->getMessage(), 'stack' => $e->getTraceAsString()]);
-            notify()->error('Une erreur est survenue lors du traitement de votre commande. Veuillez réessayer plus tard.', 'Erreur');
+            Log::error('Erreur processCheckout HelloAsso', ['error' => $e->getMessage()]);
+            notify()->error('Une erreur est survenue lors du traitement de votre commande.', 'Erreur');
 
             return redirect()->route('boutique.checkout')->withInput();
         }
     }
 
+    private function sendOrderRecapIfNeeded(Order $order): void
+    {
+        $order->loadMissing([
+            'orderItems.product',
+            'orderItems.productsVariant.size',
+            'orderItems.productsVariant.color',
+        ]);
+
+        if ($order->status !== 'paid') {
+            return;
+        }
+
+        if (! empty($order->recap_sent_at)) {
+            return;
+        }
+
+        if (empty($order->email)) {
+            Log::warning('Recap commande non envoye: email client manquant', ['order_id' => $order->id]);
+
+            return;
+        }
+
+        Mail::send(new OrderRecapMail($order));
+        Mail::send(new AdminOrderNotificationMail($order));
+
+        $order->forceFill([
+            'recap_sent_at' => now(),
+        ])->save();
+    }
+
     /**
      * Construire les données pour HelloAsso Checkout
      */
-    private function buildHelloAssoCheckoutData(array $cart, array $customer, float $total): array
+    private function buildHelloAssoCheckoutData(array $cart, array $customer, float $total, string $orderToken, int $orderId): array
     {
         $items = [];
 
         foreach ($cart as $cartItem) {
-            $name = $cartItem['title'];
-            if ($cartItem['size'] || $cartItem['color']) {
-                $name .= ' (';
-                if ($cartItem['size']) {
-                    $name .= $cartItem['size'];
-                }
-                if ($cartItem['color']) {
-                    $name .= ' - '.ucfirst($cartItem['color']);
-                }
-                $name .= ')';
-            }
+            // Construire le nom de l'article proprement
+            $options = array_filter([
+                $cartItem['size'] ?? null,
+                isset($cartItem['color']) ? ucfirst($cartItem['color']) : null,
+            ]);
+
+            $name = $cartItem['title'].(count($options) ? ' ('.implode(' - ', $options).')' : '');
 
             $items[] = [
                 'name' => $name,
                 'priceCategory' => 'Fixed',
-                'price' => (int) ($cartItem['unit_price'] * 100), // Prix en centimes
+                'price' => (int) ($cartItem['unit_price'] * 100), // en centimes
                 'quantity' => $cartItem['quantity'],
             ];
         }
 
         return [
-            'totalAmount' => (int) ($total * 100), // Montant total en centimes
+            'totalAmount' => (int) ($total * 100),
             'initialAmount' => (int) ($total * 100),
             'itemName' => 'Commande Boutique Calan\'Couleurs',
             'backUrl' => url('/panier', [], true),
             'errorUrl' => url('/commande/cancel', [], true),
-            'returnUrl' => url('/commande/success', [], true),
+            'returnUrl' => url('/commande/success?order_token='.$orderToken, [], true),
             'containsDonation' => false,
             'payer' => [
                 'firstName' => $customer['firstname'],
@@ -666,6 +794,8 @@ class BoutiqueController extends Controller
             'items' => $items,
             'metadata' => [
                 'order_type' => 'boutique',
+                'order_token' => $orderToken,
+                'order_id' => $orderId,
                 'customer_address' => json_encode($customer),
             ],
         ];
@@ -676,7 +806,7 @@ class BoutiqueController extends Controller
      */
     public function orderSuccess(Request $request)
     {
-        // 1) Tenter de retrouver la commande : priorité session -> order_token GET -> helloasso id
+        // 1) Retrouver la commande : session -> token -> helloasso_id
         $order = null;
         $orderData = session()->get('order_data');
 
@@ -692,7 +822,6 @@ class BoutiqueController extends Controller
         }
 
         if (! $order) {
-            // fallback : essayer avec helloasso_order_id en param ou session
             $helloassoId = $request->get('orderId') ?: ($orderData['helloasso_order_id'] ?? null);
             if ($helloassoId) {
                 $order = Order::where('helloasso_id', $helloassoId)->first();
@@ -705,11 +834,9 @@ class BoutiqueController extends Controller
             return redirect()->route('boutique.index');
         }
 
-        // 2) Récupérer infos HelloAsso si on a un helloasso_id
+        // 2) Récupérer infos HelloAsso
         $helloAssoService = app(HelloAssoService::class);
         $helloAssoData = null;
-        $paymentStatus = null;
-        $cashOutState = null;
 
         $helloassoId = $order->helloasso_id
             ?? ($orderData['helloasso_order_id'] ?? null)
@@ -725,63 +852,62 @@ class BoutiqueController extends Controller
                 $helloAssoData = $helloAssoService->getOrder($helloassoId);
                 Log::debug('HelloAsso getOrder response', ['data' => $helloAssoData]);
             } catch (\Exception $e) {
-                Log::warning('Impossible de récupérer les données HelloAsso par order id', ['id' => $helloassoId, 'error' => $e->getMessage()]);
-                $helloAssoData = null;
+                Log::warning('Impossible de récupérer HelloAsso par order id', ['id' => $helloassoId, 'error' => $e->getMessage()]);
             }
         }
 
-        // si pas trouvé et qu'on a un checkoutIntentId, tenter fallback via service
         if (! $helloAssoData && $checkoutIntentId) {
             try {
                 if (method_exists($helloAssoService, 'getOrderByCheckoutIntent')) {
                     $helloAssoData = $helloAssoService->getOrderByCheckoutIntent($checkoutIntentId);
                     Log::debug('HelloAsso getOrderByCheckoutIntent response', ['data' => $helloAssoData]);
-                } else {
-                    Log::debug('HelloAssoService::getOrderByCheckoutIntent not available, skipping');
                 }
             } catch (\Exception $e) {
                 Log::warning('Impossible de récupérer HelloAsso par checkout intent', ['id' => $checkoutIntentId, 'error' => $e->getMessage()]);
             }
         }
 
-        if ($helloAssoData) {
-            // récupérer le statut de paiement (plusieurs emplacements possibles)
-            if (! empty($helloAssoData['payments'][0]['state'])) {
-                $paymentStatus = strtolower($helloAssoData['payments'][0]['state']);
-            } elseif (! empty($helloAssoData['items'][0]['state'])) {
-                $paymentStatus = strtolower($helloAssoData['items'][0]['state']);
-            } elseif (! empty($helloAssoData['state'])) {
-                $paymentStatus = strtolower($helloAssoData['state']);
-            }
+        // 3) Extraire paymentStatus et cashOutState proprement
+        $paymentStatus = strtolower(
+            data_get($helloAssoData, 'payments.0.state')
+                ?? data_get($helloAssoData, 'items.0.state')
+                ?? data_get($helloAssoData, 'state')
+                ?? null
+        );
 
-            $cashOutState = $helloAssoData['cashOutState'] ?? ($helloAssoData['payments'][0]['cashOutState'] ?? null);
-            if ($cashOutState) {
-                $cashOutState = strtolower($cashOutState);
-            }
-        }
+        $cashOutState = strtolower(
+            data_get($helloAssoData, 'cashOutState')
+                ?? data_get($helloAssoData, 'payments.0.cashOutState')
+                ?? null
+        );
 
-        $paidStates = ['authorized', 'processed', 'registered'];
-        $isPaid = $paymentStatus && in_array($paymentStatus, $paidStates, true);
+        // États de paiement valides
+        $paidStates = ['authorized', 'registered'];
+        $isPaid = in_array($paymentStatus, $paidStates, true);
 
-        // 3) Mettre à jour la commande en base et décrémenter stock idempotent
+        // 4) Mise à jour de la commande
         DB::beginTransaction();
         try {
-            // --- NOUVEAU : extraire l'ID de commande HelloAsso depuis la réponse (plusieurs chemins possibles)
-            $remoteOrderId = $helloAssoData['id']
-                ?? ($helloAssoData['data']['id'] ?? null)
-                ?? ($helloAssoData['order']['id'] ?? null)
-                ?? ($helloAssoData['checkoutIntentId'] ?? null);
+            // ID HelloAsso
+            $remoteOrderId = data_get($helloAssoData, 'id')
+                ?? data_get($helloAssoData, 'data.id')
+                ?? data_get($helloAssoData, 'order.id')
+                ?? data_get($helloAssoData, 'checkoutIntentId');
 
-            // si on a trouvé un remoteOrderId et que l'order->helloasso_id est vide, on le sauve
             if ($remoteOrderId && empty($order->helloasso_id)) {
                 $order->helloasso_id = (string) $remoteOrderId;
             }
 
-            // sécuriser/tronquer avant sauvegarde
+            // Mettre à jour les champs
             $order->payment_status = $paymentStatus ?? $order->payment_status;
             $order->cashout_state = $cashOutState ?? $order->cashout_state;
-            $order->helloasso_payment_id = $helloAssoData['payments'][0]['id'] ?? $order->helloasso_payment_id ?? ($helloAssoData['id'] ?? $order->helloasso_payment_id ?? null);
 
+            $order->helloasso_payment_id =
+                data_get($helloAssoData, 'payments.0.id')
+                ?? $order->helloasso_payment_id
+                ?? data_get($helloAssoData, 'id');
+
+            // Si payé → marquer la commande comme payée
             if ($isPaid) {
                 $order->status = 'paid';
                 $order->paid_at = $order->paid_at ?? now();
@@ -789,7 +915,7 @@ class BoutiqueController extends Controller
 
             $order->save();
 
-            // Décrémenter le stock si payé et non encore fait (idempotence)
+            // Décrémenter le stock si pas déjà fait
             if ($isPaid && ! $order->stock_decremented) {
                 foreach ($order->orderItems as $oi) {
                     if ($oi->variant_id) {
@@ -804,9 +930,13 @@ class BoutiqueController extends Controller
                         }
                     }
                 }
+
                 $order->stock_decremented = true;
                 $order->save();
             }
+
+            // Envoi du récap si pas encore envoyé
+            $this->sendOrderRecapIfNeeded($order);
 
             DB::commit();
         } catch (\Exception $e) {
@@ -817,7 +947,7 @@ class BoutiqueController extends Controller
             return redirect()->route('boutique.cart');
         }
 
-        // 4) Nettoyer session (cart/order_data) — garder l'order en base
+        // 5) Nettoyer la session
         session()->forget(['cart', 'order_data']);
 
         return view('boutique.order-success', [
@@ -844,51 +974,33 @@ class BoutiqueController extends Controller
 
         $payload = $request->all();
 
-        // tenter de récupérer l'id de commande HelloAsso (id final) ou checkout/paiement id
-        $helloassoOrderId = $payload['order']['id'] ?? $payload['orderId'] ?? null;
-        $possibleCheckoutIds = [];
-        if (! empty($payload['id'])) {
-            $possibleCheckoutIds[] = $payload['id'];
-        }
-        if (! empty($payload['checkoutIntentId'])) {
-            $possibleCheckoutIds[] = $payload['checkoutIntentId'];
-        }
-        if (! empty($payload['checkout_intent_id'])) {
-            $possibleCheckoutIds[] = $payload['checkout_intent_id'];
-        }
-        if (! empty($payload['payments'][0]['id'])) {
-            $possibleCheckoutIds[] = $payload['payments'][0]['id'];
-        }
+        // 1) Récupération des identifiants possibles
+        $helloassoOrderId = data_get($payload, 'order.id')
+            ?? data_get($payload, 'orderId');
 
-        $paymentState = null;
-        if (! empty($payload['state'])) {
-            $paymentState = strtolower($payload['state']);
-        } elseif (! empty($payload['payment']['state'])) {
-            $paymentState = strtolower($payload['payment']['state']);
-        } elseif (! empty($payload['payments'][0]['state'])) {
-            $paymentState = strtolower($payload['payments'][0]['state']);
-        } elseif (! empty($payload['items'][0]['state'])) {
-            $paymentState = strtolower($payload['items'][0]['state']);
-        }
+        $possibleCheckoutIds = array_filter([
+            data_get($payload, 'id'),
+            data_get($payload, 'checkoutIntentId'),
+            data_get($payload, 'checkout_intent_id'),
+            data_get($payload, 'payments.0.id'),
+        ]);
 
-        $cashOutState = $payload['cashOutState'] ?? ($payload['payments'][0]['cashOutState'] ?? null);
-        if ($cashOutState) {
-            $cashOutState = strtolower($cashOutState);
-        }
+        $metadataToken = data_get($payload, 'metadata.order_token');
 
-        // Si on n'a ni order id ni checkout id ni token, on ne peut pas rattacher la commande
-        $hasAnyId = $helloassoOrderId || ! empty($possibleCheckoutIds) || (! empty($payload['metadata']['order_token'] ?? null));
-        if (! $hasAnyId) {
+        // Si aucun identifiant → impossible de traiter
+        if (! $helloassoOrderId && empty($possibleCheckoutIds) && ! $metadataToken) {
             return response()->json(['ok' => false, 'message' => 'Missing identifiers'], 400);
         }
 
-        // Recherche principale par helloasso_id si fourni
+        // 2) Trouver la commande
         $order = null;
+
+        // a) Par helloasso_id
         if ($helloassoOrderId) {
             $order = Order::where('helloasso_id', (string) $helloassoOrderId)->first();
         }
 
-        // fallback : chercher par helloasso_payment_id / checkout intent id
+        // b) Par helloasso_payment_id
         if (! $order && ! empty($possibleCheckoutIds)) {
             foreach ($possibleCheckoutIds as $cid) {
                 $order = Order::where('helloasso_payment_id', (string) $cid)->first();
@@ -898,16 +1010,17 @@ class BoutiqueController extends Controller
             }
         }
 
-        // fallback : chercher par metadata.order_token
-        if (! $order && ! empty($payload['metadata']['order_token'])) {
-            $order = Order::where('token', $payload['metadata']['order_token'])->first();
+        // c) Par metadata.order_token
+        if (! $order && $metadataToken) {
+            $order = Order::where('token', $metadataToken)->first();
         }
 
-        // fallback : chercher par token dans items metadata (si présent)
+        // d) Par items.metadata.order_token
         if (! $order && ! empty($payload['items'])) {
             foreach ($payload['items'] as $it) {
-                if (! empty($it['metadata']['order_token'])) {
-                    $order = Order::where('token', $it['metadata']['order_token'])->first();
+                $token = data_get($it, 'metadata.order_token');
+                if ($token) {
+                    $order = Order::where('token', $token)->first();
                     if ($order) {
                         break;
                     }
@@ -916,49 +1029,420 @@ class BoutiqueController extends Controller
         }
 
         if (! $order) {
-            Log::warning('Webhook HelloAsso : commande introuvable', ['helloasso_id' => $helloassoOrderId, 'possibleCheckoutIds' => $possibleCheckoutIds, 'payload' => $payload]);
+            Log::warning('Webhook HelloAsso : commande introuvable', [
+                'helloasso_id' => $helloassoOrderId,
+                'possibleCheckoutIds' => $possibleCheckoutIds,
+                'payload' => $payload,
+            ]);
 
             return response()->json(['ok' => false, 'message' => 'Order not found'], 404);
         }
 
-        // Si order trouvé et helloasso_id vide mais payload contient l'id final, on le sauvegarde
-        if (empty($order->helloasso_id) && $helloassoOrderId) {
-            $order->helloasso_id = (string) $helloassoOrderId;
-        }
+        // 3) Récupération des statuts HelloAsso
+        $paymentState = strtolower(
+            data_get($payload, 'state')
+                ?? data_get($payload, 'payment.state')
+                ?? data_get($payload, 'payments.0.state')
+                ?? data_get($payload, 'items.0.state')
+                ?? null
+        );
 
-        $paidStates = ['authorized', 'processed', 'registered'];
-        $isPaid = $paymentState && in_array($paymentState, $paidStates, true);
+        $cashOutState = strtolower(
+            data_get($payload, 'cashOutState')
+                ?? data_get($payload, 'payments.0.cashOutState')
+                ?? null
+        );
 
-        DB::transaction(function () use ($order, $paymentState, $cashOutState, $isPaid) {
-            // tronquer valeurs externes pour sécurité
-            $order->payment_status = $paymentState ? substr($paymentState, 0, 255) : $order->payment_status;
-            $order->cashout_state = $cashOutState ? substr($cashOutState, 0, 255) : $order->cashout_state;
+        // États métier
+        $paidStates = ['authorized', 'registered'];
+        $refundStates = ['refunded', 'refunding', 'contested'];
+        $cashoutCompletedStates = ['cashedout', 'transfered'];
+
+        $isPaid = in_array($paymentState, $paidStates, true);
+        $isRefunded = in_array($paymentState, $refundStates, true);
+        $isCashoutCompleted = in_array($cashOutState, $cashoutCompletedStates, true);
+
+        $shouldSendRecap = false;
+
+        // 4) Mise à jour de la commande
+        DB::transaction(function () use (
+            $order,
+            $paymentState,
+            $cashOutState,
+            $isPaid,
+            $isRefunded,
+            $isCashoutCompleted,
+            &$shouldSendRecap
+        ) {
+            // Mettre à jour les statuts
+            if ($paymentState) {
+                $order->payment_status = substr($paymentState, 0, 255);
+            }
+
+            if ($cashOutState) {
+                $order->cashout_state = substr($cashOutState, 0, 255);
+            }
+
+            // Paiement reçu
             if ($isPaid) {
                 $order->status = 'paid';
                 $order->paid_at = $order->paid_at ?? now();
             }
+
+            // Remboursement
+            if ($isRefunded) {
+                $order->status = 'refunded';
+                $order->refunded_at = $order->refunded_at ?? now();
+            }
+
+            // Versement reçu
+            if ($isCashoutCompleted) {
+                $order->cashout_at = $order->cashout_at ?? now();
+            }
+
             $order->save();
 
-            // décrémenter les stocks si payé et pas encore fait
+            // Décrément stock si payé et pas encore fait
             if ($isPaid && ! $order->stock_decremented) {
                 foreach ($order->orderItems as $oi) {
-                    if ($oi->variant_id) {
-                        $variant = ProductsVariant::find($oi->variant_id);
-                        if ($variant) {
-                            $variant->decrement('quantity', $oi->quantity);
-                        }
-                    } else {
-                        $product = Product::find($oi->product_id);
-                        if ($product) {
-                            $product->decrement('stock_quantity', $oi->quantity);
-                        }
+                    $model = $oi->variant_id
+                        ? ProductsVariant::find($oi->variant_id)
+                        : Product::find($oi->product_id);
+
+                    if ($model) {
+                        $model->decrement(
+                            $oi->variant_id ? 'quantity' : 'stock_quantity',
+                            $oi->quantity
+                        );
                     }
                 }
+
                 $order->stock_decremented = true;
                 $order->save();
             }
+
+            // Envoi du récap si pas encore envoyé
+            $shouldSendRecap = $isPaid && empty($order->recap_sent_at);
         });
 
+        // 5) Envoi du récap si nécessaire
+        if ($shouldSendRecap) {
+            $this->sendOrderRecapIfNeeded($order->fresh());
+        }
+
         return response()->json(['ok' => true]);
+    }
+
+    public function showBoutiqueForm()
+    {
+        return view('boutique.contact');
+    }
+
+    public function submitFormBoutique(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'message' => 'required|string|max:2000',
+        ]);
+
+        // Envoyer l'email
+        Mail::send(new ContactMail($request->only('name', 'email', 'message')));
+
+        return back()->with('success', 'Votre message a été envoyé !');
+    }
+
+    /**
+     * Affichage du tableau de bord / liste des commandes pour l'admin.
+     */
+    public function OrdersIndex()
+    {
+        $orders = $this->getAllOrders();
+
+        return view('admin.orders.index', compact('orders'));
+
+        // Récupérer toutes les commandes, des plus récentes aux plus anciennes,
+        // avec leurs articles pour éviter les requêtes SQL en boucle (Eager Loading)
+        // $orders = Order::with(['orderItems.product'])
+        //     ->orderBy('created_at', 'desc')
+        //     ->paginate(15); // Système de pagination pour éviter de surcharger la page
+
+        // return view('admin.boutique.index', compact('orders'));
+    }
+
+    /**
+     * Afficher la liste des commandes
+     */
+    public function getAllOrders()
+    {
+        return DB::table('orders as o')
+            ->select(
+                'o.id',
+                DB::raw("CONCAT(o.firstname, ' ', UPPER(o.lastname)) as client"),
+                'o.email',
+                'o.total_amount',
+                DB::raw(
+                    "CASE
+                        WHEN o.status LIKE 'pending' THEN 'En attente'
+                        WHEN o.status LIKE 'paid' THEN 'Payée'
+                        WHEN o.status LIKE 'shipped' THEN 'Expédiée'
+                        WHEN o.status LIKE 'delivered' THEN 'Livrée'
+                        WHEN o.status LIKE 'cancelled' THEN 'Annulée'
+                        WHEN o.status LIKE 'refunded' THEN 'Remboursée'
+                        ELSE 'Non définie'
+                    END AS statusLabel"
+                ),
+                DB::raw(
+                    "CASE
+                        WHEN o.status LIKE 'pending' THEN 'fa-solid fa-hourglass-half'
+                        WHEN o.status LIKE 'paid' THEN 'fa-solid fa-credit-card'
+                        WHEN o.status LIKE 'shipped' THEN 'fa-solid fa-truck-fast'
+                        WHEN o.status LIKE 'delivered' THEN 'fa-solid fa-truck-ramp-box'
+                        WHEN o.status LIKE 'cancelled' THEN 'fa-solid fa-ban'
+                        WHEN o.status LIKE 'refunded' THEN 'fa-solid fa-arrows-rotate'
+                        ELSE 'fa-solid fa-circle-question'
+                    END as statusIcon"
+                ),
+                DB::raw(
+                    "CASE
+                        WHEN o.status LIKE 'pending' THEN 'purple'
+                        WHEN o.status LIKE 'paid' THEN 'green'
+                        WHEN o.status LIKE 'shipped' THEN 'green'
+                        WHEN o.status LIKE 'delivered' THEN 'green'
+                        WHEN o.status LIKE 'cancelled' THEN 'red'
+                        WHEN o.status LIKE 'refunded' THEN 'gray'
+                        ELSE 'gray'
+                    END as statusColor"
+                ),
+                DB::raw(
+                    "CASE
+                        WHEN o.payment_status LIKE 'authorized' THEN 'Paiement accepté'
+                        WHEN o.payment_status LIKE 'registered' THEN 'Paiements hors ligne'
+                        ELSE 'Non définie'
+                    END AS payment_statusLabel"
+                ),
+                DB::raw(
+                    "CASE
+                        WHEN o.payment_status LIKE 'authorized' THEN 'fa-solid fa-credit-card'
+                        WHEN o.payment_status LIKE 'registered' THEN 'fa-solid fa-money-bill'
+                        ELSE 'fa-solid fa-circle-question'
+                    END as payment_statusIcon"
+                ),
+                DB::raw(
+                    "CASE
+                        WHEN o.payment_status LIKE 'authorized' THEN 'green'
+                        WHEN o.payment_status LIKE 'registered' THEN 'green'
+                        ELSE 'gray'
+                    END as payment_statusColor"
+                ),
+                DB::raw("DATE_FORMAT(o.created_at, '%d/%m/%Y %H:%i') AS formatted_create_date")
+            )
+            ->orderBy('o.created_at', 'desc')
+            ->get();
+    }
+
+    /**
+     * Afficher les détails d'une commande
+     */
+    public function OrdersShow(string $id)
+    {
+        $order = $this->getOrderDetails($id);
+
+        return view('admin.orders.show', compact('order'));
+    }
+
+    /**
+     * Récupérer les détails d'une commande
+     */
+    public function getOrderDetails(string $id)
+    {
+        return DB::table('orders as o')
+            ->select(
+                'o.*',
+                DB::raw("CONCAT(o.firstname, ' ', UPPER(o.lastname)) as client"),
+                DB::raw(
+                    "CASE
+                        WHEN o.status LIKE 'pending' THEN 'En attente'
+                        WHEN o.status LIKE 'paid' THEN 'Payée'
+                        WHEN o.status LIKE 'shipped' THEN 'Expédiée'
+                        WHEN o.status LIKE 'delivered' THEN 'Livrée'
+                        WHEN o.status LIKE 'cancelled' THEN 'Annulée'
+                        WHEN o.status LIKE 'refunded' THEN 'Remboursée'
+                        ELSE 'Non définie'
+                    END AS statusLabel"
+                ),
+                DB::raw(
+                    "CASE
+                        WHEN o.status LIKE 'pending' THEN 'fa-solid fa-hourglass-half'
+                        WHEN o.status LIKE 'paid' THEN 'fa-solid fa-credit-card'
+                        WHEN o.status LIKE 'shipped' THEN 'fa-solid fa-truck-fast'
+                        WHEN o.status LIKE 'delivered' THEN 'fa-solid fa-truck-ramp-box'
+                        WHEN o.status LIKE 'cancelled' THEN 'fa-solid fa-ban'
+                        WHEN o.status LIKE 'refunded' THEN 'fa-solid fa-arrows-rotate'
+                        ELSE 'fa-solid fa-circle-question'
+                    END as statusIcon"
+                ),
+                DB::raw(
+                    "CASE
+                        WHEN o.status LIKE 'pending' THEN 'purple'
+                        WHEN o.status LIKE 'paid' THEN 'green'
+                        WHEN o.status LIKE 'shipped' THEN 'green'
+                        WHEN o.status LIKE 'delivered' THEN 'green'
+                        WHEN o.status LIKE 'cancelled' THEN 'red'
+                        WHEN o.status LIKE 'refunded' THEN 'gray'
+                        ELSE 'gray'
+                    END as statusColor"
+                ),
+                DB::raw(
+                    "CASE
+                        WHEN o.payment_status LIKE 'authorized' THEN 'Paiement accepté'
+                        WHEN o.payment_status LIKE 'registered' THEN 'Paiements hors ligne'
+                        ELSE 'Non définie'
+                    END AS payment_statusLabel"
+                ),
+                DB::raw(
+                    "CASE
+                        WHEN o.payment_status LIKE 'authorized' THEN 'fa-solid fa-credit-card'
+                        WHEN o.payment_status LIKE 'registered' THEN 'fa-solid fa-money-bill'
+                        ELSE 'fa-solid fa-circle-question'
+                    END as payment_statusIcon"
+                ),
+                DB::raw(
+                    "CASE
+                        WHEN o.payment_status LIKE 'authorized' THEN 'green'
+                        WHEN o.payment_status LIKE 'registered' THEN 'green'
+                        ELSE 'gray'
+                    END as payment_statusColor"
+                ),
+                DB::raw("DATE_FORMAT(o.created_at, '%d/%m/%Y %H:%i') AS formatted_create_date"),
+                DB::raw("DATE_FORMAT(o.updated_at, '%d/%m/%Y %H:%i') AS formatted_updated_at"),
+                DB::raw("DATE_FORMAT(o.paid_at, '%d/%m/%Y %H:%i') AS formatted_paid_at"),
+                'u.login as updated_by_login'
+            )
+            ->leftJoin('users as u', 'u.id', '=', 'o.updated_by')
+            ->where('o.id', $id)
+            ->first();
+    }
+
+    /**
+     * Mettre à jour les informations d'une commande
+     */
+    public function OrdersUpdate(Request $request, string $id)
+    {
+        $order = Order::findOrFail($id);
+        $user = Auth::user();
+
+        $validator = Validator::make($request->all(), [
+            'status' => 'required|in:pending,paid,shipped,delivered,cancelled,refunded',
+        ], [
+            'status.in' => 'Le statut sélectionné n\'est pas valide.',
+        ]);
+
+        if ($validator->fails()) {
+            notify()->error(
+                'Un problème a été détecté dans le formulaire. Veuillez vérifier les champs marqués en rouge.',
+                'Erreur de validation'
+            );
+
+            Log::warning('Erreur de validation lors de la mise à jour de la commande', [
+                'errors' => $validator->errors(),
+                'user_id' => $user->id,
+            ]);
+
+            return back()->withErrors($validator->errors())->withInput();
+        }
+
+        try {
+            DB::transaction(function () use ($order, $request, $user) {
+                $order->update([
+                    'status' => $request->status,
+                    'updated_by' => $user->id,
+                ]);
+            });
+
+            if ($order->status === 'shipped') {
+                Shipment::updateOrCreate(
+                    ['order_id' => $order->id],
+                    [
+                        'status' => 'shipped',
+                        'shipped_at' => now(),
+                        'updated_by' => $user->id,
+                    ]
+                );
+            }
+
+            if ($order->status === 'delivered') {
+                Shipment::updateOrCreate(
+                    ['order_id' => $order->id],
+                    [
+                        'status' => 'delivered',
+                        'delivered_at' => now(),
+                        'updated_by' => $user->id,
+                    ]
+                );
+            }
+
+            if ($order->status === 'returned') {
+                Shipment::updateOrCreate(
+                    ['order_id' => $order->id],
+                    [
+                        'status' => 'returned',
+                        'updated_by' => $user->id,
+                    ]
+                );
+            }
+
+            notify()->success('La commande a été mise à jour avec succès.', 'Mise à jour réussie');
+
+            Log::info("Commande #{$order->id} mise à jour", [
+                'new_status' => $order->status,
+                'updated_by' => $user->id,
+            ]);
+
+            return redirect()->route('admin.orders.show', $order->id);
+        } catch (QueryException $e) {
+            DB::rollBack();
+
+            Log::error('Erreur de base de données lors de la modification d\'une commande', [
+                'message' => $e->getMessage(),
+                'code' => $e->getCode(),
+                'user_id' => $user->id,
+            ]);
+
+            if (config('app.debug')) {
+                notify()->error(
+                    "Erreur de base de données : {$e->getMessage()}",
+                    'Erreur technique détaillée'
+                );
+            } else {
+                notify()->error(
+                    'Une erreur de base de données s\'est produite lors de la modification d\'une commande. L\'équipe technique a été notifiée.',
+                    'Erreur de base de données'
+                );
+            }
+
+            return back()->withInput();
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            Log::error('Erreur générale lors de la modification d\'une commande', [
+                'message' => $e->getMessage(),
+                'user_id' => $user->id,
+            ]);
+
+            if (config('app.debug')) {
+                notify()->error(
+                    "Erreur technique : {$e->getMessage()} (Ligne {$e->getLine()})",
+                    'Erreur technique détaillée'
+                );
+            } else {
+                notify()->error(
+                    'Une erreur inattendue s\'est produite lors de la modification d\'une commande. L\'équipe technique a été notifiée.',
+                    'Erreur technique'
+                );
+            }
+
+            return back()->withInput();
+        }
     }
 }

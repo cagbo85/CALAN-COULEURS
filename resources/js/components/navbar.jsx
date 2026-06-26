@@ -162,6 +162,16 @@ export default function Navbar({ routes }) {
                             )}
                         </div>
 
+                        {/* Nouveau lien Boutique */}
+                        <a
+                            href={routes?.boutique || "/boutique"}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="block py-2 px-3 text-[#1d3f89] font-semibold hover:text-[#8F1E98] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8F1E98] rounded"
+                        >
+                            Calan'Boutique
+                        </a>
+
                         <a
                             href={routes?.galerie || "/galerie"}
                             className="block py-2 px-3 text-[#1d3f89] font-semibold hover:text-[#8F1E98] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8F1E98]"
@@ -193,16 +203,6 @@ export default function Navbar({ routes }) {
                         >
                             Contact
                         </a>
-
-                        {/* Nouveau lien Boutique */}
-                        {/* <a
-                            href={routes?.boutique || "/boutique"}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="block py-2 px-3 text-[#1d3f89] font-semibold hover:text-[#8F1E98] transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8F1E98] rounded"
-                        >
-                            Calan'Boutique
-                        </a> */}
                     </nav>
 
                     {/* CTA Desktop */}
@@ -323,15 +323,6 @@ export default function Navbar({ routes }) {
                                 Actualités
                             </a>
                         )}
-
-                        {routes?.programmation && (
-                            <a
-                                href={routes.programmation}
-                                className="block py-2 pl-4 text-gray-700 hover:text-[#8F1E98] transition"
-                            >
-                                Programmation
-                            </a>
-                        )}
                     </div>
                     {/* Liens directs Mobile */}
                     {routes?.news && (
@@ -342,6 +333,18 @@ export default function Navbar({ routes }) {
                             Actualités
                         </a>
                     )}
+                    <a
+                        href={routes.boutique || "/boutique"}
+                        className="block py-2 font-semibold text-[#1d3f89]"
+                    >
+                        Calan'Boutique
+                    </a>
+                    <a
+                        href={routes.galerie || "/galerie"}
+                        className="block py-2 font-semibold text-[#1d3f89]"
+                    >
+                        Galerie
+                    </a>
                     {routes?.programmation && (
                         <a
                             href={routes.programmation || "/programmation"}

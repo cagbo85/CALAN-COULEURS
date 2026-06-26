@@ -21,7 +21,7 @@ class SmartIseed extends Command
      *
      * @var string
      */
-    protected $description = 'Génère un seeder via iseed et le modernise (syntaxe [], variable $now, nettoyage des espaces)';
+    protected $description = 'Génère un seeder via iseed et le modernise (syntaxe [], variable $now, nettoyage des espaces, et nettoyage de DatabaseSeeder)';
 
     /**
      * Execute the console command.
@@ -62,7 +62,6 @@ class SmartIseed extends Command
         );
 
         // 2. Refonte globale du bloc de classe et suppression des sauts de ligne inutiles
-        // Remplace de "class TableSeeder..." jusqu'au premier élément du tableau array()
         $patternHeader = '/class\s+'.$studlyTable.'TableSeeder\s+extends\s+Seeder\s*\{\s*\/\*\*([\s\S]*?)\*\/\s*public\s+function\s+run\(\)\s*\{\s*\\\DB::table\(\''.$table.'\'\)->delete\(\);\s*\\\DB::table\(\''.$table.'\'\)->insert\(array\s*\(\s*\d+\s*=>\s*array\s*\(/';
 
         $replacementHeader = "class {$customClassName} extends Seeder\n{\n".
@@ -98,6 +97,19 @@ class SmartIseed extends Command
         // 6. Nettoyage des fichiers : on supprime le fichier d'iseed et on écrit le nouveau
         File::delete($iseedFilePath);
         File::put($customFilePath, $content);
+
+        // 7. Nettoyage de DatabaseSeeder.php
+        $this->info('Étape 3 : Nettoyage de la pollution dans DatabaseSeeder.php...');
+        $databaseSeederPath = database_path('seeders/DatabaseSeeder.php');
+
+        if (File::exists($databaseSeederPath)) {
+            $seederContent = File::get($databaseSeederPath);
+
+            $badLinePattern = '/\s*\\$this->call\(\s*'.$studlyTable.'TableSeeder::class\s*\);.*/';
+            $seederContent = preg_replace($badLinePattern, '', $seederContent);
+
+            File::put($databaseSeederPath, $seederContent);
+        }
 
         $this->info("Succès ! Ton seeder personnalisé est disponible ici : database/seeders/{$customFileName}");
 

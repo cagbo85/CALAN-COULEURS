@@ -28,9 +28,4 @@ class HomeController extends Controller
     {
         return view('charte');
     }
-
-    public function contact()
-    {
-        return view('contact');
-    }
 }

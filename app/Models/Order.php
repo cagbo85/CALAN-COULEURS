@@ -24,11 +24,12 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $code_postal
  * @property string|null $pays
  * @property float $total_amount
- * @property string $helloasso_id
+ * @property string|null $helloasso_id
  * @property string|null $payment_status
  * @property string|null $cashout_state
  * @property string|null $helloasso_payment_id
  * @property Carbon|null $paid_at
+ * @property Carbon|null $recap_sent_at
  * @property array|null $payment_metadata
  * @property string $token
  * @property bool $stock_decremented
@@ -49,6 +50,7 @@ class Order extends Model
     protected $casts = [
         'total_amount' => 'float',
         'paid_at' => 'datetime',
+        'recap_sent_at' => 'datetime',
         'payment_metadata' => 'json',
         'stock_decremented' => 'bool',
         'updated_by' => 'int',
@@ -73,6 +75,7 @@ class Order extends Model
         'cashout_state',
         'helloasso_payment_id',
         'paid_at',
+        'recap_sent_at',
         'payment_metadata',
         'token',
         'stock_decremented',
@@ -96,8 +99,31 @@ class Order extends Model
         return $this->hasMany(OrderItem::class, 'order_id');
     }
 
+    /**
+     * Expéditions associées à cette commande.
+     */
     public function shipments()
     {
         return $this->hasMany(Shipment::class, 'order_id');
+    }
+
+    /**
+     * Obtenir le statut de paiement affichable.
+     */
+    public function getDisplayPaymentStatusAttribute()
+    {
+        $labels = [
+            'authorized' => 'Paiement autorisé',
+            'registered' => 'Paiement confirmé',
+            'refunded' => 'Paiement remboursé',
+            'refunding' => 'Remboursement en cours',
+            'contested' => 'Paiement contesté',
+        ];
+
+        if ($this->status === 'paid' && ! $this->payment_status) {
+            return 'Paiement validé';
+        }
+
+        return $labels[$this->payment_status] ?? 'En attente de paiement';
     }
 }

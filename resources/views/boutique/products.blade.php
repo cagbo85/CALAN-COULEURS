@@ -3,399 +3,441 @@
 @section('title', "Tous les produits - Calan'Couleurs")
 
 @section('content')
-    <!-- Breadcrumb -->
-    <nav class="p-2 text-sm text-gray-500" aria-label="Breadcrumb">
-        <ol class="list-none p-0 inline-flex">
-            <li class="flex items-center">
-                <a href="{{ route('boutique.index') }}" class="hover:text-[#8F1E98]">La Calan'Boutique</a>
-                <svg class="w-4 h-4 mx-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                </svg>
-            </li>
-            <li class="flex items-center">
-                <span class="text-[#8F1E98] font-semibold">Tous les produits</span>
-            </li>
-        </ol>
-    </nav>
-    <section class="w-full px-2 sm:px-4 py-8 flex flex-row justify-center space-x-2">
-        <!-- COLONNE GAUCHE : SIDEBAR (Filtres) -->
-        <aside class="bg-white w-80 p-6 rounded-xl shadow-lg flex flex-col">
-            <!-- Compteur de Produits Dynamique -->
-            <div class="pb-4 mb-4 border-b border-gray-200 text-center flex-shrink-0">
-                <p class="text-lg font-bold text-gray-800" id="product-count">
-                    {{ $products->count() }} produit{{ $products->count() > 1 ? 's' : '' }}
-                    trouvé{{ $products->count() > 1 ? 's' : '' }}
+    <div class="w-full min-h-screen bg-[#EEF1FF]">
+
+        <!-- Hero compact -->
+        <section class="w-full py-12 sm:py-16"
+            style="background: linear-gradient(135deg, rgba(29,63,137,0.92) 0%, rgba(119,203,243,0.72) 100%);">
+            <div class="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
+                <h1 class="text-3xl font-bold text-white sm:text-4xl">Tous les produits</h1>
+                <p class="mt-3 text-white/90">
+                    Explore la collection Calan'Boutique et trouve ta pièce favorite.
                 </p>
             </div>
+        </section>
 
-            <!-- Filtres dynamiques -->
-            <form method="GET" action="{{ route('boutique.products') }}" id="filtersForm"
-                class="space-y-6 flex-1 overflow-y-auto">
-                <!-- Trier par -->
-                <div class="filter-group" data-open="true">
-                    <button type="button" onclick="toggleFilter(this)"
-                        class="flex justify-between items-center w-full py-2 text-lg font-semibold text-gray-800 hover:text-[#8F1E98] transition">
-                        <span>Trier par</span>
-                        <svg class="w-5 h-5 transition-transform duration-300" fill="none" stroke="currentColor"
-                            viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
-                        </svg>
-                    </button>
-                    <div class="filter-options space-y-2 mt-2">
-                        <label class="flex items-center text-gray-600">
-                            <input type="radio" name="sort" value="price_asc"
-                                class="h-4 w-4 text-[#8F1E98] focus:ring-[#8F1E98]"
-                                {{ request('sort') == 'price_asc' ? 'checked' : '' }} onchange="this.form.submit()">
-                            <span class="ml-2 text-sm">Prix : faible à élevé</span>
-                        </label>
-                        <label class="flex items-center text-gray-600">
-                            <input type="radio" name="sort" value="price_desc"
-                                class="h-4 w-4 text-[#8F1E98] focus:ring-[#8F1E98]"
-                                {{ request('sort') == 'price_desc' ? 'checked' : '' }} onchange="this.form.submit()">
-                            <span class="ml-2 text-sm">Prix : élevé à faible</span>
-                        </label>
-                    </div>
-                </div>
+        <!-- Breadcrumb -->
+        <nav class="px-4 py-4 mx-auto text-sm max-w-7xl sm:px-6 lg:px-8 text-[#1d3f89]/80" aria-label="Breadcrumb">
+            <ol class="inline-flex p-0 list-none">
+                <li class="flex items-center">
+                    <a href="{{ route('boutique.index') }}" class="hover:text-[#1d3f89] transition">Calan'Boutique</a>
+                    <i class="fa-solid fa-chevron-right fa-xs mx-2 text-[#1d3f89]/40"></i>
+                </li>
+                <li class="flex items-center">
+                    <span class="font-semibold text-[#1d3f89]">Tous les produits</span>
+                </li>
+            </ol>
+        </nav>
 
-                <!-- Couleur -->
-                <div class="filter-group" data-open="{{ count((array) request('color', [])) ? 'true' : 'false' }}">
-                    <button type="button" onclick="toggleFilter(this)"
-                        class="flex justify-between items-center w-full py-2 text-lg font-semibold text-gray-800 hover:text-[#8F1E98] transition">
-                        <div class="flex items-center space-x-2">
-                            <span>Couleur</span>
-                            @if (count((array) request('color', [])))
+        <section class="px-4 pb-12 mx-auto max-w-7xl sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 gap-6 lg:grid-cols-12">
+
+                <!-- Sidebar filtres -->
+                <aside class="h-fit lg:col-span-3">
+                    <div class="p-5 bg-white border border-[#1d3f89]/10 rounded-2xl shadow-sm lg:sticky lg:top-24">
+
+                        <button type="button" id="filters-toggle"
+                            class="flex items-center justify-between w-full transition-colors lg:hidden">
+                            <div class="flex items-center gap-3">
                                 <span
-                                    class="inline-flex items-center justify-center text-xs font-bold bg-[#8F1E98] text-white rounded-full w-5 h-5">
-                                    {{ count((array) request('color', [])) }}
+                                    class="inline-flex items-center justify-center w-9 h-9 rounded-lg bg-[#1d3f89]/15 text-[#1d3f89]">
+                                    <i class="fa-solid fa-sliders"></i>
                                 </span>
-                            @endif
-                        </div>
-                        <svg class="w-5 h-5 transition-transform duration-300" fill="none" stroke="currentColor"
-                            viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                        </svg>
-                    </button>
-                    <div class="filter-options space-y-2 mt-2 hidden">
-                        @foreach ($colors as $color)
-                            <label class="flex items-center text-gray-600 cursor-pointer">
-                                <div class="w-5 h-5 rounded-full border-2 border-gray-300 mr-2 bg-[{{ $color->code }}]">
+                                <div class="text-left">
+                                    <p class="text-base font-bold text-[#1d3f89]">Filtres</p>
+                                    <p class="text-xs text-gray-500">
+                                        {{ $products->count() }} produit{{ $products->count() > 1 ? 's' : '' }}
+                                    </p>
                                 </div>
-                                <input type="checkbox" name="color[]" value="{{ $color->id }}"
-                                    {{ in_array($color->id, (array) request('color', [])) ? 'checked' : '' }}
-                                    onchange="this.form.submit()">
-                                <span class="ml-2 text-sm">{{ ucfirst($color->name) }}</span>
-                            </label>
-                        @endforeach
-                    </div>
-                </div>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                @if (
+                                    $count =
+                                        collect(request()->only(['sort', 'category', 'badge', 'stock']))->filter()->count() +
+                                        count((array) request('size', [])) +
+                                        count((array) request('color', [])))
+                                    <span
+                                        class="inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white rounded-full bg-[#1d3f89]">
+                                        {{ $count }}
+                                    </span>
+                                @endif
 
-                <!-- Taille -->
-                <div class="filter-group" data-open="{{ count((array) request('size', [])) ? 'true' : 'false' }}">
-                    <button type="button" onclick="toggleFilter(this)"
-                        class="flex justify-between items-center w-full py-2 text-lg font-semibold text-gray-800 hover:text-[#8F1E98] transition">
-                        <div class="flex items-center space-x-2">
-                            <span>Taille</span>
-                            @if (count((array) request('size', [])))
-                                <span
-                                    class="ml-2 inline-flex items-center justify-center text-xs font-bold bg-[#8F1E98] text-white rounded-full w-5 h-5">
-                                    {{ count((array) request('size', [])) }}
-                                </span>
+                                <i class="fa-solid fa-chevron-down fa-xl text-[#1d3f89] transition-transform duration-300"
+                                    id="filters-icon"></i>
+                            </div>
+                        </button>
+
+                        <div class="hidden lg:block">
+                            <p class="text-base font-bold text-[#1d3f89]">
+                                Filtres
+                            </p>
+                            <p class="text-sm text-gray-500">
+                                {{ $products->count() }} produit{{ $products->count() > 1 ? 's' : '' }}
+                                trouvé{{ $products->count() > 1 ? 's' : '' }}
+                            </p>
+                        </div>
+
+                        <div id="filters-content"
+                            class="hidden border-t pt-4 mt-4 border-gray-100 overflow-auto transition-all duration-300 space-y-5 pr-1 lg:block lg:max-h-[70vh]">
+                            <form method="GET" action="{{ route('boutique.products') }}" id="filtersForm"
+                                class="space-y-5">
+
+                                <!-- Trier -->
+                                <div class="filter-group" data-open="true">
+                                    <button type="button" onclick="toggleFilter(this)"
+                                        class="flex items-center justify-between w-full py-1 text-base font-semibold text-[#1d3f89]">
+                                        <span>Trier par</span>
+                                        <i class="transition-transform duration-300 fa-solid fa-chevron-down"></i>
+                                    </button>
+                                    <div class="mt-3 space-y-2 filter-options">
+                                        <label class="flex items-center text-gray-700">
+                                            <input type="radio" name="sort" value="price_asc"
+                                                class="w-4 h-4 text-[#1d3f89] focus:ring-[#1d3f89]"
+                                                {{ request('sort') == 'price_asc' ? 'checked' : '' }}
+                                                onchange="this.form.submit()">
+                                            <span class="ml-2 text-sm">Prix : faible à élevé</span>
+                                        </label>
+                                        <label class="flex items-center text-gray-700">
+                                            <input type="radio" name="sort" value="price_desc"
+                                                class="w-4 h-4 text-[#1d3f89] focus:ring-[#1d3f89]"
+                                                {{ request('sort') == 'price_desc' ? 'checked' : '' }}
+                                                onchange="this.form.submit()">
+                                            <span class="ml-2 text-sm">Prix : élevé à faible</span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <!-- Couleur -->
+                                <div class="filter-group"
+                                    data-open="{{ count((array) request('color', [])) ? 'true' : 'false' }}">
+                                    <button type="button" onclick="toggleFilter(this)"
+                                        class="flex items-center justify-between w-full py-1 text-base font-semibold text-[#1d3f89]">
+                                        <div class="flex items-center space-x-2">
+                                            <span>Couleur</span>
+                                            @if (count((array) request('color', [])))
+                                                <span
+                                                    class="inline-flex items-center justify-center w-5 h-5 text-xs font-bold text-white rounded-full bg-[#1d3f89]">
+                                                    {{ count((array) request('color', [])) }}
+                                                </span>
+                                            @endif
+                                        </div>
+                                        <i class="transition-transform duration-300 fa-solid fa-chevron-down"></i>
+                                    </button>
+                                    <div class="hidden mt-3 space-y-2 filter-options">
+                                        @foreach ($colors as $color)
+                                            <label class="flex items-center text-gray-700 cursor-pointer">
+                                                <span class="w-5 h-5 mr-2 border border-gray-300 rounded-full"
+                                                    style="background-color: {{ $color->code }};"></span>
+                                                <input type="checkbox" name="color[]" value="{{ $color->id }}"
+                                                    {{ in_array($color->id, (array) request('color', [])) ? 'checked' : '' }}
+                                                    class="w-4 h-4 text-[#1d3f89] rounded focus:ring-[#1d3f89]"
+                                                    onchange="this.form.submit()">
+                                                <span class="ml-2 text-sm">{{ ucfirst($color->name) }}</span>
+                                            </label>
+                                        @endforeach
+                                    </div>
+                                </div>
+
+                                <!-- Taille -->
+                                <div class="filter-group"
+                                    data-open="{{ count((array) request('size', [])) ? 'true' : 'false' }}">
+                                    <button type="button" onclick="toggleFilter(this)"
+                                        class="flex items-center justify-between w-full py-1 text-base font-semibold text-[#1d3f89]">
+                                        <div class="flex items-center space-x-2">
+                                            <span>Taille</span>
+                                            @if (count((array) request('size', [])))
+                                                <span
+                                                    class="inline-flex items-center justify-center w-5 h-5 text-xs font-bold text-white rounded-full bg-[#1d3f89]">
+                                                    {{ count((array) request('size', [])) }}
+                                                </span>
+                                            @endif
+                                        </div>
+                                        <i class="transition-transform duration-300 fa-solid fa-chevron-down"></i>
+                                    </button>
+                                    <div class="hidden mt-3 space-y-2 filter-options">
+                                        @foreach ($sizes as $size)
+                                            <label class="flex items-center text-gray-700 cursor-pointer">
+                                                <input type="checkbox" name="size[]" value="{{ $size->id }}"
+                                                    {{ in_array($size->id, (array) request('size', [])) ? 'checked' : '' }}
+                                                    class="w-4 h-4 rounded text-[#1d3f89] focus:ring-[#1d3f89]"
+                                                    onchange="this.form.submit()">
+                                                <span class="ml-2 text-sm">{{ $size->label }}</span>
+                                            </label>
+                                        @endforeach
+                                    </div>
+                                </div>
+
+                                <!-- Catégorie -->
+                                <div class="filter-group" data-open="{{ request('category') ? 'true' : 'false' }}">
+                                    <button type="button" onclick="toggleFilter(this)"
+                                        class="flex items-center justify-between w-full py-1 text-base font-semibold text-[#1d3f89]">
+                                        <div class="flex items-center space-x-2">
+                                            <span>Catégorie</span>
+                                            @if (request('category'))
+                                                <span
+                                                    class="inline-flex items-center justify-center w-5 h-5 text-xs font-bold text-white rounded-full bg-[#1d3f89]">1</span>
+                                            @endif
+                                        </div>
+                                        <i class="transition-transform duration-300 fa-solid fa-chevron-down"></i>
+                                    </button>
+                                    <div class="hidden mt-3 space-y-2 filter-options">
+                                        @foreach ($categories as $cat)
+                                            <label class="flex items-center text-gray-700 cursor-pointer">
+                                                <input type="radio" name="category" value="{{ $cat }}"
+                                                    {{ request('category') == $cat ? 'checked' : '' }}
+                                                    class="w-4 h-4 text-[#1d3f89] focus:ring-[#1d3f89]"
+                                                    onchange="this.form.submit()">
+                                                <span class="ml-2 text-sm">{{ ucfirst($cat) }}</span>
+                                            </label>
+                                        @endforeach
+                                    </div>
+                                </div>
+
+                                <!-- Collection -->
+                                <div class="filter-group" data-open="{{ request('badge') ? 'true' : 'false' }}">
+                                    <button type="button" onclick="toggleFilter(this)"
+                                        class="flex items-center justify-between w-full py-1 text-base font-semibold text-[#1d3f89]">
+                                        <div class="flex items-center space-x-2">
+                                            <span>Collection</span>
+                                            @if (request('badge'))
+                                                <span
+                                                    class="inline-flex items-center justify-center w-5 h-5 text-xs font-bold text-white rounded-full bg-[#1d3f89]">1</span>
+                                            @endif
+                                        </div>
+                                        <i class="transition-transform duration-300 fa-solid fa-chevron-down"></i>
+                                    </button>
+                                    <div class="hidden mt-3 space-y-2 filter-options">
+                                        <label class="flex items-center text-gray-700 cursor-pointer">
+                                            <input type="radio" name="badge" value="nouveaute"
+                                                {{ request('badge') == 'nouveaute' ? 'checked' : '' }}
+                                                class="w-4 h-4 text-[#1d3f89] focus:ring-[#1d3f89]"
+                                                onchange="this.form.submit()">
+                                            <span class="ml-2 text-sm font-medium text-[#1d3f89]">✨ Édition 2026</span>
+                                        </label>
+                                        @foreach ($badges as $badge)
+                                            <label class="flex items-center text-gray-700 cursor-pointer">
+                                                <input type="radio" name="badge" value="{{ $badge }}"
+                                                    {{ request('badge') == $badge ? 'checked' : '' }}
+                                                    class="w-4 h-4 text-[#1d3f89] focus:ring-[#1d3f89]"
+                                                    onchange="this.form.submit()">
+                                                <span class="ml-2 text-sm">{{ ucfirst($badge) }}</span>
+                                            </label>
+                                        @endforeach
+                                    </div>
+                                </div>
+
+                                <!-- Disponibilité -->
+                                <div class="filter-group" data-open="{{ request('stock') ? 'true' : 'false' }}">
+                                    <button type="button" onclick="toggleFilter(this)"
+                                        class="flex items-center justify-between w-full py-1 text-base font-semibold text-[#1d3f89]">
+                                        <div class="flex items-center space-x-2">
+                                            <span>Disponibilité</span>
+                                            @if (request('stock'))
+                                                <span
+                                                    class="inline-flex items-center justify-center w-5 h-5 text-xs font-bold text-white rounded-full bg-[#1d3f89]">1</span>
+                                            @endif
+                                        </div>
+                                        <i class="transition-transform duration-300 fa-solid fa-chevron-down"></i>
+                                    </button>
+                                    <div class="hidden mt-3 space-y-2 filter-options">
+                                        <label class="flex items-center text-gray-700 cursor-pointer">
+                                            <input type="radio" name="stock" value="in"
+                                                {{ request('stock') == 'in' ? 'checked' : '' }}
+                                                class="w-4 h-4 text-[#1d3f89] focus:ring-[#1d3f89]"
+                                                onchange="this.form.submit()">
+                                            <span class="ml-2 text-sm">En stock</span>
+                                        </label>
+                                        <label class="flex items-center text-gray-700 cursor-pointer">
+                                            <input type="radio" name="stock" value="out"
+                                                {{ request('stock') == 'out' ? 'checked' : '' }}
+                                                class="w-4 h-4 text-[#1d3f89] focus:ring-[#1d3f89]"
+                                                onchange="this.form.submit()">
+                                            <span class="ml-2 text-sm">En rupture</span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                @if (request()->hasAny(['sort', 'category', 'size', 'color', 'stock', 'badge']))
+                                    <a href="{{ route('boutique.products') }}"
+                                        class="inline-flex items-center justify-center w-full gap-1.5 px-4 py-2 mt-2 text-sm font-medium transition bg-gray-100 rounded-lg text-[#1d3f89] hover:bg-gray-200">
+                                        <i class="fa-solid fa-xmark fa-lg"></i>
+                                        Effacer les filtres
+                                    </a>
+                                @endif
+                            </form>
+                        </div>
+                    </div>
+                </aside>
+
+                <!-- Contenu principal -->
+                <div class="lg:col-span-9">
+                    <div class="p-4 mb-6 bg-white border border-[#1d3f89]/10 rounded-2xl shadow-sm">
+                        <div class="flex justify-between">
+                            <div class="flex flex-wrap gap-2">
+                                <a href="{{ route('boutique.products') }}"
+                                    class="px-4 py-2 text-sm font-semibold rounded-full transition {{ !request('badge') ? 'bg-[#1d3f89] text-white' : 'bg-[#e8f5fc] text-[#1d3f89] hover:bg-[#d8eef9]' }}">
+                                    Tout
+                                </a>
+                                <a href="{{ route('boutique.products', ['badge' => 'nouveaute']) }}"
+                                    class="px-4 py-2 text-sm font-semibold rounded-full transition {{ request('badge') == 'nouveaute' ? 'bg-[#1d3f89] text-white' : 'bg-[#e8f5fc] text-[#1d3f89] hover:bg-[#d8eef9]' }}">
+                                    🔥 Édition 2026
+                                </a>
+                                <a href="{{ route('boutique.products', ['badge' => 'pull']) }}"
+                                    class="px-4 py-2 text-sm font-semibold rounded-full transition {{ request('badge') == 'pull' ? 'bg-[#1d3f89] text-white' : 'bg-[#e8f5fc] text-[#1d3f89] hover:bg-[#d8eef9]' }}">
+                                    Pulls
+                                </a>
+                                <a href="{{ route('boutique.products', ['badge' => 't-shirt']) }}"
+                                    class="px-4 py-2 text-sm font-semibold rounded-full transition {{ request('badge') == 't-shirt' ? 'bg-[#1d3f89] text-white' : 'bg-[#e8f5fc] text-[#1d3f89] hover:bg-[#d8eef9]' }}">
+                                    T-shirts
+                                </a>
+                                <a href="{{ route('boutique.products', ['badge' => 'accessoire']) }}"
+                                    class="px-4 py-2 text-sm font-semibold rounded-full transition {{ request('badge') == 'accessoire' ? 'bg-[#1d3f89] text-white' : 'bg-[#e8f5fc] text-[#1d3f89] hover:bg-[#d8eef9]' }}">
+                                    Accessoires
+                                </a>
+                            </div>
+                            @if (request()->hasAny(['sort', 'category', 'size', 'color', 'stock', 'badge']))
+                                <a href="{{ route('boutique.products') }}"
+                                    class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-[#1d3f89] hover:bg-gray-100 transition rounded-lg">
+                                    <i class="fa-solid fa-xmark fa-lg"></i>
+                                    Effacer les filtres
+                                </a>
                             @endif
                         </div>
-                        <svg class="w-5 h-5 transition-transform duration-300" fill="none" stroke="currentColor"
-                            viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                        </svg>
-                    </button>
-                    <div class="filter-options space-y-2 mt-2 hidden">
-                        @foreach ($sizes as $size)
-                            <label class="flex items-center text-gray-600 cursor-pointer">
-                                <input type="checkbox" name="size[]" value="{{ $size->id }}"
-                                    {{ in_array($size->id, (array) request('size', [])) ? 'checked' : '' }}
-                                    class="form-checkbox rounded text-[#8F1E98] h-4 w-4" onchange="this.form.submit()">
-                                <span class="ml-2 text-sm">{{ $size->label }}</span>
-                            </label>
-                        @endforeach
                     </div>
-                </div>
 
-                <!-- Catégorie -->
-                <div class="filter-group" data-open="{{ request('category') ? 'true' : 'false' }}">
-                    <button type="button" onclick="toggleFilter(this)"
-                        class="flex justify-between items-center w-full py-2 text-lg font-semibold text-gray-800 hover:text-[#8F1E98] transition">
-                        <div class="flex items-center space-x-2">
-                            <span>Catégorie</span>
-                            @if (request('category'))
-                                <span
-                                    class="ml-2 inline-flex items-center justify-center text-xs font-bold bg-[#8F1E98] text-white rounded-full w-5 h-5">1</span>
-                            @endif
-                        </div>
-                        <svg class="w-5 h-5 transition-transform duration-300" fill="none" stroke="currentColor"
-                            viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                        </svg>
-                    </button>
-                    <div class="filter-options space-y-2 mt-2 hidden">
-                        @foreach ($categories as $cat)
-                            <label class="flex items-center text-gray-600 cursor-pointer">
-                                <input type="radio" name="category" value="{{ $cat }}"
-                                    {{ request('category') == $cat ? 'checked' : '' }}
-                                    class="form-radio text-[#8F1E98] h-4 w-4" onchange="this.form.submit()">
-                                <span class="ml-2 text-sm">{{ ucfirst($cat) }}</span>
-                            </label>
-                        @endforeach
-                    </div>
-                </div>
-
-                <!-- Badge / Collection -->
-                <div class="filter-group" data-open="{{ request('badge') ? 'true' : 'false' }}">
-                    <button type="button" onclick="toggleFilter(this)"
-                        class="flex justify-between items-center w-full py-2 text-lg font-semibold text-gray-800 hover:text-[#8F1E98] transition">
-                        <div class="flex items-center space-x-2">
-                            <span>Collection</span>
-                            @if (request('badge'))
-                                <span
-                                    class="ml-2 inline-flex items-center justify-center text-xs font-bold bg-[#8F1E98] text-white rounded-full w-5 h-5">1</span>
-                            @endif
-                        </div>
-                        <svg class="w-5 h-5 transition-transform duration-300" fill="none" stroke="currentColor"
-                            viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                        </svg>
-                    </button>
-                    <div class="filter-options space-y-2 mt-2 hidden">
-                        @foreach ($badges as $badge)
-                            <label class="flex items-center text-gray-600 cursor-pointer">
-                                <input type="radio" name="badge" value="{{ $badge }}"
-                                    {{ request('badge') == $badge ? 'checked' : '' }}
-                                    class="form-radio text-[#8F1E98] h-4 w-4" onchange="this.form.submit()">
-                                <span class="ml-2 text-sm">{{ ucfirst($badge) }}</span>
-                            </label>
-                        @endforeach
-                    </div>
-                </div>
-
-                {{-- <!-- 4. Genre (Checkboxes avec compteur) -->
-                <div class="filter-group" data-open="{{ count((array) request('color', [])) ? 'true' : 'false' }}">
-                    <button onclick="toggleFilter(this)"
-                        class="flex justify-between items-center w-full py-2 text-lg font-semibold text-gray-800 hover:text-[#8F1E98] transition">
-                        <span>Genre</span>
-                        <svg class="w-5 h-5 transition-transform duration-300" fill="none" stroke="currentColor"
-                            viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                        </svg>
-                    </button>
-                    <div class="filter-options space-y-2 mt-2 hidden">
-                        <label class="flex items-center text-gray-600">
-                            <input type="checkbox" class="rounded h-4 w-4 text-[#8F1E98] focus:ring-[#8F1E98]">
-                            <span class="ml-2 text-sm">Unisex</span>
-                            <span class="ml-auto text-xs text-gray-500">(8)</span>
-                        </label>
-                        <label class="flex items-center text-gray-600">
-                            <input type="checkbox" class="rounded h-4 w-4 text-[#8F1E98] focus:ring-[#8F1E98]">
-                            <span class="ml-2 text-sm">Femme</span>
-                            <span class="ml-auto text-xs text-gray-500">(4)</span>
-                        </label>
-                        <label class="flex items-center text-gray-600">
-                            <input type="checkbox" class="rounded h-4 w-4 text-[#8F1E98] focus:ring-[#8F1E98]">
-                            <span class="ml-2 text-sm">Homme</span>
-                            <span class="ml-auto text-xs text-gray-500">(6)</span>
-                        </label>
-                        <label class="flex items-center text-gray-600">
-                            <input type="checkbox" class="rounded h-4 w-4 text-[#8F1E98] focus:ring-[#8F1E98]">
-                            <span class="ml-2 text-sm">Enfant</span>
-                            <span class="ml-auto text-xs text-gray-500">(2)</span>
-                        </label>
-                    </div>
-                </div> --}}
-
-                <!-- Disponibilité -->
-                <div class="filter-group" data-open="{{ request('stock') ? 'true' : 'false' }}">
-                    <button type="button" onclick="toggleFilter(this)"
-                        class="flex justify-between items-center w-full py-2 text-lg font-semibold text-gray-800 hover:text-[#8F1E98] transition">
-                        <div class="flex items-center space-x-2">
-                            <span>Disponibilité</span>
-                            @if (count((array) request('stock', [])))
-                                <span
-                                    class="ml-2 inline-flex items-center justify-center text-xs font-bold bg-[#8F1E98] text-white rounded-full w-5 h-5">
-                                    {{ count((array) request('stock', [])) }}
-                                </span>
-                            @endif
-                        </div>
-                        <svg class="w-5 h-5 transition-transform duration-300" fill="none" stroke="currentColor"
-                            viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                        </svg>
-                    </button>
-                    <div class="filter-options space-y-2 mt-2 hidden">
-                        <label class="flex items-center text-gray-600 cursor-pointer">
-                            <input type="checkbox" name="stock" value="in"
-                                {{ request('stock') == 'in' ? 'checked' : '' }} onchange="this.form.submit()">
-                            <span class="ml-2 text-sm">En stock</span>
-                        </label>
-                        <label class="flex items-center text-gray-600 cursor-pointer">
-                            <input type="checkbox" name="stock" value="out"
-                                {{ request('stock') == 'out' ? 'checked' : '' }} onchange="this.form.submit()">
-                            <span class="ml-2 text-sm">En rupture de stock</span>
-                        </label>
-                    </div>
-                </div>
-
-                @if (request()->hasAny(['sort', 'category', 'size', 'color', 'stock', 'badge']))
-                    <a href="{{ route('boutique.products') }}"
-                        class="mt-6 w-full flex items-center justify-center px-4 py-2 text-sm font-medium text-gray-500 bg-gray-100 rounded-lg hover:text-[#FF0F63] hover:bg-gray-200 transition">
-                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                        Effacer les filtres
-                    </a>
-                @endif
-            </form>
-        </aside>
-        <section class="flex-1 flex flex-col" id="main-content">
-            <!-- TOOLBAR HORIZONTALE (Sous la Navbar) -->
-            <div class="flex flex-col md:flex-row justify-between items-center bg-white p-4 rounded-xl shadow-sm mb-6">
-                <!-- Badges de Catégorie -->
-                <div class="flex flex-wrap gap-2 mb-4 md:mb-0">
-                    <a href="{{ route('boutique.products') }}"
-                        class="px-4 py-2 text-sm font-semibold rounded-full shadow-md cursor-pointer transition
-                {{ !request('badge') ? 'text-white bg-[#8F1E98]' : 'bg-gray-100 text-gray-700 hover:bg-gray-200' }}">
-                        Tout
-                    </a>
-                    <a href="{{ route('boutique.products', ['badge' => 'pull']) }}"
-                        class="px-4 py-2 text-sm font-medium rounded-full cursor-pointer transition
-                {{ request('badge') == 'pull' ? 'text-white bg-[#8F1E98]' : 'bg-gray-100 text-gray-700 hover:bg-gray-200' }}">
-                        Pulls
-                    </a>
-                    <a href="{{ route('boutique.products', ['badge' => 't-shirt']) }}"
-                        class="px-4 py-2 text-sm font-medium rounded-full cursor-pointer transition
-                {{ request('badge') == 't-shirt' ? 'text-white bg-[#8F1E98]' : 'bg-gray-100 text-gray-700 hover:bg-gray-200' }}">
-                        T-shirts
-                    </a>
-                    <a href="{{ route('boutique.products', ['badge' => 'accessoire']) }}"
-                        class="px-4 py-2 text-sm font-medium rounded-full cursor-pointer transition
-                {{ request('badge') == 'accessoire' ? 'text-white bg-[#8F1E98]' : 'bg-gray-100 text-gray-700 hover:bg-gray-200' }}">
-                        Accessoires
-                    </a>
-                </div>
-
-                <!-- Bouton Effacer Filtres -->
-                @if (request()->hasAny(['sort', 'category', 'size', 'color', 'stock', 'badge']))
-                    <a href="{{ route('boutique.products') }}"
-                        class="flex items-center text-sm font-medium text-gray-500 hover:text-[#FF0F63] transition">
-                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                        Effacer les filtres
-                    </a>
-                @endif
-            </div>
-            <div class="flex-1 bg-white p-6 rounded-xl shadow-lg">
-                <!-- GRILLE DE PRODUITS -->
-                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6" id="product-grid">
-                    @forelse($products as $product)
-                        <div class="product-card bg-gray-50 rounded-xl shadow-md overflow-hidden transition-all duration-300 hover:shadow-xl cursor-pointer"
-                            data-product-id="{{ $product->id }}">
-                            <a href="{{ route('boutique.show', $product->slug) }}">
+                    <div class="p-5 bg-white border border-[#1d3f89]/10 rounded-2xl shadow-sm">
+                        <div class="grid grid-cols-2 gap-5 md:grid-cols-3 xl:grid-cols-4" id="product-grid">
+                            @forelse($products as $product)
                                 @php
                                     $variants = $uniqueVariants[$product->id] ?? collect();
                                     $firstVariant = $variants->first();
                                 @endphp
-                                <img src="{{ asset($firstVariant ? $firstVariant->image : $product->image) }}"
-                                    alt="{{ $product->title }}" class="w-full h-auto object-cover product-image">
-                                <div class="p-4">
-                                    <h3 class="font-semibold text-lg text-gray-800">{{ $product->title }}</h3>
-                                    <div class="mt-1 text-sm">
-                                        <span
-                                            class="font-bold text-[#FF0F63] text-xl">{{ number_format($product->price, 2) }}€</span>
-                                        @if ($product->old_price && $product->old_price > $product->price)
-                                            <span
-                                                class="text-gray-400 line-through ml-2">{{ number_format($product->old_price, 2) }}€</span>
-                                        @endif
-                                    </div>
+
+                                <article
+                                    class="overflow-hidden transition-all duration-300 border rounded-xl border-[#1d3f89]/10 bg-[#f9fcfe] hover:shadow-lg"
+                                    data-product-id="{{ $product->id }}">
+                                    <a href="{{ route('boutique.show', $product->slug) }}" class="block">
+                                        <div class="overflow-hidden aspect-square">
+                                            <img src="{{ asset($firstVariant ? $firstVariant->image : $product->image) }}"
+                                                alt="{{ $product->title }}"
+                                                class="object-cover w-full h-full transition-transform duration-300 product-image hover:scale-[1.02]">
+                                        </div>
+
+                                        <div class="p-4">
+                                            <h3 class="text-base font-semibold leading-snug text-[#1d3f89]">
+                                                {{ $product->title }}</h3>
+                                            <div class="mt-2 text-sm">
+                                                <span
+                                                    class="font-bold text-[#1d3f89] text-lg">{{ number_format($product->price, 2) }}€</span>
+                                                @if ($product->old_price && $product->old_price > $product->price)
+                                                    <span
+                                                        class="ml-2 text-gray-400 line-through">{{ number_format($product->old_price, 2) }}€</span>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </a>
+
+                                    @if ($variants->count())
+                                        <div class="flex px-4 pb-4">
+                                            @foreach ($variants as $variant)
+                                                <button type="button"
+                                                    class="w-5 h-5 mr-2 transition-all border border-gray-300 rounded-full {{ $loop->first ? 'ring-2 ring-[#1d3f89]' : 'hover:scale-110' }}"
+                                                    style="background-color: {{ $variant->hex_code }};"
+                                                    title="{{ ucfirst($variant->color_name) }}"
+                                                    data-color="{{ $variant->color_name }}"
+                                                    data-img-url="{{ asset($variant->image) }}"
+                                                    onclick="changeColor(this, '{{ $product->id }}')"
+                                                    aria-label="Choisir la couleur {{ ucfirst($variant->color_name) }}"></button>
+                                            @endforeach
+                                        </div>
+                                    @endif
+                                </article>
+                            @empty
+                                <div class="py-12 text-center text-gray-500 col-span-full">
+                                    Aucun produit trouvé avec ces filtres.
                                 </div>
-                            </a>
-                            <!-- Sélecteur de couleur -->
-                            @if ($variants->count())
-                                <div class="flex px-4 pb-4">
-                                    @foreach ($variants as $variant)
-                                        <div class="w-5 h-5 rounded-full border-2 cursor-pointer transition-all mr-2 {{ $loop->first ? 'ring-2 ring-[#8F1E98]' : 'border-gray-300 hover:scale-110' }} bg-[{{ $variant->hex_code }}]"
-                                            title="{{ ucfirst($variant->color_name) }}" data-color="{{ $variant->color_name }}"
-                                            data-img-url="{{ asset($variant->image) }}"
-                                            onclick="changeColor(this, '{{ $product->id }}')"></div>
-                                    @endforeach
-                                </div>
-                            @endif
+                            @endforelse
                         </div>
-                    @empty
-                        <div class="col-span-4 text-center text-gray-400 py-12">Aucun produit trouvé.</div>
-                    @endforelse
+                    </div>
                 </div>
             </div>
         </section>
-    </section>
+    </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Ouvrir les groupes de filtres qui ont des options sélectionnées
+            const filtersToggle = document.getElementById('filters-toggle');
+            const filtersContent = document.getElementById('filters-content');
+            const filtersIcon = document.getElementById('filters-icon');
+            let isOpen = false;
+
+            filtersToggle.addEventListener('click', () => {
+                isOpen = !isOpen;
+
+                if (isOpen) {
+                    filtersContent.classList.remove('hidden');
+                    filtersContent.style.maxHeight = filtersContent.scrollHeight + 'px';
+                    filtersIcon.style.transform = 'rotate(180deg)';
+                } else {
+                    filtersContent.style.maxHeight = '0';
+                    filtersIcon.style.transform = 'rotate(0deg)';
+
+                    setTimeout(() => {
+                        filtersContent.classList.add('hidden');
+                    }, 300);
+                }
+            });
+
             document.querySelectorAll('.filter-group').forEach(function(group) {
                 const options = group.querySelector('.filter-options');
-                const icon = group.querySelector('svg');
+                const icon = group.querySelector('i');
+
+                if (!options || !icon) return;
+
                 if (group.dataset.open === 'true') {
                     options.classList.remove('hidden');
-                    if (icon) {
-                        icon.innerHTML =
-                            '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"/>';
-                    }
+                    icon.style.transform = 'rotate(180deg)';
+                } else {
+                    options.classList.add('hidden');
+                    icon.style.transform = 'rotate(0deg)';
                 }
             });
         });
 
-        // Fonction pour ouvrir/fermer les groupes de filtres
         function toggleFilter(button) {
             const group = button.closest('.filter-group');
-            const options = group.querySelector('.filter-options');
-            const icon = button.querySelector('svg');
+            const options = group?.querySelector('.filter-options');
+            const icon = button.querySelector('i');
+
+            if (!group || !options || !icon) return;
 
             if (group.dataset.open === 'true') {
-                // Fermer
                 options.classList.add('hidden');
-                icon.innerHTML =
-                    '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>';
+                icon.style.transform = 'rotate(0deg)';
                 group.dataset.open = 'false';
             } else {
-                // Ouvrir
                 options.classList.remove('hidden');
-                icon.innerHTML =
-                    '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"/>';
+                icon.style.transform = 'rotate(180deg)';
                 group.dataset.open = 'true';
             }
         }
 
-        // Fonction pour changer la couleur des produits
         function changeColor(swatch, productId) {
-            // Désélectionner toutes les pastilles de ce produit
             const card = document.querySelector(`[data-product-id="${productId}"]`);
             if (!card) return;
 
             const swatches = card.querySelectorAll('[data-color]');
-            swatches.forEach(s => {
-                s.classList.remove('ring-2', 'ring-[#8F1E98]');
-                s.classList.add('border-gray-300', 'hover:scale-110');
-            });
+            swatches.forEach(s => s.classList.remove('ring-2', 'ring-[#1d3f89]'));
 
-            // Sélectionner la nouvelle pastille
-            swatch.classList.add('ring-2', 'ring-[#8F1E98]');
-            swatch.classList.remove('border-gray-300', 'hover:scale-110');
+            swatch.classList.add('ring-2', 'ring-[#1d3f89]');
 
-            // Mettre à jour l'image
             const imageUrl = swatch.dataset.imgUrl;
             const productImage = card.querySelector('.product-image');
+            const title = card.querySelector('h3')?.textContent || 'Produit';
+
             if (productImage && imageUrl) {
                 productImage.src = imageUrl;
-                productImage.alt = `${card.querySelector('h3').textContent} - Couleur ${swatch.dataset.color}`;
+                productImage.alt = `${title} - Couleur ${swatch.dataset.color}`;
             }
         }
     </script>

@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use App\Models\Edition;
+use App\Models\Shipment;
+use App\Observers\ShipmentObserver;
 use App\Services\HelloAssoService;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
@@ -23,6 +25,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Shipment::observe(ShipmentObserver::class);
+
         // Partager l'édition actuelle avec les vues d'erreur
         View::composer('errors::*', function ($view) {
             $view->with('currentEdition', Edition::getCurrentEdition());

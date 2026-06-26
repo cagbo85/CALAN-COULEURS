@@ -1,59 +1,61 @@
+<style>
+    .remove-cart-btn:hover .fa-trash-can {
+        animation: fa-shake 0.6s ease-in-out infinite;
+    }
+</style>
+
 @if (empty($cart))
-    <div class="text-center text-gray-400 py-8">Votre panier est vide.</div>
+    <div class="flex flex-col items-center justify-center h-full gap-4 py-16 text-center">
+        <div class="flex items-center justify-center w-16 h-16 bg-gray-100 rounded-full">
+            <i class="text-2xl text-gray-300 fa-solid fa-cart-shopping"></i>
+        </div>
+        <p class="font-medium text-gray-500">Votre panier est vide</p>
+        <p class="text-sm text-gray-400">Ajoutez des articles pour les retrouver ici.</p>
+    </div>
 @else
-    <ul class="divide-y divide-gray-200">
+    <ul class="space-y-3">
         @foreach ($cart as $cartKey => $item)
-            <li class="flex items-center py-6">
-                <img src="{{ asset($item['image']) }}" alt=""
-                    class="w-35 h-35 object-cover rounded-lg mr-4 shadow">
-                <div class="flex-1">
-                    <div class="font-semibold text-lg">{{ $item['title'] }}</div>
-                    <div class="text-xs text-gray-400 mb-1"><span class="font-mono">{{ $item['sku'] }}</span></div>
-                    @if ($item['size'])
-                        <div class="text-sm text-gray-600 mb-1">Taille : <span
-                                class="font-semibold">{{ $item['size'] }}</span></div>
-                    @endif
-                    @if ($item['color'])
-                        <div class="text-sm text-gray-600 mb-1">Couleur : <span
-                                class="font-semibold capitalize">{{ $item['color'] }}</span></div>
-                    @endif
-                    <div class="text-sm text-gray-600 mt-2">Quantité : <span
-                            class="font-semibold">{{ $item['quantity'] }}</span></div>
-                </div>
-                <div class="flex flex-col items-end space-y-2 min-w-[80px]">
-                    <div class="font-bold text-[#8F1E98] text-lg">
-                        {{ number_format($item['unit_price'] * $item['quantity'], 2) }}€
+            <li class="flex items-start gap-4 p-3 bg-white border border-gray-100 shadow-sm rounded-xl">
+                <img src="{{ asset($item['image']) }}" alt="{{ $item['title'] }}"
+                    class="flex-shrink-0 object-cover w-16 h-16 rounded-lg">
+
+                <div class="flex-1 min-w-0">
+                    <p class="font-semibold text-[#1d3f89] text-sm leading-snug truncate">{{ $item['title'] }}</p>
+
+                    <div class="flex flex-wrap mt-1 gap-x-3">
+                        @if ($item['size'])
+                            <span class="text-xs text-gray-500">Taille : <strong>{{ $item['size'] }}</strong></span>
+                        @endif
+                        @if ($item['color'])
+                            <span class="text-xs text-gray-500">Couleur : <strong
+                                    class="capitalize">{{ $item['color'] }}</strong></span>
+                        @endif
                     </div>
-                    {{-- Boutons de mise à jour du panier pour la quantité --}}
-                    {{-- <form method="POST" action="{{ route('boutique.update-cart') }}" class="flex items-center">
-                        @csrf
-                        @method('PATCH')
-                        <input type="hidden" name="cart_key" value="{{ $cartKey }}">
 
-                        <button type="submit" name="quantity" value="{{ max(1, $item['quantity'] - 1) }}"
-                            class="px-2 py-1 bg-gray-200 rounded hover:bg-gray-300 text-lg font-bold"
-                            @if ($item['quantity'] <= 1) disabled @endif>-</button>
-
-                        <span class="mx-2 text-base font-semibold">{{ $item['quantity'] }}</span>
-
-                        <button type="submit" name="quantity" value="{{ $item['quantity'] + 1 }}"
-                            class="px-2 py-1 bg-gray-200 rounded hover:bg-gray-300 text-lg font-bold">+</button>
-
-                    </form> --}}
-                    <form method="POST" action="{{ route('boutique.update-cart') }}">
-                        @csrf
-                        @method('PATCH')
-                        <input type="hidden" name="cart_key" value="{{ $cartKey }}">
-                        <button type="submit" name="quantity" value="0"
-                            class="px-3 py-1 bg-red-100 text-red-600 rounded hover:bg-red-200 text-sm font-semibold">
-                            Retirer
-                        </button>
-                    </form>
+                    <div class="flex items-center justify-between mt-2">
+                        <span class="text-xs text-gray-400">Qté : {{ $item['quantity'] }}</span>
+                        <span class="font-bold text-[#8F1E98] text-sm">
+                            {{ number_format($item['unit_price'] * $item['quantity'], 2) }}€
+                        </span>
+                    </div>
                 </div>
+
+                <form method="POST" action="{{ route('boutique.update-cart') }}" class="flex-shrink-0">
+                    @csrf
+                    @method('PATCH')
+                    <input type="hidden" name="cart_key" value="{{ $cartKey }}">
+                    <button type="submit" name="quantity" value="0"
+                        class="flex items-center justify-center text-red-400 transition rounded-lg remove-cart-btn w-7 h-7 bg-red-50 hover:bg-red-100 hover:text-red-600"
+                        title="Retirer du panier">
+                        <i class="fa-solid fa-trash-can fa-sm"></i>
+                    </button>
+                </form>
             </li>
         @endforeach
     </ul>
-    <div class="mt-4 text-right font-bold text-xl">
-        Total : {{ number_format($total, 2) }}€
+
+    <div class="flex items-center justify-between pt-4 mt-4 border-t border-gray-200">
+        <span class="text-sm font-medium text-gray-500">Total</span>
+        <span class="text-xl font-extrabold text-[#1d3f89]">{{ number_format($total, 2) }}€</span>
     </div>
 @endif

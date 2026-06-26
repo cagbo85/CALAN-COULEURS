@@ -20,6 +20,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property Carbon|null $shipped_at
  * @property Carbon|null $delivered_at
  * @property string $status
+ * @property string|null $last_notified_status
  * @property int|null $created_by
  * @property int|null $updated_by
  * @property Carbon|null $created_at
@@ -48,6 +49,7 @@ class Shipment extends Model
         'shipped_at',
         'delivered_at',
         'status',
+        'last_notified_status',
         'created_by',
         'updated_by',
     ];
@@ -55,7 +57,7 @@ class Shipment extends Model
     /**
      * Commande associée à cet envoi.
      */
-    public function orderId()
+    public function order()
     {
         return $this->belongsTo(Order::class, 'order_id');
     }
@@ -69,7 +71,7 @@ class Shipment extends Model
     }
 
     /**
-     * Utilisateur ayant mis à jour cette commande.
+     * Utilisateur ayant mis à jour cet envoi.
      */
     public function updatedBy()
     {

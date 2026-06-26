@@ -1,18 +1,17 @@
-<!-- Footer boutique -->
-<footer class="bg-[#8F1E98] text-white py-12" role="contentinfo" aria-labelledby="footer-heading">
-    <div class="container mx-auto px-6">
+<footer class="py-12 text-white" style="background: linear-gradient(180deg, #77cbf3 0%, #1d3f89 100%);" role="contentinfo"
+    aria-labelledby="footer-heading">
+    <div class="container px-6 mx-auto">
         {{-- Section supérieure avec logo et navigation --}}
-        <div class="flex flex-col md:flex-row justify-between items-center mb-8">
+        <div class="flex flex-col items-center justify-between gap-6 mb-8 lg:flex-row lg:items-center">
             {{-- Logo --}}
-            <div class="mb-6 md:mb-0 flex items-center gap-3">
+            <div class="flex items-center gap-3 mb-2 shrink-0 lg:mb-0">
                 <button id="admin-trigger" type="button"
-                    class="inline-flex items-center focus:outline-none focus-visible:ring focus-visible:ring-offset-2 focus-visible:ring-white/60 rounded-md"
+                    class="inline-flex items-center rounded-md shrink-0 focus:outline-none focus-visible:ring focus-visible:ring-offset-2 focus-visible:ring-white/60"
                     aria-label="Accès administration (double-clic ou appuyez deux fois sur Entrée/Espace)">
-                    <img src="/img/logos/LOGO/Logo-Calan-blanc.png" alt="" aria-hidden="true" class="h-16"
-                        title="Logo Calan'Couleurs">
+                    <img src="/img/logos/LOGO/Logo-Calan-blanc.png" alt="" aria-hidden="true"
+                        class="block object-contain w-auto h-16 shrink-0" title="Logo Calan'Couleurs">
                 </button>
 
-                {{-- Lien d’accès admin visible au focus (pour clavier/lecteur d’écran) --}}
                 <a href="{{ route('login') }}"
                     class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 bg-white text-[#8F1E98] px-3 py-2 rounded-md shadow"
                     aria-label="Accéder directement à l’administration">
@@ -21,50 +20,56 @@
             </div>
 
             {{-- Navigation --}}
-            <nav aria-label="Liens de pied de page">
-                <ul class="flex flex-col sm:flex-row gap-3 sm:gap-8 text-center sm:text-left">
+            <nav aria-label="Liens de pied de page" class="w-full lg:w-auto">
+                <ul
+                    class="flex flex-col items-center gap-3 text-center sm:flex-row sm:flex-wrap sm:justify-center sm:gap-6 sm:text-left">
                     <li>
-                        <a href="/" class="text-white hover:text-[#FF0F63] font-medium transition">Notre Calan'Site</a>
+                        <a href="/" class="text-white hover:text-[#8F1E98] font-medium transition">Calan'Site</a>
                     </li>
                     <li>
-                        <a href="{{ route('boutique.products') }}"
-                            class="text-white hover:text-[#FF0F63] font-medium transition">La Calan'Boutique</a>
+                        <a href="{{ route('boutique.index') }}"
+                            class="text-white hover:text-[#8F1E98] font-medium transition">Calan'Boutique</a>
                     </li>
                     <li>
-                        <a href="{{ route('boutique.products') }}?badge=pull"
-                            class="text-white hover:text-[#FF0F63] font-medium transition">Pulls</a>
+                        <a href="{{ $currentEdition->reservation_url }}" target="_blank" rel="noopener noreferrer"
+                            class="text-white hover:text-[#8F1E98] font-medium transition">
+                            Billetterie <span class="sr-only">(nouvelle fenêtre)</span>
+                        </a>
                     </li>
                     <li>
-                        <a href="{{ route('boutique.products') }}?badge=t-shirt"
-                            class="text-white hover:text-[#FF0F63] font-medium transition">T-shirts</a>
+                        <a href="/boutique/produits?badge=pull"
+                            class="text-white hover:text-[#8F1E98] font-medium transition">Pulls</a>
                     </li>
                     <li>
-                        <a href="{{ route('boutique.products') }}?badge=accessoire"
-                            class="text-white hover:text-[#FF0F63] font-medium transition">Accessoires</a>
+                        <a href="/boutique/produits?badge=t-shirt"
+                            class="text-white hover:text-[#8F1E98] font-medium transition">T-Shirts</a>
                     </li>
                     <li>
-                        <a href="{{ route('charte') }}"
-                            class="text-white hover:text-[#FF0F63] font-medium transition">CGV</a>
+                        <a href="/boutique/produits?badge=accessoire"
+                            class="text-white hover:text-[#8F1E98] font-medium transition">Accessoires</a>
                     </li>
                     <li>
-                        <a href="{{ route('contact') }}"
-                            class="text-white hover:text-[#FF0F63] font-medium transition">Contact</a>
+                        <a href="#" class="text-white hover:text-[#8F1E98] font-medium transition">CGV</a>
+                    </li>
+                    <li>
+                        <a href="{{ route('boutique.contact') }}"
+                            class="text-white hover:text-[#8F1E98] font-medium transition">Contact</a>
                     </li>
                 </ul>
             </nav>
         </div>
 
         {{-- Ligne séparatrice --}}
-        <hr class="border-white/20 my-8" aria-hidden="true">
+        <hr class="my-8 border-white/20" aria-hidden="true">
 
         {{-- Section inférieure avec réseaux sociaux et mentions légales --}}
-        <div class="flex flex-col md:flex-row justify-between items-center">
+        <div class="flex flex-col items-center justify-between md:flex-row">
             {{-- Réseaux sociaux --}}
-            <ul class="flex space-x-6 mb-6 md:mb-0" aria-label="Réseaux sociaux">
+            <ul class="flex mb-6 space-x-6 md:mb-0" aria-label="Réseaux sociaux">
                 <li>
                     <a href="https://www.instagram.com/calancouleurs/" target="_blank" rel="noopener noreferrer"
                         aria-label="Instagram Calan’Couleurs (nouvelle fenêtre)"
-                        class="text-white hover:text-[#FF0F63] transition duration-300 focus:outline-none focus-visible:ring focus-visible:ring-offset-2 focus-visible:ring-white/60 rounded">
+                        class="text-white hover:text-[#8F1E98] transition duration-300 focus:outline-none focus-visible:ring focus-visible:ring-offset-2 focus-visible:ring-white/60 rounded">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                             fill="currentColor" class="w-6 h-6">
                             <path
@@ -76,7 +81,7 @@
                 <li>
                     <a href="https://www.facebook.com/profile.php?id=61555539331779" target="_blank"
                         rel="noopener noreferrer" aria-label="Facebook Calan’Couleurs (nouvelle fenêtre)"
-                        class="text-white hover:text-[#FF0F63] transition duration-300 focus:outline-none focus-visible:ring focus-visible:ring-offset-2 focus-visible:ring-white/60 rounded">
+                        class="text-white hover:text-[#8F1E98] transition duration-300 focus:outline-none focus-visible:ring focus-visible:ring-offset-2 focus-visible:ring-white/60 rounded">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                             fill="currentColor" class="w-6 h-6">
                             <path
@@ -86,11 +91,15 @@
                     </a>
             </ul>
 
-            {{-- Copyright et mentions légales --}}
-            <div class="flex flex-col sm:flex-row gap-2 sm:gap-6 text-center sm:text-right">
+            {{-- Copyright + administration --}}
+            <div class="flex flex-col items-center gap-2 text-center sm:flex-row sm:gap-6 sm:text-right">
                 <small class="text-sm text-white/80">© {{ date('Y') }} Calan'Couleurs. Tous droits réservés.</small>
-                {{-- <a href="#" class="text-sm text-white/70 hover:text-white transition duration-300 focus:outline-none focus-visible:ring focus-visible:ring-offset-2 focus-visible:ring-white/60 rounded">Mentions légales</a>
-                <a href="#" class="text-sm text-white/70 hover:text-white transition duration-300 focus:outline-none focus-visible:ring focus-visible:ring-offset-2 focus-visible:ring-white/60 rounded">Politique de confidentialité</a> --}}
+                {{-- <a href="#" class="text-sm transition duration-300 rounded text-white/70 hover:text-white focus:outline-none focus-visible:ring focus-visible:ring-offset-2 focus-visible:ring-white/60">Mentions légales</a>
+                <a href="#" class="text-sm transition duration-300 rounded text-white/70 hover:text-white focus:outline-none focus-visible:ring focus-visible:ring-offset-2 focus-visible:ring-white/60">Politique de confidentialité</a> --}}
+                <a href="{{ route('login') }}" class="text-xs transition text-white/60 hover:text-white" target="_blank"
+                    rel="noopener noreferrer" aria-label="Accéder à l'administration">
+                    Administration
+                </a>
             </div>
         </div>
     </div>

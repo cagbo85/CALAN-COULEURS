@@ -1,4 +1,5 @@
-<footer class="py-12 text-white" style="background: linear-gradient(180deg, #77cbf3 0%, #1d3f89 100%);" role="contentinfo" aria-labelledby="footer-heading">
+<footer class="py-12 text-white" style="background: linear-gradient(180deg, #77cbf3 0%, #1d3f89 100%);" role="contentinfo"
+    aria-labelledby="footer-heading">
     <div class="container px-6 mx-auto">
         {{-- Section supérieure avec logo et navigation --}}
         <div class="flex flex-col items-center justify-between mb-8 md:flex-row">
@@ -10,13 +11,6 @@
                     <img src="/img/logos/LOGO/Logo-Calan-blanc.png" alt="" aria-hidden="true" class="h-16"
                         title="Logo Calan'Couleurs">
                 </button>
-
-                {{-- Lien d’accès admin visible au focus (pour clavier/lecteur d’écran) --}}
-                <a href="{{ route('login') }}"
-                    class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 bg-white text-[#8F1E98] px-3 py-2 rounded-md shadow"
-                    aria-label="Accéder directement à l’administration">
-                    Accès administration
-                </a>
             </div>
 
             {{-- Navigation --}}
@@ -24,6 +18,9 @@
                 <ul class="flex flex-col gap-3 text-center sm:flex-row sm:gap-8 sm:text-left">
                     <li>
                         <a href="/" class="text-white hover:text-[#8F1E98] font-medium transition">Accueil</a>
+                    </li>
+                    <li>
+                        <a href="/boutique" class="text-white hover:text-[#8F1E98] font-medium transition">Calan'Boutique</a>
                     </li>
                     <li>
                         <a href="{{ route('festival') }}"
@@ -43,12 +40,12 @@
                             Billetterie <span class="sr-only">(nouvelle fenêtre)</span>
                         </a>
                     </li>
-                    {{-- @if ($showPartenaires ?? false)
+                    @if ($showPartenaires ?? false)
                         <li>
-                            <a href="{{ route('partenaires') }}"
-                                class="text-white hover:text-[#8F1E98] font-medium transition">Partenaires</a>
+                            <a href="{{ route('partenaire.index') }}"
+                                class="text-white hover:text-[#8F1E98] font-medium transition">Nos Partenaires</a>
                         </li>
-                    @endif --}}
+                    @endif
                     <li>
                         <a href="{{ route('charte') }}"
                             class="text-white hover:text-[#8F1E98] font-medium transition">Charte</a>

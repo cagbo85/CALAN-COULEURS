@@ -43,13 +43,13 @@
     </style>
 </head>
 
-<body class="bg-gray-50 font-sans">
+<body class="font-sans bg-gray-50">
     <x-notify::notify />
 
-    <div class="min-h-screen flex" x-data="{ sidebarOpen: false }">
+    <div class="flex min-h-screen" x-data="{ sidebarOpen: false }">
 
         <!-- Sidebar -->
-        <div class="fixed inset-y-0 left-0 z-50 w-64 h-screen bg-white shadow-lg transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0"
+        <div class="fixed inset-y-0 left-0 z-50 w-64 h-screen transition-transform duration-300 ease-in-out transform bg-white shadow-lg lg:translate-x-0 lg:static lg:inset-0"
             :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'">
 
             <!-- Logo -->
@@ -62,7 +62,7 @@
             <!-- Navigation -->
             <nav class="mt-8">
                 <div class="px-4 mb-6">
-                    <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Menu Principal</h3>
+                    <h3 class="text-xs font-semibold tracking-wider text-gray-500 uppercase">Menu Principal</h3>
                 </div>
 
                 <!-- Dashboard -->
@@ -80,7 +80,7 @@
                         class="fa-solid fa-calendar-days mr-3 {{ request()->routeIs('admin.editions.*') ? 'text-purple-500' : '' }}"></i>
                     <span class="{{ request()->routeIs('admin.editions.*') ? 'font-medium' : '' }}">Éditions</span>
                     <span
-                        class="ml-auto bg-purple-100 text-purple-600 text-xs px-2 py-1 rounded-full">{{ App\Models\Edition::count() }}</span>
+                        class="px-2 py-1 ml-auto text-xs text-purple-600 bg-purple-100 rounded-full">{{ App\Models\Edition::count() }}</span>
                 </a>
 
                 <!-- Artistes -->
@@ -90,7 +90,7 @@
                         class="fa-solid fa-microphone mr-3 {{ request()->routeIs('admin.artistes.*') ? 'text-purple-500' : '' }}"></i>
                     <span class="{{ request()->routeIs('admin.artistes.*') ? 'font-medium' : '' }}">Artistes</span>
                     <span
-                        class="ml-auto bg-purple-100 text-purple-600 text-xs px-2 py-1 rounded-full">{{ App\Models\Artiste::count() }}</span>
+                        class="px-2 py-1 ml-auto text-xs text-purple-600 bg-purple-100 rounded-full">{{ App\Models\Artiste::count() }}</span>
                 </a>
 
                 <!-- Événements -->
@@ -99,7 +99,7 @@
                     <i
                         class="fas fa-calendar-alt mr-3 {{ request()->routeIs('admin.evenements.*') ? 'text-purple-500' : '' }}"></i>
                     <span class="{{ request()->routeIs('admin.evenements.*') ? 'font-medium' : '' }}">Événements</span>
-                    <span class="ml-auto bg-purple-100 text-purple-600 text-xs px-2 py-1 rounded-full">12</span>
+                    <span class="px-2 py-1 ml-auto text-xs text-purple-600 bg-purple-100 rounded-full">12</span>
                 </a> --}}
 
                 <!-- Utilisateurs -->
@@ -109,7 +109,17 @@
                         class="fa-solid fa-users mr-3 {{ request()->routeIs('admin.users.*') ? 'text-purple-500' : '' }}"></i>
                     <span class="{{ request()->routeIs('admin.users.*') ? 'font-medium' : '' }}">Utilisateurs</span>
                     <span
-                        class="ml-auto bg-purple-100 text-purple-600 text-xs px-2 py-1 rounded-full">{{ App\Models\User::count() }}</span>
+                        class="px-2 py-1 ml-auto text-xs text-purple-600 bg-purple-100 rounded-full">{{ App\Models\User::count() }}</span>
+                </a>
+
+                <!-- Commandes -->
+                <a href="{{ route('admin.orders.index') }}"
+                    class="flex items-center px-6 py-3 {{ request()->routeIs('admin.orders.*') ? 'text-gray-700 bg-purple-50 border-r-4 border-purple-500' : 'text-gray-600 hover:bg-gray-50 hover:text-purple-600 transition-colors' }}">
+                    <i
+                        class="fa-solid fa-basket-shopping mr-3 {{ request()->routeIs('admin.orders.*') ? 'text-purple-500' : '' }}"></i>
+                    <span class="{{ request()->routeIs('admin.orders.*') ? 'font-medium' : '' }}">Commandes</span>
+                    <span
+                        class="px-2 py-1 ml-auto text-xs text-purple-600 bg-purple-100 rounded-full">{{ App\Models\Order::count() }}</span>
                 </a>
 
                 <!-- FAQS -->
@@ -120,7 +130,7 @@
                     <span class="{{ request()->routeIs('admin.faqs.*') ? 'font-medium' : '' }}">Foire aux
                         questions</span>
                     <span
-                        class="ml-auto bg-purple-100 text-purple-600 text-xs px-2 py-1 rounded-full">{{ App\Models\Faq::count() }}</span>
+                        class="px-2 py-1 ml-auto text-xs text-purple-600 bg-purple-100 rounded-full">{{ App\Models\Faq::count() }}</span>
                 </a>
 
                 <!-- Documentation -->
@@ -128,7 +138,8 @@
                     class="flex items-center px-6 py-3 {{ request()->routeIs('admin.documentation') ? 'text-gray-700 bg-purple-50 border-r-4 border-purple-500' : 'text-gray-600 hover:bg-gray-50 hover:text-purple-600 transition-colors' }}">
                     <i
                         class="fa-solid fa-book mr-3 {{ request()->routeIs('admin.documentation') ? 'text-purple-500' : '' }}"></i>
-                    <span class="{{ request()->routeIs('admin.documentation') ? 'font-medium' : '' }}">Documentation</span>
+                    <span
+                        class="{{ request()->routeIs('admin.documentation') ? 'font-medium' : '' }}">Documentation</span>
                 </a>
 
                 <!-- Contenu -->
@@ -148,7 +159,7 @@
                 </a> --}}
 
                 {{-- <div class="px-4 mt-8 mb-4">
-                    <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Système</h3>
+                    <h3 class="text-xs font-semibold tracking-wider text-gray-500 uppercase">Système</h3>
                 </div>
 
                 <!-- Paramètres -->
@@ -172,10 +183,10 @@
             <div class="absolute bottom-0 w-full p-4 bg-gray-100 border-t">
                 <div class="flex items-center">
                     <div
-                        class="w-10 h-10 bg-purple-500 rounded-full flex items-center justify-center text-white font-bold">
+                        class="flex items-center justify-center w-10 h-10 font-bold text-white bg-purple-500 rounded-full">
                         {{ substr(auth()->user()->firstname, 0, 1) }}{{ substr(auth()->user()->lastname, 0, 1) }}
                     </div>
-                    <div class="ml-3 flex-1 min-w-0">
+                    <div class="flex-1 min-w-0 ml-3">
                         <p class="text-sm font-medium text-gray-900 truncate">
                             {{ auth()->user()->firstname }} {{ auth()->user()->lastname }}
                         </p>
@@ -183,7 +194,7 @@
                     </div>
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
-                        <button type="submit" class="text-gray-400 hover:text-red-500 transition-colors"
+                        <button type="submit" class="text-gray-400 transition-colors hover:text-red-500"
                             title="Déconnexion">
                             <i class="fa-solid fa-right-from-bracket"></i>
                         </button>
@@ -201,16 +212,16 @@
         </div>
 
         <!-- Main Content -->
-        <div class="h-screen flex-1 flex flex-col overflow-hidden lg:ml-0">
+        <div class="flex flex-col flex-1 h-screen overflow-hidden lg:ml-0">
 
             <!-- Top Header -->
-            <header class="bg-white shadow-sm border-b border-gray-200">
+            <header class="bg-white border-b border-gray-200 shadow-sm">
                 <div class="flex items-center justify-between px-6 py-4">
                     <div class="flex items-center">
                         <!-- Mobile menu button -->
                         <button @click="sidebarOpen = !sidebarOpen"
-                            class="lg:hidden text-gray-500 hover:text-purple-600 transition-colors">
-                            <i class="fa-solid fa-bars text-xl"></i>
+                            class="text-gray-500 transition-colors lg:hidden hover:text-purple-600">
+                            <i class="text-xl fa-solid fa-bars"></i>
                         </button>
 
                         <div class="ml-4 lg:ml-0">
@@ -247,11 +258,19 @@
                                 <h1 class="text-2xl font-bold text-gray-900">Gestion des Éditions</h1>
                                 <p class="text-sm text-gray-500">Ajoutez une nouvelle édition</p>
                             @elseif (request()->routeIs('admin.editions.performances.index'))
-                                <h1 class="text-2xl font-bold text-gray-900">Gestion des Performances pour une Édition</h1>
+                                <h1 class="text-2xl font-bold text-gray-900">Gestion des Performances pour une Édition
+                                </h1>
                                 <p class="text-sm text-gray-500">Gérez les performances des artistes d'une édition</p>
                             @elseif (request()->routeIs('admin.editions.performances.create'))
-                                <h1 class="text-2xl font-bold text-gray-900">Ajouter une Performance pour une Édition</h1>
+                                <h1 class="text-2xl font-bold text-gray-900">Ajouter une Performance pour une Édition
+                                </h1>
                                 <p class="text-sm text-gray-500">Ajoutez une nouvelle performance pour une édition</p>
+                            @elseif (request()->routeIs('admin.orders.index'))
+                                <h1 class="text-2xl font-bold text-gray-900">Gestion des Commandes</h1>
+                                <p class="text-sm text-gray-500">Gérez les commandes</p>
+                            @elseif (request()->routeIs('admin.orders.show'))
+                                <h1 class="text-2xl font-bold text-gray-900">Détails de la Commande</h1>
+                                <p class="text-sm text-gray-500">Consultez les détails d'une commande</p>
                             @elseif (request()->routeIs('admin.documentation'))
                                 <h1 class="text-2xl font-bold text-gray-900">Documentation interne</h1>
                                 <p class="text-sm text-gray-500">Consultez la documentation interne</p>
@@ -265,32 +284,32 @@
                         @if (request()->routeIs('admin.artistes.index'))
                             <!-- Page liste : Bouton ajouter -->
                             <a href="{{ route('admin.artistes.create') }}"
-                                class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition-colors flex items-center font-medium">
-                                <i class="fa-solid fa-plus mr-2"></i>
+                                class="flex items-center px-4 py-2 font-medium text-white transition-colors bg-purple-600 rounded-lg hover:bg-purple-700">
+                                <i class="mr-2 fa-solid fa-plus"></i>
                                 <span class="hidden sm:inline">Ajouter un artiste</span>
                                 <span class="sm:hidden">Ajouter</span>
                             </a>
                         @elseif (request()->routeIs('admin.faqs.index'))
                             <!-- Page liste : Bouton ajouter -->
                             <a href="{{ route('admin.faqs.create') }}"
-                                class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition-colors flex items-center font-medium">
-                                <i class="fa-solid fa-plus mr-2"></i>
+                                class="flex items-center px-4 py-2 font-medium text-white transition-colors bg-purple-600 rounded-lg hover:bg-purple-700">
+                                <i class="mr-2 fa-solid fa-plus"></i>
                                 <span class="hidden sm:inline">Ajouter une FAQ</span>
                                 <span class="sm:hidden">Ajouter</span>
                             </a>
                         @elseif (request()->routeIs('admin.editions.index'))
                             <!-- Page liste : Bouton ajouter -->
                             <a href="{{ route('admin.editions.create') }}"
-                                class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition-colors flex items-center font-medium">
-                                <i class="fa-solid fa-plus mr-2"></i>
+                                class="flex items-center px-4 py-2 font-medium text-white transition-colors bg-purple-600 rounded-lg hover:bg-purple-700">
+                                <i class="mr-2 fa-solid fa-plus"></i>
                                 <span class="hidden sm:inline">Ajouter une édition</span>
                                 <span class="sm:hidden">Ajouter</span>
                             </a>
                         @elseif (request()->routeIs('admin.editions.performances.index'))
                             <!-- Page liste : Bouton ajouter -->
                             <a href="{{ route('admin.editions.performances.create', ['editionId' => request()->route('editionId')]) }}"
-                                class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition-colors flex items-center font-medium">
-                                <i class="fa-solid fa-plus mr-2"></i>
+                                class="flex items-center px-4 py-2 font-medium text-white transition-colors bg-purple-600 rounded-lg hover:bg-purple-700">
+                                <i class="mr-2 fa-solid fa-plus"></i>
                                 <span class="hidden sm:inline">Ajouter une performance à l'édition</span>
                                 <span class="sm:hidden">Ajouter</span>
                             </a>
@@ -299,13 +318,13 @@
                         <!-- Profile -->
                         <div class="relative">
                             <button id="profileButton"
-                                class="flex items-center text-gray-700 hover:text-purple-600 transition-colors focus:outline-none">
+                                class="flex items-center text-gray-700 transition-colors hover:text-purple-600 focus:outline-none">
                                 <div
-                                    class="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center text-white font-bold mr-2">
+                                    class="flex items-center justify-center w-8 h-8 mr-2 font-bold text-white bg-purple-500 rounded-full">
                                     {{ substr(auth()->user()->firstname, 0, 1) }}
                                 </div>
                                 <span class="hidden md:block">{{ auth()->user()->firstname }}</span>
-                                <i class="fa-solid fa-chevron-down ml-1 text-sm"></i>
+                                <i class="ml-1 text-sm fa-solid fa-chevron-down"></i>
                             </button>
 
                             <!-- Dropdown -->
@@ -313,17 +332,17 @@
                                 class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg border border-gray-200 z-[9999]">
                                 {{-- <a href="#"
                                     class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-t-md">
-                                    <i class="fas fa-user mr-2"></i> Mon Profil
+                                    <i class="mr-2 fas fa-user"></i> Mon Profil
                                 </a>
                                 <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
-                                    <i class="fas fa-cog mr-2"></i> Paramètres
+                                    <i class="mr-2 fas fa-cog"></i> Paramètres
                                 </a> --}}
                                 <hr class="my-1">
                                 <form method="POST" action="{{ route('logout') }}">
                                     @csrf
                                     <button type="submit"
-                                        class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 rounded-b-md">
-                                        <i class="fa-solid fa-right-from-bracket mr-2"></i> Déconnexion
+                                        class="block w-full px-4 py-2 text-sm text-left text-red-600 hover:bg-red-50 rounded-b-md">
+                                        <i class="mr-2 fa-solid fa-right-from-bracket"></i> Déconnexion
                                     </button>
                                 </form>
                             </div>

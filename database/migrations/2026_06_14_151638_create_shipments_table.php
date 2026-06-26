@@ -11,7 +11,7 @@ return new class() extends Migration
      */
     public function up(): void
     {
-        if (! Schema::hasTable('orders')) {
+        if (! Schema::hasTable('shipments')) {
             Schema::create('shipments', function (Blueprint $table) {
                 $table->comment('Expéditions des commandes');
                 $table->integer('id', true);

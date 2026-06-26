@@ -31,7 +31,7 @@ Route::get('galerie', [GalerieController::class, 'index'])->name('galerie.index'
 
 Route::get('notre-histoire', [HomeController::class, 'festival'])->name('festival');
 
-Route::get('contact', [HomeController::class, 'contact'])->name('contact');
+Route::get('contact', [ContactController::class, 'showForm'])->name('contact');
 
 Route::get('benevoles', [HomeController::class, 'benevoles'])->name('benevoles');
 

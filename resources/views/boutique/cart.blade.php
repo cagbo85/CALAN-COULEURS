@@ -137,7 +137,8 @@
                             </div>
 
                             <a href="{{ route('boutique.checkout') }}"
-                                class="mt-5 w-full inline-flex justify-center items-center gap-2 rounded-xl bg-gradient-to-r from-[#1d3f89] to-[#77cbf3] hover:from-[#8F1E98] hover:to-[#FF0F63] text-white font-bold py-3 transition">
+                                class="inline-flex items-center justify-center w-full gap-2 py-3 mt-5 font-bold text-white rounded-xl transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#8F1E98] shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                                style="background: linear-gradient(135deg, #1d3f89 40%, #77cbf3 100%);">
                                 <i class="fa-solid fa-credit-card"></i>
                                 Commander
                             </a>

@@ -22,6 +22,12 @@ class ShipmentObserver
      */
     public function updated(Shipment $shipment): void
     {
+        Log::info('ShipmentObserver triggered', [
+            'shipment_id' => $shipment->id,
+            'old' => $shipment->getOriginal('status'),
+            'new' => $shipment->status,
+        ]);
+
         // On notifie uniquement quand le statut change
         if (! $shipment->wasChanged('status')) {
             return;

@@ -207,6 +207,13 @@
                                         <i class="transition-transform duration-300 fa-solid fa-chevron-down"></i>
                                     </button>
                                     <div class="hidden mt-3 space-y-2 filter-options">
+                                        <label class="flex items-center text-gray-700 cursor-pointer">
+                                            <input type="radio" name="badge" value="nouveaute"
+                                                {{ request('badge') == 'nouveaute' ? 'checked' : '' }}
+                                                class="w-4 h-4 text-[#1d3f89] focus:ring-[#1d3f89]"
+                                                onchange="this.form.submit()">
+                                            <span class="ml-2 text-sm font-medium text-[#1d3f89]">✨ Édition 2026</span>
+                                        </label>
                                         @foreach ($badges as $badge)
                                             <label class="flex items-center text-gray-700 cursor-pointer">
                                                 <input type="radio" name="badge" value="{{ $badge }}"
@@ -270,6 +277,10 @@
                                 <a href="{{ route('boutique.products') }}"
                                     class="px-4 py-2 text-sm font-semibold rounded-full transition {{ !request('badge') ? 'bg-[#1d3f89] text-white' : 'bg-[#e8f5fc] text-[#1d3f89] hover:bg-[#d8eef9]' }}">
                                     Tout
+                                </a>
+                                <a href="{{ route('boutique.products', ['badge' => 'nouveaute']) }}"
+                                    class="px-4 py-2 text-sm font-semibold rounded-full transition {{ request('badge') == 'nouveaute' ? 'bg-[#1d3f89] text-white' : 'bg-[#e8f5fc] text-[#1d3f89] hover:bg-[#d8eef9]' }}">
+                                    🔥 Édition 2026
                                 </a>
                                 <a href="{{ route('boutique.products', ['badge' => 'pull']) }}"
                                     class="px-4 py-2 text-sm font-semibold rounded-full transition {{ request('badge') == 'pull' ? 'bg-[#1d3f89] text-white' : 'bg-[#e8f5fc] text-[#1d3f89] hover:bg-[#d8eef9]' }}">

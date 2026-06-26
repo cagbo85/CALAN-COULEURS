@@ -6,8 +6,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/boutique', [BoutiqueController::class, 'index'])->name('boutique.index');
 Route::get('/boutique/produits', [BoutiqueController::class, 'products'])->name('boutique.products');
-Route::get('/boutique/contact', [BoutiqueController::class, 'contact'])->name('boutique.contact');
+Route::get('/boutique/contact', [BoutiqueController::class, 'showBoutiqueForm'])->name('boutique.contact');
 Route::get('/boutique/{product:slug}', [BoutiqueController::class, 'show'])->name('boutique.show');
+
+Route::post('contact', [BoutiqueController::class, 'submitFormBoutique'])->name('contact.submit');
 
 // Routes du panier
 Route::post('/boutique/add-to-cart', [BoutiqueController::class, 'addToCart'])->name('boutique.add-to-cart');
@@ -65,4 +67,10 @@ Route::get('/test-helloasso-complete', function (HelloAssoService $helloAsso) {
             'error' => $e->getMessage(),
         ]);
     }
+});
+
+Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'verified']], function () {
+    Route::get('commandes', [BoutiqueController::class, 'OrdersIndex'])->name('admin.orders.index');
+    Route::put('/commandes/{orderId}', [BoutiqueController::class, 'OrdersUpdate'])->name('admin.orders.update');
+    Route::get('/commandes/{orderId}', [BoutiqueController::class, 'OrdersShow'])->name('admin.orders.show');
 });

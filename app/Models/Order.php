@@ -109,4 +109,24 @@ class Order extends Model
     {
         return $this->hasMany(Shipment::class, 'order_id');
     }
+
+    /**
+     * Obtenir le statut de paiement affichable.
+     */
+    public function getDisplayPaymentStatusAttribute()
+    {
+        $labels = [
+            'authorized' => 'Paiement autorisé',
+            'registered' => 'Paiement confirmé',
+            'refunded' => 'Paiement remboursé',
+            'refunding' => 'Remboursement en cours',
+            'contested' => 'Paiement contesté',
+        ];
+
+        if ($this->status === 'paid' && !$this->payment_status) {
+            return 'Paiement validé';
+        }
+
+        return $labels[$this->payment_status] ?? 'En attente de paiement';
+    }
 }

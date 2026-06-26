@@ -30,7 +30,8 @@
                 <div class="lg:col-span-8">
                     <div class="rounded-2xl bg-white border border-[#1d3f89]/10 shadow-sm p-5 sm:p-6">
                         <div class="flex items-start gap-4">
-                            <div class="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0
+                            <div
+                                class="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0
                                 {{ $isPaid ? 'bg-green-100 text-green-600' : 'bg-orange-100 text-orange-600' }}">
                                 @if ($isPaid)
                                     <i class="text-lg fa-solid fa-check"></i>
@@ -50,9 +51,11 @@
 
                                 <p class="mt-2 text-sm leading-relaxed text-gray-600">
                                     @if ($isPaid)
-                                        Merci pour votre achat. Votre commande a été enregistrée et sera préparée rapidement.
+                                        Merci pour votre achat. Votre commande a été enregistrée et sera préparée
+                                        rapidement.
                                     @else
-                                        Votre commande est bien créée. La confirmation définitive dépend de la validation du paiement.
+                                        Votre commande est bien créée. La confirmation définitive dépend de la validation du
+                                        paiement.
                                     @endif
                                 </p>
                             </div>
@@ -66,7 +69,8 @@
 
                             <div class="rounded-xl bg-[#f8f9fc] border border-gray-100 p-4">
                                 <p class="text-gray-500">Total</p>
-                                <p class="font-semibold text-[#1d3f89] mt-1">{{ number_format($order->total_amount, 2) }}€</p>
+                                <p class="font-semibold text-[#1d3f89] mt-1">{{ number_format($order->total_amount, 2) }}€
+                                </p>
                             </div>
 
                             <div class="rounded-xl bg-[#f8f9fc] border border-gray-100 p-4">
@@ -78,7 +82,9 @@
 
                             <div class="rounded-xl bg-[#f8f9fc] border border-gray-100 p-4">
                                 <p class="text-gray-500">Statut paiement</p>
-                                <p class="font-semibold text-[#1d3f89] mt-1 uppercase">{{ $displayStatus }}</p>
+                                <p class="font-semibold text-[#1d3f89] mt-1 uppercase">
+                                    {{ $order->display_payment_status }}
+                                </p>
                             </div>
                         </div>
 
@@ -101,7 +107,8 @@
                             </li>
                             <li class="flex items-start gap-2">
                                 <i class="fa-solid fa-box mt-0.5 text-[#1d3f89]"></i>
-                                <span>Vous recevrez les informations de notre part concernant le récapatitulatif de vos articles ainsi que le suivi de votre commande.</span>
+                                <span>Vous recevrez les informations de notre part concernant le récapatitulatif de vos
+                                    articles ainsi que le suivi de votre commande.</span>
                             </li>
                             <li class="flex items-start gap-2">
                                 <i class="fa-solid fa-circle-info mt-0.5 text-[#1d3f89]"></i>

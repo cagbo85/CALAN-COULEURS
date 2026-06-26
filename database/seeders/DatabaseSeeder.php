@@ -24,7 +24,7 @@ class DatabaseSeeder extends Seeder
                     'role' => 'admin',
                 ]
             );
-        }
+    }
 
         $this->call([
             EditionSeeder::class,
@@ -36,7 +36,7 @@ class DatabaseSeeder extends Seeder
             ColorSeeder::class,
             FaqSeeder::class,
             ProductSeeder::class,
-            ProductImageSeeder::class,
+            ProductsImageSeeder::class,
             EditionStandsSeeder::class,
             EditionPartenaireSeeder::class,
         ]);

@@ -131,7 +131,7 @@
 
                     <!-- Accordéons Informations produit (Style ASOS, direct dans le flux) -->
                     <div class="space-y-2">
-                        <div class="border-b border-gray-200 summary-group" data-open="false">
+                        {{-- <div class="border-b border-gray-200 summary-group" data-open="false">
                             <button type="button" class="w-full py-2 summary-toggle">
                                 <div
                                     class="flex items-center justify-between font-bold text-[#1d3f89] text-sm uppercase tracking-wide">
@@ -152,9 +152,9 @@
                                     </p>
                                 @endif
                             </div>
-                        </div>
+                        </div> --}}
 
-                        <div class="border-b border-gray-200 summary-group" data-open="false">
+                        {{-- <div class="border-b border-gray-200 summary-group" data-open="false">
                             <button type="button" class="w-full py-2 summary-toggle">
                                 <div
                                     class="flex items-center justify-between font-bold text-[#1d3f89] text-sm uppercase tracking-wide">
@@ -175,7 +175,7 @@
                                         de javel</li>
                                 </ul>
                             </div>
-                        </div>
+                        </div> --}}
 
                         <div class="border-b border-gray-200 summary-group" data-open="false">
                             <button type="button" class="w-full py-2 summary-toggle">
@@ -189,7 +189,7 @@
                             <div class="hidden pb-2 pl-1 text-sm leading-relaxed text-left text-gray-600 summary-content">
                                 <ul class="space-y-2">
                                     <li><i class="fa-solid fa-circle fa-2xs text-[#1d3f89] mr-2"></i><strong>Livraison
-                                            standard :</strong> 3-5 jours ouvrés (gratuite dès 50€)</li>
+                                            standard :</strong> On reviendra vers vous pour plus d'informations !</li>
                                     <li><i class="fa-solid fa-circle fa-2xs text-[#1d3f89] mr-2"></i><strong>Retrait
                                             festival :</strong> Disponible sur site (gratuit)</li>
                                 </ul>
@@ -464,7 +464,8 @@
                         return;
                     }
 
-                    const response = await fetch('{{ route('boutique.add-to-cart', [], true) }}', {
+                    // const response = await fetch('{{ route('boutique.add-to-cart', [], true) }}', {
+                    const response = await fetch('/boutique/add-to-cart', {
                         method: 'POST',
                         credentials: 'same-origin',
                         cache: 'no-store',

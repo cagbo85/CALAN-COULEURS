@@ -222,7 +222,7 @@ class ProductsImageSeeder extends Seeder
             [
                 'id' => 23,
                 'product_id' => 8,
-                'variant_id' => NULL,
+                'variant_id' => null,
                 'image' => 'img/boutique/products/tot-bag_blanc_1.jpg',
                 'ordre' => 1,
                 'created_at' => $now,
@@ -276,7 +276,7 @@ class ProductsImageSeeder extends Seeder
             [
                 'id' => 29,
                 'product_id' => 12,
-                'variant_id' => NULL,
+                'variant_id' => null,
                 'image' => 'img/boutique/products/bandana_violet_1.jpg',
                 'ordre' => 1,
                 'created_at' => $now,

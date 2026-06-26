@@ -278,7 +278,7 @@ class ProductSeeder extends Seeder
             if (isset($data['quantities'][reset($data['colors'])]['Unique']) && $uniqueSizeId) {
                 foreach ($data['colors'] as $color) {
                     $quantity = $data['quantities'][$color]['Unique'] ?? 0;
-                    $sku = strtoupper($data['slug']) . '-' . strtoupper($color) . '-UNIQUE';
+                    $sku = strtoupper($data['slug']).'-'.strtoupper($color).'-UNIQUE';
                     ProductsVariant::create([
                         'product_id' => $product->id,
                         'size_id' => $uniqueSizeId,
@@ -297,7 +297,7 @@ class ProductSeeder extends Seeder
                             continue;
                         }
                         $quantity = $data['quantities'][$color][$sizeLabel] ?? 0;
-                        $sku = strtoupper($data['slug']) . '-' . strtoupper($color) . '-' . strtoupper($sizeLabel);
+                        $sku = strtoupper($data['slug']).'-'.strtoupper($color).'-'.strtoupper($sizeLabel);
                         ProductsVariant::create([
                             'product_id' => $product->id,
                             'size_id' => $sizeId,

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Mail\AdminOrderNotificationMail;
 use App\Mail\ContactMail;
 use App\Mail\OrderRecapMail;
@@ -176,7 +175,7 @@ class BoutiqueController extends Controller
     {
         return DB::table('products_variants as pv')
             ->join(
-                DB::raw('(SELECT color_id, MIN(id) as min_id FROM products_variants WHERE product_id = ' . $productId . ' GROUP BY color_id) as grouped'),
+                DB::raw('(SELECT color_id, MIN(id) as min_id FROM products_variants WHERE product_id = '.$productId.' GROUP BY color_id) as grouped'),
                 function ($join) {
                     $join->on('pv.color_id', '=', 'grouped.color_id')
                         ->on('pv.id', '=', 'grouped.min_id');
@@ -344,7 +343,8 @@ class BoutiqueController extends Controller
                         'quantity' => 'Quantité',
                     ];
                     $label = $names[$field] ?? $field;
-                    return collect($msgs)->map(fn($m) => "$label : $m");
+
+                    return collect($msgs)->map(fn ($m) => "$label : $m");
                 })
                 ->flatten()
                 ->implode(' | ');
@@ -420,19 +420,20 @@ class BoutiqueController extends Controller
 
         // Nettoyer le panier des produits ou variantes supprimés
         foreach ($cart as $key => $item) {
-
             // Vérifier que le produit existe encore
             $product = Product::find($item['product_id']);
-            if (!$product) {
+            if (! $product) {
                 unset($cart[$key]);
+
                 continue;
             }
 
             // Vérifier que la variante existe encore (si applicable)
-            if (!empty($item['variant_id'])) {
+            if (! empty($item['variant_id'])) {
                 $variant = ProductsVariant::find($item['variant_id']);
-                if (!$variant) {
+                if (! $variant) {
                     unset($cart[$key]);
+
                     continue;
                 }
             }
@@ -482,8 +483,9 @@ class BoutiqueController extends Controller
         $newQty = (int) $request->quantity;
 
         // Vérifier que l'article existe dans le panier
-        if (!isset($cart[$cartKey])) {
+        if (! isset($cart[$cartKey])) {
             notify()->error("L'article que vous essayez de modifier n'existe pas dans le panier.", 'Article introuvable');
+
             return redirect()->route('boutique.cart');
         }
 
@@ -493,35 +495,38 @@ class BoutiqueController extends Controller
         if ($newQty === 0) {
             unset($cart[$cartKey]);
             session()->put('cart', $cart);
-            notify()->success("Article supprimé du panier.", 'Succès');
+            notify()->success('Article supprimé du panier.', 'Succès');
+
             return redirect()->route('boutique.cart');
         }
 
         // Vérification du stock
-        if (!empty($item['variant_id'])) {
-
+        if (! empty($item['variant_id'])) {
             // Variante
             $variant = ProductsVariant::find($item['variant_id']);
-            if (!$variant) {
-                notify()->error("Variante introuvable.", 'Erreur');
+            if (! $variant) {
+                notify()->error('Variante introuvable.', 'Erreur');
+
                 return redirect()->route('boutique.cart');
             }
 
             if ($newQty > (int) $variant->quantity) {
-                notify()->error("Stock insuffisant pour cette quantité.", 'Erreur');
+                notify()->error('Stock insuffisant pour cette quantité.', 'Erreur');
+
                 return redirect()->route('boutique.cart');
             }
         } else {
-
             // Produit simple
             $product = Product::find($item['product_id']);
-            if (!$product) {
-                notify()->error("Produit introuvable.", 'Erreur');
+            if (! $product) {
+                notify()->error('Produit introuvable.', 'Erreur');
+
                 return redirect()->route('boutique.cart');
             }
 
             if ($newQty > (int) $product->stock_quantity) {
-                notify()->error("Stock insuffisant pour cette quantité.", 'Erreur');
+                notify()->error('Stock insuffisant pour cette quantité.', 'Erreur');
+
                 return redirect()->route('boutique.cart');
             }
         }
@@ -530,7 +535,7 @@ class BoutiqueController extends Controller
         $cart[$cartKey]['quantity'] = $newQty;
         session()->put('cart', $cart);
 
-        notify()->success("Quantité mise à jour avec succès.", 'Succès');
+        notify()->success('Quantité mise à jour avec succès.', 'Succès');
 
         return redirect()->route('boutique.cart');
     }
@@ -543,7 +548,7 @@ class BoutiqueController extends Controller
         session()->forget('cart');
 
         notify()->success(
-            "Panier vidé avec succès.",
+            'Panier vidé avec succès.',
             'Succès'
         );
 
@@ -559,6 +564,7 @@ class BoutiqueController extends Controller
 
         if (empty($cart)) {
             notify()->error('Votre panier est vide', 'Erreur');
+
             return redirect()->route('boutique.cart');
         }
 
@@ -579,6 +585,7 @@ class BoutiqueController extends Controller
 
         if (empty($cart)) {
             notify()->error('Votre panier est vide', 'Erreur');
+
             return redirect()->route('boutique.cart');
         }
 
@@ -594,7 +601,8 @@ class BoutiqueController extends Controller
         ]);
 
         if ($validator->fails()) {
-            notify()->error("Erreurs de validation détectées.", 'Validation échouée');
+            notify()->error('Erreurs de validation détectées.', 'Validation échouée');
+
             return back()->withErrors($validator)->withInput();
         }
 
@@ -603,8 +611,7 @@ class BoutiqueController extends Controller
         // Calcul du total
         $total = array_reduce(
             $cart,
-            fn($sum, $item) =>
-            $sum + ($item['quantity'] * $item['unit_price']),
+            fn ($sum, $item) => $sum + ($item['quantity'] * $item['unit_price']),
             0
         );
 
@@ -656,7 +663,7 @@ class BoutiqueController extends Controller
             );
 
             // Forcer returnUrl avec token
-            $checkoutData['returnUrl'] = url('/commande/success?order_token=' . $orderToken, [], true);
+            $checkoutData['returnUrl'] = url('/commande/success?order_token='.$orderToken, [], true);
 
             // Ajouter metadata essentiels
             $checkoutData['metadata']['order_token'] = $orderToken;
@@ -698,7 +705,8 @@ class BoutiqueController extends Controller
             // 7) Redirection HelloAsso
             if (! data_get($checkoutResponse, 'redirectUrl')) {
                 Log::error('HelloAsso createOrder missing redirectUrl', ['response' => $checkoutResponse]);
-                notify()->error("Impossible de démarrer le paiement.", 'Erreur');
+                notify()->error('Impossible de démarrer le paiement.', 'Erreur');
+
                 return redirect()->route('boutique.checkout');
             }
 
@@ -707,6 +715,7 @@ class BoutiqueController extends Controller
             DB::rollBack();
             Log::error('Erreur processCheckout HelloAsso', ['error' => $e->getMessage()]);
             notify()->error('Une erreur est survenue lors du traitement de votre commande.', 'Erreur');
+
             return redirect()->route('boutique.checkout')->withInput();
         }
     }
@@ -729,6 +738,7 @@ class BoutiqueController extends Controller
 
         if (empty($order->email)) {
             Log::warning('Recap commande non envoye: email client manquant', ['order_id' => $order->id]);
+
             return;
         }
 
@@ -748,14 +758,13 @@ class BoutiqueController extends Controller
         $items = [];
 
         foreach ($cart as $cartItem) {
-
             // Construire le nom de l'article proprement
             $options = array_filter([
                 $cartItem['size'] ?? null,
                 isset($cartItem['color']) ? ucfirst($cartItem['color']) : null,
             ]);
 
-            $name = $cartItem['title'] . (count($options) ? ' (' . implode(' - ', $options) . ')' : '');
+            $name = $cartItem['title'].(count($options) ? ' ('.implode(' - ', $options).')' : '');
 
             $items[] = [
                 'name' => $name,
@@ -771,7 +780,7 @@ class BoutiqueController extends Controller
             'itemName' => 'Commande Boutique Calan\'Couleurs',
             'backUrl' => url('/panier', [], true),
             'errorUrl' => url('/commande/cancel', [], true),
-            'returnUrl' => url('/commande/success?order_token=' . $orderToken, [], true),
+            'returnUrl' => url('/commande/success?order_token='.$orderToken, [], true),
             'containsDonation' => false,
             'payer' => [
                 'firstName' => $customer['firstname'],
@@ -801,26 +810,27 @@ class BoutiqueController extends Controller
         $order = null;
         $orderData = session()->get('order_data');
 
-        if (!empty($orderData['order_id'])) {
+        if (! empty($orderData['order_id'])) {
             $order = Order::find($orderData['order_id']);
         }
 
-        if (!$order) {
+        if (! $order) {
             $orderToken = $request->query('order_token') ?: ($orderData['order_token'] ?? null);
             if ($orderToken) {
                 $order = Order::where('token', $orderToken)->first();
             }
         }
 
-        if (!$order) {
+        if (! $order) {
             $helloassoId = $request->get('orderId') ?: ($orderData['helloasso_order_id'] ?? null);
             if ($helloassoId) {
                 $order = Order::where('helloasso_id', $helloassoId)->first();
             }
         }
 
-        if (!$order) {
+        if (! $order) {
             notify()->error('Aucune commande trouvée', 'Erreur');
+
             return redirect()->route('boutique.index');
         }
 
@@ -846,7 +856,7 @@ class BoutiqueController extends Controller
             }
         }
 
-        if (!$helloAssoData && $checkoutIntentId) {
+        if (! $helloAssoData && $checkoutIntentId) {
             try {
                 if (method_exists($helloAssoService, 'getOrderByCheckoutIntent')) {
                     $helloAssoData = $helloAssoService->getOrderByCheckoutIntent($checkoutIntentId);
@@ -906,7 +916,7 @@ class BoutiqueController extends Controller
             $order->save();
 
             // Décrémenter le stock si pas déjà fait
-            if ($isPaid && !$order->stock_decremented) {
+            if ($isPaid && ! $order->stock_decremented) {
                 foreach ($order->orderItems as $oi) {
                     if ($oi->variant_id) {
                         $variant = ProductsVariant::find($oi->variant_id);
@@ -933,6 +943,7 @@ class BoutiqueController extends Controller
             DB::rollBack();
             Log::error('Erreur lors de la mise à jour de la commande après HelloAsso', ['error' => $e->getMessage()]);
             notify()->error('Une erreur est survenue lors du traitement de la confirmation de paiement.', 'Erreur');
+
             return redirect()->route('boutique.cart');
         }
 
@@ -977,7 +988,7 @@ class BoutiqueController extends Controller
         $metadataToken = data_get($payload, 'metadata.order_token');
 
         // Si aucun identifiant → impossible de traiter
-        if (!$helloassoOrderId && empty($possibleCheckoutIds) && !$metadataToken) {
+        if (! $helloassoOrderId && empty($possibleCheckoutIds) && ! $metadataToken) {
             return response()->json(['ok' => false, 'message' => 'Missing identifiers'], 400);
         }
 
@@ -990,34 +1001,38 @@ class BoutiqueController extends Controller
         }
 
         // b) Par helloasso_payment_id
-        if (!$order && !empty($possibleCheckoutIds)) {
+        if (! $order && ! empty($possibleCheckoutIds)) {
             foreach ($possibleCheckoutIds as $cid) {
                 $order = Order::where('helloasso_payment_id', (string) $cid)->first();
-                if ($order) break;
-            }
-        }
-
-        // c) Par metadata.order_token
-        if (!$order && $metadataToken) {
-            $order = Order::where('token', $metadataToken)->first();
-        }
-
-        // d) Par items.metadata.order_token
-        if (!$order && !empty($payload['items'])) {
-            foreach ($payload['items'] as $it) {
-                $token = data_get($it, 'metadata.order_token');
-                if ($token) {
-                    $order = Order::where('token', $token)->first();
-                    if ($order) break;
+                if ($order) {
+                    break;
                 }
             }
         }
 
-        if (!$order) {
+        // c) Par metadata.order_token
+        if (! $order && $metadataToken) {
+            $order = Order::where('token', $metadataToken)->first();
+        }
+
+        // d) Par items.metadata.order_token
+        if (! $order && ! empty($payload['items'])) {
+            foreach ($payload['items'] as $it) {
+                $token = data_get($it, 'metadata.order_token');
+                if ($token) {
+                    $order = Order::where('token', $token)->first();
+                    if ($order) {
+                        break;
+                    }
+                }
+            }
+        }
+
+        if (! $order) {
             Log::warning('Webhook HelloAsso : commande introuvable', [
                 'helloasso_id' => $helloassoOrderId,
                 'possibleCheckoutIds' => $possibleCheckoutIds,
-                'payload' => $payload
+                'payload' => $payload,
             ]);
 
             return response()->json(['ok' => false, 'message' => 'Order not found'], 404);
@@ -1088,7 +1103,7 @@ class BoutiqueController extends Controller
             $order->save();
 
             // Décrément stock si payé et pas encore fait
-            if ($isPaid && !$order->stock_decremented) {
+            if ($isPaid && ! $order->stock_decremented) {
                 foreach ($order->orderItems as $oi) {
                     $model = $oi->variant_id
                         ? ProductsVariant::find($oi->variant_id)
@@ -1329,7 +1344,7 @@ class BoutiqueController extends Controller
                 'Erreur de validation'
             );
 
-            Log::warning("Erreur de validation lors de la mise à jour de la commande", [
+            Log::warning('Erreur de validation lors de la mise à jour de la commande', [
                 'errors' => $validator->errors(),
                 'user_id' => $user->id,
             ]);

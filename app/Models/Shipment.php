@@ -25,11 +25,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property int|null $updated_by
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- *
  * @property Order $order
  * @property User|null $user
- *
- * @package App\Models
  */
 class Shipment extends Model
 {
@@ -42,7 +39,7 @@ class Shipment extends Model
         'shipped_at' => 'datetime',
         'delivered_at' => 'datetime',
         'created_by' => 'int',
-        'updated_by' => 'int'
+        'updated_by' => 'int',
     ];
 
     protected $fillable = [
@@ -54,7 +51,7 @@ class Shipment extends Model
         'status',
         'last_notified_status',
         'created_by',
-        'updated_by'
+        'updated_by',
     ];
 
     /**

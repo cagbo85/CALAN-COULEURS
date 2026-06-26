@@ -50,6 +50,7 @@ class ShipmentObserver
                 'shipment_id' => $shipment->id,
                 'order_id' => $shipment->order_id,
             ]);
+
             return;
         }
 

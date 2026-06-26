@@ -37,12 +37,9 @@ use Illuminate\Database\Eloquent\Model;
  * @property int|null $updated_by
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- *
  * @property User|null $user
  * @property Collection|OrderItem[] $order_items
  * @property Collection|Shipment[] $shipments
- *
- * @package App\Models
  */
 class Order extends Model
 {
@@ -56,11 +53,11 @@ class Order extends Model
         'recap_sent_at' => 'datetime',
         'payment_metadata' => 'json',
         'stock_decremented' => 'bool',
-        'updated_by' => 'int'
+        'updated_by' => 'int',
     ];
 
     protected $hidden = [
-        'token'
+        'token',
     ];
 
     protected $fillable = [
@@ -83,7 +80,7 @@ class Order extends Model
         'token',
         'stock_decremented',
         'status',
-        'updated_by'
+        'updated_by',
     ];
 
     /**
@@ -123,7 +120,7 @@ class Order extends Model
             'contested' => 'Paiement contesté',
         ];
 
-        if ($this->status === 'paid' && !$this->payment_status) {
+        if ($this->status === 'paid' && ! $this->payment_status) {
             return 'Paiement validé';
         }
 

@@ -77,42 +77,6 @@ class ProductsImageSeeder extends Seeder
             ],
             [
                 'id' => 7,
-                'product_id' => 2,
-                'variant_id' => 7,
-                'image' => 'img/boutique/products/tshirt-officiel-2026_bleu_2.jpg',
-                'ordre' => 2,
-                'created_at' => $now,
-                'updated_at' => $now,
-            ],
-            [
-                'id' => 8,
-                'product_id' => 2,
-                'variant_id' => 7,
-                'image' => 'img/boutique/products/tshirt-officiel-2026_bleu_3.jpg',
-                'ordre' => 3,
-                'created_at' => $now,
-                'updated_at' => $now,
-            ],
-            [
-                'id' => 9,
-                'product_id' => 2,
-                'variant_id' => 7,
-                'image' => 'img/boutique/products/tshirt-officiel-2026_bleu_4.jpg',
-                'ordre' => 4,
-                'created_at' => $now,
-                'updated_at' => $now,
-            ],
-            [
-                'id' => 10,
-                'product_id' => 2,
-                'variant_id' => 7,
-                'image' => 'img/boutique/products/tshirt-officiel-2026_bleu_5.jpg',
-                'ordre' => 5,
-                'created_at' => $now,
-                'updated_at' => $now,
-            ],
-            [
-                'id' => 11,
                 'product_id' => 3,
                 'variant_id' => 13,
                 'image' => 'img/boutique/products/tshirt-classique_blanc_1.jpg',
@@ -121,7 +85,7 @@ class ProductsImageSeeder extends Seeder
                 'updated_at' => $now,
             ],
             [
-                'id' => 12,
+                'id' => 8,
                 'product_id' => 3,
                 'variant_id' => 13,
                 'image' => 'img/boutique/products/tshirt-classique_blanc_2.jpg',
@@ -130,7 +94,7 @@ class ProductsImageSeeder extends Seeder
                 'updated_at' => $now,
             ],
             [
-                'id' => 13,
+                'id' => 9,
                 'product_id' => 3,
                 'variant_id' => 13,
                 'image' => 'img/boutique/products/tshirt-classique_blanc_3.jpg',
@@ -139,7 +103,7 @@ class ProductsImageSeeder extends Seeder
                 'updated_at' => $now,
             ],
             [
-                'id' => 14,
+                'id' => 10,
                 'product_id' => 3,
                 'variant_id' => 13,
                 'image' => 'img/boutique/products/tshirt-classique_blanc_4.jpg',
@@ -148,7 +112,7 @@ class ProductsImageSeeder extends Seeder
                 'updated_at' => $now,
             ],
             [
-                'id' => 15,
+                'id' => 11,
                 'product_id' => 3,
                 'variant_id' => 13,
                 'image' => 'img/boutique/products/tshirt-classique_blanc_5.jpg',
@@ -157,7 +121,7 @@ class ProductsImageSeeder extends Seeder
                 'updated_at' => $now,
             ],
             [
-                'id' => 16,
+                'id' => 12,
                 'product_id' => 4,
                 'variant_id' => 19,
                 'image' => 'img/boutique/products/pull-demi-zip_vert_1.jpg',
@@ -166,7 +130,7 @@ class ProductsImageSeeder extends Seeder
                 'updated_at' => $now,
             ],
             [
-                'id' => 17,
+                'id' => 13,
                 'product_id' => 5,
                 'variant_id' => 25,
                 'image' => 'img/boutique/products/pull-demi-zip-officiel_bleu_1.jpg',
@@ -175,7 +139,7 @@ class ProductsImageSeeder extends Seeder
                 'updated_at' => $now,
             ],
             [
-                'id' => 18,
+                'id' => 14,
                 'product_id' => 6,
                 'variant_id' => 31,
                 'image' => 'img/boutique/products/sweat-capuche-officiel_bleu_1.jpg',
@@ -184,7 +148,7 @@ class ProductsImageSeeder extends Seeder
                 'updated_at' => $now,
             ],
             [
-                'id' => 19,
+                'id' => 15,
                 'product_id' => 7,
                 'variant_id' => 38,
                 'image' => 'img/boutique/products/lunettes-calan_bleu_1.jpg',
@@ -193,7 +157,7 @@ class ProductsImageSeeder extends Seeder
                 'updated_at' => $now,
             ],
             [
-                'id' => 20,
+                'id' => 16,
                 'product_id' => 7,
                 'variant_id' => 38,
                 'image' => 'img/boutique/products/lunettes-calan_bleu_2.jpg',
@@ -202,7 +166,7 @@ class ProductsImageSeeder extends Seeder
                 'updated_at' => $now,
             ],
             [
-                'id' => 21,
+                'id' => 17,
                 'product_id' => 7,
                 'variant_id' => 37,
                 'image' => 'img/boutique/products/lunettes-calan_rouge_1.jpg',
@@ -211,7 +175,7 @@ class ProductsImageSeeder extends Seeder
                 'updated_at' => $now,
             ],
             [
-                'id' => 22,
+                'id' => 18,
                 'product_id' => 7,
                 'variant_id' => 37,
                 'image' => 'img/boutique/products/lunettes-calan_rouge_2.jpg',
@@ -220,7 +184,7 @@ class ProductsImageSeeder extends Seeder
                 'updated_at' => $now,
             ],
             [
-                'id' => 23,
+                'id' => 19,
                 'product_id' => 8,
                 'variant_id' => null,
                 'image' => 'img/boutique/products/tot-bag_blanc_1.jpg',
@@ -229,7 +193,7 @@ class ProductsImageSeeder extends Seeder
                 'updated_at' => $now,
             ],
             [
-                'id' => 24,
+                'id' => 20,
                 'product_id' => 9,
                 'variant_id' => 40,
                 'image' => 'img/boutique/products/bob-officiel-2026_bleu_1.jpg',
@@ -238,7 +202,7 @@ class ProductsImageSeeder extends Seeder
                 'updated_at' => $now,
             ],
             [
-                'id' => 25,
+                'id' => 21,
                 'product_id' => 10,
                 'variant_id' => 41,
                 'image' => 'img/boutique/products/casquette-officielle-2026_bleu_1.jpg',
@@ -247,7 +211,7 @@ class ProductsImageSeeder extends Seeder
                 'updated_at' => $now,
             ],
             [
-                'id' => 26,
+                'id' => 22,
                 'product_id' => 11,
                 'variant_id' => 42,
                 'image' => 'img/boutique/products/gourde-25cl_1.jpg',
@@ -256,7 +220,7 @@ class ProductsImageSeeder extends Seeder
                 'updated_at' => $now,
             ],
             [
-                'id' => 27,
+                'id' => 23,
                 'product_id' => 11,
                 'variant_id' => 42,
                 'image' => 'img/boutique/products/gourde-25cl_2.jpg',
@@ -265,7 +229,7 @@ class ProductsImageSeeder extends Seeder
                 'updated_at' => $now,
             ],
             [
-                'id' => 28,
+                'id' => 24,
                 'product_id' => 11,
                 'variant_id' => 42,
                 'image' => 'img/boutique/products/gourde-25cl_3.jpg',
@@ -274,7 +238,7 @@ class ProductsImageSeeder extends Seeder
                 'updated_at' => $now,
             ],
             [
-                'id' => 29,
+                'id' => 25,
                 'product_id' => 12,
                 'variant_id' => null,
                 'image' => 'img/boutique/products/bandana_violet_1.jpg',

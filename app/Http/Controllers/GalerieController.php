@@ -9,11 +9,11 @@ use Illuminate\Support\Facades\File;
 class GalerieController extends Controller
 {
     /**
-     * Afficher la galerie d'images pour les éditions archivées et passées
+     * Afficher la galerie d'images pour les éditions en cours, archivées et passées
      */
     public function index()
     {
-        $editions = $this->getArchivedAndPastEditions();
+        $editions = $this->getOnGoingArchivedAndPastEditions();
 
         if ($editions->isEmpty()) {
             return view('galerie', ['editions' => collect(), 'galleryByYear' => []]);
@@ -28,13 +28,13 @@ class GalerieController extends Controller
     }
 
     /**
-     * Récupérer les éditions archivées et passées pour pouvoir afficher les photos associées dans la galerie
+     * Récupérer les éditions en cours, archivées et passées pour pouvoir afficher les photos associées dans la galerie
      */
-    private function getArchivedAndPastEditions()
+    private function getOnGoingArchivedAndPastEditions()
     {
         return DB::table('editions')
             ->select('id', 'year', 'name')
-            ->whereIn('status', ['past', 'archived'])
+            ->whereIn('status', ['ongoing', 'past', 'archived'])
             ->where('actif', true)
             ->orderByDesc('year')
             ->get();

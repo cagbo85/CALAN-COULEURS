@@ -1,0 +1,88 @@
+{
+  "_client-CU1SI9-t.js": {
+    "file": "assets/client-CU1SI9-t.js",
+    "name": "client"
+  },
+  "_index-CMmoeHmW.js": {
+    "file": "assets/index-CMmoeHmW.js",
+    "name": "index",
+    "imports": [
+      "_client-CU1SI9-t.js"
+    ]
+  },
+  "resources/css/app.css": {
+    "file": "assets/app-9F9AoSz-.css",
+    "src": "resources/css/app.css",
+    "isEntry": true
+  },
+  "resources/js/app.js": {
+    "file": "assets/app-C9YAEe-7.js",
+    "name": "app",
+    "src": "resources/js/app.js",
+    "isEntry": true
+  },
+  "resources/js/app.jsx": {
+    "file": "assets/app-l0sNRNKZ.js",
+    "name": "app",
+    "src": "resources/js/app.jsx",
+    "isEntry": true
+  },
+  "resources/js/faq-loader.jsx": {
+    "file": "assets/faq-loader-CgQ7NPy6.js",
+    "name": "faq-loader",
+    "src": "resources/js/faq-loader.jsx",
+    "isEntry": true,
+    "imports": [
+      "_client-CU1SI9-t.js",
+      "_index-CMmoeHmW.js"
+    ]
+  },
+  "resources/js/navbar-boutique-loader.jsx": {
+    "file": "assets/navbar-boutique-loader-BUlokjjL.js",
+    "name": "navbar-boutique-loader",
+    "src": "resources/js/navbar-boutique-loader.jsx",
+    "isEntry": true,
+    "imports": [
+      "_client-CU1SI9-t.js"
+    ]
+  },
+  "resources/js/navbar-loader.jsx": {
+    "file": "assets/navbar-loader-6PLsJOAc.js",
+    "name": "navbar-loader",
+    "src": "resources/js/navbar-loader.jsx",
+    "isEntry": true,
+    "imports": [
+      "_client-CU1SI9-t.js"
+    ]
+  },
+  "resources/js/programmation-loader.jsx": {
+    "file": "assets/programmation-loader-Dhj6z2Xd.js",
+    "name": "programmation-loader",
+    "src": "resources/js/programmation-loader.jsx",
+    "isEntry": true,
+    "imports": [
+      "_client-CU1SI9-t.js",
+      "_index-CMmoeHmW.js"
+    ]
+  },
+  "resources/js/stands-loader.jsx": {
+    "file": "assets/stands-loader-gHgghE_B.js",
+    "name": "stands-loader",
+    "src": "resources/js/stands-loader.jsx",
+    "isEntry": true,
+    "imports": [
+      "_client-CU1SI9-t.js",
+      "_index-CMmoeHmW.js"
+    ]
+  },
+  "resources/js/timer-loader.jsx": {
+    "file": "assets/timer-loader-DIQSrvGb.js",
+    "name": "timer-loader",
+    "src": "resources/js/timer-loader.jsx",
+    "isEntry": true,
+    "imports": [
+      "_client-CU1SI9-t.js",
+      "_index-CMmoeHmW.js"
+    ]
+  }
+}

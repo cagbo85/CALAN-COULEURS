@@ -92,9 +92,9 @@
                                             class="w-full block rounded-lg overflow-hidden shadow-sm hover:shadow-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#1d3f89]"
                                             onclick="openModal('{{ asset($image) }}', {{ $edition->year }})"
                                             aria-label="Ouvrir l'image {{ $loop->index + 1 }} en plein écran">
-                                            <img data-src="{{ asset($image) }}" loading="lazy" decoding="async"
+                                            <img src="{{ asset($image) }}" loading="lazy" decoding="async"
                                                 alt="Image galerie {{ $loop->index + 1 }}"
-                                                class="lazy-img w-full block transition-[transform,opacity] duration-300 hover:scale-[1.015] hover:opacity-95">
+                                                class="w-full block transition-[transform,opacity] duration-300 hover:scale-[1.015] hover:opacity-95">
                                         </button>
                                     </div>
                                 @endforeach
@@ -181,33 +181,6 @@
 
                     document.getElementById("tab-" + this.dataset.tab)?.classList.remove("hidden");
                 });
-            });
-
-            // --- Chargement par lots ---
-            const images = Array.from(document.querySelectorAll(".lazy-img"));
-            const batchSize = 12;
-            let index = 0;
-
-            function loadNextBatch() {
-                const batch = images.slice(index, index + batchSize);
-
-                batch.forEach(img => {
-                    const src = img.getAttribute("data-src");
-                    if (src) {
-                        img.src = src;
-                        img.removeAttribute("data-src");
-                    }
-                });
-
-                index += batchSize;
-            }
-
-            loadNextBatch();
-
-            window.addEventListener("scroll", () => {
-                if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 800) {
-                    loadNextBatch();
-                }
             });
         });
     </script>

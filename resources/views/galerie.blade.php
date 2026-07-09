@@ -90,9 +90,11 @@
                                     <div class="mb-5 break-inside-avoid">
                                         <button
                                             class="w-full block rounded-lg overflow-hidden shadow-sm hover:shadow-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#1d3f89]"
-                                            onclick="openModal('{{ asset($image) }}', {{ $edition->year }})"
+                                            onclick="openModal('{{ $image['full'] }}', {{ $edition->year }})"
                                             aria-label="Ouvrir l'image {{ $loop->index + 1 }} en plein écran">
-                                            <img src="{{ asset($image) }}" loading="lazy" decoding="async"
+
+                                            <img src="{{ $image['thumb'] }}"
+                                                data-full="{{ asset($image['full']) }}" loading="lazy" decoding="async"
                                                 alt="Image galerie {{ $loop->index + 1 }}"
                                                 class="w-full block transition-[transform,opacity] duration-300 hover:scale-[1.015] hover:opacity-95">
                                         </button>
@@ -128,21 +130,22 @@
     </div>
 
     <script>
-        const galleryByYear = @json(collect($galleryByYear)->map(fn($imgs) => $imgs->values()));
+        const galleryByYear = @json(collect($galleryByYear)->map(fn($imgs) => $imgs->pluck('full')));
 
         let currentImages = [];
         let currentIndex = 0;
 
         function openModal(imgSrc, year) {
             currentImages = galleryByYear[year] ?? [];
-            currentIndex = currentImages.findIndex(img => imgSrc.includes(img));
+            currentIndex = currentImages.indexOf(imgSrc);
             updateModal();
             document.getElementById("imageModal").classList.remove("hidden");
         }
 
         function updateModal() {
-            document.getElementById("modalImage").src = "{{ asset('') }}" + currentImages[currentIndex];
-            document.getElementById("modalCounter").textContent = (currentIndex + 1) + " / " + currentImages.length;
+            document.getElementById("modalImage").src = currentImages[currentIndex];
+            document.getElementById("modalCounter").textContent =
+                (currentIndex + 1) + " / " + currentImages.length;
         }
 
         function navigate(direction) {

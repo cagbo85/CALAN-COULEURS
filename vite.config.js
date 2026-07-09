@@ -15,6 +15,7 @@ export default defineConfig({
                 "resources/js/stands-loader.jsx",
                 "resources/js/faq-loader.jsx",
                 "resources/js/programmation-loader.jsx",
+                "resources/js/merch-popup.js",
                 "resources/js/app.js",
             ],
             publicDirectory: "public",

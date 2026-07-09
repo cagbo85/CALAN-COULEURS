@@ -21,7 +21,7 @@ class GalerieController extends Controller
 
         $galleryByYear = [];
         foreach ($editions as $edition) {
-            $galleryByYear[$edition->year] = $this->loadGalleryImages('img/galerie/'.$edition->year.'/');
+            $galleryByYear[$edition->year] = $this->loadGalleryImages('img/galerie/' . $edition->year . '/');
         }
 
         return view('galerie', compact('editions', 'galleryByYear'));
@@ -55,6 +55,14 @@ class GalerieController extends Controller
         }
 
         return collect(File::files($path))
-            ->map(fn ($file) => $imgPath.$file->getFilename());
+            ->map(function ($file) use ($imgPath) {
+                $filename = $file->getFilename();
+                $year = basename($imgPath);
+
+                return [
+                    'full' => asset($imgPath . $filename),
+                    'thumb' => asset("img/galerie/thumbnails/$year/" . pathinfo($filename, PATHINFO_FILENAME) . '.webp'),
+                ];
+            });
     }
 }

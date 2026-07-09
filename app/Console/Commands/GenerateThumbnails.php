@@ -4,28 +4,30 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
-use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Imagick\Driver;
 use Intervention\Image\Encoders\WebpEncoder;
+use Intervention\Image\ImageManager;
 
 class GenerateThumbnails extends Command
 {
     protected $signature = 'gallery:thumbnails';
+
     protected $description = 'Génère des miniatures WebP pour un dossier de photos';
 
     public function handle()
     {
-        $folder = $this->ask("Nom du dossier à traiter (ex: 2026). Le nom du dossier doit être dans public/img/galerie/:");
+        $folder = $this->ask('Nom du dossier à traiter (ex: 2026). Le nom du dossier doit être dans public/img/galerie/:');
 
         $sourcePath = public_path("img/galerie/$folder");
         $thumbPath = public_path("img/galerie/thumbnails/$folder");
 
-        if (!File::exists($sourcePath)) {
+        if (! File::exists($sourcePath)) {
             $this->error("❌ Le dossier $folder n'existe pas !");
+
             return;
         }
 
-        if (!File::exists($thumbPath)) {
+        if (! File::exists($thumbPath)) {
             File::makeDirectory($thumbPath, 0755, true);
         }
 
@@ -35,7 +37,7 @@ class GenerateThumbnails extends Command
 
         foreach ($files as $file) {
             $filename = pathinfo($file->getFilename(), PATHINFO_FILENAME);
-            $thumbFile = $thumbPath . '/' . $filename . '.webp';
+            $thumbFile = $thumbPath.'/'.$filename.'.webp';
 
             // Lire l'image
             $img = $manager->decode($file->getRealPath());
